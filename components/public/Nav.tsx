@@ -68,13 +68,13 @@ export default function Nav() {
           {t('map')}
         </Link>
         <Link
-          href={`/${locale}`}
+          href={`/${locale}/map?filter=groups`}
           className="text-[13px] text-text-muted transition-colors hover:text-text"
         >
           {t('groups')}
         </Link>
         <Link
-          href={`/${locale}`}
+          href={`/${locale}/map?filter=educators`}
           className="text-[13px] text-text-muted transition-colors hover:text-text"
         >
           {t('educators')}

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
 import type { PublicUserProfile } from '@/lib/types'
@@ -60,13 +61,14 @@ export default function EducatorCard({ educator, locale }: Props) {
           />
           <div className="relative flex items-start justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-accent/20 bg-[rgba(102,187,106,0.12)]">
+              <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-accent/20 bg-[rgba(102,187,106,0.12)]">
                 {educator.avatarUrl ? (
-                  <img
+                  <Image
                     src={educator.avatarUrl}
                     alt={displayName}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
+                    fill
+                    sizes="64px"
+                    className="object-cover"
                   />
                 ) : (
                   <span className="text-lg font-semibold tracking-[0.12em] text-accent">

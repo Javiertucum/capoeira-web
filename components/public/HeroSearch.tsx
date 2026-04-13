@@ -39,6 +39,7 @@ export default function HeroSearch() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder={t('searchPlaceholder')}
+            aria-label={t('searchPlaceholder')}
             className="min-w-0 flex-1 bg-transparent text-sm text-text outline-none placeholder:text-text-muted"
           />
         </label>
