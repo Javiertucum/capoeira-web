@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
+import { routing } from '@/i18n/routing'
 
-const LOCALES = ['es', 'pt', 'en'] as const
+const LOCALES = routing.locales
 
-type Locale = (typeof LOCALES)[number]
+type Locale = (typeof routing.locales)[number]
 
 function getLocalizedPathname(pathname: string, nextLocale: Locale) {
   const segments = pathname.split('/')

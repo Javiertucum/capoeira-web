@@ -22,6 +22,7 @@
   },
   "categories": {
     "title": "Explora por categoría",
+    "explore": "Explorar",
     "nucleos": {
       "name": "Núcleos",
       "desc": "Lugares de entrenamiento con horarios, educadores y contacto directo."
@@ -45,7 +46,8 @@
     "seeContact": "Ver contacto ->"
   },
   "educators": {
-    "featured": "Educadores destacados"
+    "featured": "Educadores destacados",
+    "empty": "Los perfiles destacados aparecerán aquí cuando el directorio público esté conectado."
   },
   "cta": {
     "title": "¿Eres educador o tienes un grupo?",

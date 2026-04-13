@@ -22,6 +22,7 @@
   },
   "categories": {
     "title": "Explore by category",
+    "explore": "Explore",
     "nucleos": {
       "name": "Nucleos",
       "desc": "Training locations with schedules, educators and direct contact."
@@ -45,7 +46,8 @@
     "seeContact": "See contact ->"
   },
   "educators": {
-    "featured": "Featured educators"
+    "featured": "Featured educators",
+    "empty": "Featured profiles will appear here once the public directory data is connected."
   },
   "cta": {
     "title": "Are you an educator or do you have a group?",
@@ -54,7 +56,7 @@
     "learnMore": "Learn more"
   },
   "footer": {
-    "credits": "Data from Agenda Capoeiragem community",
+    "credits": "Data from the Agenda Capoeiragem community",
     "privacy": "Privacy",
     "terms": "Terms"
   }
