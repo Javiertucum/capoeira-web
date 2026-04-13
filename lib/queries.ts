@@ -1,3 +1,5 @@
+import 'server-only'
+
 import type { Group, MapNucleo, PublicUserProfile, StatsData } from './types'
 import { adminDb } from './firebase-admin'
 
@@ -147,7 +149,7 @@ export async function getStats(): Promise<StatsData> {
 
 export async function getAllNucleos(): Promise<MapNucleo[]> {
   const [nucleosSnap, groupsSnap] = await Promise.all([
-    adminDb.collectionGroup('nucleos').limit(500).get(),
+    adminDb.collectionGroup('nucleos').get(),
     adminDb.collection('groups').get(),
   ])
 
@@ -170,6 +172,7 @@ export async function getFeaturedEducators(): Promise<PublicUserProfile[]> {
   const snap = await adminDb
     .collection('usersPublic')
     .where('role', '==', 'educator')
+    .orderBy('createdAt', 'desc')
     .limit(8)
     .get()
 
@@ -201,6 +204,6 @@ export async function getGroupWithNucleos(
 }
 
 export async function getAllGroups(): Promise<Group[]> {
-  const snap = await adminDb.collection('groups').limit(200).get()
+  const snap = await adminDb.collection('groups').get()
   return snap.docs.map((doc) => mapGroup(doc.id, doc.data() as FirestoreRecord))
 }

@@ -1,4 +1,6 @@
-import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app'
+import 'server-only'
+
+import { cert, getApps, initializeApp } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 
 function requiredEnv(name: string): string {
@@ -26,4 +28,3 @@ function getAdminApp() {
 
 export const adminApp = getAdminApp()
 export const adminDb = getFirestore(adminApp)
-
