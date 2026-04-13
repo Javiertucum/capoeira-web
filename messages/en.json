@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "map": "Map",
+    "groups": "Groups",
+    "educators": "Educators",
+    "events": "Events",
+    "downloadApp": "Download App"
+  },
+  "hero": {
+    "eyebrow": "Global Capoeira Directory",
+    "title": "Find your",
+    "titleAccent": "Roda",
+    "subtitle": "Nucleos, groups and educators worldwide. Meet the community. Start training.",
+    "searchPlaceholder": "City, country or region...",
+    "searchButton": "Search"
+  },
+  "stats": {
+    "nucleos": "Nucleos",
+    "groups": "Groups",
+    "educators": "Educators",
+    "countries": "Countries"
+  },
+  "categories": {
+    "title": "Explore by category",
+    "nucleos": {
+      "name": "Nucleos",
+      "desc": "Training locations with schedules, educators and direct contact."
+    },
+    "groups": {
+      "name": "Groups",
+      "desc": "Organizations with history, graduation system and established community."
+    },
+    "educators": {
+      "name": "Educators",
+      "desc": "Teacher profiles with social networks and direct contact."
+    }
+  },
+  "map": {
+    "title": "Map view",
+    "results": "{count} results",
+    "filterNucleos": "Nucleos",
+    "filterGroups": "Groups",
+    "filterEducators": "Educators",
+    "searchPlaceholder": "City, country or region...",
+    "seeContact": "See contact ->"
+  },
+  "educators": {
+    "featured": "Featured educators"
+  },
+  "cta": {
+    "title": "Are you an educator or do you have a group?",
+    "subtitle": "Download the app and add your nucleo to the global capoeira directory.",
+    "download": "Download App",
+    "learnMore": "Learn more"
+  },
+  "footer": {
+    "credits": "Data from Agenda Capoeiragem community",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  }
+}

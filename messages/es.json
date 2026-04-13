@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "map": "Mapa",
+    "groups": "Grupos",
+    "educators": "Educadores",
+    "events": "Eventos",
+    "downloadApp": "Descargar App"
+  },
+  "hero": {
+    "eyebrow": "Directorio Global de Capoeira",
+    "title": "Encuentra tu",
+    "titleAccent": "Roda",
+    "subtitle": "Núcleos, grupos y educadores en todo el mundo. Conoce la comunidad. Comienza a entrenar.",
+    "searchPlaceholder": "Ciudad, país o región...",
+    "searchButton": "Buscar"
+  },
+  "stats": {
+    "nucleos": "Núcleos",
+    "groups": "Grupos",
+    "educators": "Educadores",
+    "countries": "Países"
+  },
+  "categories": {
+    "title": "Explora por categoría",
+    "nucleos": {
+      "name": "Núcleos",
+      "desc": "Lugares de entrenamiento con horarios, educadores y contacto directo."
+    },
+    "groups": {
+      "name": "Grupos",
+      "desc": "Organizaciones con historia, sistema de graduación y comunidad consolidada."
+    },
+    "educators": {
+      "name": "Educadores",
+      "desc": "Perfiles de maestros y profesores con redes sociales y contacto directo."
+    }
+  },
+  "map": {
+    "title": "Vista de mapa",
+    "results": "{count} resultados",
+    "filterNucleos": "Núcleos",
+    "filterGroups": "Grupos",
+    "filterEducators": "Educadores",
+    "searchPlaceholder": "Ciudad, país o región...",
+    "seeContact": "Ver contacto ->"
+  },
+  "educators": {
+    "featured": "Educadores destacados"
+  },
+  "cta": {
+    "title": "¿Eres educador o tienes un grupo?",
+    "subtitle": "Descarga la app y suma tu núcleo al directorio global de capoeira.",
+    "download": "Descargar App",
+    "learnMore": "Saber más"
+  },
+  "footer": {
+    "credits": "Datos de la comunidad Agenda Capoeiragem",
+    "privacy": "Privacidad",
+    "terms": "Términos"
+  }
+}
