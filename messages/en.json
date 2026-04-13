@@ -59,5 +59,18 @@
     "credits": "Data from the Agenda Capoeiragem community",
     "privacy": "Privacy",
     "terms": "Terms"
+  },
+  "profile": {
+    "role": "Role",
+    "location": "Location",
+    "group": "Group",
+    "graduation": "Graduation",
+    "bio": "Biography",
+    "nucleos": "Teaching in",
+    "contact": "Contact",
+    "unspecified": "Not specified",
+    "back": "Back to directory",
+    "representedCountries": "Represented countries",
+    "representedCities": "Represented cities"
   }
 }

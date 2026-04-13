@@ -59,5 +59,18 @@
     "credits": "Datos de la comunidad Agenda Capoeiragem",
     "privacy": "Privacidad",
     "terms": "Términos"
+  },
+  "profile": {
+    "role": "Rol",
+    "location": "Ubicación",
+    "group": "Grupo",
+    "graduation": "Graduación",
+    "bio": "Biografía",
+    "nucleos": "Enseña en",
+    "contact": "Contacto",
+    "unspecified": "No especificado",
+    "back": "Volver al mapa",
+    "representedCountries": "Países representados",
+    "representedCities": "Ciudades representadas"
   }
 }

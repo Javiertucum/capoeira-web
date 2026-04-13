@@ -59,5 +59,18 @@
     "credits": "Dados da comunidade Agenda Capoeiragem",
     "privacy": "Privacidade",
     "terms": "Termos"
+  },
+  "profile": {
+    "role": "Cargo",
+    "location": "Localização",
+    "group": "Grupo",
+    "graduation": "Graduação",
+    "bio": "Biografia",
+    "nucleos": "Instrui em",
+    "contact": "Contato",
+    "unspecified": "Não especificado",
+    "back": "Voltar ao mapa",
+    "representedCountries": "Países representados",
+    "representedCities": "Cidades representadas"
   }
 }

@@ -121,6 +121,12 @@ function mapGroup(id: string, data: FirestoreRecord): Group {
   }
 }
 
+export async function getGroup(id: string): Promise<Group | null> {
+  const doc = await adminDb.collection('groups').doc(id).get()
+  if (!doc.exists) return null
+  return mapGroup(doc.id, doc.data() as FirestoreRecord)
+}
+
 function mapMapNucleo(
   id: string,
   groupId: string,
@@ -206,10 +212,67 @@ export async function getFeaturedEducators(): Promise<PublicUserProfile[]> {
     .map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
 }
 
+export async function getAllEducators(): Promise<PublicUserProfile[]> {
+  const snap = await adminDb
+    .collection('usersPublic')
+    .where('role', '==', 'educator')
+    .get()
+
+  return snap.docs.map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
+}
+
 export async function getEducatorProfile(uid: string): Promise<PublicUserProfile | null> {
   const doc = await adminDb.collection('usersPublic').doc(uid).get()
   if (!doc.exists) return null
   return mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord)
+}
+
+export async function getNucleosByEducator(uid: string): Promise<MapNucleo[]> {
+  const [respSnap, coSnap, groupsSnap] = await Promise.all([
+    adminDb.collectionGroup('nucleos').where('responsibleEducatorId', '==', uid).get(),
+    adminDb.collectionGroup('nucleos').where('coEducatorIds', 'array-contains', uid).get(),
+    adminDb.collection('groups').get(),
+  ])
+
+  const groupNames = new Map(
+    groupsSnap.docs.map((doc) => [doc.id, asString(doc.data().name) ?? ''] as const)
+  )
+
+  const seen = new Set<string>()
+  const results: MapNucleo[] = []
+
+  const processDocs = (snap: FirebaseFirestore.QuerySnapshot) => {
+    snap.docs.forEach((doc) => {
+      if (seen.has(doc.id)) return
+      seen.add(doc.id)
+      const data = doc.data() as FirestoreRecord
+      const parent = doc.ref.parent.parent
+      const groupId = parent?.id ?? ''
+      const groupName = groupNames.get(groupId) ?? ''
+      results.push(mapMapNucleo(doc.id, groupId, groupName, data))
+    })
+  }
+
+  processDocs(respSnap)
+  processDocs(coSnap)
+
+  return results
+}
+
+export async function getGraduationLevel(
+  groupId: string,
+  levelId: string
+): Promise<string | null> {
+  if (!groupId || !levelId) return null
+  const doc = await adminDb
+    .collection('groups')
+    .doc(groupId)
+    .collection('graduationLevels')
+    .doc(levelId)
+    .get()
+  
+  if (!doc.exists) return null
+  return asString(doc.data()?.name) ?? null
 }
 
 export async function getGroupWithNucleos(

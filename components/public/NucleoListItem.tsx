@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import type { MapNucleo } from '@/lib/types'
 
@@ -141,16 +142,25 @@ export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
           ) : null}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-text-muted">
-            {hasCoordinates ? copy.coordinatesReady : copy.coordinatesMissing}
-          </span>
-
-          {nucleo.city ? (
-            <span className="rounded-full border border-border/80 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
-              {nucleo.city}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/50 pt-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-text-muted">
+              {hasCoordinates ? copy.coordinatesReady : copy.coordinatesMissing}
             </span>
-          ) : null}
+
+            {nucleo.city ? (
+              <span className="rounded-full border border-border/80 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
+                {nucleo.city}
+              </span>
+            ) : null}
+          </div>
+
+          <Link
+            href={`/${locale}/nucleos/${nucleo.groupId}`}
+            className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-accent transition-opacity hover:opacity-80"
+          >
+            {copy.groupLabel} {'->'}
+          </Link>
         </div>
       </button>
     </article>

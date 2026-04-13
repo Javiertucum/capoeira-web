@@ -53,7 +53,7 @@ export default function EducatorCard({ educator, locale }: Props) {
 
   return (
     <article className="group overflow-hidden rounded-[22px] border border-border bg-card transition-all duration-200 hover:-translate-y-1 hover:border-accent/35">
-      <Link href={`/${locale}/educator/${educator.uid}`} className="block">
+      <Link href={`/${locale}/educators/${educator.uid}`} className="block">
         <div className="relative overflow-hidden border-b border-border bg-[linear-gradient(180deg,#202633_0%,#161B24_100%)] px-5 pb-5 pt-6">
           <div
             aria-hidden="true"

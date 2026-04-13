@@ -1,5 +1,5 @@
 import MapClientShell from './MapClientShell'
-import type { MapNucleo } from '@/lib/types'
+import type { MapNucleo, PublicUserProfile, Group } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,21 +16,37 @@ export default async function MapPage({ params, searchParams }: Props) {
   const { locale } = await params
   const resolvedSearchParams = await searchParams
 
+  let groups: Group[] = []
+  let educators: PublicUserProfile[] = []
   let nucleos: MapNucleo[] = []
   let dataUnavailable = false
 
   try {
-    const { getAllNucleos } = await import('@/lib/queries')
-    nucleos = await getAllNucleos()
+    const { getAllNucleos, getAllEducators, getAllGroups } = await import('@/lib/queries')
+    const results = await Promise.allSettled([
+      getAllNucleos(),
+      getAllEducators(),
+      getAllGroups()
+    ])
+    
+    nucleos = results[0].status === 'fulfilled' ? results[0].value : []
+    educators = results[1].status === 'fulfilled' ? results[1].value : []
+    groups = results[2].status === 'fulfilled' ? results[2].value : []
+    
+    if (results.every(r => r.status === 'rejected')) {
+      dataUnavailable = true
+    }
   } catch (error) {
     dataUnavailable = true
-    console.error('Map directory unavailable, rendering empty fallback.', error)
+    console.error('Data directory unavailable, rendering empty fallback.', error)
   }
 
   return (
     <MapClientShell
       locale={locale}
       initialNucleos={nucleos}
+      initialEducators={educators}
+      initialGroups={groups}
       initialQuery={readParam(resolvedSearchParams.q)}
       initialFilter={readParam(resolvedSearchParams.filter)}
       dataUnavailable={dataUnavailable}

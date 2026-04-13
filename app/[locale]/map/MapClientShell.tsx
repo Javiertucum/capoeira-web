@@ -5,11 +5,15 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import MapView from '@/components/public/MapView'
 import NucleoListItem from '@/components/public/NucleoListItem'
-import type { MapNucleo } from '@/lib/types'
+import EducatorCard from '@/components/public/EducatorCard'
+import GroupCard from '@/components/public/GroupCard'
+import type { MapNucleo, PublicUserProfile, Group } from '@/lib/types'
 
 type Props = Readonly<{
   locale: string
   initialNucleos: MapNucleo[]
+  initialEducators: PublicUserProfile[]
+  initialGroups: Group[]
   initialQuery: string
   initialFilter: string
   dataUnavailable: boolean
@@ -35,25 +39,25 @@ const FILTERS: FilterValue[] = ['nucleos', 'groups', 'educators']
 const COPY: Record<string, LocaleCopy> = {
   es: {
     searchButton: 'Buscar',
-    intro: 'Explora nucleos activos, cambia el foco del directorio y centra el mapa en segundos.',
-    emptyTitle: 'Sin resultados para tu busqueda',
-    emptyBody: 'Prueba otra ciudad, grupo o pais para ampliar la exploracion.',
+    intro: 'Explora núcleos activos, cambia el foco del directorio y centra el mapa en segundos.',
+    emptyTitle: 'Sin resultados para tu búsqueda',
+    emptyBody: 'Prueba otra ciudad, grupo o país para ampliar la exploración.',
     unavailableTitle: 'Directorio no disponible por ahora',
-    unavailableBody: 'Todavia no pudimos leer Firestore con las credenciales actuales, asi que mostramos la interfaz lista para cuando el acceso quede conectado.',
-    groupsHint: 'La vista de grupos seguira creciendo. Por ahora te mostramos los nucleos asociados a cada comunidad.',
-    educatorsHint: 'La vista de educadores seguira creciendo. Por ahora te mostramos los espacios de entrenamiento vinculados al directorio.',
+    unavailableBody: 'Todavía no pudimos leer Firestore con las credenciales actuales, así que mostramos la interfaz lista para cuando el acceso quede conectado.',
+    groupsHint: 'Explora las comunidades y organizaciones de capoeira registradas.',
+    educatorsHint: 'Maestros, profesores e instructores de todo el mundo.',
     listTitle: 'Resultados',
     mapTitle: 'Mapa activo',
   },
   pt: {
     searchButton: 'Buscar',
-    intro: 'Explore nucleos ativos, mude o foco do diretorio e centralize o mapa em segundos.',
+    intro: 'Explore núcleos ativos, mude o foco do diretório e centralize o mapa em segundos.',
     emptyTitle: 'Nenhum resultado para sua busca',
-    emptyBody: 'Tente outra cidade, grupo ou pais para ampliar a exploracao.',
-    unavailableTitle: 'Diretorio indisponivel no momento',
-    unavailableBody: 'Ainda nao foi possivel ler o Firestore com as credenciais atuais, entao mostramos a interface pronta para quando o acesso estiver conectado.',
-    groupsHint: 'A vista de grupos vai crescer em breve. Por enquanto mostramos os nucleos ligados a cada comunidade.',
-    educatorsHint: 'A vista de educadores vai crescer em breve. Por enquanto mostramos os espacos de treino ligados ao diretorio.',
+    emptyBody: 'Tente outra cidade, grupo ou país para ampliar a exploração.',
+    unavailableTitle: 'Diretório indisponível no momento',
+    unavailableBody: 'Ainda não foi possível ler o Firestore com as credenciais atuais, então mostramos a interface pronta para quando o acesso estiver conectado.',
+    groupsHint: 'Explore as comunidades e organizações de capoeira registradas.',
+    educatorsHint: 'Mestres, professores e instrutores de todo o mundo.',
     listTitle: 'Resultados',
     mapTitle: 'Mapa ativo',
   },
@@ -64,8 +68,8 @@ const COPY: Record<string, LocaleCopy> = {
     emptyBody: 'Try another city, group, or country to widen the search.',
     unavailableTitle: 'Directory temporarily unavailable',
     unavailableBody: 'Firestore could not be reached with the current credentials yet, so the interface is ready and waiting for live data.',
-    groupsHint: 'The groups view is still growing. For now we are showing the nucleos tied to each community.',
-    educatorsHint: 'The educators view is still growing. For now we are showing the training locations tied to the directory.',
+    groupsHint: 'Explore registered capoeira communities and organizations.',
+    educatorsHint: 'Masters, professors, and instructors from around the world.',
     listTitle: 'Results',
     mapTitle: 'Active map',
   },
@@ -79,22 +83,27 @@ function sanitizeFilter(value: string): FilterValue {
   return FILTERS.includes(value as FilterValue) ? (value as FilterValue) : 'nucleos'
 }
 
-function createSearchHaystack(nucleo: MapNucleo) {
-  return [
-    nucleo.name,
-    nucleo.groupName,
-    nucleo.city,
-    nucleo.country,
-    nucleo.address,
-  ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
+function createSearchHaystack(item: MapNucleo | PublicUserProfile | Group) {
+  if ('nickname' in item) {
+    // Educator: PublicUserProfile
+    return [item.name, item.surname, item.nickname, item.country, item.bio].filter(Boolean).join(' ').toLowerCase()
+  }
+  
+  if ('representedCountries' in item) {
+    // Group
+    return [item.name, ...(item.representedCountries ?? []), ...(item.representedCities ?? [])].filter(Boolean).join(' ').toLowerCase()
+  }
+
+  // Nucleo: MapNucleo
+  const n = item as MapNucleo
+  return [n.name, n.groupName, n.city, n.country, n.address].filter(Boolean).join(' ').toLowerCase()
 }
 
 export default function MapClientShell({
   locale,
   initialNucleos,
+  initialEducators,
+  initialGroups,
   initialQuery,
   initialFilter,
   dataUnavailable,
@@ -109,33 +118,37 @@ export default function MapClientShell({
   const [filter, setFilter] = useState<FilterValue>(sanitizeFilter(initialFilter))
   const deferredQuery = useDeferredValue(query)
 
-  const filteredNucleos = useMemo(() => {
+  const searchResults = useMemo(() => {
     const normalizedQuery = deferredQuery.trim().toLowerCase()
+    
+    if (filter === 'educators') {
+      const results = normalizedQuery
+        ? initialEducators.filter(e => createSearchHaystack(e).includes(normalizedQuery))
+        : initialEducators
+      return results.sort((a, b) => (a.nickname || a.name).localeCompare(b.nickname || b.name))
+    }
+    
+    if (filter === 'groups') {
+      const results = normalizedQuery
+        ? initialGroups.filter(g => createSearchHaystack(g).includes(normalizedQuery))
+        : initialGroups
+      return results.sort((a, b) => a.name.localeCompare(b.name))
+    }
+
     const results = normalizedQuery
-      ? initialNucleos.filter((nucleo) => createSearchHaystack(nucleo).includes(normalizedQuery))
+      ? initialNucleos.filter((n) => createSearchHaystack(n).includes(normalizedQuery))
       : initialNucleos
+    return results.sort((a, b) => a.name.localeCompare(b.name))
+  }, [deferredQuery, filter, initialEducators, initialGroups, initialNucleos])
 
-    return [...results].sort((left, right) => {
-      if (filter === 'groups') {
-        return left.groupName.localeCompare(right.groupName) || left.name.localeCompare(right.name)
-      }
-
-      return left.name.localeCompare(right.name)
-    })
-  }, [deferredQuery, filter, initialNucleos])
-
-  const [activeNucleoId, setActiveNucleoId] = useState<string | null>(filteredNucleos[0]?.id ?? null)
+  const [activeId, setActiveId] = useState<string | null>(null)
 
   useEffect(() => {
-    if (filteredNucleos.length === 0) {
-      setActiveNucleoId(null)
-      return
+    if (searchResults.length > 0 && !activeId) {
+      const first = searchResults[0]
+      setActiveId('uid' in first ? first.uid : first.id)
     }
-
-    if (!activeNucleoId || !filteredNucleos.some((nucleo) => nucleo.id === activeNucleoId)) {
-      setActiveNucleoId(filteredNucleos[0].id)
-    }
-  }, [activeNucleoId, filteredNucleos])
+  }, [searchResults, activeId])
 
   function syncUrl(nextQuery: string, nextFilter: FilterValue) {
     const params = new URLSearchParams(searchParams.toString())
@@ -166,15 +179,27 @@ export default function MapClientShell({
 
   function handleFilterChange(nextFilter: FilterValue) {
     setFilter(nextFilter)
+    setActiveId(null)
     syncUrl(query, nextFilter)
   }
 
-  const hint =
-    filter === 'groups'
-      ? copy.groupsHint
-      : filter === 'educators'
-        ? copy.educatorsHint
-        : null
+  // The map always shows nucleos. If we filtered by group or educator, 
+  // we might want to show only the nucleos related to that selected entity.
+  const mapNucleos = useMemo(() => {
+    if (!activeId) return initialNucleos
+    
+    if (filter === 'educators') {
+      return initialNucleos.filter(n => n.responsibleEducatorId === activeId || n.coEducatorIds?.includes(activeId))
+    }
+    
+    if (filter === 'groups') {
+      return initialNucleos.filter(n => n.groupId === activeId)
+    }
+    
+    return searchResults as MapNucleo[]
+  }, [activeId, filter, initialNucleos, searchResults])
+
+  const hint = copy[`${filter}Hint` as keyof LocaleCopy] || null
 
   return (
     <div className="px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pb-20">
@@ -257,7 +282,7 @@ export default function MapClientShell({
 
         {hint ? (
           <div className="mt-5 rounded-[18px] border border-accent/20 bg-[rgba(102,187,106,0.08)] px-5 py-4 text-sm leading-7 text-text-secondary">
-            {hint}
+            {hint as string}
           </div>
         ) : null}
 
@@ -269,7 +294,7 @@ export default function MapClientShell({
                   {copy.listTitle}
                 </p>
                 <h2 className="mt-2 text-xl font-semibold tracking-[0.01em] text-text">
-                  {t('results', { count: filteredNucleos.length })}
+                  {searchResults.length} {t('results' as any) || 'Resultados'}
                 </h2>
               </div>
             </div>
@@ -284,15 +309,34 @@ export default function MapClientShell({
             ) : null}
 
             <div className="mt-4 flex max-h-[520px] flex-col gap-3 overflow-y-auto pr-1 lg:max-h-[calc(100svh-240px)]">
-              {filteredNucleos.length > 0 ? (
-                filteredNucleos.map((nucleo) => (
-                  <NucleoListItem
-                    key={nucleo.id}
-                    nucleo={nucleo}
-                    isActive={nucleo.id === activeNucleoId}
-                    onSelect={setActiveNucleoId}
-                  />
-                ))
+              {searchResults.length > 0 ? (
+                searchResults.map((item) => {
+                  if (filter === 'educators') {
+                    const e = item as PublicUserProfile
+                    return (
+                      <div key={e.uid} onClick={() => setActiveId(e.uid)} className="cursor-pointer">
+                        <EducatorCard educator={e} locale={locale} />
+                      </div>
+                    )
+                  }
+                  if (filter === 'groups') {
+                    const g = item as Group
+                    return (
+                      <div key={g.id} onClick={() => setActiveId(g.id)} className="cursor-pointer">
+                        <GroupCard group={g} locale={locale} />
+                      </div>
+                    )
+                  }
+                  const n = item as MapNucleo
+                  return (
+                    <NucleoListItem
+                      key={n.id}
+                      nucleo={n}
+                      isActive={n.id === activeId}
+                      onSelect={setActiveId}
+                    />
+                  )
+                })
               ) : (
                 <div className="rounded-[20px] border border-dashed border-border bg-surface-muted/80 px-5 py-8 text-center">
                   <h3 className="text-lg font-semibold tracking-[0.01em] text-text">
@@ -311,17 +355,17 @@ export default function MapClientShell({
                   {copy.mapTitle}
                 </p>
                 <p className="mt-2 text-sm leading-6 text-text-secondary">
-                  {filteredNucleos.length > 0
-                    ? t('results', { count: filteredNucleos.length })
+                  {mapNucleos.length > 0
+                    ? `${mapNucleos.length} ${t('results' as any) || 'Nucleos'}`
                     : copy.emptyBody}
                 </p>
               </div>
             </div>
 
             <MapView
-              nucleos={filteredNucleos}
-              activeNucleoId={activeNucleoId}
-              onSelect={setActiveNucleoId}
+              nucleos={mapNucleos}
+              activeNucleoId={activeId}
+              onSelect={setActiveId}
             />
           </section>
         </div>
