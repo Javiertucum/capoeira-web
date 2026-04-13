@@ -48,6 +48,28 @@ function asNucleoSchedules(value: unknown): MapNucleo['schedules'] | undefined {
   return schedules
 }
 
+function asSortTimestamp(value: unknown): number {
+  if (value instanceof Date) {
+    return value.getTime()
+  }
+
+  if (typeof value === 'string' || typeof value === 'number') {
+    const time = new Date(value).getTime()
+    return Number.isFinite(time) ? time : 0
+  }
+
+  if (
+    value &&
+    typeof value === 'object' &&
+    'toMillis' in value &&
+    typeof (value as { toMillis?: unknown }).toMillis === 'function'
+  ) {
+    return ((value as { toMillis: () => number }).toMillis() ?? 0)
+  }
+
+  return 0
+}
+
 function mapPublicUserProfile(
   id: string,
   data: FirestoreRecord
@@ -172,11 +194,16 @@ export async function getFeaturedEducators(): Promise<PublicUserProfile[]> {
   const snap = await adminDb
     .collection('usersPublic')
     .where('role', '==', 'educator')
-    .orderBy('createdAt', 'desc')
-    .limit(8)
     .get()
 
-  return snap.docs.map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
+  return snap.docs
+    .sort((left, right) => {
+      const leftCreatedAt = asSortTimestamp((left.data() as FirestoreRecord).createdAt)
+      const rightCreatedAt = asSortTimestamp((right.data() as FirestoreRecord).createdAt)
+      return rightCreatedAt - leftCreatedAt
+    })
+    .slice(0, 8)
+    .map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
 }
 
 export async function getEducatorProfile(uid: string): Promise<PublicUserProfile | null> {
