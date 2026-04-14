@@ -140,8 +140,7 @@ export default function EducatorCard({ educator, locale }: Props) {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-accent/40 hover:text-accent"
-                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                 >
                   {SOCIAL_LABELS[platform] ?? platform.slice(0, 3).toUpperCase()}
                 </a>
