@@ -125,7 +125,7 @@ export default function Nav() {
 
             <Link
               href={`/${locale}/app`}
-              className="hidden h-10 items-center justify-center rounded-full bg-accent px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#081019] transition-opacity hover:opacity-92 md:inline-flex"
+              className="hidden h-10 items-center justify-center rounded-full bg-accent px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-black transition-opacity hover:opacity-92 md:inline-flex"
             >
               {t('downloadApp')}
             </Link>
@@ -203,7 +203,7 @@ export default function Nav() {
 
               <Link
                 href={`/${locale}/app`}
-                className="inline-flex h-10 w-full items-center justify-center rounded-full bg-accent px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#081019] transition-opacity hover:opacity-92"
+                className="inline-flex h-10 w-full items-center justify-center rounded-full bg-accent px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-black transition-opacity hover:opacity-92"
               >
                 {t('downloadApp')}
               </Link>

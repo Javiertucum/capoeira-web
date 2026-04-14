@@ -1,12 +1,9 @@
 import { Manrope, Space_Grotesk } from 'next/font/google'
 import { headers } from 'next/headers'
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import './globals.css'
 import { routing } from '@/i18n/routing'
 import { SITE_NAME, SITE_URL, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
-
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID
 
 const bodyFont = Manrope({
   subsets: ['latin'],
@@ -99,14 +96,6 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
         />
-        {ADSENSE_ID && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
-            crossOrigin="anonymous"
-            strategy="lazyOnload"
-          />
-        )}
       </body>
     </html>
   )
