@@ -437,11 +437,30 @@ export default function MapClientShell({
                   )
                 })
               ) : (
-                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted/80 px-5 py-8 text-center">
+                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted/80 px-5 py-10 text-center">
+                  <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl border border-accent/20 bg-accent/5 text-accent">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="11" cy="11" r="7" />
+                      <path d="m20 20-3.5-3.5" />
+                      <path d="M15 7l-8 8M7 7l8 8" />
+                    </svg>
+                  </div>
                   <h3 className="text-lg font-semibold tracking-[0.01em] text-text">
-                    {copy.emptyTitle}
+                    {t('emptyTitle')}
                   </h3>
-                  <p className="mt-3 text-sm leading-7 text-text-secondary">{copy.emptyBody}</p>
+                  <p className="mt-3 text-sm leading-7 text-text-secondary">
+                    {t('emptyBody')}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setQuery('')
+                      handleFilterChange(filter)
+                    }}
+                    className="mt-6 inline-flex h-10 items-center justify-center rounded-full border border-border bg-surface px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-accent/30 hover:text-accent"
+                  >
+                    {t('clearSearch')}
+                  </button>
                 </div>
               )}
             </div>

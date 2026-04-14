@@ -295,7 +295,7 @@ export default async function GroupPage({ params }: Props) {
             <div className="mt-6 flex flex-col gap-4">
               {nucleos.length > 0 ? (
                 nucleos.map((nucleo) => (
-                  <NucleoListItem key={nucleo.id} nucleo={nucleo} isActive={false} />
+                  <NucleoListItem key={nucleo.id} nucleo={nucleo} isActive={false} showGroupLink={false} />
                 ))
               ) : (
                 <div className="rounded-[22px] border border-dashed border-border bg-surface-muted/70 px-5 py-8 text-center text-sm leading-7 text-text-muted">

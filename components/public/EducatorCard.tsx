@@ -71,8 +71,13 @@ export default function EducatorCard({ educator, locale }: Props) {
     .slice(0, 3)
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-colors duration-200 hover:border-accent/24">
-      <Link href={`/${locale}/educator/${educator.uid}`} className="flex h-full flex-col">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-colors duration-200 hover:border-accent/24">
+      <Link
+        href={`/${locale}/educator/${educator.uid}`}
+        className="absolute inset-0 z-0"
+        aria-label={displayName}
+      />
+      <div className="flex h-full flex-col pointer-events-none">
         <div className="border-b border-border px-5 pb-5 pt-6">
           <div className="flex items-start gap-4">
             <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-[22px] border border-accent/20 bg-[rgba(121,207,114,0.14)]">
@@ -116,7 +121,7 @@ export default function EducatorCard({ educator, locale }: Props) {
             {educator.bio?.trim() || copy.empty}
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="relative z-10 mt-5 flex flex-wrap gap-2 pointer-events-auto">
             {typeof educator.nucleoIds?.length === 'number' && educator.nucleoIds.length > 0 ? (
               <Badge>{`${educator.nucleoIds.length} ${copy.locations}`}</Badge>
             ) : null}
@@ -130,12 +135,16 @@ export default function EducatorCard({ educator, locale }: Props) {
               if (!href) return null
 
               return (
-                <span
+                <a
                   key={platform}
-                  className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-accent/40 hover:text-accent"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {SOCIAL_LABELS[platform] ?? platform.slice(0, 3).toUpperCase()}
-                </span>
+                </a>
               )
             })}
           </div>
@@ -161,7 +170,7 @@ export default function EducatorCard({ educator, locale }: Props) {
             </span>
           </div>
         </div>
-      </Link>
+      </div>
     </article>
   )
 }

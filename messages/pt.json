@@ -4,6 +4,7 @@
     "groups": "Grupos",
     "educators": "Educadores",
     "events": "Eventos",
+    "comingSoon": "Em breve",
     "downloadApp": "Baixar App"
   },
   "hero": {
@@ -43,7 +44,10 @@
     "filterGroups": "Grupos",
     "filterEducators": "Educadores",
     "searchPlaceholder": "Cidade, país ou região...",
-    "seeContact": "Ver contato ->"
+    "seeContact": "Ver contato ->",
+    "emptyTitle": "Nenhum resultado para esta busca",
+    "emptyBody": "Tente outra cidade, grupo ou país para ampliar a exploração.",
+    "clearSearch": "Limpar busca"
   },
   "educators": {
     "featured": "Educadores em destaque",

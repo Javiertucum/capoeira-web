@@ -9,6 +9,7 @@ type Props = Readonly<{
   nucleo: MapNucleo
   isActive: boolean
   onSelect?: (id: string) => void
+  showGroupLink?: boolean
 }>
 
 type LocaleCopy = {
@@ -95,7 +96,7 @@ function getScheduleSummary(locale: string, nucleo: MapNucleo, copy: LocaleCopy)
   return `${copy.schedulePrefix}: ${preview}${overflow}`
 }
 
-export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
+export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLink = true }: Props) {
   const locale = useLocale()
   const copy = getCopy(locale)
   const hasCoordinates =
@@ -190,7 +191,7 @@ export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
         </div>
       </div>
 
-      {nucleo.groupId ? (
+      {nucleo.groupId && showGroupLink ? (
         <div className="flex items-center justify-between border-t border-border/70 px-5 py-4">
           <Link
             href={`/${locale}/nucleo/${nucleo.groupId}/${nucleo.id}`}

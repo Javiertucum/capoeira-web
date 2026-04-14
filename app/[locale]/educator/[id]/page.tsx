@@ -131,8 +131,8 @@ export default async function EducatorProfilePage({ params }: Props) {
 
       <main className="relative mx-auto max-w-[900px] px-5 py-10 sm:px-8 lg:px-12">
         <Link
-          href={`/${locale}/educators`}
-          className="mb-8 inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-3 py-2 text-sm text-text-muted transition-all hover:border-border/80 hover:text-text"
+          href={`/${locale}/map`}
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/20 hover:text-text"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -143,19 +143,24 @@ export default async function EducatorProfilePage({ params }: Props) {
         <div className="flex flex-col gap-8 md:flex-row md:items-start lg:gap-12">
           {/* Left Column */}
           <div className="flex flex-col items-center text-center md:sticky md:top-24 md:w-1/3">
-            <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-border bg-card shadow-xl xl:h-48 xl:w-48">
-              {educator.avatarUrl ? (
-                <Image
-                  src={educator.avatarUrl}
-                  alt={educator.nickname || educator.name || 'Educator'}
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-surface text-4xl font-bold text-text-muted">
-                  {educator.name?.[0] ?? '?'}
-                </div>
-              )}
+            <div className="flex flex-col items-center">
+              <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
+                {t('role')}
+              </p>
+              <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-border bg-card shadow-xl xl:h-48 xl:w-48">
+                {educator.avatarUrl ? (
+                  <Image
+                    src={educator.avatarUrl}
+                    alt={educator.nickname || educator.name || 'Educator'}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-surface text-4xl font-bold text-text-muted">
+                    {educator.name?.[0] ?? '?'}
+                  </div>
+                )}
+              </div>
             </div>
 
             <h1 className="mt-6 text-2xl font-bold text-text sm:text-3xl">
@@ -246,9 +251,9 @@ export default async function EducatorProfilePage({ params }: Props) {
                     <a
                       href={`https://wa.me/${sl.whatsapp.replace(/\D/g, '')}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-[#25D366]/40 hover:text-text"
+                      className="flex items-center gap-3 rounded-xl border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#25D366]/40 hover:bg-[#25D366]/5 hover:text-text"
                     >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
                       WhatsApp
                     </a>
                   )}
@@ -256,9 +261,9 @@ export default async function EducatorProfilePage({ params }: Props) {
                     <a
                       href={`https://instagram.com/${sl.instagram.replace('@', '')}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-[#E4405F]/40 hover:text-text"
+                      className="flex items-center gap-3 rounded-xl border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#E4405F]/40 hover:bg-[#E4405F]/5 hover:text-text"
                     >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E4405F" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" /></svg>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E4405F" strokeWidth="2.2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" /></svg>
                       Instagram
                     </a>
                   )}

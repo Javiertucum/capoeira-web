@@ -55,6 +55,7 @@ export default function Nav() {
     { href: `/${locale}/map`, label: t('map'), key: 'nucleos' },
     { href: `/${locale}/map?filter=groups`, label: t('groups'), key: 'groups' },
     { href: `/${locale}/educators`, label: t('educators'), key: 'educators' },
+    { href: '#', label: t('events'), key: 'events', disabled: true },
   ]
 
   return (
@@ -93,17 +94,24 @@ export default function Nav() {
                     : isMapRoute && currentFilter === link.key
 
               return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors ${
-                    isActive
-                      ? 'bg-card text-text'
-                      : 'text-text-muted hover:text-text'
-                  }`}
-                >
-                  {link.label}
-                </Link>
+                <div key={link.href} className="relative">
+                  <Link
+                    href={link.href}
+                    onClick={(e) => link.disabled && e.preventDefault()}
+                    className={`rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+                      isActive
+                        ? 'bg-card text-text'
+                        : link.disabled ? 'text-text-muted/50 cursor-not-allowed' : 'text-text-muted hover:text-text'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                  {link.disabled && (
+                    <span className="absolute -right-2 -top-1 rounded-full bg-accent/10 px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-wider text-accent border border-accent/20">
+                      {t('comingSoon')}
+                    </span>
+                  )}
+                </div>
               )
             })}
           </div>
@@ -176,13 +184,22 @@ export default function Nav() {
             </p>
             <div className="mt-4 flex flex-col gap-2">
               {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold text-text-secondary transition-colors hover:text-text"
-                >
-                  {link.label}
-                </Link>
+                <div key={link.href} className="relative">
+                  <Link
+                    href={link.href}
+                    onClick={(e) => link.disabled && e.preventDefault()}
+                    className={`flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold transition-colors ${
+                      link.disabled ? 'text-text-muted/50 cursor-not-allowed' : 'text-text-secondary hover:text-text'
+                    }`}
+                  >
+                    {link.label}
+                    {link.disabled && (
+                      <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent border border-accent/20">
+                        {t('comingSoon')}
+                      </span>
+                    )}
+                  </Link>
+                </div>
               ))}
             </div>
 
