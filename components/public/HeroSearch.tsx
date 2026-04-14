@@ -63,7 +63,7 @@ export default function HeroSearch() {
       className="w-full max-w-[760px] rounded-[30px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.96))] p-3 shadow-[0_28px_80px_var(--shadow)] backdrop-blur-xl"
     >
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_170px]">
-        <label className="flex min-w-0 items-center gap-4 rounded-[24px] border border-border bg-surface/80 px-4 py-4 transition-colors focus-within:border-accent/35">
+        <label className="flex min-w-0 items-center gap-4 rounded-[24px] border border-border bg-surface/80 px-4 py-4 transition-all focus-within:border-accent/35 focus-within:ring-2 focus-within:ring-accent/70 focus-within:ring-offset-2 focus-within:ring-offset-card">
           <span
             aria-hidden="true"
             className="grid h-11 w-11 shrink-0 place-items-center rounded-[16px] border border-accent/20 bg-[rgba(121,207,114,0.12)] text-accent"
@@ -98,7 +98,7 @@ export default function HeroSearch() {
 
         <button
           type="submit"
-          className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5 hover:opacity-95 focus-visible:outline-none"
+          className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5 hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         >
           {t('searchButton')}
         </button>
@@ -109,7 +109,7 @@ export default function HeroSearch() {
           <Link
             key={link.href}
             href={`/${locale}${link.href}`}
-            className="inline-flex items-center rounded-full border border-border bg-card/85 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:border-accent/25 hover:text-text"
+            className="inline-flex items-center rounded-full border border-border bg-card/85 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:border-accent/25 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             {link.label}
           </Link>

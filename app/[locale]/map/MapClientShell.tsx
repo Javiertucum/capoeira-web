@@ -259,7 +259,7 @@ export default function MapClientShell({
 
               <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
                 <div className="flex flex-col gap-3 lg:flex-row">
-                  <label className="flex min-w-0 flex-1 items-center gap-4 rounded-[24px] border border-border bg-surface/80 px-4 py-4 focus-within:border-accent/35">
+                  <label className="flex min-w-0 flex-1 items-center gap-4 rounded-[24px] border border-border bg-surface/80 px-4 py-4 transition-all focus-within:border-accent/35 focus-within:ring-2 focus-within:ring-accent/70 focus-within:ring-offset-2 focus-within:ring-offset-card">
                     <span
                       aria-hidden="true"
                       className="grid h-11 w-11 shrink-0 place-items-center rounded-[16px] border border-accent/20 bg-[rgba(121,207,114,0.12)] text-accent"
@@ -294,7 +294,7 @@ export default function MapClientShell({
 
                   <button
                     type="submit"
-                    className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5 focus-visible:outline-none"
+                    className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   >
                     {isPending ? `${copy.searchButton}...` : copy.searchButton}
                   </button>
@@ -314,7 +314,7 @@ export default function MapClientShell({
                         key={item}
                         type="button"
                         onClick={() => handleFilterChange(item)}
-                        className={`cursor-pointer rounded-full border px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors focus-visible:outline-none ${
+                        className={`cursor-pointer rounded-full border px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                           isActive
                             ? 'border-accent/30 bg-[rgba(121,207,114,0.14)] text-accent'
                             : 'border-border bg-card/85 text-text-secondary hover:border-accent/18 hover:text-text'
@@ -370,7 +370,7 @@ export default function MapClientShell({
                   key={view}
                   type="button"
                   onClick={() => setMobileView(view)}
-                  className={`flex-1 rounded-full px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors ${
+                  className={`flex-1 rounded-full px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                     isActive
                       ? 'bg-[rgba(121,207,114,0.14)] text-accent'
                       : 'text-text-secondary'
@@ -457,7 +457,7 @@ export default function MapClientShell({
                       setQuery('')
                       handleFilterChange(filter)
                     }}
-                    className="mt-6 inline-flex h-10 items-center justify-center rounded-full border border-border bg-surface px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-accent/30 hover:text-accent"
+                    className="mt-6 inline-flex h-10 items-center justify-center rounded-full border border-border bg-surface px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-accent/30 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   >
                     {t('clearSearch')}
                   </button>

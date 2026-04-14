@@ -247,13 +247,13 @@ export default async function LandingPage({ params }: Props) {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href={`/${locale}/map`}
-                  className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-card/80 px-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:border-accent/25 hover:text-text"
+                  className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-[12px] font-semibold uppercase tracking-[0.18em] text-black transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                 >
                   {copy.heroPrimary}
                 </Link>
                 <Link
                   href={`/${locale}/app`}
-                  className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-card/80 px-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:border-accent/25 hover:text-text"
+                  className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-card/60 px-6 text-[12px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-all hover:border-accent/25 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                 >
                   {copy.heroSecondary}
                 </Link>
@@ -342,7 +342,7 @@ export default async function LandingPage({ params }: Props) {
       </section>
 
       <section className="mx-auto max-w-[1280px] px-5 py-6 sm:px-8 lg:px-12">
-        <SectionLabel>{tCategories('title')}</SectionLabel>
+        <SectionLabel>{tHero('eyebrow')}</SectionLabel>
         <div className="mb-8 max-w-[720px]">
           <h2 className="text-[clamp(30px,5vw,46px)] font-semibold leading-[1.02] tracking-[-0.05em] text-text">
             {tCategories('title')}

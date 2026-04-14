@@ -68,7 +68,10 @@ export default function Nav() {
         }`}
       >
         <div className="mx-auto flex h-[72px] w-full max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
-          <Link href={`/${locale}`} className="flex min-w-0 items-center gap-3">
+          <Link
+            href={`/${locale}`}
+            className="flex min-w-0 items-center gap-3 rounded-[22px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          >
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-accent/20 bg-accent/10 text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
               AC
             </span>
@@ -83,7 +86,7 @@ export default function Nav() {
             </span>
           </Link>
 
-          <div className="hidden items-center gap-1 xl:flex">
+          <div className="hidden items-center gap-1 lg:flex">
             {links.map((link) => {
               const isMapRoute = pathname === `/${locale}/map`
               const isActive =
@@ -98,7 +101,7 @@ export default function Nav() {
                   <Link
                     href={link.href}
                     onClick={(e) => link.disabled && e.preventDefault()}
-                    className={`rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+                    className={`rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                       isActive
                         ? 'bg-card text-text'
                         : link.disabled ? 'text-text-muted/50 cursor-not-allowed' : 'text-text-muted hover:text-text'
@@ -123,7 +126,7 @@ export default function Nav() {
                   key={item}
                   type="button"
                   onClick={() => switchLocale(item)}
-                  className={`rounded-full px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors ${
+                  className={`rounded-full px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                     item === locale ? 'bg-surface text-text' : 'text-text-muted hover:text-text'
                   }`}
                   aria-pressed={item === locale}
@@ -135,9 +138,9 @@ export default function Nav() {
 
             <Link
               href={`/${locale}/app`}
-              className="hidden h-10 items-center justify-center rounded-full bg-accent px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-black transition-opacity hover:opacity-92 md:inline-flex"
+              className="hidden h-10 items-center justify-center rounded-full bg-accent px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-black transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg md:inline-flex"
             >
-              {t('downloadApp')}
+              {t('appPreview')}
             </Link>
 
             <button
@@ -145,7 +148,7 @@ export default function Nav() {
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((prev) => !prev)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card text-text transition-colors hover:text-accent xl:hidden"
+              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card text-text transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg lg:hidden"
             >
               <span className="relative block h-4 w-5">
                 <span
@@ -188,7 +191,7 @@ export default function Nav() {
                   <Link
                     href={link.href}
                     onClick={(e) => link.disabled && e.preventDefault()}
-                    className={`flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold transition-colors ${
+                    className={`flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                       link.disabled ? 'text-text-muted/50 cursor-not-allowed' : 'text-text-secondary hover:text-text'
                     }`}
                   >
@@ -210,7 +213,7 @@ export default function Nav() {
                     key={item}
                     type="button"
                     onClick={() => switchLocale(item)}
-                    className={`flex-1 rounded-full px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors ${
+                    className={`flex-1 rounded-full px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                       item === locale ? 'bg-surface text-text' : 'text-text-muted hover:text-text'
                     }`}
                     aria-pressed={item === locale}
@@ -222,7 +225,7 @@ export default function Nav() {
 
               <Link
                 href={`/${locale}/app`}
-                className="inline-flex h-10 w-full items-center justify-center rounded-full bg-accent px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-black transition-opacity hover:opacity-92"
+                className="inline-flex h-10 w-full items-center justify-center rounded-full bg-accent px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-black transition-opacity hover:opacity-92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
               >
                 {t('downloadApp')}
               </Link>

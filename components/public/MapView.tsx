@@ -102,7 +102,7 @@ function toMarkers(nucleos: MapNucleo[]): MapMarker[] {
 }
 
 function createMarkerIcon(isActive: boolean) {
-  const fill = isActive ? '#E53935' : '#EF5350'
+  const fill = isActive ? '#5CAD56' : '#79CF72'
   const size = isActive ? 40 : 32
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 32">
