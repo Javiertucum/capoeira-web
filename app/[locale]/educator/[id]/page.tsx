@@ -85,7 +85,7 @@ export default async function EducatorProfilePage({ params }: Props) {
   ])
 
   // Sistema de graduación del grupo
-  const graduationSystem = group?.graduationSystemName || t('unspecified')
+  const graduationSystem = group?.graduationSystemName
 
   const displayName = getDisplayName(educator.name, educator.surname, educator.nickname)
   const fullName = [educator.name, educator.surname].filter(Boolean).join(' ').trim()
@@ -165,8 +165,8 @@ export default async function EducatorProfilePage({ params }: Props) {
               <div className="mt-6 flex flex-wrap gap-2">
                 <Badge variant="accent">{copy.role}</Badge>
                 {educator.country ? <Badge>{educator.country}</Badge> : null}
-                {/* Mostrar cuerda y sistema de graduación */}
-                {graduationName ? (
+                {/* Mostrar cuerda y sistema de graduación solo si ambos existen y son reales */}
+                {graduationSystem && graduationName ? (
                   <Badge variant="accent">{`${graduationSystem}: ${graduationName}`}</Badge>
                 ) : null}
                 {nucleos.length > 0 ? <Badge>{`${nucleos.length} ${t('nucleos')}`}</Badge> : null}
@@ -246,9 +246,11 @@ export default async function EducatorProfilePage({ params }: Props) {
               <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                 {t('graduation')}
               </p>
-              <p className="mt-4 text-sm leading-7 text-text-secondary">
-                {graduationName ? `${graduationSystem}: ${graduationName}` : t('unspecified')}
-              </p>
+              {graduationSystem && graduationName ? (
+                <p className="mt-4 text-sm leading-7 text-text-secondary">
+                  {`${graduationSystem}: ${graduationName}`}
+                </p>
+              ) : null}
             </section>
 
             <section className="rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-5">

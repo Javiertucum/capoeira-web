@@ -74,7 +74,7 @@ export default async function GroupPage({ params }: Props) {
     : null
 
   // Sistema de graduación
-  const graduationSystem = group.graduationSystemName || t('unspecified')
+  const graduationSystem = group.graduationSystemName
 
   const stats = [
     { label: t('members'), value: group.memberCount ?? 0 },
@@ -140,8 +140,8 @@ export default async function GroupPage({ params }: Props) {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
-                {group.graduationSystemName ? (
-                  <Badge variant="accent">{t('graduationSystem') + ': ' + group.graduationSystemName}</Badge>
+                {graduationSystem ? (
+                  <Badge variant="accent">{t('graduationSystem') + ': ' + graduationSystem}</Badge>
                 ) : null}
                 {group.memberCount ? <Badge>{`${group.memberCount} ${t('members')}`}</Badge> : null}
                 {group.representedCountries?.length ? (
