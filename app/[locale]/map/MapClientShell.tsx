@@ -20,10 +20,14 @@ type Props = Readonly<{
 }>
 
 type FilterValue = 'nucleos' | 'groups' | 'educators'
+type MobileView = 'list' | 'map'
 
 type LocaleCopy = {
-  searchButton: string
+  eyebrow: string
   intro: string
+  helper: string
+  searchLabel: string
+  searchButton: string
   emptyTitle: string
   emptyBody: string
   unavailableTitle: string
@@ -32,46 +36,75 @@ type LocaleCopy = {
   educatorsHint: string
   listTitle: string
   mapTitle: string
+  listTab: string
+  mapTab: string
+  focusIdle: string
+  focusPrefix: string
+  summaryLabel: string
 }
 
 const FILTERS: FilterValue[] = ['nucleos', 'groups', 'educators']
 
 const COPY: Record<string, LocaleCopy> = {
   es: {
+    eyebrow: 'Directorio publico',
+    intro: 'Busca, cambia de foco y usa la vista que mejor funcione para ti en cada pantalla.',
+    helper: 'En movil la lista va primero. El mapa aparece cuando lo necesitas.',
+    searchLabel: 'Busca en el directorio',
     searchButton: 'Buscar',
-    intro: 'Explora núcleos activos, cambia el foco del directorio y centra el mapa en segundos.',
-    emptyTitle: 'Sin resultados para tu búsqueda',
-    emptyBody: 'Prueba otra ciudad, grupo o país para ampliar la exploración.',
+    emptyTitle: 'Sin resultados para esta busqueda',
+    emptyBody: 'Prueba otra ciudad, grupo o pais para ampliar la exploracion.',
     unavailableTitle: 'Directorio no disponible por ahora',
-    unavailableBody: 'Todavía no pudimos leer Firestore con las credenciales actuales, así que mostramos la interfaz lista para cuando el acceso quede conectado.',
-    groupsHint: 'Explora las comunidades y organizaciones de capoeira registradas.',
-    educatorsHint: 'Maestros, profesores e instructores de todo el mundo.',
+    unavailableBody: 'Todavia no pudimos leer Firestore con las credenciales actuales, asi que dejamos la interfaz lista para cuando el acceso quede conectado.',
+    groupsHint: 'Cada grupo abre una vista de comunidad y el mapa muestra sus nucleos relacionados.',
+    educatorsHint: 'Cada educador abre sus espacios de entrenamiento y los vincula con el mapa.',
     listTitle: 'Resultados',
     mapTitle: 'Mapa activo',
+    listTab: 'Lista',
+    mapTab: 'Mapa',
+    focusIdle: 'Selecciona un grupo o educador para centrar sus nucleos en el mapa.',
+    focusPrefix: 'Mapa vinculado a',
+    summaryLabel: 'visibles ahora',
   },
   pt: {
+    eyebrow: 'Diretorio publico',
+    intro: 'Busque, mude o foco e use a vista que fizer mais sentido para voce em cada tela.',
+    helper: 'No movel a lista vem primeiro. O mapa aparece quando voce precisa.',
+    searchLabel: 'Busque no diretorio',
     searchButton: 'Buscar',
-    intro: 'Explore núcleos ativos, mude o foco do diretório e centralize o mapa em segundos.',
-    emptyTitle: 'Nenhum resultado para sua busca',
-    emptyBody: 'Tente outra cidade, grupo ou país para ampliar a exploração.',
-    unavailableTitle: 'Diretório indisponível no momento',
-    unavailableBody: 'Ainda não foi possível ler o Firestore com as credenciais atuais, então mostramos a interface pronta para quando o acesso estiver conectado.',
-    groupsHint: 'Explore as comunidades e organizações de capoeira registradas.',
-    educatorsHint: 'Mestres, professores e instrutores de todo o mundo.',
+    emptyTitle: 'Nenhum resultado para esta busca',
+    emptyBody: 'Tente outra cidade, grupo ou pais para ampliar a exploracao.',
+    unavailableTitle: 'Diretorio indisponivel no momento',
+    unavailableBody: 'Ainda nao foi possivel ler o Firestore com as credenciais atuais, entao deixamos a interface pronta para quando o acesso estiver conectado.',
+    groupsHint: 'Cada grupo abre uma vista de comunidade e o mapa mostra seus nucleos relacionados.',
+    educatorsHint: 'Cada educador abre seus espacos de treino e os vincula ao mapa.',
     listTitle: 'Resultados',
     mapTitle: 'Mapa ativo',
+    listTab: 'Lista',
+    mapTab: 'Mapa',
+    focusIdle: 'Selecione um grupo ou educador para centralizar seus nucleos no mapa.',
+    focusPrefix: 'Mapa vinculado a',
+    summaryLabel: 'visiveis agora',
   },
   en: {
+    eyebrow: 'Public directory',
+    intro: 'Search, change the focus, and use the view that works best for each screen size.',
+    helper: 'On mobile, the list comes first. The map is one tap away when you need it.',
+    searchLabel: 'Search the directory',
     searchButton: 'Search',
-    intro: 'Explore active nucleos, shift the directory focus, and re-center the map in seconds.',
     emptyTitle: 'No results for this search',
     emptyBody: 'Try another city, group, or country to widen the search.',
     unavailableTitle: 'Directory temporarily unavailable',
     unavailableBody: 'Firestore could not be reached with the current credentials yet, so the interface is ready and waiting for live data.',
-    groupsHint: 'Explore registered capoeira communities and organizations.',
-    educatorsHint: 'Masters, professors, and instructors from around the world.',
+    groupsHint: 'Each group opens a community view and the map shows its related nucleos.',
+    educatorsHint: 'Each educator opens their training locations and links them to the map.',
     listTitle: 'Results',
-    mapTitle: 'Active map',
+    mapTitle: 'Live map',
+    listTab: 'List',
+    mapTab: 'Map',
+    focusIdle: 'Select a group or educator to center their related nucleos on the map.',
+    focusPrefix: 'Map linked to',
+    summaryLabel: 'visible now',
   },
 }
 
@@ -85,18 +118,37 @@ function sanitizeFilter(value: string): FilterValue {
 
 function createSearchHaystack(item: MapNucleo | PublicUserProfile | Group) {
   if ('nickname' in item) {
-    // Educator: PublicUserProfile
-    return [item.name, item.surname, item.nickname, item.country, item.bio].filter(Boolean).join(' ').toLowerCase()
-  }
-  
-  if ('representedCountries' in item) {
-    // Group
-    return [item.name, ...(item.representedCountries ?? []), ...(item.representedCities ?? [])].filter(Boolean).join(' ').toLowerCase()
+    return [item.name, item.surname, item.nickname, item.country, item.bio]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
   }
 
-  // Nucleo: MapNucleo
-  const n = item as MapNucleo
-  return [n.name, n.groupName, n.city, n.country, n.address].filter(Boolean).join(' ').toLowerCase()
+  if ('representedCountries' in item) {
+    return [item.name, ...(item.representedCountries ?? []), ...(item.representedCities ?? [])]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
+  }
+
+  const nucleo = item as MapNucleo
+
+  return [nucleo.name, nucleo.groupName, nucleo.city, nucleo.country, nucleo.address]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+}
+
+function getEntityId(item: MapNucleo | PublicUserProfile | Group) {
+  return 'uid' in item ? item.uid : item.id
+}
+
+function getEntityName(item: MapNucleo | PublicUserProfile | Group) {
+  if ('nickname' in item) {
+    return item.nickname?.trim() || [item.name, item.surname].filter(Boolean).join(' ').trim() || item.uid
+  }
+
+  return item.name
 }
 
 export default function MapClientShell({
@@ -116,37 +168,42 @@ export default function MapClientShell({
   const [isPending, startTransition] = useTransition()
   const [query, setQuery] = useState(initialQuery)
   const [filter, setFilter] = useState<FilterValue>(sanitizeFilter(initialFilter))
+  const [mobileView, setMobileView] = useState<MobileView>('list')
   const deferredQuery = useDeferredValue(query)
 
   const searchResults = useMemo(() => {
     const normalizedQuery = deferredQuery.trim().toLowerCase()
-    
+
     if (filter === 'educators') {
       const results = normalizedQuery
-        ? initialEducators.filter(e => createSearchHaystack(e).includes(normalizedQuery))
+        ? initialEducators.filter((educator) => createSearchHaystack(educator).includes(normalizedQuery))
         : initialEducators
-      return results.sort((a, b) => (a.nickname || a.name).localeCompare(b.nickname || b.name))
+
+      return results.sort((left, right) =>
+        (left.nickname || left.name).localeCompare(right.nickname || right.name)
+      )
     }
-    
+
     if (filter === 'groups') {
       const results = normalizedQuery
-        ? initialGroups.filter(g => createSearchHaystack(g).includes(normalizedQuery))
+        ? initialGroups.filter((group) => createSearchHaystack(group).includes(normalizedQuery))
         : initialGroups
-      return results.sort((a, b) => a.name.localeCompare(b.name))
+
+      return results.sort((left, right) => left.name.localeCompare(right.name))
     }
 
     const results = normalizedQuery
-      ? initialNucleos.filter((n) => createSearchHaystack(n).includes(normalizedQuery))
+      ? initialNucleos.filter((nucleo) => createSearchHaystack(nucleo).includes(normalizedQuery))
       : initialNucleos
-    return results.sort((a, b) => a.name.localeCompare(b.name))
+
+    return results.sort((left, right) => left.name.localeCompare(right.name))
   }, [deferredQuery, filter, initialEducators, initialGroups, initialNucleos])
 
   const [activeId, setActiveId] = useState<string | null>(null)
 
   useEffect(() => {
     if (searchResults.length > 0 && !activeId) {
-      const first = searchResults[0]
-      setActiveId('uid' in first ? first.uid : first.id)
+      setActiveId(getEntityId(searchResults[0]))
     }
   }, [searchResults, activeId])
 
@@ -180,70 +237,99 @@ export default function MapClientShell({
   function handleFilterChange(nextFilter: FilterValue) {
     setFilter(nextFilter)
     setActiveId(null)
+    setMobileView('list')
     syncUrl(query, nextFilter)
   }
 
-  // The map always shows nucleos. If we filtered by group or educator, 
-  // we might want to show only the nucleos related to that selected entity.
   const mapNucleos = useMemo(() => {
-    if (!activeId) return initialNucleos
-    
+    if (!activeId) return filter === 'nucleos' ? (searchResults as MapNucleo[]) : initialNucleos
+
     if (filter === 'educators') {
-      return initialNucleos.filter(n => n.responsibleEducatorId === activeId || n.coEducatorIds?.includes(activeId))
+      return initialNucleos.filter(
+        (nucleo) =>
+          nucleo.responsibleEducatorId === activeId || nucleo.coEducatorIds?.includes(activeId)
+      )
     }
-    
+
     if (filter === 'groups') {
-      return initialNucleos.filter(n => n.groupId === activeId)
+      return initialNucleos.filter((nucleo) => nucleo.groupId === activeId)
     }
-    
+
     return searchResults as MapNucleo[]
   }, [activeId, filter, initialNucleos, searchResults])
 
   const hint = copy[`${filter}Hint` as keyof LocaleCopy] || null
+  const activeEntity = searchResults.find((item) => getEntityId(item) === activeId) ?? null
+  const filterCounts = {
+    nucleos: initialNucleos.length,
+    groups: initialGroups.length,
+    educators: initialEducators.length,
+  }
 
   return (
     <div className="px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pb-20">
       <div className="mx-auto max-w-[1280px]">
-        <section className="relative overflow-hidden rounded-[28px] border border-border bg-card px-6 py-7 shadow-[0_24px_80px_var(--shadow)] sm:px-8 sm:py-8">
+        <section className="relative overflow-hidden rounded-[32px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] px-6 py-7 shadow-[0_30px_90px_var(--shadow)] sm:px-8 sm:py-8">
           <div
             aria-hidden="true"
-            className="absolute right-[-70px] top-[-70px] h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(102,187,106,0.16)_0%,rgba(102,187,106,0)_72%)]"
+            className="absolute right-[-90px] top-[-90px] h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(121,207,114,0.18)_0%,rgba(121,207,114,0)_72%)]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute left-[-70px] bottom-[-80px] h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(216,173,99,0.16)_0%,rgba(216,173,99,0)_72%)]"
           />
 
-          <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-            <div className="max-w-[640px]">
-              <p className="text-[11px] uppercase tracking-[0.3em] text-accent">
-                Agenda Capoeiragem
+          <div className="relative grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
+                {copy.eyebrow}
               </p>
-              <h1 className="mt-3 text-[clamp(32px,5vw,52px)] font-semibold leading-[0.98] tracking-[-0.05em] text-text">
+              <h1 className="mt-4 text-[clamp(34px,5vw,58px)] font-semibold leading-[0.96] tracking-[-0.06em] text-text">
                 {t('title')}
               </h1>
               <p className="mt-4 max-w-[58ch] text-sm leading-7 text-text-secondary">
                 {copy.intro}
               </p>
-            </div>
+              <p className="mt-2 text-sm leading-7 text-text-muted">{copy.helper}</p>
 
-            <div className="min-w-0 xl:max-w-[520px] xl:flex-1">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
                 <div className="flex flex-col gap-3 lg:flex-row">
-                  <label className="flex min-w-0 flex-1 items-center gap-3 rounded-[16px] border border-border bg-surface px-4 py-3 focus-within:border-accent/40">
+                  <label className="flex min-w-0 flex-1 items-center gap-4 rounded-[24px] border border-border bg-surface/80 px-4 py-4 focus-within:border-accent/35">
                     <span
                       aria-hidden="true"
-                      className="h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_0_6px_rgba(102,187,106,0.12)]"
-                    />
-                    <input
-                      type="search"
-                      value={query}
-                      onChange={(event) => setQuery(event.target.value)}
-                      placeholder={t('searchPlaceholder')}
-                      aria-label={t('searchPlaceholder')}
-                      className="min-w-0 flex-1 bg-transparent text-sm text-text outline-none placeholder:text-text-muted"
-                    />
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-[16px] border border-accent/20 bg-[rgba(121,207,114,0.12)] text-accent"
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-3.5-3.5" />
+                      </svg>
+                    </span>
+
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+                        {copy.searchLabel}
+                      </span>
+                      <input
+                        type="search"
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                        placeholder={t('searchPlaceholder')}
+                        aria-label={t('searchPlaceholder')}
+                        className="mt-1 block w-full min-w-0 bg-transparent text-base text-text outline-none placeholder:text-text-muted"
+                      />
+                    </span>
                   </label>
 
                   <button
                     type="submit"
-                    className="inline-flex h-[52px] cursor-pointer items-center justify-center rounded-[16px] bg-accent px-6 text-sm font-semibold tracking-[0.08em] text-[#08110C] transition-opacity hover:opacity-90 focus-visible:outline-none"
+                    className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#081019] transition-transform hover:-translate-y-0.5 focus-visible:outline-none"
                   >
                     {isPending ? `${copy.searchButton}...` : copy.searchButton}
                   </button>
@@ -266,34 +352,84 @@ export default function MapClientShell({
                         onClick={() => handleFilterChange(item)}
                         className={`cursor-pointer rounded-full border px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors focus-visible:outline-none ${
                           isActive
-                            ? 'border-accent/35 bg-[rgba(102,187,106,0.14)] text-accent'
-                            : 'border-border bg-surface text-text-muted hover:border-border hover:text-text'
+                            ? 'border-accent/30 bg-[rgba(121,207,114,0.14)] text-accent'
+                            : 'border-border bg-card/85 text-text-secondary hover:border-accent/18 hover:text-text'
                         }`}
                       >
-                        {labels[item]}
+                        {`${labels[item]} (${filterCounts[item]})`}
                       </button>
                     )
                   })}
                 </div>
               </form>
             </div>
+
+            <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
+              {FILTERS.map((item) => {
+                const labels = {
+                  nucleos: t('filterNucleos'),
+                  groups: t('filterGroups'),
+                  educators: t('filterEducators'),
+                }
+
+                return (
+                  <div
+                    key={item}
+                    className="rounded-[24px] border border-border bg-card/80 px-4 py-4"
+                  >
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+                      {labels[item]}
+                    </p>
+                    <p className="mt-3 text-[28px] font-semibold leading-none tracking-[-0.04em] text-text">
+                      {filterCounts[item].toLocaleString()}
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-text-secondary">{copy.summaryLabel}</p>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </section>
 
         {hint ? (
-          <div className="mt-5 rounded-[18px] border border-accent/20 bg-[rgba(102,187,106,0.08)] px-5 py-4 text-sm leading-7 text-text-secondary">
+          <div className="mt-5 rounded-[22px] border border-accent/20 bg-[rgba(121,207,114,0.08)] px-5 py-4 text-sm leading-7 text-text-secondary">
             {hint as string}
           </div>
         ) : null}
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)] xl:grid-cols-[420px_minmax(0,1fr)]">
-          <section className="order-2 rounded-[26px] border border-border bg-card p-4 shadow-[0_18px_60px_var(--shadow)] lg:order-1">
+        <div className="mt-5 lg:hidden">
+          <div className="flex rounded-full border border-border bg-card/80 p-1">
+            {(['list', 'map'] as MobileView[]).map((view) => {
+              const isActive = view === mobileView
+
+              return (
+                <button
+                  key={view}
+                  type="button"
+                  onClick={() => setMobileView(view)}
+                  className={`flex-1 rounded-full px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors ${
+                    isActive
+                      ? 'bg-[rgba(121,207,114,0.14)] text-accent'
+                      : 'text-text-secondary'
+                  }`}
+                >
+                  {view === 'list' ? copy.listTab : copy.mapTab}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[400px_minmax(0,1fr)] xl:grid-cols-[430px_minmax(0,1fr)]">
+          <section
+            className={`${mobileView === 'list' ? 'block' : 'hidden'} rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-4 shadow-[0_22px_60px_var(--shadow-soft)] lg:block`}
+          >
             <div className="flex items-end justify-between gap-4 border-b border-border px-2 pb-4">
               <div>
-                <p className="text-[11px] uppercase tracking-[0.26em] text-text-muted">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                   {copy.listTitle}
                 </p>
-                <h2 className="mt-2 text-xl font-semibold tracking-[0.01em] text-text">
+                <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.04em] text-text">
                   {t('results', { count: searchResults.length })}
                 </h2>
               </div>
@@ -308,37 +444,39 @@ export default function MapClientShell({
               </div>
             ) : null}
 
-            <div className="mt-4 flex max-h-[520px] flex-col gap-3 overflow-y-auto pr-1 lg:max-h-[calc(100svh-240px)]">
+            <div className="mt-4 flex max-h-[560px] flex-col gap-3 overflow-y-auto pr-1 lg:max-h-[calc(100svh-230px)]">
               {searchResults.length > 0 ? (
                 searchResults.map((item) => {
                   if (filter === 'educators') {
-                    const e = item as PublicUserProfile
+                    const educator = item as PublicUserProfile
                     return (
-                      <div key={e.uid} onClick={() => setActiveId(e.uid)} className="cursor-pointer">
-                        <EducatorCard educator={e} locale={locale} />
+                      <div key={educator.uid} onClick={() => setActiveId(educator.uid)} className="cursor-pointer">
+                        <EducatorCard educator={educator} locale={locale} />
                       </div>
                     )
                   }
+
                   if (filter === 'groups') {
-                    const g = item as Group
+                    const group = item as Group
                     return (
-                      <div key={g.id} onClick={() => setActiveId(g.id)} className="cursor-pointer">
-                        <GroupCard group={g} locale={locale} />
+                      <div key={group.id} onClick={() => setActiveId(group.id)} className="cursor-pointer">
+                        <GroupCard group={group} locale={locale} />
                       </div>
                     )
                   }
-                  const n = item as MapNucleo
+
+                  const nucleo = item as MapNucleo
                   return (
                     <NucleoListItem
-                      key={n.id}
-                      nucleo={n}
-                      isActive={n.id === activeId}
+                      key={nucleo.id}
+                      nucleo={nucleo}
+                      isActive={nucleo.id === activeId}
                       onSelect={setActiveId}
                     />
                   )
                 })
               ) : (
-                <div className="rounded-[20px] border border-dashed border-border bg-surface-muted/80 px-5 py-8 text-center">
+                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted/80 px-5 py-8 text-center">
                   <h3 className="text-lg font-semibold tracking-[0.01em] text-text">
                     {copy.emptyTitle}
                   </h3>
@@ -348,25 +486,29 @@ export default function MapClientShell({
             </div>
           </section>
 
-          <section className="order-1 lg:order-2">
-            <div className="mb-3 flex items-center justify-between px-1">
-              <div>
-                <p className="text-[11px] uppercase tracking-[0.26em] text-text-muted">
-                  {copy.mapTitle}
-                </p>
-                <p className="mt-2 text-sm leading-6 text-text-secondary">
-                  {mapNucleos.length > 0
-                    ? t('results', { count: mapNucleos.length })
-                    : copy.emptyBody}
-                </p>
+          <section className={`${mobileView === 'map' ? 'block' : 'hidden'} lg:block`}>
+            <div className="lg:sticky lg:top-[94px]">
+              <div className="mb-3 flex items-end justify-between gap-4 px-1">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+                    {copy.mapTitle}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-text-secondary">
+                    {mapNucleos.length > 0 ? t('results', { count: mapNucleos.length }) : copy.emptyBody}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <MapView
-              nucleos={mapNucleos}
-              activeNucleoId={activeId}
-              onSelect={setActiveId}
-            />
+              {filter !== 'nucleos' ? (
+                <div className="mb-4 rounded-[20px] border border-border bg-card/80 px-4 py-4 text-sm leading-7 text-text-secondary">
+                  {activeEntity
+                    ? `${copy.focusPrefix} ${getEntityName(activeEntity)}`
+                    : copy.focusIdle}
+                </div>
+              ) : null}
+
+              <MapView nucleos={mapNucleos} activeNucleoId={activeId} onSelect={setActiveId} />
+            </div>
           </section>
         </div>
       </div>

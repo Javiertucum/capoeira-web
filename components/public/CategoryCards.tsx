@@ -7,8 +7,24 @@ type Props = Readonly<{
   stats: StatsData
 }>
 
+const COPY = {
+  es: {
+    countLabel: 'Conteo visible',
+    laneLabel: 'Entrada del directorio',
+  },
+  pt: {
+    countLabel: 'Contagem visivel',
+    laneLabel: 'Entrada do diretorio',
+  },
+  en: {
+    countLabel: 'Live count',
+    laneLabel: 'Directory lane',
+  },
+} as const
+
 export default function CategoryCards({ locale, stats }: Props) {
   const t = useTranslations('categories')
+  const copy = COPY[locale as keyof typeof COPY] ?? COPY.en
 
   const cards = [
     {
@@ -18,6 +34,7 @@ export default function CategoryCards({ locale, stats }: Props) {
       description: t('nucleos.desc'),
       count: stats.nucleos,
       monogram: 'NU',
+      tone: 'bg-[radial-gradient(circle_at_top_right,rgba(121,207,114,0.18),transparent_46%)]',
     },
     {
       key: 'groups',
@@ -26,6 +43,7 @@ export default function CategoryCards({ locale, stats }: Props) {
       description: t('groups.desc'),
       count: stats.groups,
       monogram: 'GR',
+      tone: 'bg-[radial-gradient(circle_at_top_right,rgba(216,173,99,0.18),transparent_48%)]',
     },
     {
       key: 'educators',
@@ -34,6 +52,7 @@ export default function CategoryCards({ locale, stats }: Props) {
       description: t('educators.desc'),
       count: stats.educators,
       monogram: 'ED',
+      tone: 'bg-[radial-gradient(circle_at_top_right,rgba(121,207,114,0.16),transparent_42%)]',
     },
   ] as const
 
@@ -43,51 +62,54 @@ export default function CategoryCards({ locale, stats }: Props) {
         <Link
           key={card.key}
           href={card.href}
-          className="group relative overflow-hidden rounded-[22px] border border-border bg-card px-6 py-6 transition-all duration-200 hover:-translate-y-1 hover:border-accent/40 hover:bg-[#1b2230]"
+          className="group relative overflow-hidden rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/30"
         >
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/80 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-          <div
-            aria-hidden="true"
-            className="absolute right-[-28px] top-[-28px] h-28 w-28 rounded-full bg-[radial-gradient(circle,rgba(102,187,106,0.18)_0%,rgba(102,187,106,0)_72%)]"
-          />
-
-          <div className="relative flex items-start justify-between gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-[16px] border border-accent/20 bg-[rgba(102,187,106,0.12)] text-[11px] font-semibold tracking-[0.2em] text-accent">
-              {card.monogram}
-            </div>
-            <div className="text-right">
-              <div className="text-[28px] font-semibold leading-none tracking-[-0.03em] text-text">
-                {card.count.toLocaleString()}
+          <div aria-hidden="true" className={`absolute inset-0 ${card.tone}`} />
+          <div className="relative flex h-full flex-col">
+            <div className="flex items-start justify-between gap-4">
+              <div className="grid h-14 w-14 place-items-center rounded-[18px] border border-border bg-surface/80 text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">
+                {card.monogram}
               </div>
-              <div className="mt-1 text-[10px] uppercase tracking-[0.24em] text-text-muted">
+
+              <div className="text-right">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-text-muted">
+                  {copy.countLabel}
+                </p>
+                <p className="mt-2 text-[32px] font-semibold leading-none tracking-[-0.04em] text-text">
+                  {card.count.toLocaleString()}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-10">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-accent">
+                {copy.laneLabel}
+              </p>
+              <h3 className="mt-3 text-[28px] font-semibold leading-[1.02] tracking-[-0.04em] text-text">
                 {card.name}
-              </div>
+              </h3>
+              <p className="mt-4 max-w-[34ch] text-sm leading-7 text-text-secondary">
+                {card.description}
+              </p>
             </div>
-          </div>
 
-          <div className="relative mt-10">
-            <h3 className="text-xl font-semibold tracking-[0.02em] text-text">
-              {card.name}
-            </h3>
-            <p className="mt-3 max-w-[32ch] text-sm leading-6 text-text-secondary">
-              {card.description}
-            </p>
-          </div>
-
-          <div className="relative mt-8 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em] text-accent transition-gap">
-            {t('explore')}
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              aria-hidden="true"
-              className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
+            <div className="mt-auto pt-8">
+              <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+                {t('explore')}
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.3"
+                  aria-hidden="true"
+                  className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </div>
           </div>
         </Link>
       ))}

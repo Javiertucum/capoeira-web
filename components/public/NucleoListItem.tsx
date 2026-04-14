@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import type { KeyboardEvent } from 'react'
 import type { MapNucleo } from '@/lib/types'
 
 type Props = Readonly<{
@@ -18,6 +19,8 @@ type LocaleCopy = {
   coordinatesReady: string
   coordinatesMissing: string
   schedulePrefix: string
+  trainingSpot: string
+  openGroup: string
 }
 
 const COPY: Record<string, LocaleCopy> = {
@@ -29,6 +32,8 @@ const COPY: Record<string, LocaleCopy> = {
     coordinatesReady: 'Con coordenadas',
     coordinatesMissing: 'Sin coordenadas',
     schedulePrefix: 'Horarios',
+    trainingSpot: 'Espacio de treino',
+    openGroup: 'Abrir grupo',
   },
   pt: {
     showOnMap: 'Ver no mapa',
@@ -38,6 +43,8 @@ const COPY: Record<string, LocaleCopy> = {
     coordinatesReady: 'Com coordenadas',
     coordinatesMissing: 'Sem coordenadas',
     schedulePrefix: 'Horarios',
+    trainingSpot: 'Espaco de treino',
+    openGroup: 'Abrir grupo',
   },
   en: {
     showOnMap: 'Show on map',
@@ -47,6 +54,8 @@ const COPY: Record<string, LocaleCopy> = {
     coordinatesReady: 'Has coordinates',
     coordinatesMissing: 'Coordinates pending',
     schedulePrefix: 'Schedule',
+    trainingSpot: 'Training spot',
+    openGroup: 'Open group',
   },
 }
 
@@ -88,31 +97,47 @@ export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
   const hasCoordinates =
     typeof nucleo.latitude === 'number' && typeof nucleo.longitude === 'number'
   const scheduleSummary = getScheduleSummary(locale, nucleo, copy)
+  const isInteractive = typeof onSelect === 'function'
+
+  function handleActivate() {
+    onSelect?.(nucleo.id)
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (!isInteractive) return
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onSelect?.(nucleo.id)
+    }
+  }
 
   return (
     <article
-      className={`rounded-[22px] border transition-all duration-200 ${
+      className={`overflow-hidden rounded-[26px] border transition-all duration-200 ${
         isActive
-          ? 'border-accent/60 bg-[linear-gradient(180deg,rgba(32,38,51,0.98)_0%,rgba(24,29,38,0.98)_100%)] shadow-[0_18px_50px_rgba(0,0,0,0.22)]'
-          : 'border-border bg-card/92 hover:border-accent/35 hover:bg-[#1b2230]'
+          ? 'border-accent/55 bg-[linear-gradient(180deg,rgba(23,34,49,0.98),rgba(11,18,27,0.98))] shadow-[0_22px_52px_var(--shadow-soft)]'
+          : 'border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] hover:border-accent/24'
       }`}
     >
-      <button
-        type="button"
-        onClick={() => onSelect?.(nucleo.id)}
-        className="flex w-full flex-col gap-4 px-5 py-5 text-left"
+      <div
+        role={isInteractive ? 'button' : undefined}
+        tabIndex={isInteractive ? 0 : undefined}
+        onClick={handleActivate}
+        onKeyDown={handleKeyDown}
+        className={`px-5 py-5 text-left ${isInteractive ? 'cursor-pointer' : ''}`}
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-text-muted">
-              <span>{copy.groupLabel}</span>
+              <span>{copy.trainingSpot}</span>
               <span className="h-1 w-1 rounded-full bg-border" />
               <span className="truncate text-text-secondary">
-                {nucleo.groupName || 'Agenda'}
+                {nucleo.groupName || 'Agenda Capoeiragem'}
               </span>
             </div>
 
-            <h3 className="mt-3 text-lg font-semibold leading-tight tracking-[0.01em] text-text">
+            <h3 className="mt-3 text-[22px] font-semibold leading-tight tracking-[-0.03em] text-text">
               {nucleo.name}
             </h3>
 
@@ -121,51 +146,71 @@ export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
             </p>
           </div>
 
-          <span
-            className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${
-              isActive
-                ? 'border-accent/30 bg-[rgba(102,187,106,0.14)] text-accent'
-                : 'border-border bg-surface text-text-muted'
-            }`}
-          >
-            {copy.showOnMap}
-          </span>
-        </div>
-
-        <div className="space-y-2">
-          <p className="text-sm leading-6 text-text-secondary">
-            {nucleo.address?.trim() || copy.noAddress}
-          </p>
-
-          {scheduleSummary ? (
-            <p className="text-xs leading-5 text-text-muted">{scheduleSummary}</p>
+          {isInteractive ? (
+            <span
+              className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] ${
+                isActive
+                  ? 'border-accent/30 bg-[rgba(121,207,114,0.14)] text-accent'
+                  : 'border-border bg-surface text-text-muted'
+              }`}
+            >
+              {copy.showOnMap}
+            </span>
           ) : null}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/50 pt-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-text-muted">
-              {hasCoordinates ? copy.coordinatesReady : copy.coordinatesMissing}
-            </span>
+        <p className="mt-5 text-sm leading-7 text-text-secondary">
+          {nucleo.address?.trim() || copy.noAddress}
+        </p>
 
-            {nucleo.city ? (
-              <span className="rounded-full border border-border/80 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
-                {nucleo.city}
-              </span>
-            ) : null}
-          </div>
+        {scheduleSummary ? (
+          <p className="mt-3 text-xs leading-6 text-text-muted">{scheduleSummary}</p>
+        ) : null}
+
+        <div className="mt-5 flex flex-wrap gap-2">
+          <span className="rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
+            {hasCoordinates ? copy.coordinatesReady : copy.coordinatesMissing}
+          </span>
+
+          {nucleo.city ? (
+            <span className="rounded-full border border-border bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
+              {nucleo.city}
+            </span>
+          ) : null}
+
+          {nucleo.schedules && nucleo.schedules.length > 0 ? (
+            <span className="rounded-full border border-border bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
+              {`${nucleo.schedules.length} ${copy.schedulePrefix}`}
+            </span>
+          ) : null}
+        </div>
+      </div>
+
+      {nucleo.groupId ? (
+        <div className="flex items-center justify-between border-t border-border/70 px-5 py-4">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted">
+            {copy.groupLabel}
+          </span>
 
           <Link
             href={`/${locale}/group/${nucleo.groupId}`}
-            className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-accent transition-opacity hover:opacity-75"
+            className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent transition-opacity hover:opacity-80"
           >
-            {copy.groupLabel}
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+            {copy.openGroup}
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.3"
+              aria-hidden="true"
+            >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </Link>
         </div>
-      </button>
+      ) : null}
     </article>
   )
 }

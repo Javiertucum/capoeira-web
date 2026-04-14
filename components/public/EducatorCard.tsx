@@ -1,11 +1,39 @@
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
+import { normalizeSocialLink } from '@/lib/social-links'
 import type { PublicUserProfile } from '@/lib/types'
 
 type Props = Readonly<{
   educator: PublicUserProfile
   locale: string
 }>
+
+const COPY = {
+  es: {
+    role: 'Educador',
+    locations: 'espacios',
+    links: 'enlaces',
+    open: 'Abrir perfil',
+    empty: 'Perfil publico listo para completar.',
+    profileLabel: 'Perfil publico',
+  },
+  pt: {
+    role: 'Educador',
+    locations: 'espacos',
+    links: 'links',
+    open: 'Abrir perfil',
+    empty: 'Perfil publico pronto para completar.',
+    profileLabel: 'Perfil publico',
+  },
+  en: {
+    role: 'Educator',
+    locations: 'locations',
+    links: 'links',
+    open: 'Open profile',
+    empty: 'Public profile ready to be filled in.',
+    profileLabel: 'Public profile',
+  },
+} as const
 
 const SOCIAL_LABELS: Record<string, string> = {
   instagram: 'IG',
@@ -21,6 +49,10 @@ function getDisplayName(educator: PublicUserProfile) {
   return educator.nickname?.trim() || fullName || educator.uid
 }
 
+function getFullName(educator: PublicUserProfile) {
+  return [educator.name, educator.surname].filter(Boolean).join(' ').trim()
+}
+
 function getInitials(educator: PublicUserProfile) {
   return [educator.name?.[0], educator.surname?.[0]]
     .filter(Boolean)
@@ -28,89 +60,113 @@ function getInitials(educator: PublicUserProfile) {
     .toUpperCase() || 'AC'
 }
 
-function normalizeSocialHref(platform: string, value: string) {
-  if (platform === 'whatsapp') {
-    const digits = value.replace(/\D/g, '')
-    if (digits) {
-      return `https://wa.me/${digits}`
-    }
-  }
-
-  if (value.startsWith('http://') || value.startsWith('https://')) {
-    return value
-  }
-
-  return `https://${value}`
-}
-
 export default function EducatorCard({ educator, locale }: Props) {
+  const copy = COPY[locale as keyof typeof COPY] ?? COPY.en
   const displayName = getDisplayName(educator)
+  const fullName = getFullName(educator)
   const initials = getInitials(educator)
   const socials = Object.entries(educator.socialLinks ?? {})
     .filter((entry): entry is [string, string] => typeof entry[1] === 'string' && Boolean(entry[1]))
     .slice(0, 3)
 
   return (
-    <article className="group overflow-hidden rounded-[22px] border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_8px_32px_rgba(0,0,0,0.28)]">
-      <Link href={`/${locale}/educator/${educator.uid}`} className="block">
-        <div className="relative overflow-hidden border-b border-border bg-[linear-gradient(180deg,#202633_0%,#161B24_100%)] px-5 pb-5 pt-6">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] transition-all duration-200 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_22px_60px_var(--shadow-soft)]">
+      <Link href={`/${locale}/educator/${educator.uid}`} className="flex h-full flex-col">
+        <div className="relative overflow-hidden border-b border-border px-5 pb-5 pt-6">
           <div
             aria-hidden="true"
-            className="absolute right-[-24px] top-[-10px] h-24 w-24 rounded-full bg-[radial-gradient(circle,rgba(102,187,106,0.22)_0%,rgba(102,187,106,0)_72%)]"
+            className="absolute inset-x-0 top-0 h-full bg-[radial-gradient(circle_at_top_right,rgba(121,207,114,0.16),transparent_42%)]"
           />
-          <div className="relative flex items-start justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-accent/20 bg-[rgba(102,187,106,0.12)]">
-                {educator.avatarUrl ? (
-                  <img
-                    src={educator.avatarUrl}
-                    alt={displayName}
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="text-lg font-semibold tracking-[0.12em] text-accent">
-                    {initials}
-                  </span>
-                )}
+
+          <div className="relative flex items-start gap-4">
+            <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-[22px] border border-accent/20 bg-[rgba(121,207,114,0.14)]">
+              {educator.avatarUrl ? (
+                <img
+                  src={educator.avatarUrl}
+                  alt={displayName}
+                  loading="lazy"
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <span className="text-lg font-semibold uppercase tracking-[0.14em] text-accent">
+                  {initials}
+                </span>
+              )}
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="accent">{copy.role}</Badge>
+                {educator.country ? <Badge>{educator.country}</Badge> : null}
               </div>
 
-              <div>
-                <p className="text-lg font-semibold tracking-[0.01em] text-text">
-                  {displayName}
-                </p>
-                <div className="mt-2 flex flex-wrap items-center gap-2">
-                  {educator.country ? <Badge variant="accent">{educator.country}</Badge> : null}
-                </div>
-              </div>
+              <h3 className="mt-4 truncate text-[22px] font-semibold tracking-[-0.03em] text-text">
+                {displayName}
+              </h3>
+
+              {educator.nickname && fullName ? (
+                <p className="mt-1 truncate text-sm text-text-muted">{fullName}</p>
+              ) : null}
             </div>
           </div>
         </div>
 
-        <div className="px-5 py-5">
-          <p className="min-h-[48px] text-sm leading-6 text-text-secondary">
-            {educator.bio?.trim() || <span className="italic text-text-muted">—</span>}
+        <div className="flex flex-1 flex-col px-5 py-5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-text-muted">
+            {copy.profileLabel}
           </p>
+          <p className="mt-3 overflow-hidden text-sm leading-7 text-text-secondary [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]">
+            {educator.bio?.trim() || copy.empty}
+          </p>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            {typeof educator.nucleoIds?.length === 'number' && educator.nucleoIds.length > 0 ? (
+              <Badge>{`${educator.nucleoIds.length} ${copy.locations}`}</Badge>
+            ) : null}
+
+            {socials.map(([platform, value]) => {
+              const href = normalizeSocialLink(
+                platform as Parameters<typeof normalizeSocialLink>[0],
+                value
+              )
+
+              if (!href) return null
+
+              return (
+                <span
+                  key={platform}
+                  className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary"
+                >
+                  {SOCIAL_LABELS[platform] ?? platform.slice(0, 3).toUpperCase()}
+                </span>
+              )
+            })}
+          </div>
+
+          <div className="mt-auto flex items-center justify-between border-t border-border/70 pt-5">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted">
+              {socials.length} {copy.links}
+            </span>
+            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+              {copy.open}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.3"
+                aria-hidden="true"
+                className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </span>
+          </div>
         </div>
       </Link>
-
-      {socials.length > 0 ? (
-        <div className="flex flex-wrap gap-2 border-t border-border px-5 py-4">
-          {socials.map(([platform, value]) => (
-            <a
-              key={platform}
-              href={normalizeSocialHref(platform, value)}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-text-muted transition-colors hover:border-accent/30 hover:text-text"
-            >
-              {SOCIAL_LABELS[platform] ?? platform.slice(0, 3).toUpperCase()}
-            </a>
-          ))}
-        </div>
-      ) : null}
     </article>
   )
 }
