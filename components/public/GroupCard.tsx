@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Group } from '@/lib/types'
 
@@ -14,11 +13,13 @@ export default function GroupCard({ group, locale }: Props) {
         <div className="flex items-center gap-4">
           <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
             {group.logoUrl ? (
-              <Image
+              <img
                 src={group.logoUrl}
                 alt={group.name}
-                fill
-                className="object-contain p-2"
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+                className="absolute inset-0 h-full w-full object-contain p-2"
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-xl font-bold text-text-muted">

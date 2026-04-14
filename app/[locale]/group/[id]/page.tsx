@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getGroupWithNucleos, getEducatorProfile } from '@/lib/queries'
 import NucleoListItem from '@/components/public/NucleoListItem'
-import Image from 'next/image'
 import Badge from '@/components/ui/Badge'
 import type { Metadata } from 'next'
 
@@ -67,11 +66,13 @@ export default async function GroupPage({ params }: Props) {
           <div className="relative flex flex-col gap-8 md:flex-row md:items-center">
             <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-2xl border border-border bg-surface shadow-lg sm:h-40 sm:w-40">
               {group.logoUrl ? (
-                <Image
+                <img
                   src={group.logoUrl}
                   alt={group.name}
-                  fill
-                  className="object-contain p-4"
+                  loading="eager"
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 h-full w-full object-contain p-4"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-surface text-4xl font-bold text-text-muted">
@@ -139,7 +140,14 @@ export default async function GroupPage({ params }: Props) {
                 <div className="mt-5 text-center">
                   <div className="relative mx-auto h-20 w-20 overflow-hidden rounded-full border-2 border-accent/20 bg-surface">
                     {adminUser.avatarUrl ? (
-                      <Image src={adminUser.avatarUrl} alt={adminUser.nickname || adminUser.name || 'Admin'} fill className="object-cover" />
+                      <img
+                        src={adminUser.avatarUrl}
+                        alt={adminUser.nickname || adminUser.name || 'Admin'}
+                        loading="lazy"
+                        decoding="async"
+                        referrerPolicy="no-referrer"
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-xl font-bold text-text-muted">
                         {adminUser.name?.[0] ?? '?'}

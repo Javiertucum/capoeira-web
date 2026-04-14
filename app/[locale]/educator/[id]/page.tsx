@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getEducatorProfile, getNucleosByEducator, getGroup, getGraduationLevel } from '@/lib/queries'
 import NucleoListItem from '@/components/public/NucleoListItem'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
@@ -65,11 +64,13 @@ export default async function EducatorProfilePage({ params }: Props) {
           <div className="flex flex-col items-center text-center md:sticky md:top-24 md:w-1/3">
             <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-border bg-card shadow-xl xl:h-48 xl:w-48">
               {educator.avatarUrl ? (
-                <Image
+                <img
                   src={educator.avatarUrl}
                   alt={educator.nickname || educator.name || 'Educator'}
-                  fill
-                  className="object-cover"
+                  loading="eager"
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-surface text-4xl font-bold text-text-muted">
