@@ -102,17 +102,19 @@ function toMarkers(nucleos: MapNucleo[]): MapMarker[] {
 }
 
 function createMarkerIcon(isActive: boolean) {
-  const fill = isActive ? '#66BB6A' : '#F3F1EA'
-  const size = isActive ? 30 : 24
-  const radius = isActive ? 11 : 8
+  const fill = isActive ? '#E53935' : '#EF5350'
+  const size = isActive ? 40 : 32
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="${fill}" stroke="#10131A" stroke-width="3" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 32">
+      <path d="M12 0C7.6 0 4 3.6 4 8c0 6 8 16 8 16s8-10 8-16c0-4.4-3.6-8-8-8z" fill="${fill}" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="12" cy="8" r="3.2" fill="#fff"/>
     </svg>
   `.trim()
 
   return {
     url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`,
+    scaledSize: { width: size, height: size } as google.maps.Size,
+    anchor: { x: size / 2, y: size } as google.maps.Point,
   }
 }
 
