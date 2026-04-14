@@ -47,7 +47,7 @@ export default function CategoryCards({ locale, stats }: Props) {
     },
     {
       key: 'educators',
-      href: `/${locale}/map?filter=educators`,
+      href: `/${locale}/educators`,
       name: t('educators.name'),
       description: t('educators.desc'),
       count: stats.educators,

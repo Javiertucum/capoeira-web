@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import MapClientShell from './MapClientShell'
 import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getLocalizedUrl, getOgImageUrl } from '@/lib/site'
-import type { MapNucleo, PublicUserProfile, Group } from '@/lib/types'
+import type { MapNucleo, Group } from '@/lib/types'
 
 export const revalidate = 300
 
@@ -62,21 +62,18 @@ export default async function MapPage({ params, searchParams }: Props) {
   const resolvedSearchParams = await searchParams
 
   let groups: Group[] = []
-  let educators: PublicUserProfile[] = []
   let nucleos: MapNucleo[] = []
   let dataUnavailable = false
 
   try {
-    const { getAllNucleos, getAllEducators, getAllGroups } = await import('@/lib/queries')
+    const { getAllNucleos, getAllGroups } = await import('@/lib/queries')
     const results = await Promise.allSettled([
       getAllNucleos(),
-      getAllEducators(),
       getAllGroups(),
     ])
 
     nucleos = results[0].status === 'fulfilled' ? results[0].value : []
-    educators = results[1].status === 'fulfilled' ? results[1].value : []
-    groups = results[2].status === 'fulfilled' ? results[2].value : []
+    groups = results[1].status === 'fulfilled' ? results[1].value : []
 
     if (results.every((result) => result.status === 'rejected')) {
       dataUnavailable = true
@@ -90,7 +87,6 @@ export default async function MapPage({ params, searchParams }: Props) {
     <MapClientShell
       locale={locale}
       initialNucleos={nucleos}
-      initialEducators={educators}
       initialGroups={groups}
       initialQuery={readParam(resolvedSearchParams.q)}
       initialFilter={readParam(resolvedSearchParams.filter)}

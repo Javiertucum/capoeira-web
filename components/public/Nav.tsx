@@ -54,7 +54,7 @@ export default function Nav() {
   const links = [
     { href: `/${locale}/map`, label: t('map'), key: 'nucleos' },
     { href: `/${locale}/map?filter=groups`, label: t('groups'), key: 'groups' },
-    { href: `/${locale}/map?filter=educators`, label: t('educators'), key: 'educators' },
+    { href: `/${locale}/educators`, label: t('educators'), key: 'educators' },
   ]
 
   return (
@@ -86,9 +86,11 @@ export default function Nav() {
             {links.map((link) => {
               const isMapRoute = pathname === `/${locale}/map`
               const isActive =
-                link.key === 'nucleos'
-                  ? isMapRoute && !currentFilter
-                  : isMapRoute && currentFilter === link.key
+                link.key === 'educators'
+                  ? pathname === `/${locale}/educators` || pathname.startsWith(`/${locale}/educator/`)
+                  : link.key === 'nucleos'
+                    ? isMapRoute && !currentFilter
+                    : isMapRoute && currentFilter === link.key
 
               return (
                 <Link

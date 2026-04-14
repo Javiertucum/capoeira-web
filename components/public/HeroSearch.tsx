@@ -7,19 +7,19 @@ import { useState, type FormEvent } from 'react'
 
 const QUICK_LINKS = {
   es: [
-    { href: '/map', label: 'Explorar nucleos' },
+    { href: '/map', label: 'Explorar núcleos' },
     { href: '/map?filter=groups', label: 'Ver grupos' },
-    { href: '/map?filter=educators', label: 'Conocer educadores' },
+    { href: '/educators', label: 'Conocer educadores' },
   ],
   pt: [
-    { href: '/map', label: 'Explorar nucleos' },
+    { href: '/map', label: 'Explorar núcleos' },
     { href: '/map?filter=groups', label: 'Ver grupos' },
-    { href: '/map?filter=educators', label: 'Conhecer educadores' },
+    { href: '/educators', label: 'Conhecer educadores' },
   ],
   en: [
     { href: '/map', label: 'Explore nucleos' },
     { href: '/map?filter=groups', label: 'Browse groups' },
-    { href: '/map?filter=educators', label: 'Meet educators' },
+    { href: '/educators', label: 'Meet educators' },
   ],
 } as const
 
