@@ -4,11 +4,23 @@ import { notFound } from 'next/navigation'
 import { getEducatorProfile, getNucleosByEducator, getGroup, getGraduationLevel } from '@/lib/queries'
 import NucleoListItem from '@/components/public/NucleoListItem'
 import Image from 'next/image'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
 type Props = {
   params: Promise<{ locale: string; id: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
+  const edu = await getEducatorProfile(id)
+  if (!edu) return { title: 'Educador no encontrado' }
+  const fullName = edu.nickname || `${edu.name} ${edu.surname}`
+  return {
+    title: `${fullName} — Capoeira Map`,
+    description: edu.bio ?? `Educador de capoeira`,
+  }
 }
 
 export default async function EducatorProfilePage({ params }: Props) {
@@ -91,7 +103,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                 <div className="rounded-xl border border-border bg-card/40 p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">{t('group')}</p>
                   <Link 
-                    href={`/${locale}/nucleos/${group.id}`}
+                    href={`/${locale}/group/${group.id}`}
                     className="mt-1 block text-sm font-medium text-accent hover:underline"
                   >
                     {group.name}

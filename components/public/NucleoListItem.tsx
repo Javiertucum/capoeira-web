@@ -156,7 +156,7 @@ export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
           </div>
 
           <Link
-            href={`/${locale}/nucleos/${nucleo.groupId}`}
+            href={`/${locale}/group/${nucleo.groupId}`}
             className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-accent transition-opacity hover:opacity-80"
           >
             {copy.groupLabel} {'->'}

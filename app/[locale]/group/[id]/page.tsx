@@ -5,6 +5,7 @@ import { getGroupWithNucleos, getEducatorProfile } from '@/lib/queries'
 import NucleoListItem from '@/components/public/NucleoListItem'
 import Image from 'next/image'
 import Badge from '@/components/ui/Badge'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,7 +13,17 @@ type Props = {
   params: Promise<{ locale: string; id: string }>
 }
 
-export default async function NucleoProfilePage({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
+  const result = await getGroupWithNucleos(id)
+  if (!result) return { title: 'Grupo no encontrado' }
+  return {
+    title: `${result.group.name} — Capoeira Map`,
+    description: `Grupo de capoeira con ${result.nucleos.length} núcleos activos`,
+  }
+}
+
+export default async function GroupPage({ params }: Props) {
   const { locale, id } = await params
   const t = await getTranslations({ locale, namespace: 'profile' })
 
@@ -139,7 +150,7 @@ export default async function NucleoProfilePage({ params }: Props) {
                     {adminUser.nickname || `${adminUser.name} ${adminUser.surname}`}
                   </p>
                   <Link
-                    href={`/${locale}/educators/${adminUser.uid}`}
+                    href={`/${locale}/educator/${adminUser.uid}`}
                     className="mt-4 inline-flex w-full items-center justify-center rounded-lg border border-border bg-surface px-4 py-2 text-xs font-semibold text-text-secondary transition-colors hover:border-accent/30 hover:text-text"
                   >
                     {t('viewProfile' as any) || 'View Profile'}
