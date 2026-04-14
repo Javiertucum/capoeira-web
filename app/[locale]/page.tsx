@@ -128,13 +128,13 @@ export default async function LandingPage({ params }: Props) {
           <div className="relative mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0">
             <button
               type="button"
-              className="inline-flex items-center justify-center rounded-[14px] bg-accent px-6 py-3 text-sm font-semibold tracking-[0.08em] text-[#08110C] transition-opacity hover:opacity-90"
+              className="inline-flex cursor-pointer items-center justify-center rounded-[14px] bg-accent px-6 py-3 text-sm font-semibold tracking-[0.08em] text-[#08110C] transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:opacity-90"
             >
               {tCta('download')}
             </button>
             <button
               type="button"
-              className="inline-flex items-center justify-center rounded-[14px] border border-border px-6 py-3 text-sm font-semibold tracking-[0.08em] text-text-secondary transition-colors hover:border-accent/35 hover:text-text"
+              className="inline-flex cursor-pointer items-center justify-center rounded-[14px] border border-border px-6 py-3 text-sm font-semibold tracking-[0.08em] text-text-secondary transition-colors hover:border-accent/35 hover:text-text focus-visible:outline-none focus-visible:text-text"
             >
               {tCta('learnMore')}
             </button>
@@ -142,15 +142,15 @@ export default async function LandingPage({ params }: Props) {
         </div>
       </section>
 
-      <footer className="border-t border-border px-5 py-6 sm:px-8 lg:px-12">
+      <footer className="border-t border-border px-5 py-8 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 text-sm text-text-muted md:flex-row md:items-center md:justify-between">
           <span className="text-[13px] font-semibold tracking-[0.16em] text-text-secondary">
             AGENDA<span className="text-accent">.</span>CAPOEIRAGEM
           </span>
-          <span>(c) 2026 · {tFooter('credits')}</span>
+          <span>&copy; 2026 · {tFooter('credits')}</span>
           <div className="flex gap-5 text-[12px] uppercase tracking-[0.16em]">
-            <span>{tFooter('privacy')}</span>
-            <span>{tFooter('terms')}</span>
+            <a href="#" className="transition-colors hover:text-text">{tFooter('privacy')}</a>
+            <a href="#" className="transition-colors hover:text-text">{tFooter('terms')}</a>
           </div>
         </div>
       </footer>

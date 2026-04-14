@@ -74,8 +74,20 @@ export default function CategoryCards({ locale, stats }: Props) {
             </p>
           </div>
 
-          <div className="relative mt-8 text-[11px] font-semibold uppercase tracking-[0.26em] text-accent">
+          <div className="relative mt-8 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em] text-accent transition-gap">
             {t('explore')}
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              aria-hidden="true"
+              className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
           </div>
         </Link>
       ))}

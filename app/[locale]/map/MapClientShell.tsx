@@ -243,7 +243,7 @@ export default function MapClientShell({
 
                   <button
                     type="submit"
-                    className="inline-flex h-[52px] items-center justify-center rounded-[16px] bg-accent px-6 text-sm font-semibold tracking-[0.08em] text-[#08110C] transition-opacity hover:opacity-90"
+                    className="inline-flex h-[52px] cursor-pointer items-center justify-center rounded-[16px] bg-accent px-6 text-sm font-semibold tracking-[0.08em] text-[#08110C] transition-opacity hover:opacity-90 focus-visible:outline-none"
                   >
                     {isPending ? `${copy.searchButton}...` : copy.searchButton}
                   </button>
@@ -264,10 +264,10 @@ export default function MapClientShell({
                         key={item}
                         type="button"
                         onClick={() => handleFilterChange(item)}
-                        className={`rounded-full border px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
+                        className={`cursor-pointer rounded-full border px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors focus-visible:outline-none ${
                           isActive
                             ? 'border-accent/35 bg-[rgba(102,187,106,0.14)] text-accent'
-                            : 'border-border bg-surface text-text-muted hover:text-text'
+                            : 'border-border bg-surface text-text-muted hover:border-border hover:text-text'
                         }`}
                       >
                         {labels[item]}
@@ -287,7 +287,7 @@ export default function MapClientShell({
         ) : null}
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)] xl:grid-cols-[420px_minmax(0,1fr)]">
-          <section className="order-2 rounded-[26px] border border-border bg-card/92 p-4 shadow-[0_18px_60px_var(--shadow)] lg:order-1">
+          <section className="order-2 rounded-[26px] border border-border bg-card p-4 shadow-[0_18px_60px_var(--shadow)] lg:order-1">
             <div className="flex items-end justify-between gap-4 border-b border-border px-2 pb-4">
               <div>
                 <p className="text-[11px] uppercase tracking-[0.26em] text-text-muted">

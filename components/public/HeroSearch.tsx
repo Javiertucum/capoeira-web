@@ -46,7 +46,7 @@ export default function HeroSearch() {
 
         <button
           type="submit"
-          className="inline-flex h-[52px] items-center justify-center rounded-[14px] bg-accent px-6 text-sm font-semibold tracking-[0.08em] text-[#08110C] transition-all hover:opacity-90"
+          className="inline-flex h-[52px] cursor-pointer items-center justify-center rounded-[14px] bg-accent px-6 text-sm font-semibold tracking-[0.08em] text-[#08110C] transition-all hover:opacity-90 focus-visible:outline-none focus-visible:opacity-90"
         >
           {t('searchButton')}
         </button>

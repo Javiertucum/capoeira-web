@@ -52,7 +52,7 @@ export default function EducatorCard({ educator, locale }: Props) {
     .slice(0, 3)
 
   return (
-    <article className="group overflow-hidden rounded-[22px] border border-border bg-card transition-all duration-200 hover:-translate-y-1 hover:border-accent/35">
+    <article className="group overflow-hidden rounded-[22px] border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_8px_32px_rgba(0,0,0,0.28)]">
       <Link href={`/${locale}/educator/${educator.uid}`} className="block">
         <div className="relative overflow-hidden border-b border-border bg-[linear-gradient(180deg,#202633_0%,#161B24_100%)] px-5 pb-5 pt-6">
           <div
@@ -90,11 +90,9 @@ export default function EducatorCard({ educator, locale }: Props) {
         </div>
 
         <div className="px-5 py-5">
-          {educator.bio?.trim() ? (
-            <p className="min-h-12 text-sm leading-6 text-text-secondary">
-              {educator.bio.trim()}
-            </p>
-          ) : null}
+          <p className="min-h-[48px] text-sm leading-6 text-text-secondary">
+            {educator.bio?.trim() || <span className="italic text-text-muted">—</span>}
+          </p>
         </div>
       </Link>
 

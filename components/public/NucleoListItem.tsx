@@ -157,9 +157,12 @@ export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
 
           <Link
             href={`/${locale}/group/${nucleo.groupId}`}
-            className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-accent transition-opacity hover:opacity-80"
+            className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-accent transition-opacity hover:opacity-75"
           >
-            {copy.groupLabel} {'->'}
+            {copy.groupLabel}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
           </Link>
         </div>
       </button>
