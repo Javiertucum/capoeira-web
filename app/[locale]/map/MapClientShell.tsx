@@ -294,7 +294,7 @@ export default function MapClientShell({
                   {copy.listTitle}
                 </p>
                 <h2 className="mt-2 text-xl font-semibold tracking-[0.01em] text-text">
-                  {searchResults.length} {t('results' as any) || 'Resultados'}
+                  {t('results', { count: searchResults.length })}
                 </h2>
               </div>
             </div>
@@ -356,7 +356,7 @@ export default function MapClientShell({
                 </p>
                 <p className="mt-2 text-sm leading-6 text-text-secondary">
                   {mapNucleos.length > 0
-                    ? `${mapNucleos.length} ${t('results' as any) || 'Nucleos'}`
+                    ? t('results', { count: mapNucleos.length })
                     : copy.emptyBody}
                 </p>
               </div>

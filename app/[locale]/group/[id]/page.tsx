@@ -90,7 +90,7 @@ export default async function GroupPage({ params }: Props) {
                   <Badge variant="accent">{group.graduationSystemName}</Badge>
                 )}
                 <span className="rounded-full border border-border bg-surface-muted px-3 py-1 text-[11px] font-semibold tracking-wider text-text-muted uppercase">
-                  {group.memberCount ?? 0} {t('members' as any) || 'Members'}
+                  {group.memberCount ?? 0} {t('members')}
                 </span>
               </div>
 
@@ -123,7 +123,7 @@ export default async function GroupPage({ params }: Props) {
                 ))
               ) : (
                 <div className="rounded-2xl border border-dashed border-border bg-card/40 p-12 text-center text-text-muted">
-                  {t('noNucleos' as any) || 'No active training locations found for this group.'}
+                  {t('noNucleos')}
                 </div>
               )}
             </div>
@@ -134,7 +134,7 @@ export default async function GroupPage({ params }: Props) {
             {adminUser && (
               <section className="rounded-2xl border border-border bg-card/60 p-6">
                 <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted">
-                  {t('admin' as any) || 'Chief Instructor'}
+                  {t('admin')}
                 </h3>
                 <div className="mt-5 text-center">
                   <div className="relative mx-auto h-20 w-20 overflow-hidden rounded-full border-2 border-accent/20 bg-surface">
@@ -153,7 +153,7 @@ export default async function GroupPage({ params }: Props) {
                     href={`/${locale}/educator/${adminUser.uid}`}
                     className="mt-4 inline-flex w-full items-center justify-center rounded-lg border border-border bg-surface px-4 py-2 text-xs font-semibold text-text-secondary transition-colors hover:border-accent/30 hover:text-text"
                   >
-                    {t('viewProfile' as any) || 'View Profile'}
+                    {t('viewProfile')}
                   </Link>
                 </div>
               </section>
@@ -161,7 +161,7 @@ export default async function GroupPage({ params }: Props) {
 
             <section className="rounded-2xl border border-border bg-card/60 p-6">
               <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted">
-                {t('stats' as any) || 'Group Stats'}
+                {t('stats')}
               </h3>
               <div className="mt-6 space-y-4">
                 <div className="flex items-center justify-between text-sm">

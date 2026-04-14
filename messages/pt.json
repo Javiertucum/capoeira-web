@@ -71,6 +71,12 @@
     "unspecified": "Não especificado",
     "back": "Voltar ao mapa",
     "representedCountries": "Países representados",
-    "representedCities": "Cidades representadas"
+    "representedCities": "Cidades representadas",
+    "members": "membros",
+    "admin": "Instrutor Principal",
+    "viewProfile": "Ver perfil",
+    "stats": "Estatísticas do Grupo",
+    "noNucleos": "Nenhum núcleo ativo encontrado para este grupo.",
+    "website": "Site"
   }
 }

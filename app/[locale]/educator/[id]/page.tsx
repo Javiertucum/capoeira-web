@@ -172,7 +172,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                         <line x1="2" y1="12" x2="22" y2="12" />
                         <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
                       </svg>
-                      {t('website' as any) || 'Website'}
+                      {t('website')}
                     </a>
                   )}
                 </div>

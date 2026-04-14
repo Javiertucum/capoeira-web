@@ -71,6 +71,12 @@
     "unspecified": "Not specified",
     "back": "Back to directory",
     "representedCountries": "Represented countries",
-    "representedCities": "Represented cities"
+    "representedCities": "Represented cities",
+    "members": "members",
+    "admin": "Chief Instructor",
+    "viewProfile": "View profile",
+    "stats": "Group Stats",
+    "noNucleos": "No active training locations found for this group.",
+    "website": "Website"
   }
 }
