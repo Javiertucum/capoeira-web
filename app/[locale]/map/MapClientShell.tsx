@@ -269,14 +269,14 @@ export default function MapClientShell({
   return (
     <div className="px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pb-20">
       <div className="mx-auto max-w-[1280px]">
-        <section className="relative overflow-hidden rounded-[32px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] px-6 py-7 shadow-[0_30px_90px_var(--shadow)] sm:px-8 sm:py-8">
+        <section className="relative overflow-hidden rounded-[30px] border border-border bg-card px-6 py-7 shadow-sm sm:px-8 sm:py-8">
           <div
             aria-hidden="true"
-            className="absolute right-[-90px] top-[-90px] h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(121,207,114,0.18)_0%,rgba(121,207,114,0)_72%)]"
+            className="absolute right-[-90px] top-[-90px] h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(132,201,122,0.08)_0%,rgba(132,201,122,0)_72%)]"
           />
           <div
             aria-hidden="true"
-            className="absolute left-[-70px] bottom-[-80px] h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(216,173,99,0.16)_0%,rgba(216,173,99,0)_72%)]"
+            className="absolute left-[-70px] bottom-[-80px] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(208,162,96,0.08)_0%,rgba(208,162,96,0)_72%)]"
           />
 
           <div className="relative grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
@@ -422,7 +422,7 @@ export default function MapClientShell({
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[400px_minmax(0,1fr)] xl:grid-cols-[430px_minmax(0,1fr)]">
           <section
-            className={`${mobileView === 'list' ? 'block' : 'hidden'} rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-4 shadow-[0_22px_60px_var(--shadow-soft)] lg:block`}
+            className={`${mobileView === 'list' ? 'block' : 'hidden'} rounded-[26px] border border-border bg-card p-4 shadow-sm lg:block`}
           >
             <div className="flex items-end justify-between gap-4 border-b border-border px-2 pb-4">
               <div>

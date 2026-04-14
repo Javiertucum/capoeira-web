@@ -70,15 +70,10 @@ export default function EducatorCard({ educator, locale }: Props) {
     .slice(0, 3)
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] transition-all duration-200 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_22px_60px_var(--shadow-soft)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-colors duration-200 hover:border-accent/24">
       <Link href={`/${locale}/educator/${educator.uid}`} className="flex h-full flex-col">
-        <div className="relative overflow-hidden border-b border-border px-5 pb-5 pt-6">
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-full bg-[radial-gradient(circle_at_top_right,rgba(121,207,114,0.16),transparent_42%)]"
-          />
-
-          <div className="relative flex items-start gap-4">
+        <div className="border-b border-border px-5 pb-5 pt-6">
+          <div className="flex items-start gap-4">
             <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-[22px] border border-accent/20 bg-[rgba(121,207,114,0.14)]">
               {educator.avatarUrl ? (
                 <img

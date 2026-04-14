@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
-import { getSessionUid } from '@/lib/auth/session'
-import { getDashboardStats } from '@/lib/admin-queries'
 import AdminSidebar from '@/components/admin/AdminSidebar'
+import { getDashboardStats } from '@/lib/admin-queries'
+import { getSessionUid } from '@/lib/auth/session'
 
 type Props = {
   children: React.ReactNode
@@ -11,12 +11,11 @@ type Props = {
 export default async function AdminLayout({ children, params }: Props) {
   const { locale } = await params
   const uid = await getSessionUid()
-  
+
   if (!uid) {
     redirect(`/${locale}/admin/login`)
   }
 
-  // Fetch initial stats for the sidebar (e.g., bug reports count)
   let stats = { openBugReports: 0 }
   try {
     stats = await getDashboardStats()
@@ -25,12 +24,10 @@ export default async function AdminLayout({ children, params }: Props) {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-bg">
-      <div className="flex flex-1 overflow-hidden">
-        <AdminSidebar locale={locale} openBugReports={stats.openBugReports} />
-        <div className="flex-1 flex flex-col overflow-hidden bg-surface-muted/30">
-          {children}
-        </div>
+    <div className="flex min-h-screen bg-bg">
+      <AdminSidebar locale={locale} openBugReports={stats.openBugReports} />
+      <div className="flex min-h-screen min-w-0 flex-1 flex-col bg-surface-muted/20">
+        {children}
       </div>
     </div>
   )

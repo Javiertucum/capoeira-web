@@ -17,8 +17,8 @@ export default async function AdminEventsPage({ params }: Props) {
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       <AdminTopbar section="Eventos" />
-      <div className="flex-1 overflow-y-auto p-6 lg:p-10">
-        <div className="mb-8 flex items-center justify-between">
+      <div className="flex-1 overflow-y-auto p-4 pb-24 sm:p-6 lg:p-8 lg:pb-8">
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text">Gestión de Eventos</h1>
             <p className="mt-1 text-sm text-text-muted">Modera los eventos publicados en la comunidad.</p>

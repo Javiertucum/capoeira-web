@@ -1,28 +1,42 @@
 import { getAuth } from 'firebase-admin/auth'
-import { getApps } from 'firebase-admin/app'
 import { cookies } from 'next/headers'
+import { adminApp } from '@/lib/firebase-admin'
+import { hasAdminAccess } from './admin-access'
 
 const SESSION_COOKIE = '__session'
-const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000 // 1 semana
+const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000
 
-/** Crea session cookie a partir de un ID token de Firebase */
 export async function createSessionCookie(idToken: string): Promise<string> {
-  const adminAuth = getAuth(getApps()[0])
+  const adminAuth = getAuth(adminApp)
   return adminAuth.createSessionCookie(idToken, {
     expiresIn: SESSION_DURATION_MS,
   })
 }
 
-/** Verifica la session cookie y devuelve el UID. Lanza si inválida. */
-export async function verifySessionCookie(cookie: string): Promise<string> {
-  const adminAuth = getAuth(getApps()[0])
-  const decoded = await adminAuth.verifySessionCookie(cookie, true)
-  const adminUid = process.env.ADMIN_UID!
-  if (decoded.uid !== adminUid) throw new Error('Not admin')
+export async function verifyAdminIdToken(idToken: string): Promise<string> {
+  const adminAuth = getAuth(adminApp)
+  const decoded = await adminAuth.verifyIdToken(idToken, true)
+  const allowed = await hasAdminAccess(decoded.uid)
+
+  if (!allowed) {
+    throw new Error('Not admin')
+  }
+
   return decoded.uid
 }
 
-/** Lee la session cookie del request actual (server-side) */
+export async function verifySessionCookie(cookie: string): Promise<string> {
+  const adminAuth = getAuth(adminApp)
+  const decoded = await adminAuth.verifySessionCookie(cookie, true)
+  const allowed = await hasAdminAccess(decoded.uid)
+
+  if (!allowed) {
+    throw new Error('Not admin')
+  }
+
+  return decoded.uid
+}
+
 export async function getSessionUid(): Promise<string | null> {
   try {
     const cookieStore = await cookies()

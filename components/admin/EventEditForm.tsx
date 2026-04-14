@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import type { AdminEvent } from '@/lib/admin-queries'
 
 interface Props {
-  event: any
+  event: AdminEvent
   locale: string
 }
 
@@ -16,29 +17,42 @@ export default function EventEditForm({ event, locale }: Props) {
     category: event.category || '',
     startDate: event.startDate ? event.startDate.split('T')[0] : '',
     endDate: event.endDate ? event.endDate.split('T')[0] : '',
+    groupId: event.groupId || '',
   })
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
 
-  function set(key: string, value: string) {
-    setForm(f => ({ ...f, [key]: value }))
+  function set<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
+    setForm((current) => ({ ...current, [key]: value }))
   }
 
   async function handleSave() {
     setSaving(true)
     setMessage(null)
+
     try {
       const res = await fetch(`/api/admin/events/${event.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          groupId: form.groupId || null,
+          endDate: form.endDate || null,
+        }),
       })
-      if (!res.ok) throw new Error('Error al guardar')
-      setMessage({ type: 'ok', text: 'Evento actualizado' })
+
+      if (!res.ok) {
+        throw new Error('Error al guardar')
+      }
+
+      setMessage({ type: 'ok', text: 'Evento actualizado correctamente' })
       router.refresh()
-    } catch (err) {
-      setMessage({ type: 'error', text: err instanceof Error ? err.message : 'Error desconocido' })
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'Error desconocido',
+      })
     } finally {
       setSaving(false)
     }
@@ -46,72 +60,121 @@ export default function EventEditForm({ event, locale }: Props) {
 
   async function handleDelete() {
     if (!confirm('¿Eliminar este evento permanentemente?')) return
+
     setDeleting(true)
     try {
       const res = await fetch(`/api/admin/events/${event.id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error('Error al eliminar')
       router.push(`/${locale}/admin/events`)
-    } catch (err) {
-      setMessage({ type: 'error', text: 'Error al eliminar' })
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'Error al eliminar',
+      })
       setDeleting(false)
     }
   }
 
-  const inputClass = "w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-accent/40 transition-colors"
-  const labelClass = "block text-[11px] font-bold uppercase tracking-wider text-text-muted mb-2"
+  const inputClass =
+    'w-full rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none transition-colors focus:border-accent/35'
+  const labelClass = 'mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted'
 
   return (
     <div className="space-y-6">
-      {message && (
-        <div className={`rounded-2xl border px-6 py-4 text-sm font-medium
-          ${message.type === 'ok' ? 'bg-accent/10 text-accent border-accent/20' : 'bg-danger/10 text-danger border-danger/20'}`}>
+      {message ? (
+        <div
+          className={`rounded-2xl border px-4 py-3 text-sm ${
+            message.type === 'ok'
+              ? 'border-accent/20 bg-accent/10 text-accent'
+              : 'border-danger/20 bg-danger/10 text-danger'
+          }`}
+        >
           {message.text}
         </div>
-      )}
+      ) : null}
 
-      <section className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
-        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-accent mb-6">Detalles del Evento</h3>
-        <div className="space-y-4">
-          <div>
-            <label className={labelClass}>Título del Evento</label>
-            <input className={inputClass} value={form.title} onChange={e => set('title', e.target.value)} />
+      <section className="rounded-[24px] border border-border bg-card p-5 shadow-sm sm:p-6">
+        <h3 className="text-sm font-semibold text-text">Detalles del evento</h3>
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <div className="md:col-span-2">
+            <label className={labelClass}>Titulo</label>
+            <input
+              className={inputClass}
+              value={form.title}
+              onChange={(event) => set('title', event.target.value)}
+            />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Fecha Inicio</label>
-              <input type="date" className={inputClass} value={form.startDate} onChange={e => set('startDate', e.target.value)} />
-            </div>
-            <div>
-              <label className={labelClass}>Fecha Fin</label>
-              <input type="date" className={inputClass} value={form.endDate} onChange={e => set('endDate', e.target.value)} />
-            </div>
-          </div>
+
           <div>
-            <label className={labelClass}>Categoría</label>
-            <select className={inputClass} value={form.category} onChange={e => set('category', e.target.value)}>
+            <label className={labelClass}>Fecha de inicio</label>
+            <input
+              type="date"
+              className={inputClass}
+              value={form.startDate}
+              onChange={(event) => set('startDate', event.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className={labelClass}>Fecha de fin</label>
+            <input
+              type="date"
+              className={inputClass}
+              value={form.endDate}
+              onChange={(event) => set('endDate', event.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className={labelClass}>Categoria</label>
+            <select
+              className={inputClass}
+              value={form.category}
+              onChange={(event) => set('category', event.target.value)}
+            >
               <option value="Encuentro">Encuentro / Batizado</option>
               <option value="Taller">Taller / Workshop</option>
               <option value="Roda">Roda</option>
               <option value="Festival">Festival</option>
             </select>
           </div>
+
+          <div>
+            <label className={labelClass}>Grupo relacionado</label>
+            <input
+              className={inputClass}
+              value={form.groupId}
+              onChange={(event) => set('groupId', event.target.value)}
+              placeholder="groupId opcional"
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className={labelClass}>Descripcion</label>
+            <textarea
+              className={`${inputClass} min-h-[150px] resize-y`}
+              value={form.description}
+              onChange={(event) => set('description', event.target.value)}
+            />
+          </div>
         </div>
       </section>
 
-      <div className="flex justify-between items-center pt-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button
           onClick={handleDelete}
           disabled={deleting}
-          className="rounded-xl border border-rose-900/40 bg-rose-950/10 px-6 py-3 text-sm font-bold text-rose-500 transition-all hover:bg-rose-950/20 disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-xl border border-danger/30 bg-danger/10 px-5 py-3 text-sm font-semibold text-danger transition-colors hover:bg-danger/14 disabled:opacity-50"
         >
-          {deleting ? 'Eliminando...' : 'Eliminar Evento'}
+          {deleting ? 'Eliminando...' : 'Eliminar evento'}
         </button>
+
         <button
           onClick={handleSave}
           disabled={saving}
-          className="rounded-xl bg-accent px-10 py-4 text-sm font-bold tracking-widest text-[#08110C] uppercase transition-all hover:opacity-90 disabled:opacity-50 shadow-sm"
+          className="inline-flex items-center justify-center rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-[#081019] transition-opacity hover:opacity-92 disabled:opacity-50"
         >
-          {saving ? 'Guardando...' : 'Guardar Cambios'}
+          {saving ? 'Guardando...' : 'Guardar cambios'}
         </button>
       </div>
     </div>

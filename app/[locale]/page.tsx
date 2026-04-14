@@ -199,16 +199,16 @@ export default async function LandingPage({ params }: Props) {
       <section className="relative isolate overflow-hidden px-5 pb-16 pt-10 sm:px-8 sm:pt-14 lg:px-12 lg:pb-24">
         <div
           aria-hidden="true"
-          className="absolute left-[-140px] top-[-120px] h-[340px] w-[340px] rounded-full bg-[radial-gradient(circle,rgba(216,173,99,0.2)_0%,rgba(216,173,99,0)_72%)] blur-2xl"
+          className="absolute left-[-120px] top-[-100px] h-[260px] w-[260px] rounded-full bg-[radial-gradient(circle,rgba(208,162,96,0.08)_0%,rgba(208,162,96,0)_72%)] blur-2xl"
         />
         <div
           aria-hidden="true"
-          className="absolute right-[-120px] top-[-100px] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(121,207,114,0.18)_0%,rgba(121,207,114,0)_72%)] blur-2xl"
+          className="absolute right-[-100px] top-[-80px] h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle,rgba(132,201,122,0.08)_0%,rgba(132,201,122,0)_72%)] blur-2xl"
         />
 
         <div className="mx-auto max-w-[1280px]">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-end">
-            <div className="rounded-[34px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.84),rgba(10,18,27,0.94))] px-6 py-7 shadow-[0_30px_90px_var(--shadow)] sm:px-8 sm:py-9">
+            <div className="rounded-[30px] border border-border bg-card px-6 py-7 shadow-sm sm:px-8 sm:py-9">
               <p className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
                 <span className="h-px w-8 bg-accent/40" />
                 {copy.heroTag}
@@ -243,7 +243,7 @@ export default async function LandingPage({ params }: Props) {
               </div>
             </div>
 
-            <aside className="rounded-[34px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.92),rgba(10,18,27,0.98))] p-6 shadow-[0_30px_90px_var(--shadow)] sm:p-7">
+            <aside className="rounded-[30px] border border-border bg-card p-6 shadow-sm sm:p-7">
               <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
                 {copy.panelEyebrow}
               </p>
@@ -256,7 +256,7 @@ export default async function LandingPage({ params }: Props) {
                 {copy.panelPoints.map((point) => (
                   <div
                     key={point}
-                    className="flex items-start gap-3 rounded-[20px] border border-border bg-surface/55 px-4 py-3"
+                    className="flex items-start gap-3 rounded-[18px] border border-border bg-surface/60 px-4 py-3"
                   >
                     <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-accent" />
                     <span className="text-sm leading-6 text-text-secondary">{point}</span>
@@ -265,7 +265,7 @@ export default async function LandingPage({ params }: Props) {
               </div>
 
               {featuredEducator ? (
-                <div className="mt-6 rounded-[24px] border border-border bg-card/80 p-4">
+                <div className="mt-6 rounded-[22px] border border-border bg-surface/45 p-4">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                     {copy.featured}
                   </p>
@@ -359,7 +359,7 @@ export default async function LandingPage({ params }: Props) {
       </section>
 
       <section className="mx-auto max-w-[1280px] px-5 pb-20 sm:px-8 lg:px-12 lg:pb-24">
-        <div className="grid gap-6 rounded-[34px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 shadow-[0_30px_90px_var(--shadow)] lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center lg:p-8">
+        <div className="grid gap-6 rounded-[30px] border border-border bg-card p-6 shadow-sm lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center lg:p-8">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
               {copy.ctaEyebrow}
@@ -398,10 +398,10 @@ export default async function LandingPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="rounded-[30px] border border-border bg-[linear-gradient(180deg,rgba(23,34,49,0.98),rgba(12,20,30,0.98))] p-5">
-            <div className="mx-auto max-w-[240px] rounded-[30px] border border-accent/16 bg-[linear-gradient(180deg,rgba(8,16,25,1),rgba(15,22,31,1))] p-4 shadow-[0_22px_60px_var(--shadow-soft)]">
+          <div className="rounded-[28px] border border-border bg-surface/45 p-5">
+            <div className="mx-auto max-w-[240px] rounded-[28px] border border-border bg-bg p-4 shadow-sm">
               <div className="mx-auto h-1.5 w-16 rounded-full bg-border" />
-              <div className="mt-5 rounded-[22px] border border-border bg-card/90 p-4">
+              <div className="mt-5 rounded-[22px] border border-border bg-card p-4">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-accent">
                   Agenda
                 </p>

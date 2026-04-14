@@ -40,31 +40,20 @@ export default function StatsBar({ locale, stats }: Props) {
 
   return (
     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-      {items.map((item, index) => (
+      {items.map((item) => (
         <div
           key={item.label}
-          className="relative overflow-hidden rounded-[24px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.95),rgba(10,18,27,0.98))] px-5 py-5 shadow-[0_18px_48px_var(--shadow-soft)]"
+          className="rounded-[22px] border border-border bg-card px-5 py-5 shadow-sm"
         >
-          <div
-            aria-hidden="true"
-            className={`absolute right-[-26px] top-[-30px] h-24 w-24 rounded-full ${
-              index % 2 === 0
-                ? 'bg-[radial-gradient(circle,rgba(121,207,114,0.18)_0%,rgba(121,207,114,0)_72%)]'
-                : 'bg-[radial-gradient(circle,rgba(216,173,99,0.18)_0%,rgba(216,173,99,0)_72%)]'
-            }`}
-          />
-
-          <div className="relative">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
-              {item.label}
-            </p>
-            <div className="mt-4 text-[clamp(34px,5vw,48px)] font-semibold leading-none tracking-[-0.05em] text-text">
-              {item.value.toLocaleString()}
-            </div>
-            <p className="mt-4 max-w-[26ch] text-sm leading-6 text-text-secondary">
-              {item.caption}
-            </p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-text-muted">
+            {item.label}
+          </p>
+          <div className="mt-4 text-[clamp(34px,5vw,46px)] font-semibold leading-none tracking-[-0.04em] text-text">
+            {item.value.toLocaleString()}
           </div>
+          <p className="mt-3 max-w-[26ch] text-sm leading-6 text-text-secondary">
+            {item.caption}
+          </p>
         </div>
       ))}
     </div>

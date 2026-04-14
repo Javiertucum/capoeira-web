@@ -116,8 +116,8 @@ export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
     <article
       className={`overflow-hidden rounded-[26px] border transition-all duration-200 ${
         isActive
-          ? 'border-accent/55 bg-[linear-gradient(180deg,rgba(23,34,49,0.98),rgba(11,18,27,0.98))] shadow-[0_22px_52px_var(--shadow-soft)]'
-          : 'border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] hover:border-accent/24'
+          ? 'border-accent/45 bg-surface shadow-sm'
+          : 'border-border bg-card hover:border-accent/24'
       }`}
     >
       <div

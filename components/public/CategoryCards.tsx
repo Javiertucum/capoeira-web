@@ -62,38 +62,37 @@ export default function CategoryCards({ locale, stats }: Props) {
         <Link
           key={card.key}
           href={card.href}
-          className="group relative overflow-hidden rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/30"
+          className="group rounded-[24px] border border-border bg-card p-6 transition-colors duration-200 hover:border-accent/24"
         >
-          <div aria-hidden="true" className={`absolute inset-0 ${card.tone}`} />
-          <div className="relative flex h-full flex-col">
+          <div className="flex h-full flex-col">
             <div className="flex items-start justify-between gap-4">
-              <div className="grid h-14 w-14 place-items-center rounded-[18px] border border-border bg-surface/80 text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl border border-border bg-surface text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
                 {card.monogram}
               </div>
 
               <div className="text-right">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-text-muted">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-text-muted">
                   {copy.countLabel}
                 </p>
-                <p className="mt-2 text-[32px] font-semibold leading-none tracking-[-0.04em] text-text">
+                <p className="mt-2 text-[30px] font-semibold leading-none tracking-[-0.03em] text-text">
                   {card.count.toLocaleString()}
                 </p>
               </div>
             </div>
 
-            <div className="mt-10">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-accent">
+            <div className="mt-8">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
                 {copy.laneLabel}
               </p>
-              <h3 className="mt-3 text-[28px] font-semibold leading-[1.02] tracking-[-0.04em] text-text">
+              <h3 className="mt-3 text-[26px] font-semibold leading-[1.06] tracking-[-0.03em] text-text">
                 {card.name}
               </h3>
-              <p className="mt-4 max-w-[34ch] text-sm leading-7 text-text-secondary">
+              <p className="mt-3 max-w-[34ch] text-sm leading-7 text-text-secondary">
                 {card.description}
               </p>
             </div>
 
-            <div className="mt-auto pt-8">
+            <div className="mt-auto pt-6">
               <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
                 {t('explore')}
                 <svg

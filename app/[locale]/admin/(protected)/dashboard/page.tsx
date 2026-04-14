@@ -28,9 +28,9 @@ export default async function DashboardPage({ params }: Props) {
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       <AdminTopbar section="Dashboard" />
-      <div className="flex-1 overflow-y-auto p-6 lg:p-10">
+      <div className="flex-1 overflow-y-auto p-4 pb-24 sm:p-6 lg:p-8 lg:pb-8">
         
-        <div className="mb-10">
+        <div className="mb-8">
           <h1 className="text-2xl font-bold text-text">Dashboard</h1>
           <p className="mt-1 text-sm text-text-muted">Resumen global de la plataforma.</p>
         </div>
@@ -119,7 +119,7 @@ export default async function DashboardPage({ params }: Props) {
                     <div className="mt-1 text-xs text-text-muted">{bug.userEmail} · v{bug.appVersion}</div>
                   </div>
                   <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider flex-shrink-0">
-                    {new Date(bug.createdAt).toLocaleDateString(locale)}
+                    {bug.createdAt ? new Date(bug.createdAt).toLocaleDateString(locale) : '—'}
                   </div>
                 </Link>
               ))}

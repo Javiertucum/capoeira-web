@@ -27,6 +27,7 @@ export default function UserEditForm({ user, locale }: Props) {
     website:    user.socialLinks?.website ?? '',
     youtube:    user.socialLinks?.youtube ?? '',
     tiktok:     user.socialLinks?.tiktok ?? '',
+    adminPanelAccess: user.adminPanelAccess ?? false,
   })
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -53,6 +54,7 @@ export default function UserEditForm({ user, locale }: Props) {
         bio:        form.bio || null,
         country:    form.country || null,
         disabled:   form.disabled,
+        adminPanelAccess: form.adminPanelAccess,
         socialLinks: {
           instagram: form.instagram || null,
           facebook:  form.facebook  || null,
@@ -141,6 +143,7 @@ export default function UserEditForm({ user, locale }: Props) {
               <select className={inputClass} value={form.role} onChange={e => set('role', e.target.value)}>
                 <option value="student">Estudiante</option>
                 <option value="educator">Educador</option>
+                <option value="admin">Admin</option>
               </select>
             </div>
             <div>
@@ -184,6 +187,16 @@ export default function UserEditForm({ user, locale }: Props) {
             <p className="text-xs text-text-muted">Acciones administrativas de seguridad y eliminación de cuenta.</p>
           </div>
           <div className="flex flex-wrap gap-4">
+             <label className="flex items-center gap-3 cursor-pointer bg-surface/40 hover:bg-surface/60 border border-border rounded-xl px-4 py-3 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={form.adminPanelAccess}
+                  onChange={e => set('adminPanelAccess', e.target.checked)}
+                  className="w-5 h-5 accent-accent rounded-lg"
+                />
+                <span className="text-sm font-semibold text-text">Acceso al admin</span>
+              </label>
+
              <label className="flex items-center gap-3 cursor-pointer bg-surface/40 hover:bg-surface/60 border border-border rounded-xl px-4 py-3 transition-colors">
                 <input
                   type="checkbox"

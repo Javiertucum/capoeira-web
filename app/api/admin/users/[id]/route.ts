@@ -19,6 +19,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     'name', 'surname', 'nickname', 'nameLower', 'surnameLower', 'nicknameLower',
     'role', 'groupId', 'nucleoIds', 'graduationLevelId', 'setupComplete',
     'bio', 'country', 'socialLinks', 'educatorEligible', 'supervisorIds',
+    'adminPanelAccess',
   ]
   // Permitted fields for usersPublic/{uid} (public)
   const publicFields = [

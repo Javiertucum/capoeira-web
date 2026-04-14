@@ -1,9 +1,9 @@
 'use client'
 
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
-interface Props { 
-  section: string 
+interface Props {
+  section: string
 }
 
 export default function AdminTopbar({ section }: Props) {
@@ -18,27 +18,29 @@ export default function AdminTopbar({ section }: Props) {
   }
 
   return (
-    <header className="h-[64px] flex-shrink-0 border-b border-border bg-card/80 backdrop-blur-md flex items-center justify-between px-8 z-10">
-      <div className="flex items-center gap-2 text-xs text-text-muted">
-        <span>Admin</span>
-        <span className="text-border">/</span>
-        <span className="font-semibold text-text">{section}</span>
-      </div>
-
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-3 rounded-full bg-surface border border-border px-3 py-1.5 shadow-sm">
-          <div className="w-6 h-6 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-[10px] font-bold text-accent">
-            JM
+    <header className="sticky top-0 z-30 border-b border-border bg-[rgba(8,16,25,0.94)] backdrop-blur-lg">
+      <div className="flex flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+              Admin panel
+            </p>
+            <p className="mt-2 truncate text-sm font-semibold text-text sm:text-base">{section}</p>
           </div>
-          <span className="text-[11px] font-medium text-text-secondary">Javier Muñoz</span>
+
+          <div className="flex items-center justify-between gap-3 sm:justify-end">
+            <div className="rounded-full border border-border bg-card px-3 py-2 text-xs text-text-secondary">
+              Sesion activa
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center justify-center rounded-xl border border-border bg-surface px-4 py-2 text-sm font-semibold text-text-secondary transition-colors hover:border-danger/30 hover:text-danger"
+            >
+              Cerrar sesion
+            </button>
+          </div>
         </div>
-        
-        <button
-          onClick={handleLogout}
-          className="rounded-lg bg-surface border border-border px-3 py-1.5 text-[11px] font-semibold text-text-muted hover:text-danger hover:border-danger/30 transition-all cursor-pointer"
-        >
-          Cerrar Sesión
-        </button>
       </div>
     </header>
   )

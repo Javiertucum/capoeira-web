@@ -17,8 +17,8 @@ export default async function BugReportsPage({ params }: Props) {
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       <AdminTopbar section="Bug Reports" />
-      <div className="flex-1 overflow-y-auto p-6 lg:p-10">
-        <div className="mb-8 flex items-center justify-between">
+      <div className="flex-1 overflow-y-auto p-4 pb-24 sm:p-6 lg:p-8 lg:pb-8">
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text">Soporte Técnico</h1>
             <p className="mt-1 text-sm text-text-muted">Revisa y gestiona los reportes de error enviados desde la app.</p>
@@ -57,7 +57,9 @@ export default async function BugReportsPage({ params }: Props) {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm font-medium text-text max-w-[300px] truncate">{bug.description}</div>
-                      <div className="text-[10px] text-text-muted mt-1 uppercase tracking-tight">{new Date(bug.createdAt).toLocaleString(locale)}</div>
+                      <div className="text-[10px] text-text-muted mt-1 uppercase tracking-tight">
+                        {bug.createdAt ? new Date(bug.createdAt).toLocaleString(locale) : '—'}
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-xs text-text-secondary">
                       {bug.userEmail}

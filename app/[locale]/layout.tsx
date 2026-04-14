@@ -28,7 +28,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <NextIntlClientProvider locale={locale} messages={messages}>
       <div className="min-h-screen">
         <Nav />
-        <main className="pt-[74px]">{children}</main>
+        <main className="pt-[72px]">{children}</main>
       </div>
     </NextIntlClientProvider>
   )
