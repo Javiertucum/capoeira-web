@@ -23,6 +23,7 @@ type LocaleCopy = {
   trainingSpot: string
   openGroup: string
   viewDetail: string
+  weekdayShort: string[]
 }
 
 const COPY: Record<string, LocaleCopy> = {
@@ -37,6 +38,7 @@ const COPY: Record<string, LocaleCopy> = {
     trainingSpot: 'Espacio de treino',
     openGroup: 'Abrir grupo',
     viewDetail: 'Ver detalle',
+    weekdayShort: ['dom', 'lun', 'mar', 'mie', 'jue', 'vie', 'sab'],
   },
   pt: {
     showOnMap: 'Ver no mapa',
@@ -49,6 +51,7 @@ const COPY: Record<string, LocaleCopy> = {
     trainingSpot: 'Espaco de treino',
     openGroup: 'Abrir grupo',
     viewDetail: 'Ver detalhe',
+    weekdayShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'],
   },
   en: {
     showOnMap: 'Show on map',
@@ -61,6 +64,7 @@ const COPY: Record<string, LocaleCopy> = {
     trainingSpot: 'Training spot',
     openGroup: 'Open group',
     viewDetail: 'View detail',
+    weekdayShort: ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
   },
 }
 
@@ -73,12 +77,11 @@ function getLocation(nucleo: MapNucleo, copy: LocaleCopy) {
   return parts.length > 0 ? parts.join(', ') : copy.noLocation
 }
 
-function getWeekdayLabel(locale: string, dayOfWeek: number) {
-  const baseDate = new Date(Date.UTC(2024, 0, 7 + dayOfWeek))
-  return new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(baseDate)
+function getWeekdayLabel(copy: LocaleCopy, dayOfWeek: number) {
+  return copy.weekdayShort[dayOfWeek] ?? copy.weekdayShort[0]
 }
 
-function getScheduleSummary(locale: string, nucleo: MapNucleo, copy: LocaleCopy) {
+function getScheduleSummary(nucleo: MapNucleo, copy: LocaleCopy) {
   if (!nucleo.schedules || nucleo.schedules.length === 0) {
     return null
   }
@@ -87,7 +90,7 @@ function getScheduleSummary(locale: string, nucleo: MapNucleo, copy: LocaleCopy)
     .slice(0, 2)
     .map(
       (schedule) =>
-        `${getWeekdayLabel(locale, schedule.dayOfWeek)} ${schedule.startTime}-${schedule.endTime}`
+        `${getWeekdayLabel(copy, schedule.dayOfWeek)} ${schedule.startTime}-${schedule.endTime}`
     )
     .join(' | ')
 
@@ -101,7 +104,7 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
   const copy = getCopy(locale)
   const hasCoordinates =
     typeof nucleo.latitude === 'number' && typeof nucleo.longitude === 'number'
-  const scheduleSummary = getScheduleSummary(locale, nucleo, copy)
+  const scheduleSummary = getScheduleSummary(nucleo, copy)
   const isInteractive = typeof onSelect === 'function'
 
   function handleActivate() {
