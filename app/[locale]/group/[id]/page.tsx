@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import NucleoListItem from '@/components/public/NucleoListItem'
 import Badge from '@/components/ui/Badge'
 import { getEducatorProfile, getGraduationLevels, getGroupWithNucleos, getGroupEducators } from '@/lib/queries'
@@ -10,7 +11,7 @@ import CordaVisual from '@/components/public/CordaVisual'
 import AdDisplay from '@/components/ads/AdDisplay'
 import type { GraduationLevel } from '@/lib/types'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ locale: string; id: string }>
@@ -236,13 +237,13 @@ export default async function GroupPage({ params }: Props) {
             <div className="flex justify-center lg:justify-start">
               <div className="relative h-[170px] w-[170px] overflow-hidden rounded-[30px] border border-border bg-surface shadow-[0_22px_60px_var(--shadow-soft)]">
                 {group.logoUrl ? (
-                  <img
+                  <Image
                     src={group.logoUrl}
                     alt={group.name}
-                    loading="eager"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 h-full w-full object-contain p-5"
+                    fill
+                    sizes="170px"
+                    priority
+                    className="object-contain p-5"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-4xl font-bold text-text-muted">
@@ -341,13 +342,12 @@ export default async function GroupPage({ params }: Props) {
                 <div className="mt-5 text-center">
                   <div className="relative mx-auto h-[84px] w-[84px] overflow-hidden rounded-full border border-accent/20 bg-surface">
                     {adminUser.avatarUrl ? (
-                      <img
+                      <Image
                         src={adminUser.avatarUrl}
                         alt={adminUser.nickname || adminUser.name || 'Admin'}
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                        className="absolute inset-0 h-full w-full object-cover"
+                        fill
+                        sizes="84px"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-xl font-bold text-text-muted">
@@ -398,13 +398,12 @@ export default async function GroupPage({ params }: Props) {
                       >
                         <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-border bg-card">
                           {edu.avatarUrl ? (
-                            <img
+                            <Image
                               src={edu.avatarUrl}
                               alt={edu.nickname || edu.name || 'Educator'}
-                              loading="lazy"
-                              decoding="async"
-                              referrerPolicy="no-referrer"
-                              className="absolute inset-0 h-full w-full object-cover"
+                              fill
+                              sizes="40px"
+                              className="object-cover"
                             />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center text-sm font-bold text-text-muted">

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
 import { normalizeSocialLink } from '@/lib/social-links'
@@ -14,16 +15,16 @@ const COPY = {
     locations: 'espacios',
     links: 'enlaces',
     open: 'Abrir perfil',
-    empty: 'Perfil publico listo para completar.',
-    profileLabel: 'Perfil publico',
+    empty: 'Perfil público listo para completar.',
+    profileLabel: 'Perfil público',
   },
   pt: {
     role: 'Educador',
     locations: 'espacos',
     links: 'links',
     open: 'Abrir perfil',
-    empty: 'Perfil publico pronto para completar.',
-    profileLabel: 'Perfil publico',
+    empty: 'Perfil público pronto para completar.',
+    profileLabel: 'Perfil público',
   },
   en: {
     role: 'Educator',
@@ -76,13 +77,12 @@ export default function EducatorCard({ educator, locale }: Props) {
           <div className="flex items-start gap-4">
             <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-[22px] border border-accent/20 bg-[rgba(121,207,114,0.14)]">
               {educator.avatarUrl ? (
-                <img
+                <Image
                   src={educator.avatarUrl}
                   alt={displayName}
-                  loading="lazy"
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                  className="absolute inset-0 h-full w-full object-cover"
+                  fill
+                  sizes="72px"
+                  className="object-cover"
                 />
               ) : (
                 <span className="text-lg font-semibold uppercase tracking-[0.14em] text-accent">

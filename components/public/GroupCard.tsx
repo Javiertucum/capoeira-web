@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
 import type { Group } from '@/lib/types'
@@ -10,19 +11,19 @@ type Props = {
 const COPY = {
   es: {
     members: 'miembros',
-    countries: 'paises',
+    countries: 'países',
     cities: 'ciudades',
     open: 'Abrir grupo',
     label: 'Comunidad',
-    empty: 'Perfil publico de comunidad listo para crecer.',
+    empty: 'Perfil público de comunidad listo para crecer.',
   },
   pt: {
     members: 'membros',
-    countries: 'paises',
+    countries: 'países',
     cities: 'cidades',
     open: 'Abrir grupo',
     label: 'Comunidade',
-    empty: 'Perfil publico da comunidade pronto para crescer.',
+    empty: 'Perfil público da comunidade pronto para crescer.',
   },
   en: {
     members: 'members',
@@ -46,13 +47,12 @@ export default function GroupCard({ group, locale }: Props) {
           <div className="flex items-start gap-4">
             <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-[22px] border border-border bg-surface shadow-sm">
               {group.logoUrl ? (
-                <img
+                <Image
                   src={group.logoUrl}
                   alt={group.name}
-                  loading="lazy"
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                  className="absolute inset-0 h-full w-full object-contain p-3"
+                  fill
+                  sizes="72px"
+                  className="object-contain p-3"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center text-xl font-bold text-text-muted">

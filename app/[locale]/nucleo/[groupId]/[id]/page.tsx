@@ -7,7 +7,7 @@ import CordaVisual from '@/components/public/CordaVisual'
 import Image from 'next/image'
 import { getLanguageAlternates, getLocalizedUrl, getOgImageUrl, buildLocalBusinessSchema, buildBreadcrumbSchema } from '@/lib/site'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ locale: string; groupId: string; id: string }>

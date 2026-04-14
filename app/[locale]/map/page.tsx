@@ -3,7 +3,7 @@ import MapClientShell from './MapClientShell'
 import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getLocalizedUrl, getOgImageUrl } from '@/lib/site'
 import type { MapNucleo, PublicUserProfile, Group } from '@/lib/types'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 type Props = Readonly<{
   params: Promise<{ locale: string }>
@@ -83,7 +83,7 @@ export default async function MapPage({ params, searchParams }: Props) {
     }
   } catch (error) {
     dataUnavailable = true
-    console.error('Data directory unavailable, rendering empty fallback.', error)
+    if (process.env.NODE_ENV === 'development') console.error('Data directory unavailable, rendering empty fallback.', error)
   }
 
   return (

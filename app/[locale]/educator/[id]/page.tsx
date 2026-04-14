@@ -8,7 +8,7 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { getLanguageAlternates, getLocalizedUrl, getOgImageUrl, buildPersonSchema, buildBreadcrumbSchema } from '@/lib/site'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ locale: string; id: string }>

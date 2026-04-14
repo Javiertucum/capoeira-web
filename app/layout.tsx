@@ -11,11 +11,13 @@ const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID
 const bodyFont = Manrope({
   subsets: ['latin'],
   variable: '--font-body',
+  display: 'swap',
 })
 
 const displayFont = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-display',
+  display: 'swap',
 })
 
 const defaultDescription = getSiteDescription(routing.defaultLocale)
@@ -102,7 +104,7 @@ export default async function RootLayout({
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
             crossOrigin="anonymous"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
           />
         )}
       </body>

@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import CategoryCards from '@/components/public/CategoryCards'
 import EducatorCard from '@/components/public/EducatorCard'
@@ -10,7 +11,7 @@ import { getLanguageAlternates, getLocalizedUrl, getSiteDescription, getOgImageU
 import AdDisplay from '@/components/ads/AdDisplay'
 import type { PublicUserProfile, StatsData } from '@/lib/types'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 type Props = Readonly<{
   params: Promise<{ locale: string }>
@@ -199,7 +200,7 @@ export default async function LandingPage({ params }: Props) {
     const { getFeaturedEducators, getStats } = await import('@/lib/queries')
     ;[stats, educators] = await Promise.all([getStats(), getFeaturedEducators()])
   } catch (error) {
-    console.error('Landing data unavailable, rendering fallback content.', error)
+    if (process.env.NODE_ENV === 'development') console.error('Landing data unavailable, rendering fallback content.', error)
   }
 
   const featuredEducator = educators[0] ?? null
@@ -288,13 +289,12 @@ export default async function LandingPage({ params }: Props) {
                   <div className="mt-4 flex items-center gap-4">
                     <div className="relative h-[64px] w-[64px] overflow-hidden rounded-[20px] border border-accent/20 bg-[rgba(121,207,114,0.14)]">
                       {featuredEducator.avatarUrl ? (
-                        <img
+                        <Image
                           src={featuredEducator.avatarUrl}
                           alt={getDisplayName(featuredEducator)}
-                          loading="lazy"
-                          decoding="async"
-                          referrerPolicy="no-referrer"
-                          className="absolute inset-0 h-full w-full object-cover"
+                          fill
+                          sizes="64px"
+                          className="object-cover"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-lg font-semibold uppercase tracking-[0.12em] text-accent">
