@@ -114,7 +114,7 @@ export default async function AppPage({ params }: Props) {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href={`/${locale}/map`}
-              className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#081019] transition-transform hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5"
             >
               {copy.primary}
             </Link>
