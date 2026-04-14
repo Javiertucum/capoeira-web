@@ -71,7 +71,7 @@ export default function GroupCard({ group, locale }: Props) {
 
               <div className="mt-4 flex flex-wrap gap-2">
                 {group.graduationSystemName ? (
-                  <Badge variant="accent">{group.graduationSystemName}</Badge>
+                  <Badge variant="accent">{copy.label + ' · ' + group.graduationSystemName}</Badge>
                 ) : null}
                 {group.memberCount ? <Badge>{`${group.memberCount} ${copy.members}`}</Badge> : null}
               </div>

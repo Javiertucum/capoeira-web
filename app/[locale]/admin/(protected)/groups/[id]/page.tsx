@@ -49,6 +49,12 @@ export default async function GroupAdminPage({ params }: Props) {
               <p className="mt-2 text-sm text-text-muted">
                 Admin ID <code className="rounded bg-surface px-1.5 py-0.5 text-[11px]">{group.id}</code>
               </p>
+              {/* Sistema de graduación */}
+              {group.graduationSystemName && (
+                <p className="mt-2 text-sm text-accent font-semibold">
+                  Sistema de graduación: <span className="font-bold">{group.graduationSystemName}</span>
+                </p>
+              )}
             </div>
           </div>
 

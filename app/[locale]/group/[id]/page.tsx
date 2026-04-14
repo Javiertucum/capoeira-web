@@ -73,11 +73,15 @@ export default async function GroupPage({ params }: Props) {
     ? await getEducatorProfile(group.adminUserIds[0]).catch(() => null)
     : null
 
+  // Sistema de graduación
+  const graduationSystem = group.graduationSystemName || t('unspecified')
+
   const stats = [
     { label: t('members'), value: group.memberCount ?? 0 },
     { label: t('nucleos'), value: nucleos.length },
     { label: t('representedCountries'), value: group.representedCountries?.length ?? 0 },
     { label: t('representedCities'), value: group.representedCities?.length ?? 0 },
+    { label: t('graduationSystem'), value: graduationSystem },
   ]
 
   return (
@@ -137,7 +141,7 @@ export default async function GroupPage({ params }: Props) {
 
               <div className="mt-6 flex flex-wrap gap-2">
                 {group.graduationSystemName ? (
-                  <Badge variant="accent">{group.graduationSystemName}</Badge>
+                  <Badge variant="accent">{t('graduationSystem') + ': ' + group.graduationSystemName}</Badge>
                 ) : null}
                 {group.memberCount ? <Badge>{`${group.memberCount} ${t('members')}`}</Badge> : null}
                 {group.representedCountries?.length ? (
@@ -224,6 +228,12 @@ export default async function GroupPage({ params }: Props) {
                   <p className="mt-4 font-semibold text-text">
                     {adminUser.nickname || `${adminUser.name} ${adminUser.surname}`}
                   </p>
+                  {/* Mostrar cuerda y sistema de graduación si existen */}
+                  {adminUser.graduationLevelId && group.graduationSystemName ? (
+                    <div className="mt-2">
+                      <Badge variant="accent">{`${group.graduationSystemName}: ${adminUser.graduationLevelId}`}</Badge>
+                    </div>
+                  ) : null}
 
                   <Link
                     href={`/${locale}/educator/${adminUser.uid}`}

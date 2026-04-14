@@ -84,6 +84,9 @@ export default async function EducatorProfilePage({ params }: Props) {
       : Promise.resolve(null),
   ])
 
+  // Sistema de graduación del grupo
+  const graduationSystem = group?.graduationSystemName || t('unspecified')
+
   const displayName = getDisplayName(educator.name, educator.surname, educator.nickname)
   const fullName = [educator.name, educator.surname].filter(Boolean).join(' ').trim()
 
@@ -162,7 +165,10 @@ export default async function EducatorProfilePage({ params }: Props) {
               <div className="mt-6 flex flex-wrap gap-2">
                 <Badge variant="accent">{copy.role}</Badge>
                 {educator.country ? <Badge>{educator.country}</Badge> : null}
-                {graduationName ? <Badge>{graduationName}</Badge> : null}
+                {/* Mostrar cuerda y sistema de graduación */}
+                {graduationName ? (
+                  <Badge variant="accent">{`${graduationSystem}: ${graduationName}`}</Badge>
+                ) : null}
                 {nucleos.length > 0 ? <Badge>{`${nucleos.length} ${t('nucleos')}`}</Badge> : null}
               </div>
 
@@ -241,7 +247,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                 {t('graduation')}
               </p>
               <p className="mt-4 text-sm leading-7 text-text-secondary">
-                {graduationName || t('unspecified')}
+                {graduationName ? `${graduationSystem}: ${graduationName}` : t('unspecified')}
               </p>
             </section>
 
