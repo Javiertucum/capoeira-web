@@ -21,6 +21,7 @@ type LocaleCopy = {
   schedulePrefix: string
   trainingSpot: string
   openGroup: string
+  viewDetail: string
 }
 
 const COPY: Record<string, LocaleCopy> = {
@@ -34,6 +35,7 @@ const COPY: Record<string, LocaleCopy> = {
     schedulePrefix: 'Horarios',
     trainingSpot: 'Espacio de treino',
     openGroup: 'Abrir grupo',
+    viewDetail: 'Ver detalle',
   },
   pt: {
     showOnMap: 'Ver no mapa',
@@ -45,6 +47,7 @@ const COPY: Record<string, LocaleCopy> = {
     schedulePrefix: 'Horarios',
     trainingSpot: 'Espaco de treino',
     openGroup: 'Abrir grupo',
+    viewDetail: 'Ver detalhe',
   },
   en: {
     showOnMap: 'Show on map',
@@ -56,6 +59,7 @@ const COPY: Record<string, LocaleCopy> = {
     schedulePrefix: 'Schedule',
     trainingSpot: 'Training spot',
     openGroup: 'Open group',
+    viewDetail: 'View detail',
   },
 }
 
@@ -188,9 +192,15 @@ export default function NucleoListItem({ nucleo, isActive, onSelect }: Props) {
 
       {nucleo.groupId ? (
         <div className="flex items-center justify-between border-t border-border/70 px-5 py-4">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted">
-            {copy.groupLabel}
-          </span>
+          <Link
+            href={`/${locale}/nucleo/${nucleo.groupId}/${nucleo.id}`}
+            className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:text-text"
+          >
+            {copy.viewDetail}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
 
           <Link
             href={`/${locale}/group/${nucleo.groupId}`}

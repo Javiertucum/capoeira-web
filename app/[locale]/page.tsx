@@ -6,7 +6,8 @@ import EducatorCard from '@/components/public/EducatorCard'
 import HeroSearch from '@/components/public/HeroSearch'
 import StatsBar from '@/components/public/StatsBar'
 import SectionLabel from '@/components/ui/SectionLabel'
-import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getLocalizedUrl, getSiteDescription, getOgImageUrl, buildWebSiteSchema } from '@/lib/site'
+import AdDisplay from '@/components/ads/AdDisplay'
 import type { PublicUserProfile, StatsData } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -25,9 +26,15 @@ const EMPTY_STATS: StatsData = {
 const EMPTY_EDUCATORS: PublicUserProfile[] = []
 
 const META_TITLES = {
-  es: 'Encuentra tu Roda',
-  pt: 'Encontre sua Roda',
-  en: 'Find your Roda',
+  es: 'Directorio de Capoeira — Grupos, Núcleos y Educadores en el Mundo',
+  pt: 'Diretório de Capoeira — Grupos, Núcleos e Educadores no Mundo',
+  en: 'Capoeira Directory — Groups, Nucleos & Educators Worldwide',
+} as const
+
+const META_DESCRIPTIONS = {
+  es: 'Encuentra grupos de capoeira, núcleos de entrenamiento y educadores en todo el mundo. El directorio más completo de la comunidad capoeirista global.',
+  pt: 'Encontre grupos de capoeira, núcleos de treino e educadores em todo o mundo. O diretório mais completo da comunidade capoeirista global.',
+  en: 'Find capoeira groups, training nucleos, and educators worldwide. The most complete directory of the global capoeira community.',
 } as const
 
 const LANDING_COPY = {
@@ -147,25 +154,28 @@ function getDisplayName(educator: PublicUserProfile) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const title = META_TITLES[locale as keyof typeof META_TITLES] ?? META_TITLES.es
-  const description = getSiteDescription(locale)
+  const description = META_DESCRIPTIONS[locale as keyof typeof META_DESCRIPTIONS] ?? getSiteDescription(locale)
+  const ogImage = getOgImageUrl({ title: 'Agenda Capoeiragem', sub: description.slice(0, 80) })
 
   return {
     title,
     description,
     alternates: {
-      canonical: getLocalizedPath(locale),
+      canonical: getLocalizedUrl(locale),
       languages: getLanguageAlternates(),
     },
     openGraph: {
-      title: formatPageTitle(title),
+      title,
       description,
-      url: getLocalizedPath(locale),
+      url: getLocalizedUrl(locale),
       type: 'website',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: formatPageTitle(title),
+      title,
       description,
+      images: [ogImage],
     },
   }
 }
@@ -194,8 +204,14 @@ export default async function LandingPage({ params }: Props) {
 
   const featuredEducator = educators[0] ?? null
 
+  const webSiteSchema = buildWebSiteSchema(locale)
+
   return (
     <div className="relative">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+      />
       <section className="relative isolate overflow-hidden px-5 pb-16 pt-10 sm:px-8 sm:pt-14 lg:px-12 lg:pb-24">
         <div
           aria-hidden="true"
@@ -357,6 +373,10 @@ export default async function LandingPage({ params }: Props) {
           </div>
         )}
       </section>
+
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-12">
+        <AdDisplay className="my-4" />
+      </div>
 
       <section className="mx-auto max-w-[1280px] px-5 pb-20 sm:px-8 lg:px-12 lg:pb-24">
         <div className="grid gap-6 rounded-[30px] border border-border bg-card p-6 shadow-sm lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center lg:p-8">

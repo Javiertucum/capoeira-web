@@ -7,6 +7,7 @@ import MapView from '@/components/public/MapView'
 import NucleoListItem from '@/components/public/NucleoListItem'
 import EducatorCard from '@/components/public/EducatorCard'
 import GroupCard from '@/components/public/GroupCard'
+import AdInFeed from '@/components/ads/AdInFeed'
 import type { MapNucleo, PublicUserProfile, Group } from '@/lib/types'
 
 type Props = Readonly<{
@@ -446,12 +447,17 @@ export default function MapClientShell({
 
             <div className="mt-4 flex max-h-[560px] flex-col gap-3 overflow-y-auto pr-1 lg:max-h-[calc(100svh-230px)]">
               {searchResults.length > 0 ? (
-                searchResults.map((item) => {
+                searchResults.map((item, index) => {
+                  const showAd = index > 0 && index % 4 === 0
+
                   if (filter === 'educators') {
                     const educator = item as PublicUserProfile
                     return (
-                      <div key={educator.uid} onClick={() => setActiveId(educator.uid)} className="cursor-pointer">
-                        <EducatorCard educator={educator} locale={locale} />
+                      <div key={educator.uid}>
+                        {showAd && <AdInFeed />}
+                        <div onClick={() => setActiveId(educator.uid)} className="cursor-pointer">
+                          <EducatorCard educator={educator} locale={locale} />
+                        </div>
                       </div>
                     )
                   }
@@ -459,20 +465,25 @@ export default function MapClientShell({
                   if (filter === 'groups') {
                     const group = item as Group
                     return (
-                      <div key={group.id} onClick={() => setActiveId(group.id)} className="cursor-pointer">
-                        <GroupCard group={group} locale={locale} />
+                      <div key={group.id}>
+                        {showAd && <AdInFeed />}
+                        <div onClick={() => setActiveId(group.id)} className="cursor-pointer">
+                          <GroupCard group={group} locale={locale} />
+                        </div>
                       </div>
                     )
                   }
 
                   const nucleo = item as MapNucleo
                   return (
-                    <NucleoListItem
-                      key={nucleo.id}
-                      nucleo={nucleo}
-                      isActive={nucleo.id === activeId}
-                      onSelect={setActiveId}
-                    />
+                    <div key={nucleo.id}>
+                      {showAd && <AdInFeed />}
+                      <NucleoListItem
+                        nucleo={nucleo}
+                        isActive={nucleo.id === activeId}
+                        onSelect={setActiveId}
+                      />
+                    </div>
                   )
                 })
               ) : (

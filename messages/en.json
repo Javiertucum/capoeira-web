@@ -77,6 +77,15 @@
     "viewProfile": "View profile",
     "stats": "Group Stats",
     "noNucleos": "No active training locations found for this group.",
-    "website": "Website"
+    "website": "Website",
+    "educators": "Educators",
+    "graduationSystem": "Graduation System",
+    "responsibleEducator": "Responsible Educator",
+    "coEducators": "Co-educators",
+    "members": "Members",
+    "schedules": "Schedules",
+    "noMembers": "No registered members.",
+    "viewNucleo": "View nucleo",
+    "address": "Address"
   }
 }

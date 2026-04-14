@@ -77,6 +77,15 @@
     "viewProfile": "Ver perfil",
     "stats": "Estatísticas do Grupo",
     "noNucleos": "Nenhum núcleo ativo encontrado para este grupo.",
-    "website": "Site"
+    "website": "Site",
+    "educators": "Educadores",
+    "graduationSystem": "Sistema de Graduação",
+    "responsibleEducator": "Educador Responsável",
+    "coEducators": "Co-educadores",
+    "members": "Membros",
+    "schedules": "Horários",
+    "noMembers": "Sem membros registrados.",
+    "viewNucleo": "Ver núcleo",
+    "address": "Endereço"
   }
 }

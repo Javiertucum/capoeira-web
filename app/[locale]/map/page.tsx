@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import MapClientShell from './MapClientShell'
-import { formatPageTitle, getLanguageAlternates, getLocalizedPath } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getLocalizedUrl, getOgImageUrl } from '@/lib/site'
 import type { MapNucleo, PublicUserProfile, Group } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -15,15 +15,15 @@ function readParam(value: string | string[] | undefined) {
 }
 
 const META_TITLES = {
-  es: 'Vista de mapa',
-  pt: 'Vista do mapa',
-  en: 'Map view',
+  es: 'Mapa de Capoeira — Núcleos, Grupos y Educadores',
+  pt: 'Mapa de Capoeira — Núcleos, Grupos e Educadores',
+  en: 'Capoeira Map — Nucleos, Groups & Educators',
 } as const
 
 const META_DESCRIPTIONS = {
-  es: 'Explora nucleos, grupos y educadores de capoeira desde el mapa publico.',
-  pt: 'Explore nucleos, grupos e educadores de capoeira pelo mapa publico.',
-  en: 'Explore capoeira nucleos, groups, and educators from the public map.',
+  es: 'Explora el mapa global de capoeira: encuentra núcleos de entrenamiento, grupos y educadores cerca de ti. Busca por ciudad, país o región.',
+  pt: 'Explore o mapa global de capoeira: encontre núcleos de treino, grupos e educadores perto de você. Busque por cidade, país ou região.',
+  en: 'Explore the global capoeira map: find training nucleos, groups, and educators near you. Search by city, country, or region.',
 } as const
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -32,18 +32,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     META_DESCRIPTIONS[locale as keyof typeof META_DESCRIPTIONS] ?? META_DESCRIPTIONS.es
 
+  const ogImage = getOgImageUrl({ title: 'Capoeira Map', sub: description.slice(0, 90) })
+
   return {
     title,
     description,
     alternates: {
-      canonical: getLocalizedPath(locale, '/map'),
+      canonical: getLocalizedUrl(locale, '/map'),
       languages: getLanguageAlternates('/map'),
     },
     openGraph: {
-      title: formatPageTitle(title),
+      title,
       description,
-      url: getLocalizedPath(locale, '/map'),
+      url: getLocalizedUrl(locale, '/map'),
       type: 'website',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
     },
   }
 }

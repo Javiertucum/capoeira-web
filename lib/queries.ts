@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { Group, MapNucleo, PublicUserProfile, StatsData } from './types'
+import type { Group, GraduationLevel, MapNucleo, PublicUserProfile, StatsData } from './types'
 import { adminDb } from './firebase-admin'
 
 type FirestoreRecord = Record<string, unknown>
@@ -296,4 +296,98 @@ export async function getGroupWithNucleos(
 export async function getAllGroups(): Promise<Group[]> {
   const snap = await adminDb.collection('groups').get()
   return snap.docs.map((doc) => mapGroup(doc.id, doc.data() as FirestoreRecord))
+}
+
+export async function getGraduationLevelFull(
+  groupId: string,
+  levelId: string
+): Promise<GraduationLevel | null> {
+  if (!groupId || !levelId) return null
+  const doc = await adminDb
+    .collection('groups')
+    .doc(groupId)
+    .collection('graduationLevels')
+    .doc(levelId)
+    .get()
+  if (!doc.exists) return null
+  const d = doc.data() as FirestoreRecord
+  const rawColors = d.colors
+  const colors: string[] = Array.isArray(rawColors)
+    ? rawColors.filter((c): c is string => typeof c === 'string')
+    : []
+  return {
+    id: doc.id,
+    name: asString(d.name) ?? '',
+    order: asNumber(d.order) ?? 0,
+    colors,
+    tipColorLeft: asNullableString(d.tipColorLeft),
+    tipColorRight: asNullableString(d.tipColorRight),
+    isSpecial: asBoolean(d.isSpecial),
+    isEstagiario: asBoolean(d.isEstagiario),
+    isEducator: asBoolean(d.isEducator),
+    category: (['infantil', 'juvenil', 'adult'] as const).includes(d.category as 'infantil' | 'juvenil' | 'adult')
+      ? (d.category as 'infantil' | 'juvenil' | 'adult')
+      : null,
+    description: asNullableString(d.description),
+  }
+}
+
+export async function getNucleoById(groupId: string, nucleoId: string): Promise<MapNucleo | null> {
+  const [nucleoDoc, groupDoc] = await Promise.all([
+    adminDb.collection('groups').doc(groupId).collection('nucleos').doc(nucleoId).get(),
+    adminDb.collection('groups').doc(groupId).get(),
+  ])
+  if (!nucleoDoc.exists) return null
+  const groupName = groupDoc.exists ? (asString((groupDoc.data() as FirestoreRecord).name) ?? '') : ''
+  return mapMapNucleo(nucleoDoc.id, groupId, groupName, nucleoDoc.data() as FirestoreRecord)
+}
+
+export async function getNucleoMembers(nucleoId: string): Promise<PublicUserProfile[]> {
+  const snap = await adminDb
+    .collection('usersPublic')
+    .where('nucleoIds', 'array-contains', nucleoId)
+    .get()
+  return snap.docs.map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
+}
+
+export async function getGroupEducators(groupId: string): Promise<PublicUserProfile[]> {
+  const snap = await adminDb
+    .collection('usersPublic')
+    .where('groupId', '==', groupId)
+    .where('role', '==', 'educator')
+    .get()
+  return snap.docs.map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
+}
+
+export async function getGraduationLevels(groupId: string): Promise<GraduationLevel[]> {
+  const snap = await adminDb
+    .collection('groups')
+    .doc(groupId)
+    .collection('graduationLevels')
+    .orderBy('order', 'asc')
+    .get()
+
+  return snap.docs.map((doc) => {
+    const d = doc.data() as FirestoreRecord
+    const rawColors = d.colors
+    const colors: string[] = Array.isArray(rawColors)
+      ? rawColors.filter((c): c is string => typeof c === 'string')
+      : []
+
+    return {
+      id: doc.id,
+      name: asString(d.name) ?? '',
+      order: asNumber(d.order) ?? 0,
+      colors,
+      tipColorLeft: asNullableString(d.tipColorLeft),
+      tipColorRight: asNullableString(d.tipColorRight),
+      isSpecial: asBoolean(d.isSpecial),
+      isEstagiario: asBoolean(d.isEstagiario),
+      isEducator: asBoolean(d.isEducator),
+      category: (['infantil', 'juvenil', 'adult'] as const).includes(d.category as 'infantil' | 'juvenil' | 'adult')
+        ? (d.category as 'infantil' | 'juvenil' | 'adult')
+        : null,
+      description: asNullableString(d.description),
+    }
+  })
 }

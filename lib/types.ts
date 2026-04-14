@@ -56,6 +56,20 @@ export interface MapNucleo extends Nucleo {
   groupName: string
 }
 
+export interface GraduationLevel {
+  id: string
+  name: string
+  order: number
+  colors: string[]
+  tipColorLeft?: string | null
+  tipColorRight?: string | null
+  isSpecial?: boolean
+  isEstagiario?: boolean
+  isEducator?: boolean
+  category?: 'infantil' | 'juvenil' | 'adult' | null
+  description?: string | null
+}
+
 export interface StatsData {
   nucleos: number
   groups: number

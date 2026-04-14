@@ -1,27 +1,31 @@
 import { MetadataRoute } from 'next'
-import { getAllEducators, getAllGroups } from '@/lib/queries'
+import { getAllEducators, getAllGroups, getAllNucleos } from '@/lib/queries'
 import { getLanguageAlternateUrls, getLocalizedUrl } from '@/lib/site'
 
 const LOCALES = ['es', 'pt', 'en']
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let groups: any[] = []
-  let educators: any[] = []
+  let groups: Awaited<ReturnType<typeof getAllGroups>> = []
+  let educators: Awaited<ReturnType<typeof getAllEducators>> = []
+  let nucleos: Awaited<ReturnType<typeof getAllNucleos>> = []
+
   try {
-    ;[groups, educators] = await Promise.all([getAllGroups(), getAllEducators()])
+    ;[groups, educators, nucleos] = await Promise.all([
+      getAllGroups(),
+      getAllEducators(),
+      getAllNucleos(),
+    ])
   } catch (error) {
     console.error('Sitemap: Failed to fetch public entities', error)
   }
 
-  const staticRoutes = ['', '/map', '/app'].flatMap((path) =>
+  const staticRoutes = ['', '/map'].flatMap((path) =>
     LOCALES.map((locale) => ({
       url: getLocalizedUrl(locale, path),
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: path === '' ? 1 : 0.8,
-      alternates: {
-        languages: getLanguageAlternateUrls(path),
-      },
+      changeFrequency: 'daily' as const,
+      priority: path === '' ? 1.0 : 0.9,
+      alternates: { languages: getLanguageAlternateUrls(path) },
     }))
   )
 
@@ -30,10 +34,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: getLocalizedUrl(locale, `/group/${group.id}`),
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.6,
-      alternates: {
-        languages: getLanguageAlternateUrls(`/group/${group.id}`),
-      },
+      priority: 0.8,
+      alternates: { languages: getLanguageAlternateUrls(`/group/${group.id}`) },
     }))
   )
 
@@ -42,12 +44,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: getLocalizedUrl(locale, `/educator/${educator.uid}`),
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.6,
-      alternates: {
-        languages: getLanguageAlternateUrls(`/educator/${educator.uid}`),
-      },
+      priority: 0.7,
+      alternates: { languages: getLanguageAlternateUrls(`/educator/${educator.uid}`) },
     }))
   )
 
-  return [...staticRoutes, ...groupRoutes, ...educatorRoutes]
+  const nucleoRoutes = nucleos.flatMap((nucleo) =>
+    LOCALES.map((locale) => ({
+      url: getLocalizedUrl(locale, `/nucleo/${nucleo.groupId}/${nucleo.id}`),
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+      alternates: { languages: getLanguageAlternateUrls(`/nucleo/${nucleo.groupId}/${nucleo.id}`) },
+    }))
+  )
+
+  return [...staticRoutes, ...groupRoutes, ...educatorRoutes, ...nucleoRoutes]
 }

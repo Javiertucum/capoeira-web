@@ -4,8 +4,11 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import NucleoListItem from '@/components/public/NucleoListItem'
 import Badge from '@/components/ui/Badge'
-import { getEducatorProfile, getGroupWithNucleos } from '@/lib/queries'
-import { formatPageTitle, getLanguageAlternates, getLocalizedPath } from '@/lib/site'
+import { getEducatorProfile, getGraduationLevels, getGroupWithNucleos, getGroupEducators } from '@/lib/queries'
+import { getLanguageAlternates, getLocalizedUrl, getOgImageUrl, buildSportsOrganizationSchema, buildBreadcrumbSchema } from '@/lib/site'
+import CordaVisual from '@/components/public/CordaVisual'
+import AdDisplay from '@/components/ads/AdDisplay'
+import type { GraduationLevel } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,29 +35,129 @@ function getCopy(locale: string) {
   return COPY[locale as keyof typeof COPY] ?? COPY.en
 }
 
+const GROUP_NOT_FOUND = {
+  es: 'Grupo no encontrado',
+  pt: 'Grupo não encontrado',
+  en: 'Group not found',
+}
+
+const GROUP_DESCRIPTIONS = {
+  es: (name: string, count: number, countries: number) =>
+    `${name} — grupo de capoeira con ${count} núcleo${count !== 1 ? 's' : ''} activo${count !== 1 ? 's' : ''}${countries > 1 ? ` en ${countries} países` : ''}. Conoce sus educadores, graduaciones y espacios de entrenamiento.`,
+  pt: (name: string, count: number, countries: number) =>
+    `${name} — grupo de capoeira com ${count} núcleo${count !== 1 ? 's' : ''} ativo${count !== 1 ? 's' : ''}${countries > 1 ? ` em ${countries} países` : ''}. Conheça seus educadores, graduações e espaços de treino.`,
+  en: (name: string, count: number, countries: number) =>
+    `${name} — capoeira group with ${count} active nucleo${count !== 1 ? 's' : ''}${countries > 1 ? ` in ${countries} countries` : ''}. Meet their educators, graduation system, and training spaces.`,
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, locale } = await params
   const result = await getGroupWithNucleos(id)
 
-  if (!result) return { title: 'Grupo no encontrado' }
+  if (!result) return { title: GROUP_NOT_FOUND[locale as keyof typeof GROUP_NOT_FOUND] ?? GROUP_NOT_FOUND.en }
 
   const path = `/group/${id}`
-  const description = `Grupo de capoeira con ${result.nucleos.length} nucleos activos.`
+  const descFn = GROUP_DESCRIPTIONS[locale as keyof typeof GROUP_DESCRIPTIONS] ?? GROUP_DESCRIPTIONS.en
+  const countries = result.group.representedCountries?.length ?? 0
+  const description = descFn(result.group.name, result.nucleos.length, countries)
+  const title = `${result.group.name} — Capoeira`
+  const ogImage = getOgImageUrl({ title: result.group.name, sub: description.slice(0, 100), type: 'group' })
 
   return {
-    title: result.group.name,
+    title,
     description,
     alternates: {
-      canonical: getLocalizedPath(locale, path),
+      canonical: getLocalizedUrl(locale, path),
       languages: getLanguageAlternates(path),
     },
     openGraph: {
-      title: formatPageTitle(result.group.name),
+      title,
       description,
-      url: getLocalizedPath(locale, path),
+      url: getLocalizedUrl(locale, path),
       type: 'website',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: result.group.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
     },
   }
+}
+
+function GradRow({ level, isLast, threshold }: { level: GraduationLevel; isLast: boolean; threshold: number }) {
+  const isEduc =
+    ((!level.category || level.category === 'adult') && threshold > 0 && level.order >= threshold) ||
+    (!!level.isEstagiario && !!level.isEducator) ||
+    (!!level.isSpecial && !!level.isEducator)
+
+  return (
+    <div className={`flex items-center gap-3 py-2.5 ${!isLast ? 'border-b border-border/50' : ''}`}>
+      <CordaVisual
+        colors={level.colors}
+        tipColorLeft={level.tipColorLeft}
+        tipColorRight={level.tipColorRight}
+        width={80}
+        height={12}
+      />
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-semibold text-text">{level.name}</p>
+        {level.description ? (
+          <p className="text-[10px] italic text-text-muted">{level.description}</p>
+        ) : null}
+      </div>
+      <div className="flex shrink-0 gap-1">
+        {level.isEstagiario && (
+          <span className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide bg-accent/20 text-accent">ESTAG.</span>
+        )}
+        {level.isSpecial && !level.isEstagiario && (
+          <span className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide bg-[#A78BFA]/20 text-[#A78BFA]">ESPEC.</span>
+        )}
+        {isEduc && (
+          <span className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide bg-accent/15 text-accent">EDUC.</span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function GradSection({ label, levels, threshold }: { label: string; levels: GraduationLevel[]; threshold: number }) {
+  if (levels.length === 0) return null
+  return (
+    <div className="mt-3">
+      <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.18em] text-text-muted opacity-70">{label}</p>
+      {levels.map((l, i) => (
+        <GradRow key={l.id} level={l} isLast={i === levels.length - 1} threshold={threshold} />
+      ))}
+    </div>
+  )
+}
+
+function GraduationSystemSection({ levels, title }: { levels: GraduationLevel[]; title: string }) {
+  const adultos    = levels.filter(l => !l.isSpecial && !l.isEstagiario && (!l.category || l.category === 'adult'))
+  const juveniles  = levels.filter(l => !l.isSpecial && !l.isEstagiario && l.category === 'juvenil')
+  const infantiles = levels.filter(l => !l.isSpecial && !l.isEstagiario && l.category === 'infantil')
+  const estagiarios = levels.filter(l => !!l.isEstagiario)
+  const especiales  = levels.filter(l => !!l.isSpecial && !l.isEstagiario)
+
+  return (
+    <section className="rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-5">
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+          {title}
+        </p>
+        <span className="text-[10px] text-text-muted">({levels.length})</span>
+      </div>
+      <div className="mt-2">
+        <GradSection label="ADULTOS" levels={adultos} threshold={0} />
+        <GradSection label="JUVENILES" levels={juveniles} threshold={0} />
+        <GradSection label="INFANTILES" levels={infantiles} threshold={0} />
+        <GradSection label="ESTAGIARIOS" levels={estagiarios} threshold={0} />
+        <GradSection label="ESPECIALES" levels={especiales} threshold={0} />
+      </div>
+    </section>
+  )
 }
 
 export default async function GroupPage({ params }: Props) {
@@ -69,23 +172,44 @@ export default async function GroupPage({ params }: Props) {
 
   const { group, nucleos } = data
 
-  const adminUser = group.adminUserIds?.[0]
-    ? await getEducatorProfile(group.adminUserIds[0]).catch(() => null)
-    : null
+  const [adminUser, graduationLevels, educators] = await Promise.all([
+    group.adminUserIds?.[0]
+      ? getEducatorProfile(group.adminUserIds[0]).catch(() => null)
+      : Promise.resolve(null),
+    getGraduationLevels(id).catch(() => []),
+    getGroupEducators(id).catch(() => []),
+  ])
 
   // Sistema de graduación
   const graduationSystem = group.graduationSystemName
+
+  // Map graduation levels by id for quick lookup
+  const gradLevelById = new Map(graduationLevels.map((l) => [l.id, l]))
 
   const stats = [
     { label: t('members'), value: group.memberCount ?? 0 },
     { label: t('nucleos'), value: nucleos.length },
     { label: t('representedCountries'), value: group.representedCountries?.length ?? 0 },
     { label: t('representedCities'), value: group.representedCities?.length ?? 0 },
-    { label: t('graduationSystem'), value: graduationSystem },
+    ...(graduationSystem ? [{ label: t('graduationSystem'), value: graduationSystem }] : []),
   ]
+
+  const groupSchema = buildSportsOrganizationSchema({
+    name: group.name,
+    url: getLocalizedUrl(locale, `/group/${id}`),
+    logo: group.logoUrl ?? undefined,
+    memberCount: group.memberCount,
+    country: group.representedCountries?.[0],
+  })
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Capoeira Map', url: getLocalizedUrl(locale) },
+    { name: group.name, url: getLocalizedUrl(locale, `/group/${id}`) },
+  ])
 
   return (
     <div className="relative min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(groupSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div
         aria-hidden="true"
         className="fixed inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top,rgba(216,173,99,0.12),transparent_68%)] pointer-events-none"
@@ -202,6 +326,13 @@ export default async function GroupPage({ params }: Props) {
               </div>
             </section>
 
+            {graduationLevels.length > 0 ? (
+              <GraduationSystemSection
+                levels={graduationLevels}
+                title={graduationSystem ?? t('graduation')}
+              />
+            ) : null}
+
             {adminUser ? (
               <section className="rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-5">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
@@ -228,10 +359,16 @@ export default async function GroupPage({ params }: Props) {
                   <p className="mt-4 font-semibold text-text">
                     {adminUser.nickname || `${adminUser.name} ${adminUser.surname}`}
                   </p>
-                  {/* Mostrar cuerda y sistema de graduación si existen */}
-                  {adminUser.graduationLevelId && group.graduationSystemName ? (
-                    <div className="mt-2">
-                      <Badge variant="accent">{`${group.graduationSystemName}: ${adminUser.graduationLevelId}`}</Badge>
+                  {adminUser.graduationLevelId && gradLevelById.get(adminUser.graduationLevelId) ? (
+                    <div className="mt-3 flex items-center justify-center gap-2">
+                      <CordaVisual
+                        colors={gradLevelById.get(adminUser.graduationLevelId)!.colors}
+                        tipColorLeft={gradLevelById.get(adminUser.graduationLevelId)!.tipColorLeft}
+                        tipColorRight={gradLevelById.get(adminUser.graduationLevelId)!.tipColorRight}
+                        width={64}
+                        height={10}
+                      />
+                      <span className="text-xs text-text-secondary">{gradLevelById.get(adminUser.graduationLevelId)!.name}</span>
                     </div>
                   ) : null}
 
@@ -244,6 +381,65 @@ export default async function GroupPage({ params }: Props) {
                 </div>
               </section>
             ) : null}
+
+            {educators.length > 0 && (
+              <section className="rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+                  {t('educators')} ({educators.length})
+                </p>
+                <div className="mt-4 flex flex-col gap-3">
+                  {educators.map((edu) => {
+                    const gradLevel = edu.graduationLevelId ? gradLevelById.get(edu.graduationLevelId) : undefined
+                    return (
+                      <Link
+                        key={edu.uid}
+                        href={`/${locale}/educator/${edu.uid}`}
+                        className="flex items-center gap-3 rounded-[18px] border border-border bg-surface px-3 py-3 transition-colors hover:border-accent/30"
+                      >
+                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-border bg-card">
+                          {edu.avatarUrl ? (
+                            <img
+                              src={edu.avatarUrl}
+                              alt={edu.nickname || edu.name || 'Educator'}
+                              loading="lazy"
+                              decoding="async"
+                              referrerPolicy="no-referrer"
+                              className="absolute inset-0 h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center text-sm font-bold text-text-muted">
+                              {edu.name?.[0] ?? '?'}
+                            </div>
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-semibold text-text">
+                            {edu.nickname || `${edu.name} ${edu.surname}`}
+                          </p>
+                          {gradLevel ? (
+                            <div className="mt-1 flex items-center gap-2">
+                              <CordaVisual
+                                colors={gradLevel.colors}
+                                tipColorLeft={gradLevel.tipColorLeft}
+                                tipColorRight={gradLevel.tipColorRight}
+                                width={48}
+                                height={8}
+                              />
+                              <span className="truncate text-[10px] text-text-muted">{gradLevel.name}</span>
+                            </div>
+                          ) : null}
+                        </div>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-text-muted">
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </section>
+            )}
+
+            <AdDisplay />
           </aside>
         </div>
       </main>
