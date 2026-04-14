@@ -1,7 +1,6 @@
 import { Manrope, Space_Grotesk } from 'next/font/google'
 import { headers } from 'next/headers'
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import './globals.css'
 import { routing } from '@/i18n/routing'
 import { SITE_NAME, SITE_URL, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
@@ -86,6 +85,14 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://maps.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://i.ibb.co" />
+        {ADSENSE_ID && (
+          // eslint-disable-next-line @next/next/no-sync-scripts
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
       </head>
       <body className="min-h-full antialiased">
         {children}
@@ -97,14 +104,6 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
         />
-        {ADSENSE_ID && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
       </body>
     </html>
   )

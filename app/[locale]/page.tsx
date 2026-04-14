@@ -45,31 +45,31 @@ const LANDING_COPY = {
     heroPrimary: 'Abrir mapa',
     heroSecondary: 'Conocer la app',
     panelEyebrow: 'Pulso de la comunidad',
-    panelTitle: 'Una portada mas util para entrar a la capoeira global.',
+    panelTitle: 'Una portada más útil para entrar a la capoeira global.',
     panelBody:
-      'La idea no es solo listar perfiles. Queremos ayudarte a encontrar una roda, entender quien esta detras y decidir si ese espacio encaja contigo.',
+      'La idea no es solo listar perfiles. Queremos ayudarte a encontrar una roda, entender quién está detrás y decidir si ese espacio encaja contigo.',
     panelPoints: [
-      'Busqueda directa por ciudad, pais o grupo',
-      'Perfiles con mas contexto y menos relleno',
-      'Mapa y lista adaptados al uso movil real',
+      'Búsqueda directa por ciudad, país o grupo',
+      'Perfiles con más contexto y menos relleno',
+      'Mapa y lista adaptados al uso móvil real',
     ],
     categoriesLead:
-      'Empieza por el tipo de entrada que mejor responda a tu busqueda.',
+      'Empieza por el tipo de entrada que mejor responda a tu búsqueda.',
     educatorsLead:
-      'Perfiles publicos con mejor jerarquia visual, enlaces utiles y acceso rapido a sus espacios de entrenamiento.',
+      'Perfiles públicos con mejor jerarquía visual, enlaces útiles y acceso rápido a sus espacios de entrenamiento.',
     ctaEyebrow: 'App preview',
-    ctaTitle: 'La app viene despues de una web que ya sirva de verdad.',
+    ctaTitle: 'La app viene después de una web que ya sirva de verdad.',
     ctaBody:
       'Mientras cerramos enlaces definitivos de descarga, la web ya puede funcionar como puerta de entrada para descubrir la comunidad.',
     ctaPoints: ['Explora el directorio', 'Conoce grupos', 'Descubre educadores'],
     footerNote: 'Datos y perfiles impulsados por la comunidad Agenda Capoeiragem.',
     featured: 'Educador destacado',
     featuredAction: 'Ver perfil',
-    phoneTitle: 'Companion movil',
+    phoneTitle: 'Companion móvil',
     phoneCards: [
       'Descubre clases y comunidades',
-      'Ten perfiles y enlaces mas a mano',
-      'Sigue el mapa global desde tu telefono',
+      'Ten perfiles y enlaces más a mano',
+      'Sigue el mapa global desde tu teléfono',
     ],
   },
   pt: {

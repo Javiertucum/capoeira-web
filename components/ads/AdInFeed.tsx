@@ -14,7 +14,7 @@ export default function AdInFeed() {
       <AdUnit
         slot={SLOT}
         format="fluid"
-        layout="in-article"
+        layoutKey="-fb+5w+4e-db+86"
         style={{ minHeight: 100 }}
       />
     </div>

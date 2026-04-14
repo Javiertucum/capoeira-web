@@ -18,12 +18,12 @@ type Props = {
 
 const COPY = {
   es: {
-    eyebrow: 'Perfil publico del grupo',
-    summary: 'Una vista mas clara para entender el tamano, el alcance y los espacios activos de la comunidad.',
+    eyebrow: 'Perfil público del grupo',
+    summary: 'Una vista más clara para entender el tamaño, el alcance y los espacios activos de la comunidad.',
   },
   pt: {
-    eyebrow: 'Perfil publico do grupo',
-    summary: 'Uma vista mais clara para entender o tamanho, o alcance e os espacos ativos da comunidade.',
+    eyebrow: 'Perfil público do grupo',
+    summary: 'Uma visão mais clara para entender o tamanho, o alcance e os espaços ativos da comunidade.',
   },
   en: {
     eyebrow: 'Public group profile',
