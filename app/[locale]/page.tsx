@@ -6,7 +6,7 @@ import EducatorCard from '@/components/public/EducatorCard'
 import HeroSearch from '@/components/public/HeroSearch'
 import StatsBar from '@/components/public/StatsBar'
 import SectionLabel from '@/components/ui/SectionLabel'
-import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getLocalizedUrl, getSiteDescription, getOgImageUrl, buildWebSiteSchema } from '@/lib/site'
+import { getLanguageAlternates, getLocalizedUrl, getSiteDescription, getOgImageUrl, buildWebSiteSchema } from '@/lib/site'
 import AdDisplay from '@/components/ads/AdDisplay'
 import type { PublicUserProfile, StatsData } from '@/lib/types'
 
@@ -405,7 +405,8 @@ export default async function LandingPage({ params }: Props) {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href={`/${locale}/app`}
-                className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#081019] transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5"
+                aria-label={tCta('download')}
               >
                 {tCta('download')}
               </Link>
