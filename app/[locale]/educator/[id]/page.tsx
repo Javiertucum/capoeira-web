@@ -79,7 +79,7 @@ export default async function EducatorProfilePage({ params }: Props) {
   if (!educator) notFound()
 
   const [nucleos, group, graduationLevel] = await Promise.all([
-    getNucleosByEducator(id).catch(() => []),
+    getNucleosByEducator(id, educator.nucleoIds).catch(() => []),
     educator.groupId ? getGroup(educator.groupId).catch(() => null) : Promise.resolve(null),
     educator.groupId && educator.graduationLevelId
       ? getGraduationLevelFull(educator.groupId, educator.graduationLevelId).catch(() => null)

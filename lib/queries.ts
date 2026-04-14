@@ -2,6 +2,7 @@ import 'server-only'
 
 import type { Group, GraduationLevel, MapNucleo, PublicUserProfile, StatsData } from './types'
 import { adminDb } from './firebase-admin'
+import { FieldPath } from 'firebase-admin/firestore'
 
 type FirestoreRecord = Record<string, unknown>
 
@@ -227,12 +228,26 @@ export async function getEducatorProfile(uid: string): Promise<PublicUserProfile
   return mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord)
 }
 
-export async function getNucleosByEducator(uid: string): Promise<MapNucleo[]> {
-  const [respSnap, coSnap, groupsSnap] = await Promise.all([
+export async function getNucleosByEducator(uid: string, nucleoIds?: string[]): Promise<MapNucleo[]> {
+  const queries = [
     adminDb.collectionGroup('nucleos').where('responsibleEducatorId', '==', uid).get(),
     adminDb.collectionGroup('nucleos').where('coEducatorIds', 'array-contains', uid).get(),
-    adminDb.collection('groups').get(),
-  ])
+  ]
+
+  if (nucleoIds && nucleoIds.length > 0) {
+    // Firestore 'in' query supports up to 30 elements
+    const chunks = []
+    for (let i = 0; i < nucleoIds.length; i += 30) {
+      chunks.push(nucleoIds.slice(i, i + 30))
+    }
+    chunks.forEach(chunk => {
+      queries.push(adminDb.collectionGroup('nucleos').where(FieldPath.documentId(), 'in', chunk).get())
+    })
+  }
+
+  const snapshots = await Promise.all([...queries, adminDb.collection('groups').get()])
+  const groupsSnap = snapshots.pop() as FirebaseFirestore.QuerySnapshot
+  const snaps = snapshots as FirebaseFirestore.QuerySnapshot[]
 
   const groupNames = new Map(
     groupsSnap.docs.map((doc) => [doc.id, asString(doc.data().name) ?? ''] as const)
@@ -241,7 +256,7 @@ export async function getNucleosByEducator(uid: string): Promise<MapNucleo[]> {
   const seen = new Set<string>()
   const results: MapNucleo[] = []
 
-  const processDocs = (snap: FirebaseFirestore.QuerySnapshot) => {
+  snaps.forEach((snap) => {
     snap.docs.forEach((doc) => {
       if (seen.has(doc.id)) return
       seen.add(doc.id)
@@ -251,10 +266,7 @@ export async function getNucleosByEducator(uid: string): Promise<MapNucleo[]> {
       const groupName = groupNames.get(groupId) ?? ''
       results.push(mapMapNucleo(doc.id, groupId, groupName, data))
     })
-  }
-
-  processDocs(respSnap)
-  processDocs(coSnap)
+  })
 
   return results
 }

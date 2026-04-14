@@ -55,7 +55,6 @@ export default function Nav() {
     { href: `/${locale}/map`, label: t('map'), key: 'nucleos' },
     { href: `/${locale}/map?filter=groups`, label: t('groups'), key: 'groups' },
     { href: `/${locale}/educators`, label: t('educators'), key: 'educators' },
-    { href: '#', label: t('events'), key: 'events', disabled: true },
   ]
 
   return (
@@ -100,20 +99,14 @@ export default function Nav() {
                 <div key={link.href} className="relative">
                   <Link
                     href={link.href}
-                    onClick={(e) => link.disabled && e.preventDefault()}
                     className={`rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                       isActive
                         ? 'bg-card text-text'
-                        : link.disabled ? 'text-text-muted/50 cursor-not-allowed' : 'text-text-muted hover:text-text'
+                        : 'text-text-muted hover:text-text'
                     }`}
                   >
                     {link.label}
                   </Link>
-                  {link.disabled && (
-                    <span className="absolute -right-2 -top-1 rounded-full bg-accent/10 px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-wider text-accent border border-accent/20">
-                      {t('comingSoon')}
-                    </span>
-                  )}
                 </div>
               )
             })}
@@ -186,24 +179,26 @@ export default function Nav() {
               Navegacion
             </p>
             <div className="mt-4 flex flex-col gap-2">
-              {links.map((link) => (
-                <div key={link.href} className="relative">
-                  <Link
-                    href={link.href}
-                    onClick={(e) => link.disabled && e.preventDefault()}
-                    className={`flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
-                      link.disabled ? 'text-text-muted/50 cursor-not-allowed' : 'text-text-secondary hover:text-text'
-                    }`}
-                  >
-                    {link.label}
-                    {link.disabled && (
-                      <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent border border-accent/20">
-                        {t('comingSoon')}
-                      </span>
-                    )}
-                  </Link>
-                </div>
-              ))}
+              {links.map((link) => {
+                const isMapRoute = pathname === `/${locale}/map`
+                const isActive =
+                  link.key === 'educators'
+                    ? pathname === `/${locale}/educators` || pathname.startsWith(`/${locale}/educator/`)
+                    : link.key === 'nucleos'
+                      ? isMapRoute && !currentFilter
+                      : isMapRoute && currentFilter === link.key
+
+                return (
+                  <div key={link.href} className="relative">
+                    <Link
+                      href={link.href}
+                      className={`flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${isActive ? 'text-text' : 'text-text-secondary hover:text-text'}`}
+                    >
+                      {link.label}
+                    </Link>
+                  </div>
+                )
+              })}
             </div>
 
             <div className="mt-5 rounded-[22px] border border-border bg-card p-3">
