@@ -97,16 +97,6 @@ export default async function EducatorProfilePage({ params }: Props) {
     sl.website ? (sl.website.startsWith('http') ? sl.website : `https://${sl.website}`) : null,
   ].filter((v): v is string => v !== null)
 
-  const CONTACT_LABELS: Record<string, string> = { es: 'Contactar', pt: 'Contatar', en: 'Contact' }
-  const contactLabel = CONTACT_LABELS[locale] ?? CONTACT_LABELS.en
-  const primaryContactHref = sl.whatsapp
-    ? `https://wa.me/${sl.whatsapp.replace(/\D/g, '')}`
-    : sl.instagram
-      ? `https://instagram.com/${sl.instagram.replace('@', '')}`
-      : sl.website
-        ? (sl.website.startsWith('http') ? sl.website : `https://${sl.website}`)
-        : null
-  const primaryContactLabel = sl.whatsapp ? 'WhatsApp' : sl.instagram ? 'Instagram' : t('website')
 
   const personSchema = buildPersonSchema({
     name: fullName,
@@ -124,12 +114,7 @@ export default async function EducatorProfilePage({ params }: Props) {
     <div className="relative min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div
-        aria-hidden="true"
-        className="fixed inset-x-0 top-0 h-[500px] bg-[radial-gradient(circle_at_top,rgba(102,187,106,0.12),transparent_70%)] pointer-events-none"
-      />
-
-      <main className="relative mx-auto max-w-[900px] px-5 py-10 sm:px-8 lg:px-12">
+      <div className="relative mx-auto max-w-[900px] px-5 py-10 sm:px-8 lg:px-12">
         <Link
           href={`/${locale}/map`}
           className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/20 hover:text-text"
@@ -139,7 +124,6 @@ export default async function EducatorProfilePage({ params }: Props) {
           </svg>
           {t('back')}
         </Link>
-
         <div className="flex flex-col gap-8 md:flex-row md:items-start lg:gap-12">
           {/* Left Column */}
           <div className="flex flex-col items-center text-center md:sticky md:top-24 md:w-1/3">
@@ -217,98 +201,72 @@ export default async function EducatorProfilePage({ params }: Props) {
             </div>
           </div>
 
-          {/* Right Column */}
+          {/* Right Column: Social links → Nucleos → Bio */}
           <div className="flex-1 space-y-10">
-            {/* Primary contact CTA */}
-            {primaryContactHref && (
-              <a
-                href={primaryContactHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center gap-3 rounded-[20px] bg-accent px-6 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
-                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-                </svg>
-                {contactLabel} — {primaryContactLabel}
-              </a>
-            )}
-
-            {/* Bio */}
-            <section>
-              <h2 className="text-xl font-semibold text-text">{t('bio')}</h2>
-              <div className="mt-4 whitespace-pre-wrap text-base leading-relaxed text-text-secondary">
-                {educator.bio || t('unspecified')}
-              </div>
-            </section>
-
-            {/* Social links */}
+            {/* Social links — primero, sin heading */}
             {(sl.instagram || sl.whatsapp || sl.facebook || sl.youtube || sl.tiktok || sl.website) && (
-              <section>
-                <h2 className="text-xl font-semibold text-text">{t('contact')}</h2>
-                <div className="mt-5 flex flex-wrap gap-3">
-                  {sl.whatsapp && (
-                    <a
-                      href={`https://wa.me/${sl.whatsapp.replace(/\D/g, '')}`}
-                      target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-3 rounded-xl border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#25D366]/40 hover:bg-[#25D366]/5 hover:text-text"
-                    >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
-                      WhatsApp
-                    </a>
-                  )}
-                  {sl.instagram && (
-                    <a
-                      href={`https://instagram.com/${sl.instagram.replace('@', '')}`}
-                      target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-3 rounded-xl border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#E4405F]/40 hover:bg-[#E4405F]/5 hover:text-text"
-                    >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E4405F" strokeWidth="2.2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" /></svg>
-                      Instagram
-                    </a>
-                  )}
-                  {sl.facebook && (
-                    <a
-                      href={`https://facebook.com/${sl.facebook.replace('@', '')}`}
-                      target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-[#1877F2]/40 hover:text-text"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
-                      Facebook
-                    </a>
-                  )}
-                  {sl.youtube && (
-                    <a
-                      href={`https://youtube.com/@${sl.youtube.replace('@', '')}`}
-                      target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-[#FF0000]/40 hover:text-text"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z" /><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" /></svg>
-                      YouTube
-                    </a>
-                  )}
-                  {sl.tiktok && (
-                    <a
-                      href={`https://tiktok.com/@${sl.tiktok.replace('@', '')}`}
-                      target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-border hover:text-text"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
-                      TikTok
-                    </a>
-                  )}
-                  {sl.website && (
-                    <a
-                      href={sl.website.startsWith('http') ? sl.website : `https://${sl.website}`}
-                      target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-accent/40 hover:text-text"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>
-                      {t('website')}
-                    </a>
-                  )}
-                </div>
-              </section>
+              <div className="flex flex-wrap gap-3">
+                {sl.whatsapp && (
+                  <a
+                    href={`https://wa.me/${sl.whatsapp.replace(/\D/g, '')}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-xl border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#25D366]/40 hover:bg-[#25D366]/5 hover:text-text"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
+                    WhatsApp
+                  </a>
+                )}
+                {sl.instagram && (
+                  <a
+                    href={`https://instagram.com/${sl.instagram.replace('@', '')}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-xl border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#E4405F]/40 hover:bg-[#E4405F]/5 hover:text-text"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E4405F" strokeWidth="2.2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" /></svg>
+                    Instagram
+                  </a>
+                )}
+                {sl.facebook && (
+                  <a
+                    href={`https://facebook.com/${sl.facebook.replace('@', '')}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-[#1877F2]/40 hover:text-text"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
+                    Facebook
+                  </a>
+                )}
+                {sl.youtube && (
+                  <a
+                    href={`https://youtube.com/@${sl.youtube.replace('@', '')}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-[#FF0000]/40 hover:text-text"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z" /><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" /></svg>
+                    YouTube
+                  </a>
+                )}
+                {sl.tiktok && (
+                  <a
+                    href={`https://tiktok.com/@${sl.tiktok.replace('@', '')}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-border hover:text-text"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+                    TikTok
+                  </a>
+                )}
+                {sl.website && (
+                  <a
+                    href={sl.website.startsWith('http') ? sl.website : `https://${sl.website}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-accent/40 hover:text-text"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>
+                    {t('website')}
+                  </a>
+                )}
+              </div>
             )}
 
             {/* Nucleos with schedules */}
@@ -392,9 +350,17 @@ export default async function EducatorProfilePage({ params }: Props) {
                 </div>
               </section>
             )}
+
+            {/* Bio — último */}
+            <section>
+              <h2 className="text-xl font-semibold text-text">{t('bio')}</h2>
+              <div className="mt-4 whitespace-pre-wrap text-base leading-relaxed text-text-secondary">
+                {educator.bio || t('unspecified')}
+              </div>
+            </section>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }
