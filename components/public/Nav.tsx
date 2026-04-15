@@ -129,13 +129,6 @@ export default function Nav() {
               ))}
             </div>
 
-            <Link
-              href={`/${locale}/app`}
-              className="hidden h-10 items-center justify-center rounded-full bg-accent px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-black transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg md:inline-flex"
-            >
-              {t('appPreview')}
-            </Link>
-
             <button
               type="button"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -217,13 +210,6 @@ export default function Nav() {
                   </button>
                 ))}
               </div>
-
-              <Link
-                href={`/${locale}/app`}
-                className="inline-flex h-10 w-full items-center justify-center rounded-full bg-accent px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-black transition-opacity hover:opacity-92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-              >
-                {t('downloadApp')}
-              </Link>
             </div>
           </div>
         </>
