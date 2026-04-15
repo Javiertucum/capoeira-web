@@ -49,6 +49,7 @@ const COPY = {
 
 function getCopy(locale: string) {
   return COPY[locale as keyof typeof COPY] ?? COPY.en
+
 }
 
 function createHaystack(educator: PublicUserProfile) {
@@ -118,32 +119,10 @@ export default function EducatorsListShell({
 
             <p className="mt-3 text-sm text-text-secondary">
               <strong className="font-semibold text-text">{initialEducators.length.toLocaleString()}</strong>{' '}
+
               {copy.summaryLabel}
             </p>
           </div>
-
-          {/* Results grid */}
-          <div>
-                <button
-                  type="submit"
-                  className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-                >
-                  {isPending ? `${copy.searchButton}...` : copy.searchButton}
-                </button>
-              </form>
-            </div>
-
-            <div className="flex items-center justify-center rounded-[24px] border border-border bg-card/80 px-4 py-6 xl:flex-col xl:justify-start xl:pt-8">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
-                {copy.summaryLabel}
-              </p>
-              <p className="mt-3 text-[48px] font-semibold leading-none tracking-[-0.04em] text-text">
-                {initialEducators.length.toLocaleString()}
-              </p>
-              <p className="mt-3 text-sm leading-6 text-text-secondary">{copy.resultsLabel}</p>
-            </div>
-          </div>
-        </section>
 
         {/* Results grid */}
         <div className="mt-6">
@@ -179,6 +158,6 @@ export default function EducatorsListShell({
           )}
         </div>
       </div>
-    </div>
+	</div>
   )
 }
