@@ -17,24 +17,6 @@ type Props = {
   params: Promise<{ locale: string; id: string }>
 }
 
-const COPY = {
-  es: {
-    eyebrow: 'Perfil público del grupo',
-    summary: 'Una vista más clara para entender el tamaño, el alcance y los espacios activos de la comunidad.',
-  },
-  pt: {
-    eyebrow: 'Perfil público do grupo',
-    summary: 'Uma visão mais clara para entender o tamanho, o alcance e os espaços ativos da comunidade.',
-  },
-  en: {
-    eyebrow: 'Public group profile',
-    summary: 'A clearer view of the scale, reach, and active training spaces behind this community.',
-  },
-} as const
-
-function getCopy(locale: string) {
-  return COPY[locale as keyof typeof COPY] ?? COPY.en
-}
 
 const GROUP_NOT_FOUND = {
   es: 'Grupo no encontrado',
@@ -164,7 +146,6 @@ function GraduationSystemSection({ levels, title }: { levels: GraduationLevel[];
 export default async function GroupPage({ params }: Props) {
   const { locale, id } = await params
   const t = await getTranslations({ locale, namespace: 'profile' })
-  const copy = getCopy(locale)
 
   const data = await getGroupWithNucleos(id).catch(() => null)
   if (!data) {
@@ -211,12 +192,7 @@ export default async function GroupPage({ params }: Props) {
     <div className="relative min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(groupSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div
-        aria-hidden="true"
-        className="fixed inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top,rgba(216,173,99,0.12),transparent_68%)] pointer-events-none"
-      />
-
-      <main className="relative mx-auto max-w-[1180px] px-5 py-10 sm:px-8 lg:px-12">
+      <div className="relative mx-auto max-w-[1180px] px-5 py-10 sm:px-8 lg:px-12">
         <Link
           href={`/${locale}/map?filter=groups`}
           className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/20 hover:text-text"
@@ -228,11 +204,6 @@ export default async function GroupPage({ params }: Props) {
         </Link>
 
         <section className="relative overflow-hidden rounded-[34px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 shadow-[0_30px_90px_var(--shadow)] sm:p-8">
-          <div
-            aria-hidden="true"
-            className="absolute right-[-70px] top-[-70px] h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(216,173,99,0.18)_0%,rgba(216,173,99,0)_72%)]"
-          />
-
           <div className="relative grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-center">
             <div className="flex justify-center lg:justify-start">
               <div className="relative h-[170px] w-[170px] overflow-hidden rounded-[30px] border border-border bg-surface shadow-[0_22px_60px_var(--shadow-soft)]">
@@ -254,16 +225,9 @@ export default async function GroupPage({ params }: Props) {
             </div>
 
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
-                {copy.eyebrow}
-              </p>
               <h1 className="mt-4 text-[clamp(34px,5vw,60px)] font-semibold leading-[0.96] tracking-[-0.06em] text-text">
                 {group.name}
               </h1>
-              <p className="mt-5 max-w-[58ch] text-base leading-8 text-text-secondary">
-                {copy.summary}
-              </p>
-
               <div className="mt-6 flex flex-wrap gap-2">
                 {graduationSystem ? (
                   <Badge variant="accent">{t('graduationSystem') + ': ' + graduationSystem}</Badge>
