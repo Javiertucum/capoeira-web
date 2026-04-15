@@ -18,26 +18,36 @@ const COPY = {
   es: {
     heading: 'Educadores',
     searchLabel: 'Busca por nombre, país o grupo',
-    export default function EducatorsListShell({
-      locale,
-      initialEducators,
-      initialQuery,
-      dataUnavailable,
-    }: Props) {
-      const copy = getCopy(locale)
-      const pathname = usePathname()
-      const router = useRouter()
-      const searchParams = useSearchParams()
-      const [isPending, startTransition] = useTransition()
-      const [query, setQuery] = useState(initialQuery)
-      const deferredQuery = useDeferredValue(query)
+    searchButton: 'Buscar',
+    summaryLabel: 'educadores',
+    emptyTitle: 'Sin resultados para esta búsqueda',
+    emptyBody: 'Prueba otro nombre, país o grupo para ampliar la exploración.',
+    unavailableTitle: 'Directorio no disponible por ahora',
+    unavailableBody: 'El directorio de educadores estará disponible en breve.',
+  },
+  // ...otros idiomas...
+}
 
-      const normalized = deferredQuery.trim().toLowerCase()
-      const results = initialEducators.filter((e) => createHaystack(e).includes(normalized))
+export default function EducatorsListShell({
+  locale,
+  initialEducators,
+  initialQuery,
+  dataUnavailable,
+}: Props) {
+  const copy = getCopy(locale)
+  const pathname = usePathname()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
+  const [query, setQuery] = useState(initialQuery)
+  const deferredQuery = useDeferredValue(query)
 
-      return (
-        <div className="px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pb-20">
-          <div className="mx-auto max-w-[1280px]">
+  const normalized = deferredQuery.trim().toLowerCase()
+  const results = initialEducators.filter((e) => createHaystack(e).includes(normalized))
+
+  return (
+    <div className="px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pb-20">
+      <div className="mx-auto max-w-[1280px]">
             {/* Header simplificado */}
             <div className="mb-6">
               <h1 className="text-[clamp(28px,4vw,48px)] font-semibold leading-[0.96] tracking-[-0.05em] text-text">
