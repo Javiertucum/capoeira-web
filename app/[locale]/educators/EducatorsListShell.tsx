@@ -158,6 +158,5 @@ export default function EducatorsListShell({
           )}
         </div>
       </div>
-	</div>
   )
 }
