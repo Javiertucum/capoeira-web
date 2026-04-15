@@ -66,7 +66,7 @@ export default function Nav() {
             : 'border-transparent bg-[rgba(11,17,23,0.78)] backdrop-blur-md'
         }`}
       >
-        <div className="mx-auto flex h-[72px] w-full max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
+        <div className="page-shell flex h-[72px] items-center justify-between gap-4">
           <Link
             href={`/${locale}`}
             className="flex min-w-0 items-center gap-3 rounded-[22px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"

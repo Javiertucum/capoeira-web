@@ -33,7 +33,7 @@
   --danger: #f08b8b;
   --shadow: rgba(2, 6, 11, 0.34);
   --shadow-soft: rgba(2, 6, 11, 0.18);
-  --page-max: 1280px;
+  --page-max: 1440px;
 }
 
 html {
@@ -87,4 +87,44 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.page-shell {
+  width: min(calc(100% - 2rem), var(--page-max));
+  margin-inline: auto;
+}
+
+.page-shell-narrow {
+  width: min(calc(100% - 2rem), 760px);
+  margin-inline: auto;
+}
+
+.page-copy-measure {
+  max-width: 62ch;
+}
+
+.page-copy-tight {
+  max-width: 48ch;
+}
+
+@media (min-width: 640px) {
+  .page-shell,
+  .page-shell-narrow {
+    width: min(calc(100% - 4rem), var(--page-max));
+  }
+
+  .page-shell-narrow {
+    width: min(calc(100% - 4rem), 760px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-shell,
+  .page-shell-narrow {
+    width: min(calc(100% - 6rem), var(--page-max));
+  }
+
+  .page-shell-narrow {
+    width: min(calc(100% - 6rem), 760px);
+  }
 }

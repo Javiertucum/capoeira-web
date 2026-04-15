@@ -89,8 +89,8 @@ export default async function AppPage({ params }: Props) {
   const copy = getCopy(locale)
 
   return (
-    <section className="px-5 pb-20 pt-10 sm:px-8 lg:px-12">
-      <div className="mx-auto grid max-w-[1180px] gap-6 rounded-[34px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 shadow-[0_30px_90px_var(--shadow)] lg:grid-cols-[minmax(0,1fr)_320px] lg:p-8">
+    <section className="pb-20 pt-10">
+      <div className="page-shell grid gap-6 rounded-[34px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 shadow-[0_30px_90px_var(--shadow)] xl:grid-cols-[minmax(0,1fr)_360px] xl:p-8">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
             {copy.eyebrow}

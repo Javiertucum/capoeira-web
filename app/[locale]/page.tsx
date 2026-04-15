@@ -140,8 +140,8 @@ export default async function LandingPage({ params }: Props) {
         </div>
       </div>
 
-      <footer className="border-t border-border px-5 py-10 sm:px-8 lg:px-12">
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <footer className="border-t border-border py-10">
+        <div className="page-shell flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-[460px]">
             <span className="text-[12px] font-semibold uppercase tracking-[0.24em] text-accent">
               Agenda Capoeiragem

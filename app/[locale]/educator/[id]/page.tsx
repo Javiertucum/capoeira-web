@@ -114,7 +114,7 @@ export default async function EducatorProfilePage({ params }: Props) {
     <div className="relative min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div className="relative mx-auto max-w-[900px] px-5 py-10 sm:px-8 lg:px-12">
+      <div className="page-shell relative py-10">
         <Link
           href={`/${locale}/map`}
           className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/20 hover:text-text"
@@ -124,9 +124,9 @@ export default async function EducatorProfilePage({ params }: Props) {
           </svg>
           {t('back')}
         </Link>
-        <div className="flex flex-col gap-8 md:flex-row md:items-start lg:gap-12">
-          {/* Left Column */}
-          <div className="flex flex-col items-center text-center md:sticky md:top-24 md:w-1/3">
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[340px_minmax(0,1fr)] xl:gap-12">
+          {/* Left Sidebar — sticky */}
+          <div className="flex flex-col items-center text-center xl:sticky xl:top-24 xl:self-start">
             <div className="flex flex-col items-center">
               <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
                 {t('role')}
@@ -137,6 +137,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                     src={educator.avatarUrl}
                     alt={educator.nickname || educator.name || 'Educator'}
                     fill
+                    sizes="(min-width: 1280px) 192px, 160px"
                     className="object-cover"
                   />
                 ) : (
@@ -185,9 +186,27 @@ export default async function EducatorProfilePage({ params }: Props) {
                   <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">{t('group')}</p>
                   <Link
                     href={`/${locale}/group/${group.id}`}
-                    className="mt-1 block text-sm font-medium text-accent hover:underline"
+                    className="mt-3 flex items-center gap-3 rounded-[18px] border border-border bg-surface px-3 py-3 text-left transition-colors hover:border-accent/30"
                   >
-                    {group.name}
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[14px] border border-border bg-card">
+                      {group.logoUrl ? (
+                        <Image
+                          src={group.logoUrl}
+                          alt={group.name}
+                          fill
+                          sizes="48px"
+                          className="object-contain p-2"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-sm font-bold text-text-muted">
+                          {group.name?.[0] ?? '?'}
+                        </div>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-text">{group.name}</p>
+                      <p className="mt-1 text-xs text-accent">{t('viewProfile')}</p>
+                    </div>
                   </Link>
                 </div>
               )}
@@ -202,10 +221,11 @@ export default async function EducatorProfilePage({ params }: Props) {
           </div>
 
           {/* Right Column: Social links → Nucleos → Bio */}
-          <div className="flex-1 space-y-10">
+          <div className="flex-1 space-y-8">
             {/* Social links — primero, sin heading */}
             {(sl.instagram || sl.whatsapp || sl.facebook || sl.youtube || sl.tiktok || sl.website) && (
-              <div className="flex flex-wrap gap-3">
+              <section className="rounded-[26px] border border-border bg-card/40 p-5">
+                <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">
                 {sl.whatsapp && (
                   <a
                     href={`https://wa.me/${sl.whatsapp.replace(/\D/g, '')}`}
@@ -266,14 +286,15 @@ export default async function EducatorProfilePage({ params }: Props) {
                     {t('website')}
                   </a>
                 )}
-              </div>
+                </div>
+              </section>
             )}
 
             {/* Nucleos with schedules */}
             {nucleos.length > 0 && (
-              <section>
+              <section className="rounded-[26px] border border-border bg-card/40 p-5 sm:p-6">
                 <h2 className="text-xl font-semibold text-text">{t('nucleos')}</h2>
-                <div className="mt-6 flex flex-col gap-4">
+                <div className="mt-6 grid gap-4 2xl:grid-cols-2">
                   {nucleos.map((nucleo) => {
                     const VIEW_LABEL: Record<string, string> = { es: 'Ver núcleo', pt: 'Ver núcleo', en: 'View nucleo' }
                     const WHATSAPP_LABEL: Record<string, string> = { es: 'Contacto WhatsApp', pt: 'Contato WhatsApp', en: 'WhatsApp contact' }
@@ -352,9 +373,9 @@ export default async function EducatorProfilePage({ params }: Props) {
             )}
 
             {/* Bio — último */}
-            <section>
+            <section className="rounded-[26px] border border-border bg-card/40 p-5 sm:p-6">
               <h2 className="text-xl font-semibold text-text">{t('bio')}</h2>
-              <div className="mt-4 whitespace-pre-wrap text-base leading-relaxed text-text-secondary">
+              <div className="page-copy-measure mt-4 whitespace-pre-wrap text-base leading-relaxed text-text-secondary">
                 {educator.bio || t('unspecified')}
               </div>
             </section>

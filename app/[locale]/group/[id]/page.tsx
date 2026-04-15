@@ -192,7 +192,7 @@ export default async function GroupPage({ params }: Props) {
     <div className="relative min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(groupSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div className="relative mx-auto max-w-[1180px] px-5 py-10 sm:px-8 lg:px-12">
+      <div className="page-shell relative py-10">
         <Link
           href={`/${locale}/map?filter=groups`}
           className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/20 hover:text-text"
@@ -241,7 +241,7 @@ export default async function GroupPage({ params }: Props) {
           </div>
         </section>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_390px]">
           <section className="rounded-[30px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 shadow-[0_22px_60px_var(--shadow-soft)]">
             <h2 className="text-[28px] font-semibold tracking-[-0.04em] text-text">
               {`${t('nucleos')} (${nucleos.length})`}
@@ -256,7 +256,7 @@ export default async function GroupPage({ params }: Props) {
               </div>
             ) : null}
 
-            <div className="mt-6 flex flex-col gap-4">
+            <div className="mt-6 grid gap-4 2xl:grid-cols-2">
               {nucleos.length > 0 ? (
                 nucleos.map((nucleo) => (
                   <NucleoListItem key={nucleo.id} nucleo={nucleo} isActive={false} showGroupLink={false} />
@@ -274,7 +274,7 @@ export default async function GroupPage({ params }: Props) {
               <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                 {t('stats')}
               </p>
-              <div className="mt-5 grid gap-3">
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                 {stats.map((item) => (
                   <div
                     key={item.label}
@@ -351,7 +351,7 @@ export default async function GroupPage({ params }: Props) {
                 <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                   {t('educators')} ({educators.length})
                 </p>
-                <div className="mt-4 flex flex-col gap-3">
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                   {educators.map((edu) => {
                     const gradLevel = edu.graduationLevelId ? gradLevelById.get(edu.graduationLevelId) : undefined
                     return (

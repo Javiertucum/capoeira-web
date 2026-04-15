@@ -232,8 +232,8 @@ export default function MapClientShell({
   }
 
   return (
-    <div className="px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pb-20">
-      <div className="mx-auto max-w-[1280px]">
+    <div className="pb-16 pt-8 lg:pb-20">
+      <div className="page-shell">
         <section className="relative overflow-hidden rounded-[30px] border border-border bg-card px-6 py-7 shadow-sm sm:px-8 sm:py-8">
           <div
             aria-hidden="true"
@@ -244,7 +244,7 @@ export default function MapClientShell({
             className="absolute left-[-70px] bottom-[-80px] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(208,162,96,0.08)_0%,rgba(208,162,96,0)_72%)]"
           />
 
-          <div className="relative grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
+          <div className="relative grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px] 2xl:grid-cols-[minmax(0,1fr)_360px]">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
                 {copy.eyebrow}
@@ -252,7 +252,7 @@ export default function MapClientShell({
               <h1 className="mt-4 text-[clamp(34px,5vw,58px)] font-semibold leading-[0.96] tracking-[-0.06em] text-text">
                 {t('title')}
               </h1>
-              <p className="mt-4 max-w-[58ch] text-sm leading-7 text-text-secondary">
+              <p className="page-copy-measure mt-4 text-sm leading-7 text-text-secondary">
                 {copy.intro}
               </p>
               <p className="mt-2 text-sm leading-7 text-text-muted">{copy.helper}</p>
@@ -383,9 +383,9 @@ export default function MapClientShell({
           </div>
         </div>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[400px_minmax(0,1fr)] xl:grid-cols-[430px_minmax(0,1fr)]">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(360px,460px)_minmax(0,1fr)] 2xl:grid-cols-[minmax(420px,500px)_minmax(0,1fr)]">
           <section
-            className={`${mobileView === 'list' ? 'block' : 'hidden'} rounded-[26px] border border-border bg-card p-4 shadow-sm lg:block`}
+            className={`${mobileView === 'list' ? 'block' : 'hidden'} rounded-[26px] border border-border bg-card p-5 shadow-sm lg:block`}
           >
             <div className="flex items-end justify-between gap-4 border-b border-border px-2 pb-4">
               <div>
