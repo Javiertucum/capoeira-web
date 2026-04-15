@@ -118,12 +118,8 @@ export default async function NucleoPage({ params }: Props) {
     <div className="relative min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div
-        aria-hidden="true"
-        className="fixed inset-x-0 top-0 h-[500px] bg-[radial-gradient(circle_at_top,rgba(102,187,106,0.10),transparent_70%)] pointer-events-none"
-      />
 
-      <main className="relative mx-auto max-w-[900px] px-5 py-10 sm:px-8 lg:px-12">
+      <div className="relative mx-auto max-w-[900px] px-5 py-10 sm:px-8 lg:px-12">
         <Link
           href={`/${locale}/group/${groupId}`}
           className="mb-8 inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-3 py-2 text-sm text-text-muted transition-all hover:border-border/80 hover:text-text"
@@ -365,7 +361,7 @@ export default async function NucleoPage({ params }: Props) {
             </Link>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }
