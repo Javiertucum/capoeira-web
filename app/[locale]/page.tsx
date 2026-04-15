@@ -152,7 +152,7 @@ export default async function LandingPage({ params }: Props) {
           </div>
 
           <div className="flex flex-col gap-3 text-sm text-text-muted md:items-end">
-            <span>{`© 2026 | ${tFooter('credits')}`}</span>
+            <span>© 2026 Agenda Capoeiragem</span>
             <div className="flex gap-5 text-[11px] font-semibold uppercase tracking-[0.18em]">
               <Link href={`/${locale}/privacy`} className="transition-colors hover:text-text">
                 {tFooter('privacy')}
