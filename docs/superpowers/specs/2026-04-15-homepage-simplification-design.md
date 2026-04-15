@@ -1,19 +1,19 @@
-# Homepage Simplification Design
+# Rediseño de la página de inicio
 
-**Date:** 2026-04-15
-**Status:** Approved
+**Fecha:** 2026-04-15
+**Estado:** Aprobado
 
-## Problem
+## El problema
 
-The current homepage is too complex for a directory. It includes an editorial hero with two columns, a bullet-point panel, stats bar, category cards, featured educators grid, an app CTA section with phone mockup, and ads. This creates friction for users who just want to find a nucleo, group, or educator.
+La página de inicio actual tiene demasiadas cosas para ser un directorio. Tiene un bloque principal con dos columnas, un panel con puntos, estadísticas, tarjetas de categorías, educadores destacados, una sección para promocionar la app con un mockup de teléfono y anuncios. Todo eso complica la experiencia para alguien que solo quiere encontrar un núcleo, un grupo o un educador.
 
-## Goal
+## Lo que queremos lograr
 
-Redesign the homepage to function as a real directory entry point: search-first, minimal, no scroll, immediately actionable.
+Que la página de inicio funcione como la entrada real a un directorio: lo primero que ve el usuario es el buscador, la página es corta, no hay que hacer scroll, y desde ahí se puede ir directamente a cualquier sección.
 
-## Design
+## Cómo va a quedar
 
-### Layout structure
+### Estructura visual
 
 ```
 NAV: Logo · Mapa · Educadores · Grupos · [ES/PT/EN]
@@ -34,61 +34,56 @@ NAV: Logo · Mapa · Educadores · Grupos · [ES/PT/EN]
 FOOTER: © 2026 · Privacy · Terms
 ```
 
-### Hero section (`app/[locale]/page.tsx`)
+### Bloque principal (la parte central de la página)
 
-- Small brand label: "Agenda Capoeiragem" (uppercase, accent color, `<p>` tag)
-- `<h1>`: "Agenda Capoeiragem" or the localized site name — kept for SEO, visually de-emphasized (smaller than current)
-- Subtitle: localized one-liner — "Directorio global de capoeira" / "Diretório global de capoeira" / "Global capoeira directory"
-- `HeroSearch` component (existing, unchanged)
-- Stats row: `{nucleos} Núcleos · {groups} Grupos · {educators} Educadores` — numbers from Firestore via `getStats()`, same as current
-- Three action buttons:
-  - Primary (accent): "Ver mapa" → `/{locale}/map`
-  - Secondary (outline): "Educadores" → `/{locale}/educators`
-  - Secondary (outline): "Grupos" → `/{locale}/map?filter=groups`
+- Nombre de la app: "Agenda Capoeiragem" en letra pequeña y color verde
+- Título principal (invisible para el usuario pero importante para Google): "Agenda Capoeiragem"
+- Subtítulo: una frase corta según el idioma — español, portugués o inglés
+- Barra de búsqueda: la misma que ya existe, sin cambios
+- Fila de números reales: cuántos núcleos, grupos y educadores hay en la base de datos
+- Tres botones de acción:
+  - **Ver mapa** (botón verde, el más destacado) → va al mapa de núcleos
+  - **Educadores** (botón secundario) → va a la lista de educadores
+  - **Grupos** (botón secundario) → va al mapa con filtro de grupos
 
-No sections below the hero. No scroll. Footer immediately follows.
+La página no tiene scroll. Después del bloque principal viene directo el pie de página.
 
-### Nav (`components/public/Nav.tsx`)
+### Menú de navegación
 
-Remove the "App Preview" button (`/{locale}/app` CTA). Keep:
-- Logo/brand link
-- Three nav links: Mapa · Educadores · Grupos
-- Language switcher (ES / PT / EN)
-- Mobile hamburger menu (same links, no app button)
+Se elimina el botón "App Preview" que aparece en la esquina superior derecha — añade ruido sin ser útil para el visitante. Se mantiene:
+- El logo con el nombre
+- Los tres links: Mapa · Educadores · Grupos
+- El selector de idioma (ES / PT / EN)
+- El menú hamburguesa en móvil (con los mismos links, sin el botón de la app)
 
-### What is removed from `page.tsx`
+### Qué se elimina de la página
 
-| Component/Section | Removed |
+| Sección | Se elimina |
 |---|---|
-| Two-column hero grid with panel | ✓ |
-| `StatsBar` (separate section) | ✓ — stats inline in hero |
-| `CategoryCards` section | ✓ |
-| Featured educators grid | ✓ |
-| CTA section (phone mockup) | ✓ |
-| `AdDisplay` | ✓ |
-| `SectionLabel`, `EducatorCard` imports | ✓ |
+| Bloque hero con dos columnas y panel de texto | ✓ |
+| Barra de estadísticas separada | ✓ — los números pasan al bloque principal |
+| Tarjetas de categorías (Núcleos / Grupos / Educadores) | ✓ |
+| Grid de educadores destacados | ✓ |
+| Sección de la app con mockup de teléfono | ✓ |
+| Bloque de anuncios | ✓ |
 
-### What is kept
+### Qué se mantiene
 
-- `HeroSearch` component — unchanged
-- `getStats()` query — used for the inline stats row
-- JSON-LD structured data (`buildWebSiteSchema`) — keep in page
-- `generateMetadata` — keep, simplify copy
-- Footer — unchanged
-- All i18n/locale plumbing — unchanged
+- La barra de búsqueda existente — sin cambios
+- La consulta que trae los números del directorio — se sigue usando
+- Los datos para Google (JSON-LD) — se mantienen en la página
+- El pie de página — sin cambios
+- Todo el sistema de idiomas — sin cambios
 
-### Metadata
+### Textos de la página
 
-Keep `generateMetadata`. Simplify `META_TITLES` and `META_DESCRIPTIONS` to match the new minimal copy. Remove `LANDING_COPY` object (no longer needed — hero copy is short enough to inline or put in messages).
+Los textos cortos del bloque principal (subtítulo, etiquetas de los botones, etiquetas de las estadísticas) reutilizan las traducciones que ya existen en los archivos de idioma. Solo se añaden claves nuevas si hace falta algo que no existe todavía. Se elimina el objeto grande de textos editoriales que ya no tiene razón de estar.
 
-### i18n messages
+## Qué no cambia con este rediseño
 
-The hero copy ("Ver mapa", "Educadores", "Grupos", stats labels) should use existing `messages/{locale}.json` keys where possible. Add minimal new keys only if needed.
-
-## Out of scope
-
-- Changes to map page, educator pages, group pages, nucleo pages
-- Changes to HeroSearch behavior
-- Changes to footer content
-- SEO/sitemap changes
-- Any new features
+- La página del mapa
+- Las páginas de educadores, grupos y núcleos
+- El comportamiento de la búsqueda
+- El contenido del pie de página
+- El SEO y el sitemap
+- Ninguna funcionalidad nueva

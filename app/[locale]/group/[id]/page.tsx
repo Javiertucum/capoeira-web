@@ -405,7 +405,7 @@ export default async function GroupPage({ params }: Props) {
             <AdDisplay />
           </aside>
         </div>
-      </main>
+      </div>
     </div>
   )
 }
