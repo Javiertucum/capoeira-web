@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Sitemap: Failed to fetch public entities', error)
   }
 
-  const staticRoutes = ['', '/map'].flatMap((path) =>
+  const staticRoutes = ['', '/map', '/educators'].flatMap((path) =>
     LOCALES.map((locale) => ({
       url: getLocalizedUrl(locale, path),
       lastModified: new Date(),

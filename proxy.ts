@@ -2,11 +2,21 @@ import createMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
 import { NextRequest, NextResponse } from 'next/server'
 import { SESSION_COOKIE } from './lib/auth/session'
+import { DEFAULT_SITE_URL } from './lib/site'
 
 const intlMiddleware = createMiddleware(routing)
+const canonicalHost = new URL(DEFAULT_SITE_URL).host
 
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const host = request.headers.get('host')
+
+  if (host === 'agendacapoeiragem.com') {
+    const url = request.nextUrl.clone()
+    url.protocol = 'https:'
+    url.host = canonicalHost
+    return NextResponse.redirect(url, 308)
+  }
 
   // Protect admin routes (except login)
   const isAdminPath = pathname.match(/\/[a-z]{2}\/admin/) !== null
