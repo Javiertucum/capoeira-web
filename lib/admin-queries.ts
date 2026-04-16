@@ -210,6 +210,16 @@ export interface AdminEvent {
   updatedAt?: string | null
 }
 
+export type AdminEntityType = 'user' | 'group' | 'nucleo' | 'event'
+
+export interface AdminEntityOption {
+  id: string
+  type: AdminEntityType
+  label: string
+  description?: string
+  groupId?: string
+}
+
 export interface AdminNucleo {
   id: string
   groupId: string
@@ -249,6 +259,17 @@ export interface DashboardStats {
   totalNucleos: number
   openBugReports: number
   newUsersThisWeek: number
+}
+
+function joinNonEmpty(parts: Array<string | null | undefined>, separator = ' '): string {
+  return parts.filter((part): part is string => Boolean(part?.trim())).join(separator)
+}
+
+function userDisplayName(data: FirestoreRecord): string {
+  const fullName = joinNonEmpty([asString(data.name), asString(data.surname)])
+  const nickname = asString(data.nickname)
+  if (fullName && nickname) return `${fullName} (${nickname})`
+  return fullName || nickname || ''
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
@@ -441,6 +462,73 @@ export async function getAdminEventById(id: string): Promise<AdminEvent | null> 
     createdAt: toIsoString(data.createdAt),
     updatedAt: toIsoString(data.updatedAt),
   }
+}
+
+export async function getAdminEntityOptions(): Promise<AdminEntityOption[]> {
+  const [usersSnap, groupsSnap, nucleosSnap, eventsSnap] = await Promise.all([
+    adminDb.collection('usersPublic').limit(500).get().catch(() => ({ docs: [] })),
+    adminDb.collection('groups').get().catch(() => ({ docs: [] })),
+    adminDb.collectionGroup('nucleos').get().catch(() => ({ docs: [] })),
+    adminDb.collection('events').limit(300).get().catch(() => ({ docs: [] })),
+  ])
+
+  const groups = groupsSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const label = asString(data.name) ?? doc.id
+    return {
+      id: doc.id,
+      type: 'group' as const,
+      label,
+      description: joinNonEmpty(
+        [asString(data.graduationSystemName), asStringArray(data.representedCountries)?.join(', ')],
+        ' - '
+      ),
+    }
+  })
+
+  const groupNames = new Map(groups.map((group) => [group.id, group.label] as const))
+
+  const users = usersSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const groupId = asString(data.groupId) ?? undefined
+    const role = asString(data.role)
+    return {
+      id: doc.id,
+      type: 'user' as const,
+      label: userDisplayName(data) || doc.id,
+      description: joinNonEmpty([role, groupId ? groupNames.get(groupId) ?? groupId : undefined], ' - '),
+      groupId,
+    }
+  })
+
+  const nucleos = nucleosSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const groupId = doc.ref.parent.parent?.id ?? ''
+    const groupName = groupNames.get(groupId) ?? groupId
+    return {
+      id: doc.id,
+      type: 'nucleo' as const,
+      label: asString(data.name) ?? doc.id,
+      description: joinNonEmpty([groupName, asString(data.city), asString(data.country)], ' - '),
+      groupId,
+    }
+  })
+
+  const events = eventsSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const groupId = asString(data.groupId) ?? undefined
+    return {
+      id: doc.id,
+      type: 'event' as const,
+      label: asString(data.title) ?? doc.id,
+      description: joinNonEmpty([asString(data.category), groupId ? groupNames.get(groupId) ?? groupId : undefined], ' - '),
+      groupId,
+    }
+  })
+
+  return [...users, ...groups, ...nucleos, ...events].sort((left, right) =>
+    left.label.localeCompare(right.label)
+  )
 }
 
 export async function getBugReports(limit = 100): Promise<BugReport[]> {

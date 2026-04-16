@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import EventEditForm from '@/components/admin/EventEditForm'
-import { getAdminEventById } from '@/lib/admin-queries'
+import { getAdminEntityOptions, getAdminEventById } from '@/lib/admin-queries'
 
 type Props = {
   params: Promise<{ locale: string; id: string }>
@@ -10,11 +10,18 @@ type Props = {
 
 export default async function AdminEventDetailPage({ params }: Props) {
   const { locale, id } = await params
-  const event = await getAdminEventById(id).catch(() => null)
+  const [event, entityOptions] = await Promise.all([
+    getAdminEventById(id).catch(() => null),
+    getAdminEntityOptions().catch(() => []),
+  ])
 
   if (!event) {
     notFound()
   }
+
+  const userOptions = entityOptions.filter((option) => option.type === 'user')
+  const creator = userOptions.find((option) => option.id === event.createdBy)
+  const creatorLabel = creator?.label || event.createdBy || 'sin registro'
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -37,7 +44,7 @@ export default async function AdminEventDetailPage({ params }: Props) {
               {event.title || 'Evento sin titulo'}
             </h1>
             <p className="mt-2 text-sm text-text-muted">
-              Creado por <span className="text-text-secondary">{event.createdBy || 'sin registro'}</span>
+              Creado por <span className="text-text-secondary">{creatorLabel}</span>
             </p>
           </div>
 
@@ -63,7 +70,7 @@ export default async function AdminEventDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <EventEditForm event={event} locale={locale} />
+        <EventEditForm event={event} locale={locale} entityOptions={entityOptions} />
       </div>
     </div>
   )

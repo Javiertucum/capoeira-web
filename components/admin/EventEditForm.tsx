@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { AdminEvent } from '@/lib/admin-queries'
+import type { AdminEntityOption, AdminEntityType, AdminEvent } from '@/lib/admin-queries'
 
 interface Props {
   event: AdminEvent
   locale: string
+  entityOptions: AdminEntityOption[]
 }
 
 type AdminEventLocation = NonNullable<AdminEvent['locations']>[number]
@@ -31,6 +32,12 @@ type LocationForm = {
 
 const PAYMENT_TYPES = ['transfer', 'paymentLink', 'pix', 'registrationForm']
 const RECURRENCE_TYPES = ['none', 'weekly', 'biweekly', 'monthly']
+const ENTITY_TYPE_LABELS: Record<AdminEntityType, string> = {
+  user: 'Usuario',
+  group: 'Grupo',
+  nucleo: 'Nucleo',
+  event: 'Evento',
+}
 
 function pad(value: number): string {
   return String(value).padStart(2, '0')
@@ -117,8 +124,185 @@ function splitLines(value: string): string[] {
     .filter(Boolean)
 }
 
-export default function EventEditForm({ event, locale }: Props) {
+function normalizeSearch(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+}
+
+function entitySearchText(option: AdminEntityOption): string {
+  return normalizeSearch(
+    [option.label, option.description, option.id, option.groupId, ENTITY_TYPE_LABELS[option.type]]
+      .filter(Boolean)
+      .join(' ')
+  )
+}
+
+function EntityBadge({ type }: { type: AdminEntityType }) {
+  return (
+    <span className="rounded-full border border-border bg-card px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-text-muted">
+      {ENTITY_TYPE_LABELS[type]}
+    </span>
+  )
+}
+
+function EntitySearchInput({
+  label,
+  value,
+  options,
+  placeholder,
+  emptyLabel = 'Sin seleccion',
+  onChange,
+}: {
+  label: string
+  value: string
+  options: AdminEntityOption[]
+  placeholder: string
+  emptyLabel?: string
+  onChange: (value: string) => void
+}) {
+  const selected = options.find((option) => option.id === value)
+  const selectedLabel = selected?.label || value || ''
+  const [query, setQuery] = useState('')
+  const [open, setOpen] = useState(false)
+  const normalizedQuery = normalizeSearch(query)
+  const results = useMemo(() => {
+    const pool = normalizedQuery
+      ? options.filter((option) => entitySearchText(option).includes(normalizedQuery))
+      : options
+    return pool.slice(0, 8)
+  }, [normalizedQuery, options])
+  const inputClass =
+    'w-full rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none transition-colors focus:border-accent/35'
+  const labelClass = 'mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted'
+
+  return (
+    <div className="relative">
+      <label className={labelClass}>{label}</label>
+      <div className="flex gap-2">
+        <input
+          className={inputClass}
+          value={open ? query : selectedLabel}
+          onFocus={() => {
+            setQuery('')
+            setOpen(true)
+          }}
+          onChange={(event) => {
+            setQuery(event.target.value)
+            setOpen(true)
+          }}
+          onBlur={() => window.setTimeout(() => setOpen(false), 140)}
+          placeholder={placeholder}
+        />
+        {value ? (
+          <button
+            type="button"
+            onClick={() => onChange('')}
+            className="rounded-2xl border border-border bg-surface px-4 text-xs font-semibold text-text-muted transition-colors hover:text-text"
+          >
+            Limpiar
+          </button>
+        ) : null}
+      </div>
+      {selected ? (
+        <p className="mt-2 text-xs text-text-muted">
+          {selected.description ? `${selected.description} - ` : ''}
+          <span className="font-mono">{selected.id}</span>
+        </p>
+      ) : value ? (
+        <p className="mt-2 text-xs text-text-muted">
+          ID sin nombre encontrado: <span className="font-mono">{value}</span>
+        </p>
+      ) : (
+        <p className="mt-2 text-xs text-text-muted">{emptyLabel}</p>
+      )}
+      {open ? (
+        <div className="absolute z-20 mt-2 max-h-72 w-full overflow-y-auto rounded-2xl border border-border bg-card p-2 shadow-xl">
+          {results.length > 0 ? (
+            results.map((option) => (
+              <button
+                key={`${option.type}-${option.groupId || 'root'}-${option.id}`}
+                type="button"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => {
+                  onChange(option.id)
+                  setQuery('')
+                  setOpen(false)
+                }}
+                className="flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-surface"
+              >
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold text-text">{option.label}</span>
+                  <span className="block truncate text-xs text-text-muted">
+                    {option.description || option.id}
+                  </span>
+                </span>
+                <EntityBadge type={option.type} />
+              </button>
+            ))
+          ) : (
+            <p className="px-3 py-4 text-sm text-text-muted">No hay resultados.</p>
+          )}
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+function EntityLookup({ options }: { options: AdminEntityOption[] }) {
+  const [query, setQuery] = useState('')
+  const normalizedQuery = normalizeSearch(query)
+  const results = useMemo(() => {
+    if (!normalizedQuery) return options.slice(0, 10)
+    return options.filter((option) => entitySearchText(option).includes(normalizedQuery)).slice(0, 12)
+  }, [normalizedQuery, options])
+
+  return (
+    <div>
+      <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted">
+        Buscar referencias
+      </label>
+      <input
+        className="w-full rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none transition-colors focus:border-accent/35"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        placeholder="Busca usuarios, grupos, nucleos o eventos"
+      />
+      <div className="mt-3 max-h-72 space-y-2 overflow-y-auto rounded-2xl border border-border bg-surface p-2">
+        {results.map((option) => (
+          <div
+            key={`${option.type}-${option.groupId || 'root'}-${option.id}`}
+            className="flex items-center justify-between gap-3 rounded-xl bg-card px-3 py-3"
+          >
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-text">{option.label}</p>
+              <p className="truncate text-xs text-text-muted">
+                {option.description ? `${option.description} - ` : ''}
+                <span className="font-mono">{option.id}</span>
+              </p>
+            </div>
+            <EntityBadge type={option.type} />
+          </div>
+        ))}
+        {results.length === 0 ? (
+          <p className="px-3 py-4 text-sm text-text-muted">No hay resultados.</p>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
+export default function EventEditForm({ event, locale, entityOptions }: Props) {
   const router = useRouter()
+  const groupOptions = useMemo(
+    () => entityOptions.filter((option) => option.type === 'group'),
+    [entityOptions]
+  )
+  const userOptions = useMemo(
+    () => entityOptions.filter((option) => option.type === 'user'),
+    [entityOptions]
+  )
   const [form, setForm] = useState({
     title: event.title || '',
     description: event.description || '',
@@ -132,8 +316,9 @@ export default function EventEditForm({ event, locale }: Props) {
     currency: event.currency || 'CLP',
     showOrganizerGroups: event.showOrganizerGroups ?? true,
     posterUrlsText: (event.posterUrls || []).join('\n'),
-    coOrganizerIdsText: (event.coOrganizerIds || []).join('\n'),
   })
+  const [coOrganizerIds, setCoOrganizerIds] = useState<string[]>(event.coOrganizerIds || [])
+  const [coOrganizerToAdd, setCoOrganizerToAdd] = useState('')
   const [locations, setLocations] = useState<LocationForm[]>(
     (event.locations || []).map(locationToForm)
   )
@@ -206,7 +391,7 @@ export default function EventEditForm({ event, locale }: Props) {
           currency: form.currency || 'CLP',
           showOrganizerGroups: form.showOrganizerGroups,
           posterUrls: splitLines(form.posterUrlsText),
-          coOrganizerIds: splitLines(form.coOrganizerIdsText),
+          coOrganizerIds,
           locations: locations.map((location) => ({
             name: location.name,
             address: location.address,
@@ -321,12 +506,12 @@ export default function EventEditForm({ event, locale }: Props) {
           </div>
 
           <div>
-            <label className={labelClass}>Grupo relacionado</label>
-            <input
-              className={inputClass}
+            <EntitySearchInput
+              label="Grupo relacionado"
               value={form.groupId}
-              onChange={(event) => set('groupId', event.target.value)}
-              placeholder="groupId opcional"
+              options={groupOptions}
+              placeholder="Busca por nombre de grupo"
+              onChange={(value) => set('groupId', value)}
             />
           </div>
 
@@ -627,14 +812,63 @@ export default function EventEditForm({ event, locale }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>Coorganizadores UID (uno por linea)</label>
-            <textarea
-              className={`${inputClass} min-h-[130px] resize-y`}
-              value={form.coOrganizerIdsText}
-              onChange={(event) => set('coOrganizerIdsText', event.target.value)}
+            <EntitySearchInput
+              label="Agregar coorganizador"
+              value={coOrganizerToAdd}
+              options={userOptions}
+              placeholder="Busca por nombre, apodo o correo"
+              emptyLabel="Selecciona un usuario y agregalo a la lista."
+              onChange={(value) => setCoOrganizerToAdd(value)}
             />
+            <button
+              type="button"
+              disabled={!coOrganizerToAdd || coOrganizerIds.includes(coOrganizerToAdd)}
+              onClick={() => {
+                setCoOrganizerIds((current) => [...current, coOrganizerToAdd])
+                setCoOrganizerToAdd('')
+              }}
+              className="mt-3 rounded-xl border border-accent/30 px-4 py-2 text-xs font-semibold text-accent transition-opacity disabled:opacity-40"
+            >
+              Agregar coorganizador
+            </button>
+            <div className="mt-4 space-y-2">
+              {coOrganizerIds.length > 0 ? (
+                coOrganizerIds.map((id) => {
+                  const option = userOptions.find((item) => item.id === id)
+                  return (
+                    <div
+                      key={id}
+                      className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 py-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-text">{option?.label || id}</p>
+                        <p className="truncate text-xs text-text-muted">
+                          {option?.description ? `${option.description} - ` : ''}
+                          <span className="font-mono">{id}</span>
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setCoOrganizerIds((current) => current.filter((item) => item !== id))}
+                        className="text-xs font-semibold text-danger"
+                      >
+                        Quitar
+                      </button>
+                    </div>
+                  )
+                })
+              ) : (
+                <p className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text-muted">
+                  Sin coorganizadores registrados.
+                </p>
+              )}
+            </div>
           </div>
         </div>
+      </section>
+
+      <section className={sectionClass}>
+        <EntityLookup options={entityOptions} />
       </section>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
