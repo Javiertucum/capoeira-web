@@ -17,6 +17,10 @@ function asNumber(value: unknown): number | null {
   return typeof value === 'number' && Number.isFinite(value) ? value : null
 }
 
+function asBoolean(value: unknown): boolean | null {
+  return typeof value === 'boolean' ? value : null
+}
+
 function toIsoString(value: unknown): string | null {
   if (!value) return null
 
@@ -64,6 +68,53 @@ function mapSchedules(value: unknown): AdminNucleo['schedules'] {
       }
 
       return { dayOfWeek, startTime, endTime }
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null)
+}
+
+function mapEventLocations(value: unknown): AdminEvent['locations'] {
+  if (!Array.isArray(value)) return []
+
+  return value
+    .map((item) => {
+      if (!item || typeof item !== 'object') return null
+      const location = item as FirestoreRecord
+
+      return {
+        name: asString(location.name) ?? '',
+        address: asString(location.address) ?? '',
+        latitude: asNumber(location.latitude) ?? 0,
+        longitude: asNumber(location.longitude) ?? 0,
+        date: toIsoString(location.date),
+        endTime: toIsoString(location.endTime),
+        description: asString(location.description) ?? '',
+        country: asString(location.country),
+        city: asString(location.city),
+        isOnline: asBoolean(location.isOnline) ?? false,
+        onlineLink: asString(location.onlineLink),
+        locationTBC: asBoolean(location.locationTBC) ?? false,
+      }
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null)
+}
+
+function mapEventPaymentMethods(value: unknown): AdminEvent['paymentMethods'] {
+  if (!Array.isArray(value)) return []
+
+  return value
+    .map((item) => {
+      if (!item || typeof item !== 'object') return null
+      const method = item as FirestoreRecord
+      const type = asString(method.type)
+
+      if (!type) return null
+
+      return {
+        type,
+        label: asString(method.label) ?? '',
+        value: asString(method.value) ?? '',
+        instructions: asString(method.instructions) ?? '',
+      }
     })
     .filter((item): item is NonNullable<typeof item> => item !== null)
 }
@@ -128,6 +179,33 @@ export interface AdminEvent {
   createdBy: string
   goingCount?: number
   interestedCount?: number
+  locations?: Array<{
+    name: string
+    address: string
+    latitude: number
+    longitude: number
+    date: string | null
+    endTime?: string | null
+    description: string
+    country?: string | null
+    city?: string | null
+    isOnline?: boolean
+    onlineLink?: string | null
+    locationTBC?: boolean
+  }>
+  coOrganizerIds?: string[]
+  showOrganizerGroups?: boolean
+  posterUrls?: string[]
+  recurrence?: string | null
+  recurrenceEndDate?: string | null
+  price?: number
+  currency?: string | null
+  paymentMethods?: Array<{
+    type: string
+    label: string
+    value: string
+    instructions?: string
+  }>
   createdAt?: string | null
   updatedAt?: string | null
 }
@@ -319,6 +397,15 @@ export async function getAdminEvents(limit = 50): Promise<AdminEvent[]> {
         createdBy: asString(data.createdBy) ?? '',
         goingCount: asNumber(data.goingCount) ?? 0,
         interestedCount: asNumber(data.interestedCount) ?? 0,
+        locations: mapEventLocations(data.locations),
+        coOrganizerIds: asStringArray(data.coOrganizerIds),
+        showOrganizerGroups: asBoolean(data.showOrganizerGroups) ?? true,
+        posterUrls: asStringArray(data.posterUrls),
+        recurrence: asString(data.recurrence),
+        recurrenceEndDate: toIsoString(data.recurrenceEndDate),
+        price: asNumber(data.price) ?? 0,
+        currency: asString(data.currency),
+        paymentMethods: mapEventPaymentMethods(data.paymentMethods),
         createdAt: toIsoString(data.createdAt),
         updatedAt: toIsoString(data.updatedAt),
       }
@@ -342,6 +429,15 @@ export async function getAdminEventById(id: string): Promise<AdminEvent | null> 
     createdBy: asString(data.createdBy) ?? '',
     goingCount: asNumber(data.goingCount) ?? 0,
     interestedCount: asNumber(data.interestedCount) ?? 0,
+    locations: mapEventLocations(data.locations),
+    coOrganizerIds: asStringArray(data.coOrganizerIds),
+    showOrganizerGroups: asBoolean(data.showOrganizerGroups) ?? true,
+    posterUrls: asStringArray(data.posterUrls),
+    recurrence: asString(data.recurrence),
+    recurrenceEndDate: toIsoString(data.recurrenceEndDate),
+    price: asNumber(data.price) ?? 0,
+    currency: asString(data.currency),
+    paymentMethods: mapEventPaymentMethods(data.paymentMethods),
     createdAt: toIsoString(data.createdAt),
     updatedAt: toIsoString(data.updatedAt),
   }
