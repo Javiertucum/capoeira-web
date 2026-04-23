@@ -4,9 +4,10 @@ import { usePathname, useRouter } from 'next/navigation'
 
 interface Props {
   section: string
+  description?: string
 }
 
-export default function AdminTopbar({ section }: Props) {
+export default function AdminTopbar({ section, description }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const locale = pathname.split('/')[1] || 'es'
@@ -26,6 +27,9 @@ export default function AdminTopbar({ section }: Props) {
               Admin panel
             </p>
             <p className="mt-2 truncate text-sm font-semibold text-text sm:text-base">{section}</p>
+            {description ? (
+              <p className="mt-1 text-xs text-text-muted sm:text-sm">{description}</p>
+            ) : null}
           </div>
 
           <div className="flex items-center justify-between gap-3 sm:justify-end">

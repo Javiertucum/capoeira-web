@@ -13,24 +13,65 @@ interface NavItem {
 interface Props {
   locale: string
   openBugReports?: number
+  pendingRequests?: number
 }
 
 function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-export default function AdminSidebar({ locale, openBugReports = 0 }: Props) {
+export default function AdminSidebar({
+  locale,
+  openBugReports = 0,
+  pendingRequests = 0,
+}: Props) {
   const pathname = usePathname()
 
   const sections: { label: string; items: NavItem[] }[] = [
     {
-      label: 'Gestion',
+      label: 'General',
       items: [
         { label: 'Dashboard', href: `/${locale}/admin/dashboard` },
         { label: 'Usuarios', href: `/${locale}/admin/users` },
         { label: 'Grupos', href: `/${locale}/admin/groups` },
         { label: 'Nucleos', href: `/${locale}/admin/nucleos` },
         { label: 'Eventos', href: `/${locale}/admin/events` },
+      ],
+    },
+    {
+      label: 'Personas',
+      items: [
+        {
+          label: 'Solicitudes',
+          href: `/${locale}/admin/requests`,
+          badge: pendingRequests,
+          badgeVariant: 'warning',
+        },
+        { label: 'Suscripciones', href: `/${locale}/admin/subscriptions` },
+      ],
+    },
+    {
+      label: 'Capoeira',
+      items: [
+        { label: 'Graduaciones', href: `/${locale}/admin/graduations` },
+        { label: 'Asistencia', href: `/${locale}/admin/attendance` },
+        { label: 'Pagos de clases', href: `/${locale}/admin/class-payments` },
+      ],
+    },
+    {
+      label: 'Contenido',
+      items: [
+        { label: 'Contenido destacado', href: `/${locale}/admin/featured-content` },
+        { label: 'Moderacion', href: `/${locale}/admin/moderation` },
+        { label: 'Mapa global', href: `/${locale}/admin/global-map` },
+      ],
+    },
+    {
+      label: 'Sistema',
+      items: [
+        { label: 'Finanzas', href: `/${locale}/admin/finances` },
+        { label: 'Notificaciones', href: `/${locale}/admin/notifications` },
+        { label: 'Exportar datos', href: `/${locale}/admin/exports` },
       ],
     },
     {
@@ -47,18 +88,27 @@ export default function AdminSidebar({ locale, openBugReports = 0 }: Props) {
   ]
 
   const flatItems = sections.flatMap((section) => section.items)
+  const mobileItems = flatItems.filter((item) =>
+    [
+      `/${locale}/admin/dashboard`,
+      `/${locale}/admin/requests`,
+      `/${locale}/admin/finances`,
+      `/${locale}/admin/notifications`,
+      `/${locale}/admin/bug-reports`,
+    ].includes(item.href)
+  )
 
   return (
     <>
-      <aside className="hidden w-[248px] shrink-0 border-r border-border bg-surface-muted/70 lg:block">
+      <aside className="hidden w-[280px] shrink-0 border-r border-border bg-surface-muted/70 xl:block">
         <div className="sticky top-0 h-screen overflow-y-auto px-4 py-6">
-          <div className="mb-8 rounded-[22px] border border-border bg-card px-4 py-4">
+          <div className="mb-8 rounded-[26px] border border-border bg-card px-5 py-5 shadow-[0_18px_40px_-30px_var(--shadow)]">
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-accent">
               Agenda Capoeiragem
             </p>
-            <p className="mt-2 text-sm font-semibold text-text">Admin</p>
+            <p className="mt-3 text-lg font-semibold text-text">Control admin</p>
             <p className="mt-2 text-sm leading-6 text-text-muted">
-              Gestion centralizada de usuarios, grupos, nucleos, eventos y soporte.
+              Centro operativo para revisar datos, resolver solicitudes y coordinar el estado completo de la plataforma.
             </p>
           </div>
 
@@ -75,10 +125,10 @@ export default function AdminSidebar({ locale, openBugReports = 0 }: Props) {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-sm transition-colors ${
+                      className={`flex items-center gap-3 rounded-[20px] border px-3 py-3 text-sm transition-colors ${
                         active
-                          ? 'bg-accent/12 text-accent'
-                          : 'text-text-secondary hover:bg-card hover:text-text'
+                          ? 'border-accent/20 bg-accent/12 text-accent'
+                          : 'border-transparent text-text-secondary hover:border-border hover:bg-card hover:text-text'
                       }`}
                     >
                       <span className="flex-1">{item.label}</span>
@@ -102,9 +152,9 @@ export default function AdminSidebar({ locale, openBugReports = 0 }: Props) {
         </div>
       </aside>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-[rgba(8,16,25,0.96)] px-3 py-2 backdrop-blur-lg lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-[rgba(8,16,25,0.96)] px-3 py-2 backdrop-blur-lg xl:hidden">
         <nav className="flex gap-2 overflow-x-auto">
-          {flatItems.map((item) => {
+          {mobileItems.map((item) => {
             const active = isActivePath(pathname, item.href)
 
             return (

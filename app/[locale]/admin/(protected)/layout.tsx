@@ -16,7 +16,10 @@ export default async function AdminLayout({ children, params }: Props) {
     redirect(`/${locale}/admin/login`)
   }
 
-  let stats = { openBugReports: 0 }
+  let stats = {
+    openBugReports: 0,
+    pendingRequests: 0,
+  }
   try {
     stats = await getDashboardStats()
   } catch (error) {
@@ -25,7 +28,11 @@ export default async function AdminLayout({ children, params }: Props) {
 
   return (
     <div className="flex min-h-screen bg-bg">
-      <AdminSidebar locale={locale} openBugReports={stats.openBugReports} />
+      <AdminSidebar
+        locale={locale}
+        openBugReports={stats.openBugReports}
+        pendingRequests={stats.pendingRequests}
+      />
       <div className="flex min-h-screen min-w-0 flex-1 flex-col bg-surface-muted/20">
         {children}
       </div>

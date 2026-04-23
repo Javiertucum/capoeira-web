@@ -258,8 +258,24 @@ export interface DashboardStats {
   totalGroups: number
   totalNucleos: number
   openBugReports: number
+  pendingRequests: number
   newUsersThisWeek: number
 }
+
+type PendingRequestSource = Readonly<{
+  collection: 'group_requests' | 'nucleo_requests' | 'educatorRequests' | 'nucleo_transition_requests'
+  statusField?: 'status'
+  pendingValue?: 'pending'
+}>
+
+// These collection names are defined by the mobile app data layer. We keep the
+// admin shell badge pinned to the real request sources instead of guessing.
+const PENDING_REQUEST_SOURCES: PendingRequestSource[] = [
+  { collection: 'group_requests', statusField: 'status', pendingValue: 'pending' },
+  { collection: 'nucleo_requests', statusField: 'status', pendingValue: 'pending' },
+  { collection: 'educatorRequests', statusField: 'status', pendingValue: 'pending' },
+  { collection: 'nucleo_transition_requests', statusField: 'status', pendingValue: 'pending' },
+] as const
 
 function joinNonEmpty(parts: Array<string | null | undefined>, separator = ' '): string {
   return parts.filter((part): part is string => Boolean(part?.trim())).join(separator)
@@ -272,15 +288,37 @@ function userDisplayName(data: FirestoreRecord): string {
   return fullName || nickname || ''
 }
 
+async function countPendingRequestSource(source: PendingRequestSource): Promise<number> {
+  try {
+    let query = adminDb.collection(source.collection) as FirebaseFirestore.Query
+
+    if (source.statusField && source.pendingValue) {
+      query = query.where(source.statusField, '==', source.pendingValue)
+    }
+
+    const aggregate = await query.count().get()
+    return aggregate.data().count
+  } catch (error) {
+    console.error('[countPendingRequestSource] failed', source.collection, error)
+    return 0
+  }
+}
+
+async function getPendingRequestCount(): Promise<number> {
+  const counts = await Promise.all(PENDING_REQUEST_SOURCES.map(countPendingRequestSource))
+  return counts.reduce((sum, count) => sum + count, 0)
+}
+
 export async function getDashboardStats(): Promise<DashboardStats> {
   const weekAgo = new Date()
   weekAgo.setDate(weekAgo.getDate() - 7)
 
-  const [usersSnap, groupsSnap, nucleosSnap, bugsSnap] = await Promise.all([
+  const [usersSnap, groupsSnap, nucleosSnap, bugsSnap, pendingRequests] = await Promise.all([
     adminDb.collection('usersPublic').get().catch(() => ({ docs: [], size: 0 })),
     adminDb.collection('groups').get().catch(() => ({ docs: [], size: 0 })),
     adminDb.collectionGroup('nucleos').get().catch(() => ({ docs: [], size: 0 })),
     adminDb.collection('bugReports').where('status', '==', 'open').get().catch(() => ({ docs: [], size: 0 })),
+    getPendingRequestCount(),
   ])
 
   const newUsersThisWeek = usersSnap.docs.filter((doc) => {
@@ -294,6 +332,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     totalGroups: groupsSnap.size,
     totalNucleos: nucleosSnap.size,
     openBugReports: bugsSnap.size,
+    pendingRequests,
     newUsersThisWeek,
   }
 }
