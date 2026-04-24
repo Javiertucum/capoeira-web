@@ -20,6 +20,13 @@ export interface PublicUserProfile {
     website?: string | null
   }
   createdAt?: string
+  moderation?: PublicModerationState
+}
+
+export interface PublicModerationState {
+  state?: 'visible' | 'hidden' | 'suspended'
+  reason?: string | null
+  note?: string | null
 }
 
 export interface Group {
@@ -32,6 +39,7 @@ export interface Group {
   graduationSystemName?: string | null
   representedCountries?: string[]
   representedCities?: string[]
+  moderation?: PublicModerationState
 }
 
 export interface Nucleo {
@@ -50,6 +58,7 @@ export interface Nucleo {
     startTime: string
     endTime: string
   }>
+  moderation?: PublicModerationState
 }
 
 export interface MapNucleo extends Nucleo {

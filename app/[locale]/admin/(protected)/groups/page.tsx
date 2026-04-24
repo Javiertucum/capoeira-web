@@ -9,7 +9,7 @@ export default async function AdminGroupsPage({ params }: Props) {
   const { locale } = await params
   let groups: any[] = []
   try {
-    groups = await getAllGroups()
+    groups = await getAllGroups({ includeHidden: true })
   } catch (error) {
     console.error('[AdminGroupsPage] failed to fetch groups', error)
   }

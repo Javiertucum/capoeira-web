@@ -21,6 +21,12 @@ function asBoolean(value: unknown): boolean | null {
   return typeof value === 'boolean' ? value : null
 }
 
+function asRecord(value: unknown): FirestoreRecord | null {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as FirestoreRecord)
+    : null
+}
+
 function toIsoString(value: unknown): string | null {
   if (!value) return null
 
@@ -262,8 +268,158 @@ export interface DashboardStats {
   newUsersThisWeek: number
 }
 
+export type AdminRequestType =
+  | 'group_requests'
+  | 'nucleo_requests'
+  | 'educatorRequests'
+  | 'nucleo_transition_requests'
+
+export interface AdminPendingRequest {
+  id: string
+  requestType: AdminRequestType
+  typeLabel: string
+  requesterId: string
+  requesterName: string
+  subject: string
+  context: string
+  createdAt: string | null
+}
+
+export interface AdminPendingRequestStats {
+  totalPending: number
+  groupJoinPending: number
+  nucleoJoinPending: number
+  educatorPending: number
+  transitionPending: number
+}
+
+export type AdminSubscriptionPlan = 'free' | 'premium'
+
+export interface AdminSubscriptionRow {
+  uid: string
+  email?: string
+  name: string
+  role: 'student' | 'educator' | 'admin'
+  country?: string | null
+  groupId?: string | null
+  plan: AdminSubscriptionPlan
+  isPremium: boolean
+  source?: string | null
+  eventType?: string | null
+  premiumSince?: string | null
+  expiresAt?: string | null
+  updatedAt?: string | null
+  lastVerifiedAt?: string | null
+}
+
+export interface AdminSubscriptionStats {
+  totalUsers: number
+  premiumUsers: number
+  freeUsers: number
+  staleSubscriptions: number
+  lastVerifiedAt: string | null
+}
+
+export type AdminModerationEntityType = 'user' | 'group' | 'nucleo' | 'event'
+export type AdminModerationState = 'visible' | 'hidden' | 'suspended'
+
+export interface AdminModerationEntity {
+  id: string
+  type: AdminModerationEntityType
+  label: string
+  description: string
+  state: AdminModerationState
+  reason?: string | null
+  note?: string | null
+  groupId?: string | null
+  updatedAt?: string | null
+}
+
+export interface AdminModerationStats {
+  total: number
+  visible: number
+  hidden: number
+  suspended: number
+}
+
+export interface AdminFeaturedContentRow {
+  id: string
+  entityId: string
+  entityType: AdminEntityType
+  label: string
+  description?: string
+  groupId?: string
+  active: boolean
+  order: number
+  updatedAt?: string | null
+}
+
+export interface AdminGraduationLevelRow {
+  id: string
+  groupId: string
+  groupName: string
+  name: string
+  order: number
+  colors: string[]
+  category?: string | null
+  isEducator?: boolean
+  isSpecial?: boolean
+  memberCount: number
+}
+
+export interface AdminAttendanceSessionRow {
+  id: string
+  groupId: string
+  groupName: string
+  nucleoId: string
+  nucleoName: string
+  date: string | null
+  attendees: number
+  absentees: number
+  createdBy: string
+}
+
+export interface AdminClassPaymentRow {
+  id: string
+  groupId: string
+  groupName: string
+  nucleoId: string
+  nucleoName: string
+  userId: string
+  month: string
+  status: 'paid' | 'pending' | 'free'
+  amount?: number | null
+  billingMode?: string | null
+  reportedByStudent: boolean
+  confirmedByEducator: boolean
+  updatedAt: string | null
+}
+
+export interface AdminOperationJobRow {
+  id: string
+  title: string
+  status: string
+  type?: string | null
+  createdBy?: string | null
+  createdAt: string | null
+  updatedAt: string | null
+  metadata?: Record<string, unknown>
+}
+
+export interface AdminFinanceSnapshotRow {
+  id: string
+  provider: string
+  kind: 'income' | 'cost'
+  amount: number
+  currency: string
+  period: string
+  status: string
+  updatedAt: string | null
+  source?: string | null
+}
+
 type PendingRequestSource = Readonly<{
-  collection: 'group_requests' | 'nucleo_requests' | 'educatorRequests' | 'nucleo_transition_requests'
+  collection: AdminRequestType
   statusField?: 'status'
   pendingValue?: 'pending'
 }>
@@ -277,6 +433,13 @@ const PENDING_REQUEST_SOURCES: PendingRequestSource[] = [
   { collection: 'nucleo_transition_requests', statusField: 'status', pendingValue: 'pending' },
 ] as const
 
+const REQUEST_TYPE_LABELS: Record<AdminRequestType, string> = {
+  group_requests: 'Ingreso a grupo',
+  nucleo_requests: 'Ingreso a nucleo',
+  educatorRequests: 'Relacion de educador',
+  nucleo_transition_requests: 'Transicion de nucleo',
+}
+
 function joinNonEmpty(parts: Array<string | null | undefined>, separator = ' '): string {
   return parts.filter((part): part is string => Boolean(part?.trim())).join(separator)
 }
@@ -286,6 +449,25 @@ function userDisplayName(data: FirestoreRecord): string {
   const nickname = asString(data.nickname)
   if (fullName && nickname) return `${fullName} (${nickname})`
   return fullName || nickname || ''
+}
+
+function getModerationState(data: FirestoreRecord): {
+  state: AdminModerationState
+  reason?: string | null
+  note?: string | null
+  updatedAt?: string | null
+} {
+  const moderation = asRecord(data.moderation)
+  const rawState = asString(moderation?.state)
+  const state: AdminModerationState =
+    rawState === 'hidden' || rawState === 'suspended' ? rawState : 'visible'
+
+  return {
+    state,
+    reason: asString(moderation?.reason),
+    note: asString(moderation?.note),
+    updatedAt: toIsoString(moderation?.updatedAt),
+  }
 }
 
 async function countPendingRequestSource(source: PendingRequestSource): Promise<number> {
@@ -307,6 +489,193 @@ async function countPendingRequestSource(source: PendingRequestSource): Promise<
 async function getPendingRequestCount(): Promise<number> {
   const counts = await Promise.all(PENDING_REQUEST_SOURCES.map(countPendingRequestSource))
   return counts.reduce((sum, count) => sum + count, 0)
+}
+
+async function getGroupsNameMap(groupIds: string[]): Promise<Map<string, string>> {
+  const uniqueGroupIds = Array.from(new Set(groupIds.filter(Boolean)))
+  if (uniqueGroupIds.length === 0) {
+    return new Map()
+  }
+
+  const entries = await Promise.all(
+    uniqueGroupIds.map(async (groupId) => {
+      try {
+        const doc = await adminDb.collection('groups').doc(groupId).get()
+        const name = asString(doc.data()?.name)
+        return [groupId, name ?? groupId] as const
+      } catch {
+        return [groupId, groupId] as const
+      }
+    })
+  )
+
+  return new Map(entries)
+}
+
+async function getUsersNameMap(userIds: string[]): Promise<Map<string, string>> {
+  const uniqueUserIds = Array.from(new Set(userIds.filter(Boolean)))
+  if (uniqueUserIds.length === 0) {
+    return new Map()
+  }
+
+  const entries = await Promise.all(
+    uniqueUserIds.map(async (uid) => {
+      try {
+        const doc = await adminDb.collection('usersPublic').doc(uid).get()
+        const data = doc.data() as FirestoreRecord | undefined
+        return [uid, userDisplayName(data ?? {}) || uid] as const
+      } catch {
+        return [uid, uid] as const
+      }
+    })
+  )
+
+  return new Map(entries)
+}
+
+function sortRequestsByCreatedAt(
+  left: AdminPendingRequest,
+  right: AdminPendingRequest
+): number {
+  return toSortTimestamp(right.createdAt) - toSortTimestamp(left.createdAt)
+}
+
+export async function getPendingAdminRequestStats(): Promise<AdminPendingRequestStats> {
+  const [groupJoinPending, nucleoJoinPending, educatorPending, transitionPending] =
+    await Promise.all(PENDING_REQUEST_SOURCES.map(countPendingRequestSource))
+
+  return {
+    totalPending: groupJoinPending + nucleoJoinPending + educatorPending + transitionPending,
+    groupJoinPending,
+    nucleoJoinPending,
+    educatorPending,
+    transitionPending,
+  }
+}
+
+export async function getPendingAdminRequests(limitPerType = 40): Promise<AdminPendingRequest[]> {
+  const [groupJoinSnap, nucleoSnap, educatorSnap, transitionSnap] = await Promise.all([
+    adminDb
+      .collection('group_requests')
+      .where('status', '==', 'pending')
+      .limit(limitPerType)
+      .get()
+      .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] })),
+    adminDb
+      .collection('nucleo_requests')
+      .where('status', '==', 'pending')
+      .limit(limitPerType)
+      .get()
+      .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] })),
+    adminDb
+      .collection('educatorRequests')
+      .where('status', '==', 'pending')
+      .limit(limitPerType)
+      .get()
+      .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] })),
+    adminDb
+      .collection('nucleo_transition_requests')
+      .where('status', '==', 'pending')
+      .limit(limitPerType)
+      .get()
+      .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] })),
+  ])
+
+  const groupIds = [
+    ...groupJoinSnap.docs.map((doc) => asString((doc.data() as FirestoreRecord).groupId) ?? ''),
+    ...nucleoSnap.docs.map((doc) => asString((doc.data() as FirestoreRecord).groupId) ?? ''),
+    ...educatorSnap.docs.map((doc) => asString((doc.data() as FirestoreRecord).groupId) ?? ''),
+    ...transitionSnap.docs.flatMap((doc) => {
+      const data = doc.data() as FirestoreRecord
+      return [asString(data.oldGroupId) ?? '', asString(data.newGroupId) ?? '']
+    }),
+  ]
+
+  const transitionUserIds = transitionSnap.docs.map(
+    (doc) => asString((doc.data() as FirestoreRecord).userId) ?? ''
+  )
+
+  const [groupNames, transitionUserNames] = await Promise.all([
+    getGroupsNameMap(groupIds),
+    getUsersNameMap(transitionUserIds),
+  ])
+
+  const groupJoinRequests = groupJoinSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const groupId = asString(data.groupId) ?? ''
+    const transferCount = Array.isArray(data.nucleosToTransfer) ? data.nucleosToTransfer.length : 0
+
+    return {
+      id: doc.id,
+      requestType: 'group_requests' as const,
+      typeLabel: REQUEST_TYPE_LABELS.group_requests,
+      requesterId: asString(data.userId) ?? '',
+      requesterName: asString(data.userName) ?? asString(data.userId) ?? doc.id,
+      subject: groupNames.get(groupId) ?? groupId ?? 'Grupo sin nombre',
+      context:
+        transferCount > 0
+          ? `${transferCount} nucleos listos para transferir si se aprueba`
+          : 'Solicitud directa de ingreso al grupo',
+      createdAt: toIsoString(data.createdAt),
+    }
+  })
+
+  const nucleoRequests = nucleoSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const groupId = asString(data.groupId) ?? ''
+    const nucleoName = asString(data.nucleoName) ?? asString(data.nucleoId) ?? 'Nucleo'
+
+    return {
+      id: doc.id,
+      requestType: 'nucleo_requests' as const,
+      typeLabel: REQUEST_TYPE_LABELS.nucleo_requests,
+      requesterId: asString(data.userId) ?? '',
+      requesterName: asString(data.userName) ?? asString(data.userId) ?? doc.id,
+      subject: nucleoName,
+      context: `Grupo ${groupNames.get(groupId) ?? groupId}`,
+      createdAt: toIsoString(data.createdAt),
+    }
+  })
+
+  const educatorRequests = educatorSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const groupId = asString(data.groupId) ?? ''
+
+    return {
+      id: doc.id,
+      requestType: 'educatorRequests' as const,
+      typeLabel: REQUEST_TYPE_LABELS.educatorRequests,
+      requesterId: asString(data.fromUserId) ?? '',
+      requesterName: asString(data.fromUserName) ?? asString(data.fromUserId) ?? doc.id,
+      subject: asString(data.toUserName) ?? asString(data.toUserId) ?? 'Educador',
+      context: `Grupo ${groupNames.get(groupId) ?? groupId}`,
+      createdAt: toIsoString(data.createdAt),
+    }
+  })
+
+  const transitionRequests = transitionSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const oldGroupId = asString(data.oldGroupId) ?? ''
+    const newGroupId = asString(data.newGroupId) ?? ''
+    const requesterId = asString(data.userId) ?? ''
+    const requesterName = transitionUserNames.get(requesterId) ?? requesterId ?? doc.id
+    const educatorName = asString(data.educatorName) ?? asString(data.educatorId) ?? 'Educador'
+
+    return {
+      id: doc.id,
+      requestType: 'nucleo_transition_requests' as const,
+      typeLabel: REQUEST_TYPE_LABELS.nucleo_transition_requests,
+      requesterId,
+      requesterName,
+      subject: asString(data.nucleoName) ?? 'Nucleo',
+      context: `${groupNames.get(oldGroupId) ?? oldGroupId} -> ${groupNames.get(newGroupId) ?? newGroupId} · Educador ${educatorName}`,
+      createdAt: toIsoString(data.createdAt),
+    }
+  })
+
+  return [...groupJoinRequests, ...nucleoRequests, ...educatorRequests, ...transitionRequests].sort(
+    sortRequestsByCreatedAt
+  )
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
@@ -438,6 +807,186 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
     adminPanelAccess,
     createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
   }
+}
+
+export async function getAdminSubscriptions(limit = 250): Promise<{
+  rows: AdminSubscriptionRow[]
+  stats: AdminSubscriptionStats
+}> {
+  const usersSnap = await adminDb.collection('usersPublic').limit(limit).get()
+  const adminAuth = getAuth(getApps()[0])
+  const staleBefore = Date.now() - 1000 * 60 * 60 * 24 * 7
+
+  const rows = await Promise.all(
+    usersSnap.docs.map(async (doc): Promise<AdminSubscriptionRow> => {
+      const [subscriptionDoc, authUser] = await Promise.allSettled([
+        adminDb.collection('users').doc(doc.id).collection('subscription').doc('current').get(),
+        adminAuth.getUser(doc.id),
+      ])
+
+      const publicData = doc.data() as FirestoreRecord
+      const subscriptionData =
+        subscriptionDoc.status === 'fulfilled'
+          ? ((subscriptionDoc.value.data() as FirestoreRecord | undefined) ?? {})
+          : {}
+      const roleValue = asString(publicData.role) ?? 'student'
+      const role = roleValue === 'educator' || roleValue === 'admin' ? roleValue : 'student'
+      const plan = asString(subscriptionData.plan) === 'premium' ? 'premium' : 'free'
+
+      return {
+        uid: doc.id,
+        email: authUser.status === 'fulfilled' ? authUser.value.email : undefined,
+        name: userDisplayName(publicData) || doc.id,
+        role,
+        country: asString(publicData.country),
+        groupId: asString(publicData.groupId),
+        plan,
+        isPremium: plan === 'premium',
+        source: asString(subscriptionData.source),
+        eventType: asString(subscriptionData.eventType),
+        premiumSince: toIsoString(subscriptionData.premiumSince),
+        expiresAt: toIsoString(subscriptionData.expiresAt),
+        updatedAt: toIsoString(subscriptionData.updatedAt),
+        lastVerifiedAt: toIsoString(subscriptionData.lastVerifiedAt),
+      }
+    })
+  )
+
+  const premiumUsers = rows.filter((row) => row.isPremium).length
+  const lastVerifiedTimes = rows
+    .map((row) => (row.lastVerifiedAt ? new Date(row.lastVerifiedAt).getTime() : 0))
+    .filter((value) => Number.isFinite(value) && value > 0)
+  const lastVerifiedAt =
+    lastVerifiedTimes.length > 0 ? new Date(Math.max(...lastVerifiedTimes)).toISOString() : null
+  const staleSubscriptions = rows.filter((row) => {
+    if (!row.lastVerifiedAt) return true
+    return new Date(row.lastVerifiedAt).getTime() < staleBefore
+  }).length
+
+  return {
+    rows: rows.sort((left, right) => {
+      if (left.isPremium !== right.isPremium) return left.isPremium ? -1 : 1
+      return toSortTimestamp(right.lastVerifiedAt) - toSortTimestamp(left.lastVerifiedAt)
+    }),
+    stats: {
+      totalUsers: rows.length,
+      premiumUsers,
+      freeUsers: rows.length - premiumUsers,
+      staleSubscriptions,
+      lastVerifiedAt,
+    },
+  }
+}
+
+export async function getAdminModerationEntities(limit = 500): Promise<{
+  rows: AdminModerationEntity[]
+  stats: AdminModerationStats
+}> {
+  const [usersSnap, groupsSnap, nucleosSnap, eventsSnap] = await Promise.all([
+    adminDb.collection('usersPublic').limit(limit).get().catch(() => ({ docs: [] })),
+    adminDb.collection('groups').limit(limit).get().catch(() => ({ docs: [] })),
+    adminDb.collectionGroup('nucleos').limit(limit).get().catch(() => ({ docs: [] })),
+    adminDb.collection('events').limit(limit).get().catch(() => ({ docs: [] })),
+  ])
+
+  const groups = groupsSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const moderation = getModerationState(data)
+    return {
+      id: doc.id,
+      type: 'group' as const,
+      label: asString(data.name) ?? doc.id,
+      description: joinNonEmpty([asString(data.graduationSystemName), asString(data.city), asString(data.country)], ' - '),
+      ...moderation,
+    }
+  })
+  const groupNames = new Map(groups.map((group) => [group.id, group.label] as const))
+
+  const users = usersSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const moderation = getModerationState(data)
+    const groupId = asString(data.groupId)
+    return {
+      id: doc.id,
+      type: 'user' as const,
+      label: userDisplayName(data) || doc.id,
+      description: joinNonEmpty([asString(data.role), asString(data.country), groupId ? groupNames.get(groupId) ?? groupId : undefined], ' - '),
+      groupId,
+      ...moderation,
+    }
+  })
+
+  const nucleos = nucleosSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const groupId = doc.ref.parent.parent?.id ?? ''
+    const moderation = getModerationState(data)
+    return {
+      id: doc.id,
+      type: 'nucleo' as const,
+      label: asString(data.name) ?? doc.id,
+      description: joinNonEmpty([groupNames.get(groupId) ?? groupId, asString(data.city), asString(data.country)], ' - '),
+      groupId,
+      ...moderation,
+    }
+  })
+
+  const events = eventsSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const moderation = getModerationState(data)
+    const groupId = asString(data.groupId)
+    return {
+      id: doc.id,
+      type: 'event' as const,
+      label: asString(data.title) ?? doc.id,
+      description: joinNonEmpty([asString(data.category), groupId ? groupNames.get(groupId) ?? groupId : undefined], ' - '),
+      groupId,
+      ...moderation,
+    }
+  })
+
+  const rows = [...users, ...groups, ...nucleos, ...events].sort((left, right) => {
+    if (left.state !== right.state) return left.state.localeCompare(right.state)
+    return left.label.localeCompare(right.label)
+  })
+
+  return {
+    rows,
+    stats: {
+      total: rows.length,
+      visible: rows.filter((row) => row.state === 'visible').length,
+      hidden: rows.filter((row) => row.state === 'hidden').length,
+      suspended: rows.filter((row) => row.state === 'suspended').length,
+    },
+  }
+}
+
+export async function getAdminFeaturedContentRows(): Promise<AdminFeaturedContentRow[]> {
+  const [options, featuredSnap] = await Promise.all([
+    getAdminEntityOptions(),
+    adminDb.collection('adminFeaturedContent').get().catch(() => ({ docs: [] })),
+  ])
+  const featuredByKey = new Map(
+    featuredSnap.docs.map((doc) => [doc.id, doc.data() as FirestoreRecord] as const)
+  )
+
+  return options.map((option) => {
+    const key = `${option.type}_${option.id}`
+    const featured = featuredByKey.get(key)
+    return {
+      id: key,
+      entityId: option.id,
+      entityType: option.type,
+      label: option.label,
+      description: option.description,
+      groupId: option.groupId,
+      active: featured?.active === true,
+      order: asNumber(featured?.order) ?? 999,
+      updatedAt: toIsoString(featured?.updatedAt),
+    }
+  }).sort((left, right) => {
+    if (left.active !== right.active) return left.active ? -1 : 1
+    return left.order - right.order || left.label.localeCompare(right.label)
+  })
 }
 
 export async function getAdminEvents(limit = 50): Promise<AdminEvent[]> {
@@ -647,4 +1196,189 @@ export async function getAdminNucleoById(
 
   const groupName = asString(groupDoc.data()?.name) ?? groupId
   return mapAdminNucleo(groupId, groupName, nucleoDoc.id, nucleoDoc.data() as FirestoreRecord)
+}
+
+export async function getAdminGraduationRows(): Promise<AdminGraduationLevelRow[]> {
+  const [groupsSnap, levelsSnap, usersSnap] = await Promise.all([
+    adminDb.collection('groups').get().catch(() => ({ docs: [] })),
+    adminDb.collectionGroup('graduationLevels').get().catch(() => ({ docs: [] })),
+    adminDb.collection('usersPublic').get().catch(() => ({ docs: [] })),
+  ])
+
+  const groupNames = new Map(
+    groupsSnap.docs.map((doc) => [doc.id, asString(doc.data().name) ?? doc.id] as const)
+  )
+  const membersByGroupLevel = new Map<string, number>()
+  usersSnap.docs.forEach((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const groupId = asString(data.groupId)
+    const levelId = asString(data.graduationLevelId)
+    if (!groupId || !levelId) return
+    const key = `${groupId}:${levelId}`
+    membersByGroupLevel.set(key, (membersByGroupLevel.get(key) ?? 0) + 1)
+  })
+
+  return levelsSnap.docs
+    .map((doc) => {
+      const data = doc.data() as FirestoreRecord
+      const groupId = doc.ref.parent.parent?.id ?? ''
+      const colors = Array.isArray(data.colors)
+        ? data.colors.filter((color): color is string => typeof color === 'string')
+        : []
+      return {
+        id: doc.id,
+        groupId,
+        groupName: groupNames.get(groupId) ?? groupId,
+        name: asString(data.name) ?? doc.id,
+        order: asNumber(data.order) ?? 0,
+        colors,
+        category: asString(data.category),
+        isEducator: asBoolean(data.isEducator) ?? false,
+        isSpecial: asBoolean(data.isSpecial) ?? false,
+        memberCount: membersByGroupLevel.get(`${groupId}:${doc.id}`) ?? 0,
+      }
+    })
+    .sort((left, right) => left.groupName.localeCompare(right.groupName) || left.order - right.order)
+}
+
+export async function getAdminAttendanceRows(limit = 250): Promise<AdminAttendanceSessionRow[]> {
+  const [sessionsSnap, groupsSnap, nucleosSnap] = await Promise.all([
+    adminDb.collectionGroup('sessions').limit(limit).get().catch(() => ({ docs: [] })),
+    adminDb.collection('groups').get().catch(() => ({ docs: [] })),
+    adminDb.collectionGroup('nucleos').get().catch(() => ({ docs: [] })),
+  ])
+
+  const groupNames = new Map(
+    groupsSnap.docs.map((doc) => [doc.id, asString(doc.data().name) ?? doc.id] as const)
+  )
+  const nucleoNames = new Map(
+    nucleosSnap.docs.map((doc) => {
+      const groupId = doc.ref.parent.parent?.id ?? ''
+      return [`${groupId}:${doc.id}`, asString(doc.data().name) ?? doc.id] as const
+    })
+  )
+
+  return sessionsSnap.docs
+    .map((doc) => {
+      const data = doc.data() as FirestoreRecord
+      const nucleoRef = doc.ref.parent.parent
+      const groupId = nucleoRef?.parent.parent?.id ?? ''
+      const nucleoId = nucleoRef?.id ?? ''
+      return {
+        id: doc.id,
+        groupId,
+        groupName: groupNames.get(groupId) ?? groupId,
+        nucleoId,
+        nucleoName: nucleoNames.get(`${groupId}:${nucleoId}`) ?? nucleoId,
+        date: toIsoString(data.date),
+        attendees: Array.isArray(data.attendees) ? data.attendees.length : 0,
+        absentees: Array.isArray(data.absentees) ? data.absentees.length : 0,
+        createdBy: asString(data.createdBy) ?? '',
+      }
+    })
+    .sort((left, right) => toSortTimestamp(right.date) - toSortTimestamp(left.date))
+}
+
+export async function getAdminClassPaymentRows(limit = 300): Promise<AdminClassPaymentRow[]> {
+  const [paymentsSnap, groupsSnap, nucleosSnap] = await Promise.all([
+    adminDb.collectionGroup('payments').limit(limit).get().catch(() => ({ docs: [] })),
+    adminDb.collection('groups').get().catch(() => ({ docs: [] })),
+    adminDb.collectionGroup('nucleos').get().catch(() => ({ docs: [] })),
+  ])
+
+  const groupNames = new Map(
+    groupsSnap.docs.map((doc) => [doc.id, asString(doc.data().name) ?? doc.id] as const)
+  )
+  const nucleoNames = new Map(
+    nucleosSnap.docs.map((doc) => {
+      const groupId = doc.ref.parent.parent?.id ?? ''
+      return [`${groupId}:${doc.id}`, asString(doc.data().name) ?? doc.id] as const
+    })
+  )
+
+  return paymentsSnap.docs
+    .map((doc) => {
+      const data = doc.data() as FirestoreRecord
+      const nucleoRef = doc.ref.parent.parent
+      const groupId = nucleoRef?.parent.parent?.id ?? ''
+      const nucleoId = nucleoRef?.id ?? ''
+      const rawStatus = asString(data.status)
+      const status: AdminClassPaymentRow['status'] =
+        rawStatus === 'paid' || rawStatus === 'free' ? rawStatus : 'pending'
+      return {
+        id: doc.id,
+        groupId,
+        groupName: groupNames.get(groupId) ?? groupId,
+        nucleoId,
+        nucleoName: nucleoNames.get(`${groupId}:${nucleoId}`) ?? nucleoId,
+        userId: asString(data.userId) ?? '',
+        month: asString(data.month) ?? '',
+        status,
+        amount: asNumber(data.amount),
+        billingMode: asString(data.billingMode),
+        reportedByStudent: asBoolean(data.reportedByStudent) ?? false,
+        confirmedByEducator: asBoolean(data.confirmedByEducator) ?? false,
+        updatedAt: toIsoString(data.updatedAt),
+      }
+    })
+    .sort((left, right) => left.month.localeCompare(right.month) * -1)
+}
+
+export async function getAdminOperationJobs(collectionName: 'adminNotificationCampaigns' | 'adminExportJobs'): Promise<AdminOperationJobRow[]> {
+  const snap = await adminDb.collection(collectionName).limit(200).get().catch(() => ({ docs: [] }))
+  return snap.docs
+    .map((doc) => {
+      const data = doc.data() as FirestoreRecord
+      return {
+        id: doc.id,
+        title: asString(data.title) ?? asString(data.name) ?? doc.id,
+        status: asString(data.status) ?? 'draft',
+        type: asString(data.type),
+        createdBy: asString(data.createdBy),
+        createdAt: toIsoString(data.createdAt),
+        updatedAt: toIsoString(data.updatedAt),
+        metadata: asRecord(data.metadata) ?? {},
+      }
+    })
+    .sort((left, right) => toSortTimestamp(right.createdAt) - toSortTimestamp(left.createdAt))
+}
+
+export async function getAdminFinanceSnapshotRows(): Promise<AdminFinanceSnapshotRow[]> {
+  const [snapshotsSnap, manualCostsSnap] = await Promise.all([
+    adminDb.collection('adminFinanceSnapshots').get().catch(() => ({ docs: [] })),
+    adminDb.collection('adminFinanceManualCosts').get().catch(() => ({ docs: [] })),
+  ])
+
+  const snapshots = snapshotsSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    const kind = asString(data.kind)
+    return {
+      id: doc.id,
+      provider: asString(data.provider) ?? doc.id,
+      kind: kind === 'cost' ? 'cost' as const : 'income' as const,
+      amount: asNumber(data.amount) ?? 0,
+      currency: asString(data.currency) ?? 'USD',
+      period: asString(data.period) ?? '',
+      status: asString(data.status) ?? 'stale',
+      updatedAt: toIsoString(data.updatedAt),
+      source: asString(data.source),
+    }
+  })
+
+  const manualCosts = manualCostsSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    return {
+      id: doc.id,
+      provider: asString(data.provider) ?? 'Manual',
+      kind: 'cost' as const,
+      amount: asNumber(data.amount) ?? 0,
+      currency: asString(data.currency) ?? 'USD',
+      period: asString(data.period) ?? '',
+      status: 'manual',
+      updatedAt: toIsoString(data.updatedAt ?? data.createdAt),
+      source: 'manual',
+    }
+  })
+
+  return [...snapshots, ...manualCosts].sort((left, right) => left.provider.localeCompare(right.provider))
 }

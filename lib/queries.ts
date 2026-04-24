@@ -5,6 +5,7 @@ import { adminDb } from './firebase-admin'
 import { FieldPath } from 'firebase-admin/firestore'
 
 type FirestoreRecord = Record<string, unknown>
+type VisibilityOptions = { includeHidden?: boolean }
 
 function asString(value: unknown): string | undefined {
   return typeof value === 'string' ? value : undefined
@@ -27,6 +28,30 @@ function asBoolean(value: unknown): boolean | undefined {
 function asNullableString(value: unknown): string | null | undefined {
   if (value === null) return null
   return asString(value)
+}
+
+function asRecord(value: unknown): FirestoreRecord | undefined {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as FirestoreRecord)
+    : undefined
+}
+
+function isPubliclyVisible(data: FirestoreRecord | undefined): boolean {
+  const moderation = asRecord(data?.moderation)
+  const state = asString(moderation?.state)
+  return state !== 'hidden' && state !== 'suspended'
+}
+
+function mapModerationState(data: FirestoreRecord): PublicUserProfile['moderation'] {
+  const moderation = asRecord(data.moderation)
+  if (!moderation) return undefined
+  const state = asString(moderation.state)
+  if (state !== 'visible' && state !== 'hidden' && state !== 'suspended') return undefined
+  return {
+    state,
+    reason: asNullableString(moderation.reason),
+    note: asNullableString(moderation.note),
+  }
 }
 
 function asNucleoSchedules(value: unknown): MapNucleo['schedules'] | undefined {
@@ -105,6 +130,7 @@ function mapPublicUserProfile(
         }
       : undefined,
     createdAt: asNullableString(data.createdAt) ?? undefined,
+    moderation: mapModerationState(data),
   }
 }
 
@@ -119,12 +145,14 @@ function mapGroup(id: string, data: FirestoreRecord): Group {
     graduationSystemName: asNullableString(data.graduationSystemName),
     representedCountries: asStringArray(data.representedCountries),
     representedCities: asStringArray(data.representedCities),
+    moderation: mapModerationState(data),
   }
 }
 
-export async function getGroup(id: string): Promise<Group | null> {
+export async function getGroup(id: string, options: VisibilityOptions = {}): Promise<Group | null> {
   const doc = await adminDb.collection('groups').doc(id).get()
   if (!doc.exists) return null
+  if (!options.includeHidden && !isPubliclyVisible(doc.data() as FirestoreRecord)) return null
   return mapGroup(doc.id, doc.data() as FirestoreRecord)
 }
 
@@ -147,6 +175,7 @@ function mapMapNucleo(
     responsibleEducatorId: asNullableString(data.responsibleEducatorId),
     coEducatorIds: asStringArray(data.coEducatorIds),
     schedules: asNucleoSchedules(data.schedules),
+    moderation: mapModerationState(data),
   }
 }
 
@@ -157,53 +186,102 @@ export async function getStats(): Promise<StatsData> {
     adminDb.collectionGroup('nucleos').get(),
   ])
 
-  const educators = usersSnap.docs.filter((doc) => {
+  const visibleUserDocs = usersSnap.docs.filter((doc) =>
+    isPubliclyVisible(doc.data() as FirestoreRecord)
+  )
+  const visibleGroupDocs = groupsSnap.docs.filter((doc) =>
+    isPubliclyVisible(doc.data() as FirestoreRecord)
+  )
+  const visibleNucleoDocs = nucleosSnap.docs.filter((doc) =>
+    isPubliclyVisible(doc.data() as FirestoreRecord)
+  )
+
+  const educators = visibleUserDocs.filter((doc) => {
     const data = doc.data() as FirestoreRecord
     return data.role === 'educator' || data.educatorEligible === true
   }).length
 
   const countries = new Set(
-    usersSnap.docs
+    visibleUserDocs
       .map((doc) => asNullableString((doc.data() as FirestoreRecord).country))
       .filter((country): country is string => Boolean(country))
   ).size
 
   return {
-    nucleos: nucleosSnap.size,
-    groups: groupsSnap.size,
+    nucleos: visibleNucleoDocs.length,
+    groups: visibleGroupDocs.length,
     educators,
     countries,
   }
 }
 
-export async function getAllNucleos(): Promise<MapNucleo[]> {
+export async function getAllNucleos(options: VisibilityOptions = {}): Promise<MapNucleo[]> {
   const [nucleosSnap, groupsSnap] = await Promise.all([
     adminDb.collectionGroup('nucleos').get(),
     adminDb.collection('groups').get(),
   ])
 
+  const visibleGroupDocs = groupsSnap.docs.filter((doc) =>
+    options.includeHidden || isPubliclyVisible(doc.data() as FirestoreRecord)
+  )
   const groupNames = new Map(
-    groupsSnap.docs.map((doc) => {
+    visibleGroupDocs.map((doc) => {
       const data = doc.data() as FirestoreRecord
       return [doc.id, asString(data.name) ?? ''] as const
     })
   )
 
-  return nucleosSnap.docs.map((doc) => {
-    const parent = doc.ref.parent.parent
-    const groupId = parent?.id ?? ''
-    const groupName = groupNames.get(groupId) ?? ''
-    return mapMapNucleo(doc.id, groupId, groupName, doc.data() as FirestoreRecord)
-  })
+  return nucleosSnap.docs
+    .filter((doc) => options.includeHidden || isPubliclyVisible(doc.data() as FirestoreRecord))
+    .map((doc) => {
+      const parent = doc.ref.parent.parent
+      const groupId = parent?.id ?? ''
+      const groupName = groupNames.get(groupId)
+      if (!options.includeHidden && groupName === undefined) return null
+      return mapMapNucleo(doc.id, groupId, groupName ?? '', doc.data() as FirestoreRecord)
+    })
+    .filter((nucleo): nucleo is MapNucleo => nucleo !== null)
 }
 
 export async function getFeaturedEducators(): Promise<PublicUserProfile[]> {
+  const featuredSnap = await adminDb
+    .collection('adminFeaturedContent')
+    .where('active', '==', true)
+    .where('entityType', '==', 'user')
+    .get()
+    .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] }))
+
+  if (featuredSnap.docs.length > 0) {
+    const featured = featuredSnap.docs
+      .map((doc) => doc.data() as FirestoreRecord)
+      .sort((left, right) => (asNumber(left.order) ?? 999) - (asNumber(right.order) ?? 999))
+      .slice(0, 8)
+
+    const docs = await Promise.all(
+      featured.map((item) => {
+        const entityId = asString(item.entityId)
+        return entityId ? adminDb.collection('usersPublic').doc(entityId).get() : null
+      })
+    )
+
+    const educators = docs
+      .filter((doc): doc is FirebaseFirestore.DocumentSnapshot => Boolean(doc?.exists))
+      .filter((doc) => {
+        const data = doc.data() as FirestoreRecord
+        return data.role === 'educator' && isPubliclyVisible(data)
+      })
+      .map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
+
+    if (educators.length > 0) return educators
+  }
+
   const snap = await adminDb
     .collection('usersPublic')
     .where('role', '==', 'educator')
     .get()
 
   return snap.docs
+    .filter((doc) => isPubliclyVisible(doc.data() as FirestoreRecord))
     .sort((left, right) => {
       const leftCreatedAt = asSortTimestamp((left.data() as FirestoreRecord).createdAt)
       const rightCreatedAt = asSortTimestamp((right.data() as FirestoreRecord).createdAt)
@@ -219,12 +297,15 @@ export async function getAllEducators(): Promise<PublicUserProfile[]> {
     .where('role', '==', 'educator')
     .get()
 
-  return snap.docs.map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
+  return snap.docs
+    .filter((doc) => isPubliclyVisible(doc.data() as FirestoreRecord))
+    .map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
 }
 
 export async function getEducatorProfile(uid: string): Promise<PublicUserProfile | null> {
   const doc = await adminDb.collection('usersPublic').doc(uid).get()
   if (!doc.exists) return null
+  if (!isPubliclyVisible(doc.data() as FirestoreRecord)) return null
   return mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord)
 }
 
@@ -249,8 +330,11 @@ export async function getNucleosByEducator(uid: string, nucleoIds?: string[]): P
   const groupsSnap = snapshots.pop() as FirebaseFirestore.QuerySnapshot
   const snaps = snapshots as FirebaseFirestore.QuerySnapshot[]
 
+  const visibleGroupDocs = groupsSnap.docs.filter((doc) =>
+    isPubliclyVisible(doc.data() as FirestoreRecord)
+  )
   const groupNames = new Map(
-    groupsSnap.docs.map((doc) => [doc.id, asString(doc.data().name) ?? ''] as const)
+    visibleGroupDocs.map((doc) => [doc.id, asString(doc.data().name) ?? ''] as const)
   )
 
   const seen = new Set<string>()
@@ -259,10 +343,12 @@ export async function getNucleosByEducator(uid: string, nucleoIds?: string[]): P
   snaps.forEach((snap) => {
     snap.docs.forEach((doc) => {
       if (seen.has(doc.id)) return
-      seen.add(doc.id)
       const data = doc.data() as FirestoreRecord
+      if (!isPubliclyVisible(data)) return
       const parent = doc.ref.parent.parent
       const groupId = parent?.id ?? ''
+      if (!groupNames.has(groupId)) return
+      seen.add(doc.id)
       const groupName = groupNames.get(groupId) ?? ''
       results.push(mapMapNucleo(doc.id, groupId, groupName, data))
     })
@@ -288,7 +374,8 @@ export async function getGraduationLevel(
 }
 
 export async function getGroupWithNucleos(
-  groupId: string
+  groupId: string,
+  options: VisibilityOptions = {}
 ): Promise<{ group: Group; nucleos: MapNucleo[] } | null> {
   const [groupDoc, nucleosSnap] = await Promise.all([
     adminDb.collection('groups').doc(groupId).get(),
@@ -296,18 +383,21 @@ export async function getGroupWithNucleos(
   ])
 
   if (!groupDoc.exists) return null
+  if (!options.includeHidden && !isPubliclyVisible(groupDoc.data() as FirestoreRecord)) return null
 
   const group = mapGroup(groupDoc.id, groupDoc.data() as FirestoreRecord)
-  const nucleos = nucleosSnap.docs.map((doc) =>
-    mapMapNucleo(doc.id, groupId, group.name, doc.data() as FirestoreRecord)
-  )
+  const nucleos = nucleosSnap.docs
+    .filter((doc) => options.includeHidden || isPubliclyVisible(doc.data() as FirestoreRecord))
+    .map((doc) => mapMapNucleo(doc.id, groupId, group.name, doc.data() as FirestoreRecord))
 
   return { group, nucleos }
 }
 
-export async function getAllGroups(): Promise<Group[]> {
+export async function getAllGroups(options: VisibilityOptions = {}): Promise<Group[]> {
   const snap = await adminDb.collection('groups').get()
-  return snap.docs.map((doc) => mapGroup(doc.id, doc.data() as FirestoreRecord))
+  return snap.docs
+    .filter((doc) => options.includeHidden || isPubliclyVisible(doc.data() as FirestoreRecord))
+    .map((doc) => mapGroup(doc.id, doc.data() as FirestoreRecord))
 }
 
 export async function getGraduationLevelFull(
@@ -350,6 +440,8 @@ export async function getNucleoById(groupId: string, nucleoId: string): Promise<
     adminDb.collection('groups').doc(groupId).get(),
   ])
   if (!nucleoDoc.exists) return null
+  if (!isPubliclyVisible(nucleoDoc.data() as FirestoreRecord)) return null
+  if (groupDoc.exists && !isPubliclyVisible(groupDoc.data() as FirestoreRecord)) return null
   const groupName = groupDoc.exists ? (asString((groupDoc.data() as FirestoreRecord).name) ?? '') : ''
   return mapMapNucleo(nucleoDoc.id, groupId, groupName, nucleoDoc.data() as FirestoreRecord)
 }
@@ -359,7 +451,9 @@ export async function getNucleoMembers(nucleoId: string): Promise<PublicUserProf
     .collection('usersPublic')
     .where('nucleoIds', 'array-contains', nucleoId)
     .get()
-  return snap.docs.map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
+  return snap.docs
+    .filter((doc) => isPubliclyVisible(doc.data() as FirestoreRecord))
+    .map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
 }
 
 export async function getGroupEducators(groupId: string): Promise<PublicUserProfile[]> {
@@ -368,7 +462,9 @@ export async function getGroupEducators(groupId: string): Promise<PublicUserProf
     .where('groupId', '==', groupId)
     .where('role', '==', 'educator')
     .get()
-  return snap.docs.map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
+  return snap.docs
+    .filter((doc) => isPubliclyVisible(doc.data() as FirestoreRecord))
+    .map((doc) => mapPublicUserProfile(doc.id, doc.data() as FirestoreRecord))
 }
 
 export async function getGraduationLevels(groupId: string): Promise<GraduationLevel[]> {

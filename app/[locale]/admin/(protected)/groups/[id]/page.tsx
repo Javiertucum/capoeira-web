@@ -11,7 +11,7 @@ type Props = {
 
 export default async function GroupAdminPage({ params }: Props) {
   const { locale, id } = await params
-  const data = await getGroupWithNucleos(id).catch(() => null)
+  const data = await getGroupWithNucleos(id, { includeHidden: true }).catch(() => null)
 
   if (!data) notFound()
 
