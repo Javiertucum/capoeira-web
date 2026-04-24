@@ -9,6 +9,7 @@ type SendResult = {
   sent?: number
   failed?: number
   error?: string
+  errors?: string[]
 }
 
 type AudienceType = 'all' | 'roles' | 'countries' | 'plans'
@@ -207,6 +208,11 @@ export default function AdminNotificationSendForm() {
             {result.ok
               ? `Enviado a ${result.sent}/${result.targeted} dispositivos · ${result.failed} fallidos`
               : result.error}
+            {result.errors && result.errors.length > 0 && (
+              <ul className="mt-2 space-y-1 text-xs opacity-80">
+                {result.errors.map((e, i) => <li key={i}>· {e}</li>)}
+              </ul>
+            )}
           </div>
         )}
       </div>

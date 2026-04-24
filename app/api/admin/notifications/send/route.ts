@@ -67,7 +67,7 @@ async function sendExpoChunk(
   tokens: string[],
   title: string,
   body: string
-): Promise<{ success: number; failed: number }> {
+): Promise<{ success: number; failed: number; errors: string[] }> {
   const messages = tokens.map((to) => ({
     to,
     title,
@@ -88,15 +88,28 @@ async function sendExpoChunk(
   })
 
   if (!response.ok) {
-    return { success: 0, failed: tokens.length }
+    const text = await response.text().catch(() => response.status.toString())
+    console.error('[Expo Push] HTTP error:', response.status, text)
+    return { success: 0, failed: tokens.length, errors: [`HTTP ${response.status}: ${text}`] }
   }
 
   const result = await response.json() as { data: ExpoTicket[] }
   const tickets = result.data ?? []
+  const errors: string[] = []
+
+  tickets.forEach((ticket, i) => {
+    if (ticket.status === 'error') {
+      const token = tokens[i] ?? '?'
+      const msg = `${ticket.message ?? ticket.details?.error ?? 'unknown'} (token: ${token.slice(0, 40)}...)`
+      console.error('[Expo Push] ticket error:', msg)
+      errors.push(msg)
+    }
+  })
+
   const success = tickets.filter((t) => t.status === 'ok').length
   const failed = tickets.length - success
 
-  return { success, failed: failed + (tokens.length - tickets.length) }
+  return { success, failed: failed + (tokens.length - tickets.length), errors }
 }
 
 export async function POST(request: NextRequest) {
@@ -130,12 +143,14 @@ export async function POST(request: NextRequest) {
 
   let successCount = 0
   let failureCount = 0
+  const allErrors: string[] = []
 
   for (let i = 0; i < tokens.length; i += EXPO_BATCH_SIZE) {
     const chunk = tokens.slice(i, i + EXPO_BATCH_SIZE)
-    const { success, failed } = await sendExpoChunk(chunk, title, messageBody)
+    const { success, failed, errors } = await sendExpoChunk(chunk, title, messageBody)
     successCount += success
     failureCount += failed
+    allErrors.push(...errors)
   }
 
   const ref = adminDb.collection('adminNotificationCampaigns').doc()
@@ -165,5 +180,6 @@ export async function POST(request: NextRequest) {
     targeted: tokens.length,
     sent: successCount,
     failed: failureCount,
+    errors: allErrors.slice(0, 5),
   })
 }
