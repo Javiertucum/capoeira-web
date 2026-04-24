@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { FieldValue } from 'firebase-admin/firestore'
-import { getMessaging } from 'firebase-admin/messaging'
 import { requireAdmin } from '@/lib/auth/verify-api-session'
 import { writeAdminAuditLog } from '@/lib/admin-audit'
 import { adminDb } from '@/lib/firebase-admin'
+
+const EXPO_PUSH_URL = 'https://exp.host/--/api/v2/push/send'
+const EXPO_BATCH_SIZE = 100
 
 type SegmentFilter = {
   roles?: string[]
@@ -13,7 +15,11 @@ type SegmentFilter = {
   userIds?: string[]
 }
 
-async function collectFcmTokens(segment: SegmentFilter): Promise<string[]> {
+type ExpoTicket =
+  | { status: 'ok'; id: string }
+  | { status: 'error'; message: string; details?: { error: string } }
+
+async function collectTokens(segment: SegmentFilter): Promise<string[]> {
   const snap = await adminDb.collection('users').get().catch(() => ({ docs: [] }))
   const tokens: string[] = []
 
@@ -57,6 +63,42 @@ async function collectFcmTokens(segment: SegmentFilter): Promise<string[]> {
   return tokens
 }
 
+async function sendExpoChunk(
+  tokens: string[],
+  title: string,
+  body: string
+): Promise<{ success: number; failed: number }> {
+  const messages = tokens.map((to) => ({
+    to,
+    title,
+    body,
+    sound: 'default',
+    priority: 'high',
+    channelId: 'default',
+  }))
+
+  const response = await fetch(EXPO_PUSH_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(messages),
+    signal: AbortSignal.timeout(20000),
+  })
+
+  if (!response.ok) {
+    return { success: 0, failed: tokens.length }
+  }
+
+  const result = await response.json() as { data: ExpoTicket[] }
+  const tickets = result.data ?? []
+  const success = tickets.filter((t) => t.status === 'ok').length
+  const failed = tickets.length - success
+
+  return { success, failed: failed + (tokens.length - tickets.length) }
+}
+
 export async function POST(request: NextRequest) {
   const authResult = await requireAdmin(request)
   if (authResult instanceof NextResponse) return authResult
@@ -77,34 +119,30 @@ export async function POST(request: NextRequest) {
     userIds: Array.isArray(body.userIds) ? (body.userIds as string[]) : [],
   }
 
-  const tokens = await collectFcmTokens(segment)
+  const tokens = await collectTokens(segment)
 
   if (tokens.length === 0) {
-    return NextResponse.json({ error: 'No se encontraron tokens FCM para el segmento seleccionado' }, { status: 400 })
+    return NextResponse.json(
+      { error: 'No se encontraron tokens de notificación para el segmento seleccionado' },
+      { status: 400 }
+    )
   }
 
-  const messaging = getMessaging()
-  const BATCH_SIZE = 500
   let successCount = 0
   let failureCount = 0
 
-  for (let i = 0; i < tokens.length; i += BATCH_SIZE) {
-    const batch = tokens.slice(i, i + BATCH_SIZE)
-    const result = await messaging.sendEachForMulticast({
-      tokens: batch,
-      notification: { title, body: messageBody },
-      android: { priority: 'high' },
-      apns: { payload: { aps: { sound: 'default', badge: 1 } } },
-    })
-    successCount += result.successCount
-    failureCount += result.failureCount
+  for (let i = 0; i < tokens.length; i += EXPO_BATCH_SIZE) {
+    const chunk = tokens.slice(i, i + EXPO_BATCH_SIZE)
+    const { success, failed } = await sendExpoChunk(chunk, title, messageBody)
+    successCount += success
+    failureCount += failed
   }
 
   const ref = adminDb.collection('adminNotificationCampaigns').doc()
   await ref.set({
     title,
     body: messageBody,
-    status: failureCount === tokens.length ? 'failed' : 'sent',
+    status: successCount > 0 ? 'sent' : 'failed',
     type: 'push',
     segment,
     metrics: { targeted: tokens.length, sent: successCount, failed: failureCount },
@@ -117,9 +155,15 @@ export async function POST(request: NextRequest) {
     actorUid: authResult.uid,
     action: 'notification.send',
     entity: { type: 'adminNotificationCampaign', id: ref.id, path: `adminNotificationCampaigns/${ref.id}` },
-    summary: `Sent push notification "${title}" to ${successCount}/${tokens.length} tokens`,
+    summary: `Sent push notification "${title}" to ${successCount}/${tokens.length} via Expo`,
     metadata: { successCount, failureCount, segment },
   })
 
-  return NextResponse.json({ ok: true, id: ref.id, targeted: tokens.length, sent: successCount, failed: failureCount })
+  return NextResponse.json({
+    ok: true,
+    id: ref.id,
+    targeted: tokens.length,
+    sent: successCount,
+    failed: failureCount,
+  })
 }
