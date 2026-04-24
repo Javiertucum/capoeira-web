@@ -1383,6 +1383,37 @@ export async function getAdminFinanceSnapshotRows(): Promise<AdminFinanceSnapsho
   return [...snapshots, ...manualCosts].sort((left, right) => left.provider.localeCompare(right.provider))
 }
 
+export async function getAdminGraduationLevelById(
+  groupId: string,
+  levelId: string
+): Promise<AdminGraduationLevelRow | null> {
+  const [groupDoc, levelDoc] = await Promise.all([
+    adminDb.collection('groups').doc(groupId).get(),
+    adminDb.collection('groups').doc(groupId).collection('graduationLevels').doc(levelId).get(),
+  ])
+
+  if (!levelDoc.exists) return null
+
+  const data = levelDoc.data() as FirestoreRecord
+  const groupName = asString(groupDoc.data()?.name) ?? groupId
+  const colors = Array.isArray(data.colors)
+    ? data.colors.filter((color): color is string => typeof color === 'string')
+    : []
+
+  return {
+    id: levelDoc.id,
+    groupId,
+    groupName,
+    name: asString(data.name) ?? levelDoc.id,
+    order: asNumber(data.order) ?? 0,
+    colors,
+    category: asString(data.category),
+    isEducator: asBoolean(data.isEducator) ?? false,
+    isSpecial: asBoolean(data.isSpecial) ?? false,
+    memberCount: 0,
+  }
+}
+
 export async function getAdminGroupsForExport(): Promise<Array<{
   id: string
   name: string

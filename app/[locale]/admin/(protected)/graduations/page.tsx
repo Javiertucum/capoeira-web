@@ -3,6 +3,7 @@ import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import AdminSectionCard from '@/components/admin/AdminSectionCard'
 import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
+import CordaVisual from '@/components/public/CordaVisual'
 import Badge from '@/components/ui/Badge'
 import { getAdminGraduationRows } from '@/lib/admin-queries'
 import Link from 'next/link'
@@ -60,13 +61,14 @@ export default async function GraduationsPage({ params }: Props) {
                       <td className="px-6 py-4 text-sm text-text-secondary">{row.order}</td>
                       <td className="px-6 py-4 text-sm text-text-secondary">{row.category ?? '--'}</td>
                       <td className="px-6 py-4">
-                        <div className="flex flex-wrap gap-1">
-                          {row.colors.map((color) => <span key={color} className="h-5 w-5 rounded-full border border-border" style={{ backgroundColor: color }} />)}
-                        </div>
+                        <CordaVisual colors={row.colors} width={96} height={14} />
                       </td>
                       <td className="px-6 py-4 text-sm font-semibold text-text">{row.memberCount}</td>
                       <td className="px-6 py-4 text-right">
-                        <Link href={`/${locale}/admin/groups/${row.groupId}`} className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-surface px-4 text-xs font-bold text-accent transition-all hover:border-accent/30 hover:bg-accent/10">Grupo</Link>
+                        <div className="flex justify-end gap-2">
+                          <Link href={`/${locale}/admin/graduations/${row.groupId}/${row.id}`} className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-surface px-4 text-xs font-bold text-accent transition-all hover:border-accent/30 hover:bg-accent/10">Editar</Link>
+                          <Link href={`/${locale}/admin/groups/${row.groupId}`} className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-surface px-3 text-xs font-bold text-text-secondary transition-all hover:text-text">Grupo</Link>
+                        </div>
                       </td>
                     </tr>
                   ))}

@@ -199,7 +199,7 @@ export default function AdminNotificationSendForm() {
         {result && (
           <div
             className={`rounded-xl border px-4 py-3 text-sm ${
-              result.ok
+              result.ok && (result.sent ?? 0) > 0
                 ? 'border-accent/20 bg-accent/8 text-accent'
                 : 'border-danger/20 bg-danger/8 text-danger'
             }`}
