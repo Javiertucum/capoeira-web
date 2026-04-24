@@ -1,5 +1,6 @@
 import AdminCreateJobForm from '@/components/admin/AdminCreateJobForm'
 import AdminEmptyState from '@/components/admin/AdminEmptyState'
+import AdminFinanceRefreshButton from '@/components/admin/AdminFinanceRefreshButton'
 import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import AdminSectionCard from '@/components/admin/AdminSectionCard'
 import AdminStatCard from '@/components/admin/AdminStatCard'
@@ -29,7 +30,12 @@ export default async function FinancesPage({ params }: Props) {
       <AdminTopbar section="Finanzas" description="Snapshots cacheados y costos manuales." />
       <div className="flex-1 overflow-y-auto p-4 pb-24 sm:p-6 lg:p-8 lg:pb-8">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8">
-          <AdminPageHeader eyebrow="Resultado operativo" title="Finanzas" description="La pagina lee adminFinanceSnapshots y adminFinanceManualCosts. Las APIs externas deben alimentar snapshots; el render nunca llama providers directamente." />
+          <AdminPageHeader
+            eyebrow="Resultado operativo"
+            title="Finanzas"
+            description="La pagina lee adminFinanceSnapshots y adminFinanceManualCosts. Usa el botón de actualizar para obtener datos frescos de RevenueCat, AdMob, AdSense y Google Cloud."
+          />
+          <AdminFinanceRefreshButton />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <AdminStatCard label="Ingresos" value={money(income, 'USD', locale)} helper="Snapshots income" tone="accent" />
             <AdminStatCard label="Costos" value={money(costs, 'USD', locale)} helper="Snapshots cost + manual costs" tone={costs > 0 ? 'danger' : 'default'} />
