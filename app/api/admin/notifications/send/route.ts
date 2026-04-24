@@ -15,13 +15,15 @@ type SegmentFilter = {
   userIds?: string[]
 }
 
+type TokenEntry = { uid: string; token: string }
+
 type ExpoTicket =
   | { status: 'ok'; id: string }
   | { status: 'error'; message: string; details?: { error: string } }
 
-async function collectTokens(segment: SegmentFilter): Promise<string[]> {
+async function collectTokens(segment: SegmentFilter): Promise<TokenEntry[]> {
   const snap = await adminDb.collection('users').get().catch(() => ({ docs: [] }))
-  const tokens: string[] = []
+  const entries: TokenEntry[] = []
 
   for (const doc of snap.docs) {
     const data = doc.data() as Record<string, unknown>
@@ -29,7 +31,7 @@ async function collectTokens(segment: SegmentFilter): Promise<string[]> {
     if (!token) continue
 
     if (segment.userIds && segment.userIds.length > 0) {
-      if (segment.userIds.includes(doc.id)) tokens.push(token)
+      if (segment.userIds.includes(doc.id)) entries.push({ uid: doc.id, token })
       continue
     }
 
@@ -57,18 +59,35 @@ async function collectTokens(segment: SegmentFilter): Promise<string[]> {
       if (!segment.subscriptionPlans.includes(plan)) continue
     }
 
-    tokens.push(token)
+    entries.push({ uid: doc.id, token })
   }
 
-  return tokens
+  return entries
 }
 
-async function sendExpoChunk(
-  tokens: string[],
-  title: string,
-  body: string
-): Promise<{ success: number; failed: number; errors: string[] }> {
-  const messages = tokens.map((to) => ({
+async function purgeStaleTokens(uids: string[]): Promise<void> {
+  if (uids.length === 0) return
+  const batch = adminDb.batch()
+  for (const uid of uids) {
+    batch.update(adminDb.collection('users').doc(uid), {
+      fcmToken: FieldValue.delete(),
+    })
+  }
+  await batch.commit().catch((err) => {
+    console.error('[Expo Push] failed to purge stale tokens:', err)
+  })
+  console.log(`[Expo Push] purged ${uids.length} stale tokens`)
+}
+
+type ChunkResult = {
+  success: number
+  failed: number
+  staleUids: string[]
+  errors: string[]
+}
+
+async function sendExpoChunk(entries: TokenEntry[], title: string, body: string): Promise<ChunkResult> {
+  const messages = entries.map(({ token: to }) => ({
     to,
     title,
     body,
@@ -79,10 +98,7 @@ async function sendExpoChunk(
 
   const response = await fetch(EXPO_PUSH_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(messages),
     signal: AbortSignal.timeout(20000),
   })
@@ -90,26 +106,32 @@ async function sendExpoChunk(
   if (!response.ok) {
     const text = await response.text().catch(() => response.status.toString())
     console.error('[Expo Push] HTTP error:', response.status, text)
-    return { success: 0, failed: tokens.length, errors: [`HTTP ${response.status}: ${text}`] }
+    return { success: 0, failed: entries.length, staleUids: [], errors: [`HTTP ${response.status}: ${text}`] }
   }
 
   const result = await response.json() as { data: ExpoTicket[] }
   const tickets = result.data ?? []
+  const staleUids: string[] = []
   const errors: string[] = []
 
   tickets.forEach((ticket, i) => {
     if (ticket.status === 'error') {
-      const token = tokens[i] ?? '?'
-      const msg = `${ticket.message ?? ticket.details?.error ?? 'unknown'} (token: ${token.slice(0, 40)}...)`
-      console.error('[Expo Push] ticket error:', msg)
+      const entry = entries[i]
+      const errorCode = ticket.details?.error ?? ''
+      const msg = ticket.message ?? errorCode ?? 'unknown error'
       errors.push(msg)
+      console.error(`[Expo Push] ticket error for uid ${entry?.uid}: ${msg}`)
+
+      if (errorCode === 'DeviceNotRegistered' && entry) {
+        staleUids.push(entry.uid)
+      }
     }
   })
 
   const success = tickets.filter((t) => t.status === 'ok').length
   const failed = tickets.length - success
 
-  return { success, failed: failed + (tokens.length - tickets.length), errors }
+  return { success, failed: failed + (entries.length - tickets.length), staleUids, errors }
 }
 
 export async function POST(request: NextRequest) {
@@ -132,9 +154,9 @@ export async function POST(request: NextRequest) {
     userIds: Array.isArray(body.userIds) ? (body.userIds as string[]) : [],
   }
 
-  const tokens = await collectTokens(segment)
+  const entries = await collectTokens(segment)
 
-  if (tokens.length === 0) {
+  if (entries.length === 0) {
     return NextResponse.json(
       { error: 'No se encontraron tokens de notificación para el segmento seleccionado' },
       { status: 400 }
@@ -143,15 +165,20 @@ export async function POST(request: NextRequest) {
 
   let successCount = 0
   let failureCount = 0
+  const allStaleUids: string[] = []
   const allErrors: string[] = []
 
-  for (let i = 0; i < tokens.length; i += EXPO_BATCH_SIZE) {
-    const chunk = tokens.slice(i, i + EXPO_BATCH_SIZE)
-    const { success, failed, errors } = await sendExpoChunk(chunk, title, messageBody)
+  for (let i = 0; i < entries.length; i += EXPO_BATCH_SIZE) {
+    const chunk = entries.slice(i, i + EXPO_BATCH_SIZE)
+    const { success, failed, staleUids, errors } = await sendExpoChunk(chunk, title, messageBody)
     successCount += success
     failureCount += failed
+    allStaleUids.push(...staleUids)
     allErrors.push(...errors)
   }
+
+  // Clean up stale tokens in the background — don't block the response
+  void purgeStaleTokens(allStaleUids)
 
   const ref = adminDb.collection('adminNotificationCampaigns').doc()
   await ref.set({
@@ -160,7 +187,12 @@ export async function POST(request: NextRequest) {
     status: successCount > 0 ? 'sent' : 'failed',
     type: 'push',
     segment,
-    metrics: { targeted: tokens.length, sent: successCount, failed: failureCount },
+    metrics: {
+      targeted: entries.length,
+      sent: successCount,
+      failed: failureCount,
+      purged: allStaleUids.length,
+    },
     createdBy: authResult.uid,
     createdAt: FieldValue.serverTimestamp(),
     updatedAt: FieldValue.serverTimestamp(),
@@ -170,16 +202,17 @@ export async function POST(request: NextRequest) {
     actorUid: authResult.uid,
     action: 'notification.send',
     entity: { type: 'adminNotificationCampaign', id: ref.id, path: `adminNotificationCampaigns/${ref.id}` },
-    summary: `Sent push notification "${title}" to ${successCount}/${tokens.length} via Expo`,
-    metadata: { successCount, failureCount, segment },
+    summary: `Sent push "${title}" to ${successCount}/${entries.length} · purged ${allStaleUids.length} stale tokens`,
+    metadata: { successCount, failureCount, purged: allStaleUids.length, segment },
   })
 
   return NextResponse.json({
     ok: true,
     id: ref.id,
-    targeted: tokens.length,
+    targeted: entries.length,
     sent: successCount,
     failed: failureCount,
+    purged: allStaleUids.length,
     errors: allErrors.slice(0, 5),
   })
 }

@@ -8,6 +8,7 @@ type SendResult = {
   targeted?: number
   sent?: number
   failed?: number
+  purged?: number
   error?: string
   errors?: string[]
 }
@@ -206,7 +207,7 @@ export default function AdminNotificationSendForm() {
             }`}
           >
             {result.ok
-              ? `Enviado a ${result.sent}/${result.targeted} dispositivos · ${result.failed} fallidos`
+              ? `Enviado a ${result.sent}/${result.targeted} dispositivos · ${result.failed} fallidos${(result.purged ?? 0) > 0 ? ` · ${result.purged} tokens vencidos eliminados` : ''}`
               : result.error}
             {result.errors && result.errors.length > 0 && (
               <ul className="mt-2 space-y-1 text-xs opacity-80">
