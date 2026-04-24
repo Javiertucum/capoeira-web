@@ -1382,3 +1382,81 @@ export async function getAdminFinanceSnapshotRows(): Promise<AdminFinanceSnapsho
 
   return [...snapshots, ...manualCosts].sort((left, right) => left.provider.localeCompare(right.provider))
 }
+
+export async function getAdminGroupsForExport(): Promise<Array<{
+  id: string
+  name: string
+  country: string | null
+  memberCount: number
+  nucleoCount: number
+}>> {
+  const [groupsSnap, usersSnap, nucleosSnap] = await Promise.all([
+    adminDb.collection('groups').get().catch(() => ({ docs: [] })),
+    adminDb.collection('usersPublic').get().catch(() => ({ docs: [] })),
+    adminDb.collectionGroup('nucleos').get().catch(() => ({ docs: [] })),
+  ])
+
+  const membersByGroup = new Map<string, number>()
+  usersSnap.docs.forEach((doc) => {
+    const groupId = asString((doc.data() as FirestoreRecord).groupId)
+    if (groupId) membersByGroup.set(groupId, (membersByGroup.get(groupId) ?? 0) + 1)
+  })
+
+  const nucleosByGroup = new Map<string, number>()
+  nucleosSnap.docs.forEach((doc) => {
+    const groupId = doc.ref.parent.parent?.id ?? ''
+    if (groupId) nucleosByGroup.set(groupId, (nucleosByGroup.get(groupId) ?? 0) + 1)
+  })
+
+  return groupsSnap.docs.map((doc) => {
+    const data = doc.data() as FirestoreRecord
+    return {
+      id: doc.id,
+      name: asString(data.name) ?? doc.id,
+      country: asString(data.country),
+      memberCount: membersByGroup.get(doc.id) ?? 0,
+      nucleoCount: nucleosByGroup.get(doc.id) ?? 0,
+    }
+  })
+}
+
+export async function getAdminUsersForExport(limit = 2000): Promise<Array<{
+  uid: string
+  name: string
+  email: string
+  role: string
+  country: string | null
+  groupId: string | null
+  plan: string
+  createdAt: string | null
+}>> {
+  const adminAuth = getAuth(getApps()[0])
+  const snap = await adminDb.collection('usersPublic').limit(limit).get()
+
+  return Promise.all(
+    snap.docs.map(async (doc) => {
+      const data = doc.data() as FirestoreRecord
+      const [subscriptionDoc, authUser] = await Promise.allSettled([
+        adminDb.collection('users').doc(doc.id).collection('subscription').doc('current').get(),
+        adminAuth.getUser(doc.id),
+      ])
+      const subscriptionData =
+        subscriptionDoc.status === 'fulfilled'
+          ? ((subscriptionDoc.value.data() as FirestoreRecord | undefined) ?? {})
+          : {}
+      const email = authUser.status === 'fulfilled' ? (authUser.value.email ?? '') : ''
+      const plan = asString(subscriptionData.plan) === 'premium' ? 'premium' : 'free'
+
+      return {
+        uid: doc.id,
+        name: userDisplayName(data) || doc.id,
+        email,
+        role: asString(data.role) ?? 'student',
+        country: asString(data.country),
+        groupId: asString(data.groupId),
+        plan,
+        createdAt: toIsoString(data.createdAt),
+      }
+    })
+  )
+}
