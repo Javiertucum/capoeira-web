@@ -275,8 +275,4 @@ export default async function NucleoPage({ params }: Props) {
       </div>
     </div>
   )
-        </div>
-      </div>
-    </div>
-  )
 }

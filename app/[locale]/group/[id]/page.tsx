@@ -218,7 +218,6 @@ export default async function GroupPage({ params }: Props) {
               { label: t('nucleos'), value: nucleos.length },
               { label: t('educators'), value: educators.length },
               { label: locale === 'en' ? 'Countries' : 'Países', value: group.representedCountries?.length ?? 0 },
-              { label: locale === 'en' ? 'Founded' : 'Fundación', value: group.foundationYear ?? '—' },
             ].map((s) => (
               <div key={s.label} className="card-paper px-6 py-5" style={{ borderRadius: 'var(--radius-lg)' }}>
                 <div className="text-[32px] font-black leading-none tracking-tight text-ink" style={{ fontFamily: 'var(--font-display)' }}>
@@ -254,84 +253,6 @@ export default async function GroupPage({ params }: Props) {
                 )}
               </div>
             </section>
-          </div>
-
-          <aside className="space-y-6">
-            <section className="rounded-[22px] border border-line bg-surface p-5">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ink-3">
-                {t('stats')}
-              </p>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                {stats.map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-[18px] border border-line bg-surface-muted px-4 py-4"
-                  >
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-3">
-                      {item.label}
-                    </p>
-                    <p className="mt-2 text-[28px] font-semibold leading-none tracking-[-0.04em] text-ink">
-                      {item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {graduationLevels.length > 0 ? (
-              <GraduationSystemSection
-                levels={graduationLevels}
-                title={graduationSystem ?? t('graduation')}
-              />
-            ) : null}
-
-            {adminUser ? (
-              <section className="rounded-[22px] border border-line bg-surface p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ink-3">
-                  {t('admin')}
-                </p>
-                <div className="mt-5 text-center">
-                  <div className="relative mx-auto h-[84px] w-[84px] overflow-hidden rounded-full border border-line bg-surface-muted">
-                    {adminUser.avatarUrl ? (
-                      <Image
-                        src={adminUser.avatarUrl}
-                        alt={adminUser.nickname || adminUser.name || 'Admin'}
-                        fill
-                        sizes="84px"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-xl font-bold text-ink-3">
-                        {adminUser.name?.[0] ?? '?'}
-                      </div>
-                    )}
-                  </div>
-
-                  <p className="mt-4 font-semibold text-ink">
-                    {adminUser.nickname || `${adminUser.name} ${adminUser.surname}`}
-                  </p>
-                  {adminUser.graduationLevelId && gradLevelById.get(adminUser.graduationLevelId) ? (
-                    <div className="mt-3 flex items-center justify-center gap-2">
-                      <CordaVisual
-                        colors={gradLevelById.get(adminUser.graduationLevelId)!.colors}
-                        tipColorLeft={gradLevelById.get(adminUser.graduationLevelId)!.tipColorLeft}
-                        tipColorRight={gradLevelById.get(adminUser.graduationLevelId)!.tipColorRight}
-                        width={64}
-                        height={10}
-                      />
-                      <span className="text-xs text-ink-2">{gradLevelById.get(adminUser.graduationLevelId)!.name}</span>
-                    </div>
-                  ) : null}
-
-                  <Link
-                    href={`/${locale}/educator/${adminUser.uid}`}
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-line bg-surface-muted px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-2 transition-colors hover:text-ink"
-                  >
-                    {t('viewProfile')}
-                  </Link>
-                </div>
-              </section>
-            ) : null}
 
             {/* Educators */}
             {educators.length > 0 && (
