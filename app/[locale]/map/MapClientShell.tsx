@@ -1,6 +1,6 @@
 'use client'
 
-import { useDeferredValue, useEffect, useMemo, useState, useTransition, type FormEvent } from 'react'
+import { useDeferredValue, useEffect, useMemo, useState, useTransition } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import MapView from '@/components/public/MapView'
@@ -202,7 +202,7 @@ export default function MapClientShell({
     })
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: { preventDefault(): void }) {
     event.preventDefault()
     syncUrl(query, filter)
   }
@@ -231,187 +231,198 @@ export default function MapClientShell({
     groups: initialGroups.length,
   }
 
+  /* Labels por locale */
+  const filterLabels: Record<FilterValue, string> = {
+    nucleos: t('filterNucleos'),
+    groups: t('filterGroups'),
+  }
+  const nearLabel = locale === 'en' ? 'Near me' : locale === 'pt' ? 'Perto de mim' : 'Cerca de mí'
+  const filtrosLabel = locale === 'en' ? 'Filters' : 'Filtros'
+  const titleText = locale === 'en' ? 'Capoeira map of the world' : locale === 'pt' ? 'Mapa da capoeira no mundo' : 'Mapa de la capoeira en el mundo'
+
   return (
-    <div className="pb-16 pt-8 lg:pb-20">
-      <div className="page-shell">
-        <section className="relative overflow-hidden rounded-[30px] border border-border bg-card px-6 py-7 shadow-sm sm:px-8 sm:py-8">
-          <div
-            aria-hidden="true"
-            className="absolute right-[-90px] top-[-90px] h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(217,84,43,0.06)_0%,rgba(217,84,43,0)_72%)]"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute left-[-70px] bottom-[-80px] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(201,154,58,0.07)_0%,rgba(201,154,58,0)_72%)]"
-          />
-
-          <div className="relative grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px] 2xl:grid-cols-[minmax(0,1fr)_360px]">
+    <div className="flex min-h-screen flex-col pb-16">
+      {/* ── Header compacto ── */}
+      <div className="border-b border-line-soft px-5 pb-4 pt-8 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-[1280px]">
+          {/* Title + stats */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.32em] text-accent-ink" style={{ fontFamily: 'var(--font-mono)' }}>
-                {copy.eyebrow}
-              </p>
-              <h1 className="mt-4 text-[clamp(34px,5vw,58px)] leading-[0.96] tracking-[-0.03em] text-text">
-                {t('title')}
+              <span className="eyebrow acc block mb-2">{copy.eyebrow}</span>
+              <h1 style={{ fontSize: 'clamp(28px, 4vw, 44px)', lineHeight: 1, letterSpacing: '-0.03em' }}>
+                {titleText}
               </h1>
-              <p className="page-copy-measure mt-4 text-sm leading-7 text-text-secondary">
-                {copy.intro}
-              </p>
-              <p className="mt-2 text-sm leading-7 text-text-muted">{copy.helper}</p>
-
-              <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
-                <div className="flex flex-col gap-3 lg:flex-row">
-                  <label className="flex min-w-0 flex-1 items-center gap-4 rounded-[24px] border border-border bg-card px-4 py-4 transition-all focus-within:border-accent/35 focus-within:ring-2 focus-within:ring-accent/30 focus-within:ring-offset-2 focus-within:ring-offset-bg">
-                    <span
-                      aria-hidden="true"
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-[16px] border border-accent/20 bg-accent-soft text-accent"
-                    >
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <circle cx="11" cy="11" r="7" />
-                        <path d="m20 20-3.5-3.5" />
-                      </svg>
-                    </span>
-
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
-                        {copy.searchLabel}
-                      </span>
-                      <input
-                        type="search"
-                        value={query}
-                        onChange={(event) => setQuery(event.target.value)}
-                        placeholder={t('searchPlaceholder')}
-                        aria-label={t('searchPlaceholder')}
-                        className="mt-1 block w-full min-w-0 bg-transparent text-base text-text outline-none placeholder:text-text-muted"
-                      />
-                    </span>
-                  </label>
-
-                  <button
-                    type="submit"
-                    className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-                  >
-                    {isPending ? `${copy.searchButton}...` : copy.searchButton}
-                  </button>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {FILTERS.map((item) => {
-                    const labels: Record<FilterValue, string> = {
-                      nucleos: t('filterNucleos'),
-                      groups: t('filterGroups'),
-                    }
-
-                    const isActive = item === filter
-
-                    return (
-                      <button
-                        key={item}
-                        type="button"
-                        onClick={() => handleFilterChange(item)}
-                        className={`cursor-pointer rounded-full border px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
-                          isActive
-                            ? 'border-text bg-text text-bg'
-                            : 'border-border bg-card text-text-secondary hover:border-text/20 hover:text-text'
-                        }`}
-                      >
-                        {`${labels[item]} (${filterCounts[item]})`}
-                      </button>
-                    )
-                  })}
-                </div>
-              </form>
             </div>
-
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-              {FILTERS.map((item) => {
-                const labels: Record<FilterValue, string> = {
-                  nucleos: t('filterNucleos'),
-                  groups: t('filterGroups'),
-                }
-
-                return (
-                  <div
-                    key={item}
-                    className="rounded-[24px] border border-border bg-card px-4 py-4"
-                  >
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
-                      {labels[item]}
-                    </p>
-                    <p className="mt-3 text-[28px] font-semibold leading-none tracking-[-0.04em] text-text">
-                      {filterCounts[item].toLocaleString()}
-                    </p>
-                    <p className="mt-3 text-sm leading-6 text-text-secondary">{copy.summaryLabel}</p>
+            <div className="flex gap-6 sm:pb-1">
+              {([
+                { n: filterCounts.nucleos, l: filterLabels.nucleos },
+                { n: filterCounts.groups,  l: filterLabels.groups },
+                { n: 44, l: locale === 'en' ? 'Countries' : 'Países' },
+              ] as { n: number; l: string }[]).map(({ n, l }) => (
+                <div key={l}>
+                  <div className="text-[32px] font-bold leading-none tracking-[-0.03em] text-ink" style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}>
+                    {n}
                   </div>
-                )
-              })}
+                  <div className="mono mt-1 text-[11px] uppercase tracking-[0.14em] text-ink-3">{l}</div>
+                </div>
+              ))}
             </div>
           </div>
-        </section>
 
-        {hint ? (
-          <div className="mt-5 rounded-[22px] border border-accent/20 bg-accent-soft/40 px-5 py-4 text-sm leading-7 text-text-secondary">
-            {hint as string}
-          </div>
-        ) : null}
+          {/* Search + near + buscar + filtros */}
+          <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div
+              className="flex flex-1 items-center gap-2 rounded-full border border-line bg-surface p-1.5"
+              style={{ boxShadow: 'var(--shadow-sm)' }}
+            >
+              <div className="flex flex-1 items-center gap-3 px-4 h-11 min-w-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-ink-3" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+                </svg>
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={t('searchPlaceholder')}
+                  aria-label={t('searchPlaceholder')}
+                  className="flex-1 min-w-0 bg-transparent text-[15px] text-ink outline-none placeholder:text-ink-4"
+                />
+              </div>
+              <div className="hidden h-6 w-px bg-line sm:block" />
+              <button
+                type="button"
+                onClick={() => setQuery('')}
+                className="hidden sm:flex h-11 items-center gap-2 px-4 text-[13px] text-ink-2 hover:text-ink transition-colors whitespace-nowrap"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /><circle cx="12" cy="9" r="2.5" />
+                </svg>
+                {nearLabel}
+              </button>
+              <button
+                type="submit"
+                className="btn btn-accent shrink-0"
+                style={{ height: 44, paddingInline: 20 }}
+              >
+                {isPending ? '…' : copy.searchButton}
+              </button>
+            </div>
+            {/* Filtros button */}
+            <button
+              type="button"
+              className="btn btn-ghost shrink-0"
+              style={{ height: 44 }}
+            >
+              {filtrosLabel}
+              {query.trim() && (
+                <span className="chip acc sm ml-1">
+                  {query.trim()}
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); setQuery(''); syncUrl('', filter) }}
+                    className="ml-1 opacity-60 hover:opacity-100"
+                    aria-label="Quitar filtro"
+                  >×</button>
+                </span>
+              )}
+            </button>
+          </form>
 
-        <div className="mt-5 lg:hidden">
-          <div className="flex rounded-full border border-border bg-card p-1">
-            {(['list', 'map'] as MobileView[]).map((view) => {
-              const isActive = view === mobileView
+          {/* Chips row: tipo | activos × | extra */}
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {/* Tipo chips */}
+            <button
+              type="button"
+              onClick={() => handleFilterChange('nucleos')}
+              className={`chip ${filter === 'nucleos' ? 'active' : ''}`}
+            >
+              {filterLabels.nucleos}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleFilterChange('groups')}
+              className={`chip ${filter === 'groups' ? 'active' : ''}`}
+            >
+              {filterLabels.groups}
+            </button>
 
-              return (
+            {/* Separador */}
+            {query.trim() && <span className="h-5 w-px bg-line mx-1" />}
+
+            {/* Active query chip con × */}
+            {query.trim() && (
+              <span className="chip acc">
+                {query.trim()}
                 <button
-                  key={view}
                   type="button"
-                  onClick={() => setMobileView(view)}
-                  className={`flex-1 rounded-full px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
-                    isActive
-                      ? 'bg-text text-bg'
-                      : 'text-text-secondary'
-                  }`}
-                >
-                  {view === 'list' ? copy.listTab : copy.mapTab}
-                </button>
-              )
-            })}
+                  onClick={() => { setQuery(''); syncUrl('', filter) }}
+                  className="ml-1 opacity-70 hover:opacity-100 leading-none"
+                  aria-label="Quitar filtro de búsqueda"
+                >×</button>
+              </span>
+            )}
           </div>
         </div>
+      </div>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(360px,460px)_minmax(0,1fr)] 2xl:grid-cols-[minmax(420px,500px)_minmax(0,1fr)]">
-          <section
-            className={`${mobileView === 'list' ? 'block' : 'hidden'} rounded-[26px] border border-border bg-card p-5 shadow-sm lg:block`}
-          >
-            <div className="flex items-end justify-between gap-4 border-b border-border px-2 pb-4">
+      {/* ── Hint grupos ── */}
+      {hint && (
+        <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-16">
+          <div className="mt-4 rounded-[16px] border border-accent/20 bg-accent-soft/40 px-4 py-3 text-[13px] text-ink-2">
+            {hint}
+          </div>
+        </div>
+      )}
+
+      {/* ── Mobile: toggle lista/mapa ── */}
+      <div className="mx-auto w-full max-w-[1280px] mt-4 px-5 sm:px-8 lg:hidden lg:px-16">
+        <div className="flex rounded-full border border-line bg-surface p-1">
+          {(['list', 'map'] as MobileView[]).map((view) => (
+            <button
+              key={view}
+              type="button"
+              onClick={() => setMobileView(view)}
+              className={`flex-1 rounded-full px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
+                view === mobileView ? 'bg-ink text-bg' : 'text-ink-2'
+              }`}
+            >
+              {view === 'list' ? copy.listTab : copy.mapTab}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Split: lista + mapa ── */}
+      <div className="mx-auto mt-5 w-full max-w-[1280px] flex-1 px-5 sm:px-8 lg:px-16">
+        <div className="grid gap-5 lg:grid-cols-[minmax(340px,460px)_minmax(0,1fr)]">
+
+          {/* Lista */}
+          <section className={`${mobileView === 'list' ? 'block' : 'hidden'} lg:block`}>
+            {/* Panel header */}
+            <div className="mb-3 flex items-baseline justify-between">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
-                  {copy.listTitle}
-                </p>
-                <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.04em] text-text">
+                <span className="eyebrow block">{copy.listTitle}</span>
+                <h2 className="mt-1 text-[26px] text-ink">
                   {t('results', { count: searchResults.length })}
                 </h2>
               </div>
+              <select className="rounded-full border border-line bg-surface px-3 py-1.5 text-[12px] text-ink-2 outline-none">
+                <option>{locale === 'en' ? 'Nearest' : locale === 'pt' ? 'Mais próximo' : 'Más cercano'}</option>
+                <option>A–Z</option>
+              </select>
             </div>
 
-            {dataUnavailable ? (
-              <div className="mt-4 rounded-[20px] border border-dashed border-border bg-surface-muted px-4 py-5">
-                <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-text">
-                  {copy.unavailableTitle}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-text-secondary">{copy.unavailableBody}</p>
+            {dataUnavailable && (
+              <div className="card-paper px-4 py-5 mb-3">
+                <p className="text-sm font-semibold text-ink">{copy.unavailableTitle}</p>
+                <p className="mt-2 text-sm text-ink-2">{copy.unavailableBody}</p>
               </div>
-            ) : null}
+            )}
 
-            <div className="mt-4 flex max-h-[560px] flex-col gap-3 overflow-y-auto pr-1 lg:max-h-[calc(100svh-230px)]">
+            <div className="flex max-h-[calc(100svh-280px)] flex-col gap-3 overflow-y-auto pr-1">
               {searchResults.length > 0 ? (
                 searchResults.map((item, index) => {
                   const showAd = index > 0 && index % 4 === 0
-
                   if (filter === 'groups') {
                     const group = item as Group
                     return (
@@ -423,41 +434,22 @@ export default function MapClientShell({
                       </div>
                     )
                   }
-
                   const nucleo = item as MapNucleo
                   return (
                     <div key={nucleo.id}>
                       {showAd && <AdInFeed />}
-                      <NucleoListItem
-                        nucleo={nucleo}
-                        isActive={nucleo.id === activeId}
-                        onSelect={setActiveId}
-                      />
+                      <NucleoListItem nucleo={nucleo} isActive={nucleo.id === activeId} onSelect={setActiveId} />
                     </div>
                   )
                 })
               ) : (
-                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted px-5 py-10 text-center">
-                  <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl border border-accent/20 bg-accent-soft text-accent">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="11" cy="11" r="7" />
-                      <path d="m20 20-3.5-3.5" />
-                      <path d="M15 7l-8 8M7 7l8 8" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-semibold tracking-[0.01em] text-text">
-                    {t('emptyTitle')}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-text-secondary">
-                    {t('emptyBody')}
-                  </p>
+                <div className="card-paper px-5 py-10 text-center">
+                  <p className="text-sm font-semibold text-ink">{t('emptyTitle')}</p>
+                  <p className="mt-2 text-sm text-ink-2">{t('emptyBody')}</p>
                   <button
                     type="button"
-                    onClick={() => {
-                      setQuery('')
-                      handleFilterChange(filter)
-                    }}
-                    className="mt-6 inline-flex h-10 items-center justify-center rounded-full border border-border bg-surface px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-accent/30 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                    onClick={() => { setQuery(''); handleFilterChange(filter) }}
+                    className="btn btn-ghost btn-sm mt-5"
                   >
                     {t('clearSearch')}
                   </button>
@@ -466,27 +458,16 @@ export default function MapClientShell({
             </div>
           </section>
 
+          {/* Mapa */}
           <section className={`${mobileView === 'map' ? 'block' : 'hidden'} lg:block`}>
-            <div className="lg:sticky lg:top-[94px]">
-              <div className="mb-3 flex items-end justify-between gap-4 px-1">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
-                    {copy.mapTitle}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-text-secondary">
-                    {mapNucleos.length > 0 ? t('results', { count: mapNucleos.length }) : copy.emptyBody}
-                  </p>
-                </div>
-              </div>
-
-              {filter !== 'nucleos' ? (
-                <div className="mb-4 rounded-[20px] border border-border bg-card px-4 py-4 text-sm leading-7 text-text-secondary">
+            <div className="lg:sticky lg:top-[88px]">
+              {filter !== 'nucleos' && (
+                <div className="mb-3 rounded-[14px] border border-line bg-surface-muted px-4 py-3 text-[13px] text-ink-2">
                   {activeEntity
                     ? `${copy.focusPrefix} ${getEntityName(activeEntity)}`
                     : copy.focusIdle}
                 </div>
-              ) : null}
-
+              )}
               <MapView nucleos={mapNucleos} activeNucleoId={activeId} onSelect={setActiveId} />
             </div>
           </section>

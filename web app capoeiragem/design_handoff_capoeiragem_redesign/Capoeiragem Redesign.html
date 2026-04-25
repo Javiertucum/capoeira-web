@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Agenda Capoeiragem — Redesign</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: #f0eee9; }
+  body { font-family: "Inter", system-ui, sans-serif; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="cap-atoms.jsx"></script>
+<script type="text/babel" src="artboards/home.jsx"></script>
+<script type="text/babel" src="artboards/map.jsx"></script>
+<script type="text/babel" src="artboards/educators-group.jsx"></script>
+<script type="text/babel" src="artboards/details.jsx"></script>
+<script type="text/babel" src="artboards/mobile.jsx"></script>
+<script type="text/babel" src="artboards/app-page.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+  function App() {
+    const W = window;
+    return (
+      <W.DesignCanvas>
+        <W.DCSection
+          id="overview"
+          title="Agenda Capoeiragem · Rediseño"
+          subtitle="Directorio público de núcleos, grupos y educadores. Audiencia hispanohablante; estética cálida, editorial, sin mentir sobre el estado del producto.">
+          <W.DCPostIt x={0} y={-12} rotate={-2}>
+            Punto de partida: la versión actual es funcional pero tímida.
+            La rediseño busca tres cosas — voz editorial,
+            datos densos pero respirables, y respeto por el oficio.
+            Sistema en archivo aparte: <code>tokens.css</code>.
+          </W.DCPostIt>
+        </W.DCSection>
+
+        <W.DCSection id="desktop-pages" title="Desktop · Páginas principales" subtitle="Flujo público. Mismo header sticky, misma rejilla de 1280, misma tipografía editorial.">
+          <W.DCArtboard id="home" label="01 · Home / Hero" width={1280} height={1860}><W.HomeArtboard /></W.DCArtboard>
+          <W.DCArtboard id="map" label="02 · Mapa + Lista" width={1280} height={1100}><W.MapArtboard /></W.DCArtboard>
+          <W.DCArtboard id="edus" label="03 · Educadores · directorio" width={1280} height={1240}><W.EducatorsArtboard /></W.DCArtboard>
+          <W.DCArtboard id="app" label="04 · App / Companion móvil" width={1280} height={1320}><W.AppPageArtboard /></W.DCArtboard>
+        </W.DCSection>
+
+        <W.DCSection id="desktop-details" title="Desktop · Páginas de detalle" subtitle="Cómo se ven una persona, un grupo y un núcleo cuando los abres.">
+          <W.DCArtboard id="grp" label="05 · Grupo (Mestre Bimba)" width={1280} height={1280}><W.GroupArtboard /></W.DCArtboard>
+          <W.DCArtboard id="edu1" label="06 · Educador (M. Faísca)" width={1280} height={1180}><W.EducatorDetailArtboard /></W.DCArtboard>
+          <W.DCArtboard id="nuc" label="07 · Núcleo (Pelourinho)" width={1280} height={1100}><W.NucleoDetailArtboard /></W.DCArtboard>
+        </W.DCSection>
+
+        <W.DCSection id="mobile" title="Mobile · App pública" subtitle="Misma información, prioridad táctil. Tab bar flotante, hojas inferiores, contenido primero.">
+          <W.DCArtboard id="m-home" label="M-01 · Home" width={390} height={780}><W.MobileHomeArtboard /></W.DCArtboard>
+          <W.DCArtboard id="m-map" label="M-02 · Mapa" width={390} height={780}><W.MobileMapArtboard /></W.DCArtboard>
+          <W.DCArtboard id="m-edu" label="M-03 · Educador" width={390} height={780}><W.MobileEducatorArtboard /></W.DCArtboard>
+        </W.DCSection>
+
+        <W.DCSection id="notes" title="Decisiones de diseño" subtitle="Notas para revisar antes de pasar a Figma o a código de producción.">
+          <W.DCPostIt x={0} y={0} rotate={-1.5}>
+            <strong>Tipografía</strong> · Instrument Serif para titulares
+            (italic latina = guiño cultural sin caer en folklore), Inter
+            para UI, JetBrains Mono para metadatos. Display nunca por debajo
+            de 28px en desktop.
+          </W.DCPostIt>
+          <W.DCPostIt x={0} y={0} rotate={1.2}>
+            <strong>Color</strong> · crema #F4EFE6 + tinta cálida #1A1814
+            + brick #D9542B. El brick aparece poco — solo en CTAs,
+            estado seleccionado, y la línea berimbau (degradé oro→brick).
+          </W.DCPostIt>
+          <W.DCPostIt x={0} y={0} rotate={-0.5}>
+            <strong>Cordas</strong> como dato visual, no decoración:
+            cada educador y grupo muestra su graduación con barra
+            bicolor + puntas (configurable por linaje).
+          </W.DCPostIt>
+          <W.DCPostIt x={0} y={0} rotate={2}>
+            <strong>Mapa</strong> es SVG estilizado con gratícula sobria,
+            no Mapbox real — para no comprometer la voz visual del producto
+            y mantener el tono editorial. Un proveedor real entra en producción.
+          </W.DCPostIt>
+        </W.DCSection>
+      </W.DesignCanvas>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+/* Capoeiragem rediseño — design tokens */
+:root {
+  /* --- light (default) --- */
+  --bg: #F4EFE6;          /* cream */
+  --bg-elev: #FBF7EE;     /* paper */
+  --surface: #FFFFFF;
+  --surface-muted: #EDE6D8;
+  --ink: #1A1814;          /* near-black warm */
+  --ink-2: #3D3833;
+  --ink-3: #6B645A;
+  --ink-4: #9A9388;
+  --line: #D9CFBE;
+  --line-soft: #E8DFCD;
+
+  --accent: #D9542B;       /* brick / berimbau */
+  --accent-ink: #B23E1A;
+  --accent-soft: #FBE7DC;
+  --gold: #C99A3A;         /* graduation gold */
+  --green: #2F5D3B;        /* verified / active */
+  --green-soft: #DDE8DD;
+
+  --shadow-sm: 0 1px 2px rgba(40, 28, 12, 0.05);
+  --shadow-md: 0 4px 16px rgba(40, 28, 12, 0.06), 0 1px 3px rgba(40, 28, 12, 0.05);
+  --shadow-lg: 0 18px 46px rgba(40, 28, 12, 0.1), 0 2px 6px rgba(40, 28, 12, 0.05);
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+
+  --font-display: "Poppins", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+.cap {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.005em;
+}
+.cap, .cap * { box-sizing: border-box; }
+
+.cap a { color: inherit; text-decoration: none; }
+.cap button { font-family: inherit; }
+
+.cap h1, .cap h2, .cap h3, .cap h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 0;
+}
+.cap h1 { font-weight: 800; }
+
+.cap em {
+  font-style: normal;
+  font-weight: 800;
+}
+
+.cap .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-3);
+}
+.cap .eyebrow.acc { color: var(--accent-ink); }
+
+.cap .mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+/* the berimbau line — thin gradient stroke */
+.berimbau-line {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--gold) 12%,
+    var(--accent) 50%,
+    var(--gold) 88%,
+    transparent 100%);
+  opacity: 0.75;
+}
+.berimbau-dot {
+  width: 6px; height: 6px; border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(217, 84, 43, 0.12);
+}
+
+/* buttons */
+.cap .btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 44px; padding: 0 22px;
+  border-radius: 999px;
+  font: 500 14px/1 var(--font-body);
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all .15s ease;
+  white-space: nowrap;
+}
+.cap .btn-primary { background: var(--ink); color: var(--bg); }
+.cap .btn-primary:hover { background: var(--accent); }
+.cap .btn-accent { background: var(--accent); color: white; }
+.cap .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.cap .btn-ghost:hover { border-color: var(--ink); }
+.cap .btn-sm { height: 36px; padding: 0 14px; font-size: 13px; }
+.cap .btn-lg { height: 56px; padding: 0 28px; font-size: 15px; }
+
+/* chips / tags */
+.cap .chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; padding: 0 12px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font: 500 12px/1 var(--font-body);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.cap .chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.cap .chip.acc { background: var(--accent-soft); color: var(--accent-ink); border-color: transparent; }
+.cap .chip.green { background: var(--green-soft); color: var(--green); border-color: transparent; }
+.cap .chip.sm { height: 24px; padding: 0 9px; font-size: 11px; gap: 4px; }
+
+.cap .tag-mono {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 22px; padding: 0 8px;
+  border-radius: 4px;
+  background: var(--surface-muted);
+  font: 500 11px/1 var(--font-mono);
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* cards */
+.cap .card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+.cap .card-paper {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+.cap .card-ink {
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: var(--radius-lg);
+}
+
+/* image placeholder */
+.img-ph {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 7px, rgba(26,24,20,0.04) 7px 8px),
+    var(--surface-muted);
+  display: grid; place-items: center;
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+/* divider with eyebrow */
+.section-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 18px;
+}
+.section-head .num { font: 500 13px/1 var(--font-mono); color: var(--ink-4); }
+.section-head h2 { font-size: 28px; }
+.section-head .rule { flex: 1; height: 1px; background: var(--line); }
+
+/* graduated cord (corda) — gradient bar */
+.corda {
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--c1, #ddd) 0 50%, var(--c2, #bbb) 50% 100%);
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.corda::before, .corda::after {
+  content: ""; position: absolute; top: -1px; bottom: -1px; width: 8px;
+  border-radius: 999px;
+  background: var(--tip, var(--ink-4));
+}
+.corda::before { left: -1px; }
+.corda::after { right: -1px; background: var(--tip2, var(--tip, var(--ink-4))); }
+
+/* scrollbar tweak inside artboards */
+.cap ::-webkit-scrollbar { width: 8px; height: 8px; }
+.cap ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 8px; }
+
+/* dark variant for contrast section */
+.cap.dark {
+  --bg: #14110D;
+  --bg-elev: #1B1813;
+  --surface: #1F1B16;
+  --surface-muted: #25201A;
+  --ink: #F4EFE6;
+  --ink-2: #D8CEBC;
+  --ink-3: #9C9384;
+  --ink-4: #6F695E;
+  --line: #2D2820;
+  --line-soft: #211D17;
+  --accent-soft: rgba(217, 84, 43, 0.16);
+  --green-soft: rgba(47, 93, 59, 0.18);
+}

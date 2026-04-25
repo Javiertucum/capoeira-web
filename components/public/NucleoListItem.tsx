@@ -124,8 +124,8 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
     <article
       className={`overflow-hidden rounded-[26px] border transition-all duration-200 ${
         isActive
-          ? 'border-text/30 bg-card'
-          : 'border-border bg-card hover:border-text/20'
+          ? 'border-text/30 bg-surface'
+          : 'border-line bg-surface hover:border-text/20'
       }`}
     >
       <div
@@ -137,19 +137,19 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-text-muted">
+            <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-ink-3">
               <span>{copy.trainingSpot}</span>
               <span className="h-1 w-1 rounded-full bg-border" />
-              <span className="truncate text-text-secondary">
+              <span className="truncate text-ink-2">
                 {nucleo.groupName || 'Agenda Capoeiragem'}
               </span>
             </div>
 
-            <h3 className="mt-3 text-[22px] font-semibold leading-tight tracking-[-0.03em] text-text">
+            <h3 className="mt-3 text-[22px] font-semibold leading-tight tracking-[-0.03em] text-ink">
               {nucleo.name}
             </h3>
 
-            <p className="mt-2 text-sm leading-6 text-text-secondary">
+            <p className="mt-2 text-sm leading-6 text-ink-2">
               {getLocation(nucleo, copy)}
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
               className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] ${
                 isActive
                   ? 'border-text bg-text text-bg'
-                  : 'border-border bg-surface-muted text-text-muted'
+                  : 'border-line bg-surface-muted text-ink-3'
               }`}
             >
               {copy.showOnMap}
@@ -167,27 +167,27 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
           ) : null}
         </div>
 
-        <p className="mt-5 text-sm leading-7 text-text-secondary">
+        <p className="mt-5 text-sm leading-7 text-ink-2">
           {nucleo.address?.trim() || copy.noAddress}
         </p>
 
         {scheduleSummary ? (
-          <p className="mt-3 text-xs leading-6 text-text-muted">{scheduleSummary}</p>
+          <p className="mt-3 text-xs leading-6 text-ink-3">{scheduleSummary}</p>
         ) : null}
 
         <div className="mt-5 flex flex-wrap gap-2">
-          <span className="rounded-full border border-border bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
+          <span className="rounded-full border border-line bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-2">
             {hasCoordinates ? copy.coordinatesReady : copy.coordinatesMissing}
           </span>
 
           {nucleo.city ? (
-            <span className="rounded-full border border-border bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
+            <span className="rounded-full border border-line bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-2">
               {nucleo.city}
             </span>
           ) : null}
 
           {nucleo.schedules && nucleo.schedules.length > 0 ? (
-            <span className="rounded-full border border-border bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
+            <span className="rounded-full border border-line bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-2">
               {`${nucleo.schedules.length} ${copy.schedulePrefix}`}
             </span>
           ) : null}
@@ -195,10 +195,10 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
       </div>
 
       {nucleo.groupId && showGroupLink ? (
-        <div className="flex items-center justify-between border-t border-border/70 px-5 py-4">
+        <div className="flex items-center justify-between border-t border-line/70 px-5 py-4">
           <Link
             href={`/${locale}/nucleo/${nucleo.groupId}/${nucleo.id}`}
-            className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:text-text"
+            className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-2 transition-colors hover:text-ink"
           >
             {copy.viewDetail}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" aria-hidden="true">

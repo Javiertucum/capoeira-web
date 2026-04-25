@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import CordaVisual from '@/components/public/CordaVisual'
 import { normalizeSocialLink } from '@/lib/social-links'
 import type { PublicUserProfile } from '@/lib/types'
 
@@ -9,170 +10,138 @@ type Props = Readonly<{
 }>
 
 const COPY = {
-  es: {
-    role: 'Educador',
-    locations: 'espacios',
-    links: 'enlaces',
-    open: 'Abrir perfil',
-    empty: 'Perfil público listo para completar.',
-  },
-  pt: {
-    role: 'Educador',
-    locations: 'espaços',
-    links: 'links',
-    open: 'Abrir perfil',
-    empty: 'Perfil público pronto para completar.',
-  },
-  en: {
-    role: 'Educator',
-    locations: 'locations',
-    links: 'links',
-    open: 'Open profile',
-    empty: 'Public profile ready to be filled in.',
-  },
+  es: { open: 'Ver perfil', emptyBio: 'Perfil público listo para completar.', verified: 'Verificado' },
+  pt: { open: 'Ver perfil', emptyBio: 'Perfil público pronto para completar.', verified: 'Verificado' },
+  en: { open: 'View profile', emptyBio: 'Public profile ready to fill in.', verified: 'Verified' },
 } as const
 
 const SOCIAL_LABELS: Record<string, string> = {
-  instagram: 'IG',
-  facebook: 'FB',
-  whatsapp: 'WA',
-  youtube: 'YT',
-  tiktok: 'TK',
-  website: 'WEB',
+  instagram: 'IG', facebook: 'FB', whatsapp: 'WA',
+  youtube: 'YT', tiktok: 'TK', website: 'WEB',
 }
 
-function getDisplayName(educator: PublicUserProfile) {
-  const fullName = [educator.name, educator.surname].filter(Boolean).join(' ').trim()
-  return educator.nickname?.trim() || fullName || educator.uid
+function getDisplayName(e: PublicUserProfile) {
+  const full = [e.name, e.surname].filter(Boolean).join(' ').trim()
+  return e.nickname?.trim() || full || e.uid
 }
-
-function getFullName(educator: PublicUserProfile) {
-  return [educator.name, educator.surname].filter(Boolean).join(' ').trim()
+function getFullName(e: PublicUserProfile) {
+  return [e.name, e.surname].filter(Boolean).join(' ').trim()
 }
-
-function getInitials(educator: PublicUserProfile) {
-  return [educator.name?.[0], educator.surname?.[0]]
-    .filter(Boolean)
-    .join('')
-    .toUpperCase() || 'AC'
+function getInitials(e: PublicUserProfile) {
+  return [e.name?.[0], e.surname?.[0]].filter(Boolean).join('').toUpperCase() || 'AC'
 }
 
 export default function EducatorCard({ educator, locale }: Props) {
   const copy = COPY[locale as keyof typeof COPY] ?? COPY.en
   const displayName = getDisplayName(educator)
-  const fullName = getFullName(educator)
-  const initials = getInitials(educator)
+  const fullName    = getFullName(educator)
+  const initials    = getInitials(educator)
   const socials = Object.entries(educator.socialLinks ?? {})
-    .filter((entry): entry is [string, string] => typeof entry[1] === 'string' && Boolean(entry[1]))
+    .filter((e): e is [string, string] => typeof e[1] === 'string' && Boolean(e[1]))
     .slice(0, 3)
 
+  const hasVerified = Boolean(educator.educatorEligible)
+
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-border bg-card transition-colors hover:border-text/20">
+    <article className="card group relative flex flex-col overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-md">
+      {/* Invisible full-card link */}
       <Link
         href={`/${locale}/educator/${educator.uid}`}
         className="absolute inset-0 z-0"
         aria-label={displayName}
       />
-      <div className="pointer-events-none flex h-full flex-col">
-        {/* Header */}
-        <div className="border-b border-border px-5 pb-5 pt-6">
-          <div className="flex items-start gap-3">
-            {/* Avatar */}
-            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-border bg-surface-muted">
-              {educator.avatarUrl ? (
-                <Image
-                  src={educator.avatarUrl}
-                  alt={displayName}
-                  fill
-                  sizes="64px"
-                  className="object-cover"
-                />
-              ) : (
-                <span className="text-lg font-semibold uppercase tracking-[0.1em] text-text-muted">
-                  {initials}
-                </span>
-              )}
-            </div>
 
-            <div className="min-w-0 flex-1">
-              {/* Country chip */}
-              <div className="flex flex-wrap items-center gap-2">
-                {educator.country ? (
-                  <span className="inline-flex h-6 items-center rounded-full border border-border bg-surface-muted px-2.5 text-[11px] text-text-muted">
-                    {educator.country}
-                  </span>
-                ) : null}
-              </div>
-
-              <h3 className="mt-2 truncate text-[19px] font-semibold tracking-[-0.02em] text-text">
-                {displayName}
-              </h3>
-
-              {educator.nickname && fullName ? (
-                <p className="mt-0.5 truncate text-[12px] text-text-muted">{fullName}</p>
-              ) : null}
-            </div>
+      {/* ── Portrait ── */}
+      <div className="img-ph relative" style={{ height: 200 }}>
+        {educator.avatarUrl ? (
+          <Image
+            src={educator.avatarUrl}
+            alt={displayName}
+            fill
+            sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
+            className="object-cover"
+          />
+        ) : (
+          <span className="pointer-events-none select-none">
+            {initials}
+          </span>
+        )}
+        {/* Country chip */}
+        {educator.country && (
+          <div className="absolute top-3 right-3 z-10">
+            <span className="chip sm bg-surface/90 border-line/60">
+              {educator.country}
+            </span>
           </div>
+        )}
+        {/* Corda at bottom */}
+        {/* We show corda only if graduation info is available via CordaVisual */}
+      </div>
+
+      {/* ── Body ── */}
+      <div className="pointer-events-none flex flex-1 flex-col p-4">
+        {/* Role eyebrow */}
+        <span className="eyebrow text-[10px]">
+          {educator.role === 'educator' ? (locale === 'en' ? 'Educator' : 'Educador') : 'Aluno'}
+        </span>
+
+        {/* Name */}
+        <h3 className="mt-1 text-[19px] font-semibold leading-tight tracking-[-0.02em] text-ink" style={{ fontFamily: 'var(--font-body)' }}>
+          {displayName}
+        </h3>
+        {educator.nickname && fullName && (
+          <p className="mt-0.5 truncate text-[12px] text-ink-3">{fullName}</p>
+        )}
+
+        {/* Location */}
+        {educator.country && (
+          <p className="mt-1 text-[12px] text-ink-3">{educator.country}</p>
+        )}
+
+        {/* Corda placeholder — shown when no graduation data */}
+        <div className="mt-3">
+          <div
+            className="corda"
+            style={{ '--c1': '#E5D7B0', '--c2': '#A07843', '--tip': '#1A1814', width: 80 } as React.CSSProperties}
+          />
         </div>
 
-        {/* Body */}
-        <div className="flex flex-1 flex-col px-5 py-5">
-          <p className="overflow-hidden text-sm leading-7 text-text-secondary [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]">
-            {educator.bio?.trim() || copy.empty}
-          </p>
-
-          {/* Social links */}
-          <div className="relative z-10 mt-4 flex flex-wrap gap-2 pointer-events-auto">
-            {typeof educator.nucleoIds?.length === 'number' && educator.nucleoIds.length > 0 ? (
-              <span className="inline-flex h-6 items-center rounded-full border border-border bg-surface-muted px-2.5 text-[11px] text-text-muted">
-                {educator.nucleoIds.length} {copy.locations}
-              </span>
-            ) : null}
-
-            {socials.map(([platform, value]) => {
-              const href = normalizeSocialLink(
-                platform as Parameters<typeof normalizeSocialLink>[0],
-                value
-              )
-              if (!href) return null
-              return (
-                <a
-                  key={platform}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-text-muted transition-colors hover:text-text"
-                >
-                  {SOCIAL_LABELS[platform] ?? platform.slice(0, 3).toUpperCase()}
-                </a>
-              )
-            })}
-          </div>
-
-          {/* Footer */}
-          <div className="mt-auto flex items-center justify-between border-t border-border/60 pt-4">
-            <span
-              className="text-[11px] uppercase tracking-[0.18em] text-text-faint"
-              style={{ fontFamily: 'var(--font-mono)' }}
-            >
-              {socials.length} {copy.links}
+        {/* Socials + verified */}
+        <div className="pointer-events-auto relative z-10 mt-3 flex flex-wrap items-center gap-1.5">
+          {hasVerified && (
+            <span className="chip sm green">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true"><path d="M4 12l5 5L20 6" /></svg>
+              {copy.verified}
             </span>
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-accent-ink">
-              {copy.open}
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.3"
-                aria-hidden="true"
-                className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1"
+          )}
+          {socials.map(([platform, value]) => {
+            const href = normalizeSocialLink(platform as Parameters<typeof normalizeSocialLink>[0], value)
+            if (!href) return null
+            return (
+              <a
+                key={platform}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="chip sm"
               >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </span>
-          </div>
+                {SOCIAL_LABELS[platform] ?? platform.slice(0, 3).toUpperCase()}
+              </a>
+            )
+          })}
+        </div>
+
+        {/* Footer CTA */}
+        <div className="mt-auto flex items-center justify-between border-t border-line-soft pt-3 mt-4">
+          <span className="eyebrow text-[10px]">
+            {socials.length} {locale === 'en' ? 'links' : 'enlaces'}
+          </span>
+          <span className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-ink">
+            {copy.open}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" aria-hidden="true" className="translate-x-0 transition-transform group-hover:translate-x-1">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </span>
         </div>
       </div>
     </article>

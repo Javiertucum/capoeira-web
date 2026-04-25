@@ -76,7 +76,7 @@ function GradRow({ level, isLast, threshold }: { level: GraduationLevel; isLast:
     (!!level.isSpecial && !!level.isEducator)
 
   return (
-    <div className={`flex items-center gap-3 py-2.5 ${!isLast ? 'border-b border-border/50' : ''}`}>
+    <div className={`flex items-center gap-3 py-2.5 ${!isLast ? 'border-b border-line/50' : ''}`}>
       <CordaVisual
         colors={level.colors}
         tipColorLeft={level.tipColorLeft}
@@ -85,9 +85,9 @@ function GradRow({ level, isLast, threshold }: { level: GraduationLevel; isLast:
         height={12}
       />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-text">{level.name}</p>
+        <p className="text-sm font-semibold text-ink">{level.name}</p>
         {level.description ? (
-          <p className="text-[10px] italic text-text-muted">{level.description}</p>
+          <p className="text-[10px] italic text-ink-3">{level.description}</p>
         ) : null}
       </div>
       <div className="flex shrink-0 gap-1">
@@ -109,7 +109,7 @@ function GradSection({ label, levels, threshold }: { label: string; levels: Grad
   if (levels.length === 0) return null
   return (
     <div className="mt-3">
-      <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.18em] text-text-muted opacity-70">{label}</p>
+      <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.18em] text-ink-3 opacity-70">{label}</p>
       {levels.map((l, i) => (
         <GradRow key={l.id} level={l} isLast={i === levels.length - 1} threshold={threshold} />
       ))}
@@ -125,12 +125,12 @@ function GraduationSystemSection({ levels, title }: { levels: GraduationLevel[];
   const especiales  = levels.filter(l => !!l.isSpecial && !l.isEstagiario)
 
   return (
-    <section className="rounded-[22px] border border-border bg-card p-5">
+    <section className="rounded-[22px] border border-line bg-surface p-5">
       <div className="flex items-center justify-between">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ink-3">
           {title}
         </p>
-        <span className="text-[10px] text-text-muted">({levels.length})</span>
+        <span className="text-[10px] text-ink-3">({levels.length})</span>
       </div>
       <div className="mt-2">
         <GradSection label="ADULTOS" levels={adultos} threshold={0} />
@@ -195,7 +195,7 @@ export default async function GroupPage({ params }: Props) {
       <div className="page-shell relative py-10">
         <Link
           href={`/${locale}/map?filter=groups`}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-text-muted transition-colors hover:text-text"
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-sm text-ink-3 transition-colors hover:text-ink"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -203,10 +203,10 @@ export default async function GroupPage({ params }: Props) {
           {t('back')}
         </Link>
 
-        <section className="relative overflow-hidden rounded-[34px] border border-border bg-card p-6 sm:p-8" style={{ boxShadow: 'var(--shadow-md)' }}>
+        <section className="relative overflow-hidden rounded-[34px] border border-line bg-surface p-6 sm:p-8" style={{ boxShadow: 'var(--shadow-md)' }}>
           <div className="relative grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-center">
             <div className="flex justify-center lg:justify-start">
-              <div className="relative h-[170px] w-[170px] overflow-hidden rounded-[30px] border border-border bg-surface shadow-[0_22px_60px_var(--shadow-soft)]">
+              <div className="relative h-[170px] w-[170px] overflow-hidden rounded-[30px] border border-line bg-surface shadow-[0_22px_60px_var(--shadow-soft)]">
                 {group.logoUrl ? (
                   <Image
                     src={group.logoUrl}
@@ -217,7 +217,7 @@ export default async function GroupPage({ params }: Props) {
                     className="object-contain p-5"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-4xl font-bold text-text-muted">
+                  <div className="flex h-full w-full items-center justify-center text-4xl font-bold text-ink-3">
                     {group.name?.[0] ?? '?'}
                   </div>
                 )}
@@ -225,7 +225,7 @@ export default async function GroupPage({ params }: Props) {
             </div>
 
             <div>
-              <h1 className="mt-4 text-[clamp(34px,5vw,60px)] font-semibold leading-[0.96] tracking-[-0.06em] text-text">
+              <h1 className="mt-4 text-[clamp(34px,5vw,60px)] font-semibold leading-[0.96] tracking-[-0.06em] text-ink">
                 {group.name}
               </h1>
               <div className="mt-6 flex flex-wrap gap-2">
@@ -242,14 +242,14 @@ export default async function GroupPage({ params }: Props) {
         </section>
 
         <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_390px]">
-          <section className="rounded-[22px] border border-border bg-card p-6">
-            <h2 className="text-[28px] font-semibold tracking-[-0.04em] text-text">
+          <section className="rounded-[22px] border border-line bg-surface p-6">
+            <h2 className="text-[28px] font-semibold tracking-[-0.04em] text-ink">
               {`${t('nucleos')} (${nucleos.length})`}
             </h2>
 
             {group.representedCountries && group.representedCountries.length > 0 ? (
-              <div className="mt-5 rounded-[22px] border border-border bg-surface-muted px-5 py-4 text-sm leading-7 text-text-secondary">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-text-muted">
+              <div className="mt-5 rounded-[22px] border border-line bg-surface-muted px-5 py-4 text-sm leading-7 text-ink-2">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-ink-3">
                   {t('representedCountries')}
                 </span>
                 <div className="mt-2">{group.representedCountries.join(' | ')}</div>
@@ -262,7 +262,7 @@ export default async function GroupPage({ params }: Props) {
                   <NucleoListItem key={nucleo.id} nucleo={nucleo} isActive={false} showGroupLink={false} />
                 ))
               ) : (
-                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted px-5 py-8 text-center text-sm leading-7 text-text-muted">
+                <div className="rounded-[22px] border border-dashed border-line bg-surface-muted px-5 py-8 text-center text-sm leading-7 text-ink-3">
                   {t('noNucleos')}
                 </div>
               )}
@@ -270,20 +270,20 @@ export default async function GroupPage({ params }: Props) {
           </section>
 
           <aside className="space-y-6">
-            <section className="rounded-[22px] border border-border bg-card p-5">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+            <section className="rounded-[22px] border border-line bg-surface p-5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ink-3">
                 {t('stats')}
               </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                 {stats.map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[18px] border border-border bg-surface-muted px-4 py-4"
+                    className="rounded-[18px] border border-line bg-surface-muted px-4 py-4"
                   >
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-text-muted">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-3">
                       {item.label}
                     </p>
-                    <p className="mt-2 text-[28px] font-semibold leading-none tracking-[-0.04em] text-text">
+                    <p className="mt-2 text-[28px] font-semibold leading-none tracking-[-0.04em] text-ink">
                       {item.value}
                     </p>
                   </div>
@@ -299,12 +299,12 @@ export default async function GroupPage({ params }: Props) {
             ) : null}
 
             {adminUser ? (
-              <section className="rounded-[22px] border border-border bg-card p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+              <section className="rounded-[22px] border border-line bg-surface p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ink-3">
                   {t('admin')}
                 </p>
                 <div className="mt-5 text-center">
-                  <div className="relative mx-auto h-[84px] w-[84px] overflow-hidden rounded-full border border-border bg-surface-muted">
+                  <div className="relative mx-auto h-[84px] w-[84px] overflow-hidden rounded-full border border-line bg-surface-muted">
                     {adminUser.avatarUrl ? (
                       <Image
                         src={adminUser.avatarUrl}
@@ -314,13 +314,13 @@ export default async function GroupPage({ params }: Props) {
                         className="object-cover"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-xl font-bold text-text-muted">
+                      <div className="flex h-full w-full items-center justify-center text-xl font-bold text-ink-3">
                         {adminUser.name?.[0] ?? '?'}
                       </div>
                     )}
                   </div>
 
-                  <p className="mt-4 font-semibold text-text">
+                  <p className="mt-4 font-semibold text-ink">
                     {adminUser.nickname || `${adminUser.name} ${adminUser.surname}`}
                   </p>
                   {adminUser.graduationLevelId && gradLevelById.get(adminUser.graduationLevelId) ? (
@@ -332,13 +332,13 @@ export default async function GroupPage({ params }: Props) {
                         width={64}
                         height={10}
                       />
-                      <span className="text-xs text-text-secondary">{gradLevelById.get(adminUser.graduationLevelId)!.name}</span>
+                      <span className="text-xs text-ink-2">{gradLevelById.get(adminUser.graduationLevelId)!.name}</span>
                     </div>
                   ) : null}
 
                   <Link
                     href={`/${locale}/educator/${adminUser.uid}`}
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-border bg-surface-muted px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:text-text"
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-line bg-surface-muted px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-2 transition-colors hover:text-ink"
                   >
                     {t('viewProfile')}
                   </Link>
@@ -347,8 +347,8 @@ export default async function GroupPage({ params }: Props) {
             ) : null}
 
             {educators.length > 0 && (
-              <section className="rounded-[22px] border border-border bg-card p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
+              <section className="rounded-[22px] border border-line bg-surface p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ink-3">
                   {t('educators')} ({educators.length})
                 </p>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
@@ -358,9 +358,9 @@ export default async function GroupPage({ params }: Props) {
                       <Link
                         key={edu.uid}
                         href={`/${locale}/educator/${edu.uid}`}
-                        className="flex items-center gap-3 rounded-[18px] border border-border bg-surface-muted px-3 py-3 transition-colors hover:border-text/20"
+                        className="flex items-center gap-3 rounded-[18px] border border-line bg-surface-muted px-3 py-3 transition-colors hover:border-text/20"
                       >
-                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-border bg-card">
+                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-line bg-surface">
                           {edu.avatarUrl ? (
                             <Image
                               src={edu.avatarUrl}
@@ -370,13 +370,13 @@ export default async function GroupPage({ params }: Props) {
                               className="object-cover"
                             />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center text-sm font-bold text-text-muted">
+                            <div className="flex h-full w-full items-center justify-center text-sm font-bold text-ink-3">
                               {edu.name?.[0] ?? '?'}
                             </div>
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-text">
+                          <p className="truncate text-sm font-semibold text-ink">
                             {edu.nickname || `${edu.name} ${edu.surname}`}
                           </p>
                           {gradLevel ? (
@@ -388,11 +388,11 @@ export default async function GroupPage({ params }: Props) {
                                 width={48}
                                 height={8}
                               />
-                              <span className="truncate text-[10px] text-text-muted">{gradLevel.name}</span>
+                              <span className="truncate text-[10px] text-ink-3">{gradLevel.name}</span>
                             </div>
                           ) : null}
                         </div>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-text-muted">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-ink-3">
                           <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
                       </Link>

@@ -1,4 +1,4 @@
-import { Inter, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
+import { Inter, Poppins, JetBrains_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
 import type { Metadata } from 'next'
 import './globals.css'
@@ -11,9 +11,9 @@ const bodyFont = Inter({
   display: 'swap',
 })
 
-const displayFont = Instrument_Serif({
+const displayFont = Poppins({
   subsets: ['latin'],
-  weight: '400',
+  weight: ['700', '800'],
   variable: '--font-display',
   display: 'swap',
 })
