@@ -159,13 +159,13 @@ export default async function LandingPage({ params }: Props) {
           </div>
 
           {/* Hero Image */}
-          <div className="relative aspect-[4/5] w-full max-w-[460px] mx-auto lg:max-w-none">
-            <div className="absolute inset-0 bg-accent/20 blur-[120px] rounded-full opacity-50" />
+          <div className="relative aspect-[9/19] w-full max-w-[320px] mx-auto lg:max-w-none lg:w-[320px] lg:justify-self-center rounded-[40px] border-[8px] border-bg/10 bg-bg/5 shadow-2xl overflow-hidden">
+            <div className="absolute inset-0 bg-accent/20 blur-[120px] rounded-full opacity-50 pointer-events-none" />
             <Image 
-              src="/images/app-hero.png" 
+              src="/images/user_mockup_4.jpg" 
               alt="Agenda Capoeiragem App Hero" 
               fill 
-              className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              className="object-cover object-top scale-[1.02]"
               priority
             />
           </div>
@@ -202,13 +202,13 @@ export default async function LandingPage({ params }: Props) {
                 </div>
               ))}
             </div>
-            <div className="relative aspect-[4/5] w-full max-w-[400px] mx-auto">
-               <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full opacity-30" />
+            <div className="relative aspect-[9/19] w-full max-w-[300px] mx-auto rounded-[40px] border-[8px] border-bg/10 bg-bg/5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden">
+               <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full opacity-30 pointer-events-none" />
                <Image 
-                 src="/images/app-grid.png" 
+                 src="/images/user_mockup_1.jpg" 
                  alt="Educator Functions Grid" 
                  fill 
-                 className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+                 className="object-cover object-top scale-[1.02]"
                />
             </div>
           </div>
