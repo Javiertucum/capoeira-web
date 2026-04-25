@@ -74,22 +74,22 @@ export default function Nav() {
           {/* Logo */}
           <Link
             href={`/${locale}`}
-            className="flex min-w-0 items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent flex-shrink-0"
           >
             {/* Monograma a·c */}
             <span
-              className={`grid h-8 w-8 shrink-0 place-items-center rounded-[10px] text-[15px] leading-none ${isDark ? 'bg-accent text-white' : 'bg-ink text-bg'}`}
-              style={{ fontFamily: 'var(--font-display)', fontWeight: 700 }}
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[16px] leading-none ${isDark ? 'bg-accent text-white' : 'bg-ink text-bg'}`}
+              style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
             >
               a<span style={{ color: isDark ? 'white' : 'var(--accent)' }}>·</span>c
             </span>
-            <span className="hidden min-w-0 sm:block">
-              <span className={`eyebrow block ${isDark ? 'text-bg/40' : ''}`} style={{ fontSize: 9, letterSpacing: '0.16em' }}>
-                Capoeira directory
+            <span className="flex flex-col justify-center min-w-0 whitespace-nowrap overflow-hidden">
+              <span className={`eyebrow block truncate ${isDark ? 'text-bg/40' : ''}`} style={{ fontSize: 9, letterSpacing: '0.2em' }}>
+                Capoeira platform
               </span>
               <span
-                className={`block text-[15px] ${textColor}`}
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 }}
+                className={`block text-[15px] sm:text-[16px] truncate ${textColor}`}
+                style={{ fontFamily: 'var(--font-display)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}
               >
                 Agenda Capoeiragem
               </span>
@@ -115,8 +115,8 @@ export default function Nav() {
             </div>
           </div>
 
-          {/* Right: ⌘K + locale + hamburger */}
-          <div className="flex items-center gap-2">
+          {/* Right: locale + hamburger */}
+          <div className="flex items-center gap-4">
 
             {/* Locale switcher — desktop */}
             <div className={`hidden rounded-full border px-1 py-1 sm:flex ${isDark ? 'border-white/10 bg-white/5' : 'border-line bg-surface'}`}>
@@ -143,8 +143,8 @@ export default function Nav() {
               aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((p) => !p)}
-              className={`grid h-10 w-10 place-items-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden ${
-                isDark ? 'border-white/10 bg-white/5 text-bg' : 'border-line bg-surface text-ink'
+              className={`grid h-11 w-11 place-items-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden ${
+                isDark ? 'border-white/20 bg-white/10 text-bg' : 'border-line bg-surface text-ink'
               }`}
             >
               <span className="relative block h-4 w-5">

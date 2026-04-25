@@ -86,33 +86,33 @@ export default function BetaRegistrationForm({ locale }: { locale: string }) {
           required
           name="name"
           placeholder={c.name}
-          className="h-14 rounded-2xl border border-bg/10 bg-bg/5 px-6 text-bg placeholder:text-bg/30 focus:border-accent/50 outline-none transition-all"
+          className="h-14 rounded-2xl border border-white/20 bg-white/10 px-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all"
         />
         <input
           required
           type="email"
           name="email"
           placeholder={c.email}
-          className="h-14 rounded-2xl border border-bg/10 bg-bg/5 px-6 text-bg placeholder:text-bg/30 focus:border-accent/50 outline-none transition-all"
+          className="h-14 rounded-2xl border border-white/20 bg-white/10 px-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all"
         />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <input
           name="role"
           placeholder={c.role}
-          className="h-14 rounded-2xl border border-bg/10 bg-bg/5 px-6 text-bg placeholder:text-bg/30 focus:border-accent/50 outline-none transition-all"
+          className="h-14 rounded-2xl border border-white/20 bg-white/10 px-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all"
         />
         <input
           name="group"
           placeholder={c.group}
-          className="h-14 rounded-2xl border border-bg/10 bg-bg/5 px-6 text-bg placeholder:text-bg/30 focus:border-accent/50 outline-none transition-all"
+          className="h-14 rounded-2xl border border-white/20 bg-white/10 px-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all"
         />
       </div>
       <textarea
         name="message"
         rows={3}
         placeholder={c.message}
-        className="w-full rounded-2xl border border-bg/10 bg-bg/5 p-6 text-bg placeholder:text-bg/30 focus:border-accent/50 outline-none transition-all resize-none"
+        className="w-full rounded-2xl border border-white/20 bg-white/10 p-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all resize-none"
       />
       
       <button

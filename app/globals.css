@@ -2,26 +2,26 @@
 
 /* ─── Tailwind @theme — expone tokens como clases utilitarias ─── */
 @theme {
-  /* Paleta crema */
-  --color-bg:            #F2EFE9;
-  --color-bg-elev:       #FBF9F4;
+  /* Paleta crema real de la app */
+  --color-bg:            #F7F3EB;
+  --color-bg-elev:       #FFFDF8;
   --color-surface:       #FFFFFF;
-  --color-surface-muted: #EBE4D8;
+  --color-surface-muted: #F1E8D9;
 
-  /* Ink (texto) */
-  --color-ink:           #1A1A1A;
-  --color-ink-2:         #454039;
-  --color-ink-3:         #635D54;
-  --color-ink-4:         #8C8477;
+  /* Ink (texto y fondos oscuros reales) */
+  --color-ink:           #10131A;
+  --color-ink-2:         #181D26;
+  --color-ink-3:         #27303D;
+  --color-ink-4:         #4C463C;
 
   /* Líneas */
-  --color-line:          #E2D9C8;
-  --color-line-soft:     #F0E9DB;
+  --color-line:          #E7DECF;
+  --color-line-soft:     #FBF7EF;
 
-  /* Acento brick */
-  --color-accent:        #E85D33;
-  --color-accent-ink:    #C2421D;
-  --color-accent-soft:   #FDECE3;
+  /* Acento Naranja Real de la App */
+  --color-accent:        #FB923C;
+  --color-accent-ink:    #EA580C;
+  --color-accent-soft:   #FB923C20;
 
   /* Especiales */
   --color-gold:          #D4A017;
@@ -48,22 +48,22 @@
 
 /* ─── CSS custom properties (usadas por utilities y componentes) ─── */
 :root {
-  --bg:              #F2EFE9;
-  --bg-elev:         #FBF9F4;
+  --bg:              #F7F3EB;
+  --bg-elev:         #FFFDF8;
   --surface:         #FFFFFF;
-  --surface-muted:   #EBE4D8;
-  --ink:             #1A1A1A;
-  --ink-2:           #454039;
-  --ink-3:           #635D54;
-  --ink-4:           #8C8477;
-  --line:            #E2D9C8;
-  --line-soft:       #F0E9DB;
-  --accent:          #E85D33;
-  --accent-ink:      #C2421D;
-  --accent-soft:     #FDECE3;
+  --surface-muted:   #F1E8D9;
+  --ink:             #10131A;
+  --ink-2:           #181D26;
+  --ink-3:           #27303D;
+  --ink-4:           #4C463C;
+  --line:            #E7DECF;
+  --line-soft:       #FBF7EF;
+  --accent:          #FB923C;
+  --accent-ink:      #EA580C;
+  --accent-soft:     #FB923C20;
   --gold:            #D4A017;
-  --green:           #3D7A4D;
-  --green-soft:      #E8F2E8;
+  --green:           #43A047;
+  --green-soft:      #43A04720;
 
   /* Sombras cálidas y suaves */
   --shadow-sm: 0 1px 3px rgba(26, 24, 20, 0.04);
@@ -107,7 +107,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.95;
-  color: var(--ink);
   margin: 0;
 }
 h1 { font-weight: 800; }
