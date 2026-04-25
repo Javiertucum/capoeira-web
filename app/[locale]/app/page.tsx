@@ -142,14 +142,14 @@ export default async function AppPage({ params }: Props) {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-              <span className="mono text-[10px] uppercase tracking-[0.2em] text-bg/60">{c.eyebrow}</span>
+              <span className="mono text-[10px] uppercase tracking-[0.2em] text-bg/80">{c.eyebrow}</span>
             </div>
             <h1 className="text-bg" style={{ fontSize: 'clamp(56px, 8vw, 100px)', lineHeight: 0.88, letterSpacing: '-0.05em' }}>
               Todo tu <br/>
               universo <br/>
               <em className="italic text-accent">capoeira</em>.
             </h1>
-            <p className="mt-8 max-w-[500px] text-[18px] leading-[1.6] text-bg/70">{c.body}</p>
+            <p className="mt-8 max-w-[500px] text-[18px] leading-[1.6] text-bg/80">{c.body}</p>
 
             {/* Store buttons */}
             <div className="mt-10 flex flex-wrap gap-4">
@@ -161,10 +161,10 @@ export default async function AppPage({ params }: Props) {
                 {c.googlePlay}
               </a>
               <div className="flex items-center gap-3 rounded-full border border-bg/10 bg-bg/5 px-6 py-3 backdrop-blur-sm">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white" className="opacity-40">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white" className="opacity-60">
                   <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                 </svg>
-                <span className="mono text-[10px] uppercase tracking-widest text-bg/40">{c.appStoreSoon}</span>
+                <span className="mono text-[10px] uppercase tracking-widest text-bg/70">{c.appStoreSoon}</span>
               </div>
             </div>
           </div>
@@ -190,7 +190,7 @@ export default async function AppPage({ params }: Props) {
                       <p className="mt-1 text-[15px] font-bold text-ink">{c.nextTime}</p>
                     </div>
                     <div className="bg-ink p-5 rounded-[28px] text-bg">
-                      <span className="mono text-[9px] uppercase tracking-widest opacity-50">{c.privateEvent}</span>
+                      <span className="mono text-[9px] uppercase tracking-widest opacity-70">{c.privateEvent}</span>
                       <p className="mt-2 text-[16px] font-black">{c.eventName}</p>
                     </div>
                   </div>
@@ -209,7 +209,7 @@ export default async function AppPage({ params }: Props) {
             <div key={f.t} className="group rounded-[36px] border border-bg/10 bg-bg/5 p-8 transition-all hover:bg-bg/10 backdrop-blur-sm">
               <span className="mono text-[10px] uppercase tracking-widest text-accent">{f.tag}</span>
               <h3 className="mt-5 text-[22px] font-black text-bg" style={{ fontFamily: 'var(--font-display)' }}>{f.t}</h3>
-              <p className="mt-3 text-[14px] leading-[1.6] text-bg/60">{f.d}</p>
+              <p className="mt-3 text-[14px] leading-[1.6] text-bg/75">{f.d}</p>
             </div>
           ))}
         </div>

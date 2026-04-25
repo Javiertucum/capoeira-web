@@ -61,15 +61,20 @@ export default function Nav() {
     return isMapRoute && currentFilter === key
   }
 
+  const isDark = pathname.endsWith('/app')
+  const navBg = isDark
+    ? (scrolled || menuOpen ? 'bg-ink/90 border-white/10' : 'bg-transparent border-transparent')
+    : (scrolled || menuOpen ? 'bg-[color-mix(in_srgb,#F4EFE6_94%,transparent)] border-line-soft' : 'bg-[color-mix(in_srgb,#F4EFE6_88%,transparent)] border-transparent')
+
+  const textColor = isDark ? 'text-bg' : 'text-ink'
+  const mutedTextColor = isDark ? 'text-bg/60' : 'text-ink-2'
+  const faintTextColor = isDark ? 'text-bg/40' : 'text-ink-3'
+
   return (
     <>
       {/* ── Desktop nav ── */}
       <nav
-        className={`fixed inset-x-0 top-0 z-50 transition-all ${
-          scrolled || menuOpen
-            ? 'border-b border-line-soft bg-[color-mix(in_srgb,#F4EFE6_94%,transparent)] backdrop-blur-[10px]'
-            : 'border-b border-transparent bg-[color-mix(in_srgb,#F4EFE6_88%,transparent)] backdrop-blur-[8px]'
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all border-b backdrop-blur-[10px] ${navBg}`}
       >
         <div className="page-shell flex h-[72px] items-center justify-between gap-4">
 
@@ -80,17 +85,17 @@ export default function Nav() {
           >
             {/* Monograma a·c */}
             <span
-              className="grid h-8 w-8 shrink-0 place-items-center rounded-[10px] bg-ink text-[15px] leading-none text-bg"
+              className={`grid h-8 w-8 shrink-0 place-items-center rounded-[10px] text-[15px] leading-none ${isDark ? 'bg-accent text-white' : 'bg-ink text-bg'}`}
               style={{ fontFamily: 'var(--font-display)', fontWeight: 700 }}
             >
-              a<span style={{ color: 'var(--accent)' }}>·</span>c
+              a<span style={{ color: isDark ? 'white' : 'var(--accent)' }}>·</span>c
             </span>
             <span className="hidden min-w-0 sm:block">
-              <span className="eyebrow block" style={{ fontSize: 9, letterSpacing: '0.16em' }}>
+              <span className={`eyebrow block ${isDark ? 'text-bg/40' : ''}`} style={{ fontSize: 9, letterSpacing: '0.16em' }}>
                 Capoeira directory
               </span>
               <span
-                className="block text-[15px] text-ink"
+                className={`block text-[15px] ${textColor}`}
                 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 }}
               >
                 Agenda Capoeiragem
@@ -100,15 +105,15 @@ export default function Nav() {
 
           {/* Pill nav — desktop */}
           <div className="hidden items-center lg:flex">
-            <div className="flex items-center gap-1 rounded-full border border-line bg-surface px-1 py-1">
+            <div className={`flex items-center gap-1 rounded-full border px-1 py-1 ${isDark ? 'border-white/10 bg-white/5' : 'border-line bg-surface'}`}>
               {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`rounded-full px-[14px] py-2 text-[13px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     isActive(link.key)
-                      ? 'bg-ink text-bg'
-                      : 'text-ink-2 hover:text-ink'
+                      ? (isDark ? 'bg-accent text-white' : 'bg-ink text-bg')
+                      : (isDark ? 'text-bg/60 hover:text-bg' : 'text-ink-2 hover:text-ink')
                   }`}
                 >
                   {link.label}
@@ -123,19 +128,19 @@ export default function Nav() {
             <button
               type="button"
               onClick={() => router.push(`/${locale}/map`)}
-              className="btn btn-ghost btn-sm hidden items-center gap-3 lg:inline-flex"
+              className={`btn btn-sm hidden items-center gap-3 lg:inline-flex ${isDark ? 'text-bg/60 border-white/10 hover:text-bg bg-white/5' : 'btn-ghost'}`}
               style={{ paddingLeft: 12, paddingRight: 10 }}
             >
-              <span className="text-ink-3 text-[12px]">Buscar ciudad o grupo</span>
+              <span className={`text-[12px] ${faintTextColor}`}>Buscar ciudad o grupo</span>
               <span
-                className="mono rounded border border-line px-1.5 py-0.5 text-[10px] text-ink-3"
+                className={`mono rounded border px-1.5 py-0.5 text-[10px] ${isDark ? 'border-white/20' : 'border-line'}`}
               >
                 ⌘K
               </span>
             </button>
 
             {/* Locale switcher — desktop */}
-            <div className="hidden rounded-full border border-line bg-surface px-1 py-1 sm:flex">
+            <div className={`hidden rounded-full border px-1 py-1 sm:flex ${isDark ? 'border-white/10 bg-white/5' : 'border-line bg-surface'}`}>
               {LOCALES.map((item) => (
                 <button
                   key={item}
@@ -143,7 +148,9 @@ export default function Nav() {
                   onClick={() => switchLocale(item)}
                   aria-pressed={item === locale}
                   className={`mono w-8 h-[30px] rounded-full text-[11px] uppercase tracking-[0.1em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                    item === locale ? 'bg-ink text-bg' : 'text-ink-3 hover:text-ink'
+                    item === locale
+                      ? (isDark ? 'bg-accent text-white' : 'bg-ink text-bg')
+                      : (isDark ? 'text-bg/40 hover:text-bg' : 'text-ink-3 hover:text-ink')
                   }`}
                 >
                   {item}
@@ -157,12 +164,14 @@ export default function Nav() {
               aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((p) => !p)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-ink transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden"
+              className={`grid h-10 w-10 place-items-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden ${
+                isDark ? 'border-white/10 bg-white/5 text-bg' : 'border-line bg-surface text-ink'
+              }`}
             >
               <span className="relative block h-4 w-5">
-                <span className={`absolute left-0 top-0.5 h-px w-5 bg-current transition-all ${menuOpen ? 'translate-y-[6px] rotate-45' : ''}`} />
-                <span className={`absolute left-0 top-[7px] h-px w-5 bg-current transition-opacity ${menuOpen ? 'opacity-0' : ''}`} />
-                <span className={`absolute left-0 top-[13px] h-px w-5 bg-current transition-all ${menuOpen ? '-translate-y-[6px] -rotate-45' : ''}`} />
+                <span className={`absolute left-0 top-0.5 h-px w-5 transition-all ${menuOpen ? 'translate-y-[6px] rotate-45' : ''} ${isDark ? 'bg-bg' : 'bg-current'}`} />
+                <span className={`absolute left-0 top-[7px] h-px w-5 transition-opacity ${menuOpen ? 'opacity-0' : ''} ${isDark ? 'bg-bg' : 'bg-current'}`} />
+                <span className={`absolute left-0 top-[13px] h-px w-5 transition-all ${menuOpen ? '-translate-y-[6px] -rotate-45' : ''} ${isDark ? 'bg-bg' : 'bg-current'}`} />
               </span>
             </button>
           </div>

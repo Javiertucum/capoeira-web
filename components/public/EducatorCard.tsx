@@ -75,7 +75,7 @@ export default function EducatorCard({ educator, locale }: Props) {
         {/* Country chip top-right */}
         {educator.country && (
           <div className="absolute top-4 right-4 z-20">
-            <span className="chip sm bg-black/40 text-white border-white/20 backdrop-blur-md">
+            <span className="chip sm bg-black/60 text-white border-white/20 backdrop-blur-md">
               {educator.country}
             </span>
           </div>
@@ -100,7 +100,7 @@ export default function EducatorCard({ educator, locale }: Props) {
               <div key={platform} className="h-2 w-2 rounded-full bg-accent-soft" title={platform} />
             ))}
           </div>
-          <span className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.15em] text-ink opacity-40 group-hover:opacity-100 group-hover:text-accent-ink transition-all">
+          <span className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.15em] text-ink-3 group-hover:text-accent transition-all">
             {copy.open}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="translate-x-0 transition-transform group-hover:translate-x-1">
               <path d="M5 12h14M12 5l7 7-7 7" />

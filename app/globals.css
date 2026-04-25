@@ -11,8 +11,8 @@
   /* Ink (texto) */
   --color-ink:           #1A1A1A;
   --color-ink-2:         #454039;
-  --color-ink-3:         #7A7368;
-  --color-ink-4:         #B5AFA4;
+  --color-ink-3:         #635D54;
+  --color-ink-4:         #8C8477;
 
   /* Líneas */
   --color-line:          #E2D9C8;
@@ -54,8 +54,8 @@
   --surface-muted:   #EBE4D8;
   --ink:             #1A1A1A;
   --ink-2:           #454039;
-  --ink-3:           #7A7368;
-  --ink-4:           #B5AFA4;
+  --ink-3:           #635D54;
+  --ink-4:           #8C8477;
   --line:            #E2D9C8;
   --line-soft:       #F0E9DB;
   --accent:          #E85D33;
