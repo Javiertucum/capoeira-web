@@ -262,6 +262,24 @@ export default async function LandingPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* ── Footer ── */}
+      <footer className="page-shell py-12 border-t border-bg/10">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-3">
+             <span className="grid h-6 w-6 place-items-center rounded-lg bg-accent text-[12px] font-black text-white">a·c</span>
+             <span className="text-[13px] font-bold text-bg/40 tracking-tight">Agenda Capoeiragem &copy; {new Date().getFullYear()}</span>
+          </div>
+          <div className="flex gap-8">
+            <Link href={`/${locale}/privacy`} className="text-[12px] font-bold text-bg/40 hover:text-accent transition-colors uppercase tracking-widest">
+              {locale === 'en' ? 'Privacy' : locale === 'pt' ? 'Privacidade' : 'Privacidad'}
+            </Link>
+            <Link href={`/${locale}/terms`} className="text-[12px] font-bold text-bg/40 hover:text-accent transition-colors uppercase tracking-widest">
+              {locale === 'en' ? 'Terms' : locale === 'pt' ? 'Termos' : 'Términos'}
+            </Link>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
