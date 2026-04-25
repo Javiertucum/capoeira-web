@@ -92,13 +92,13 @@ function GradRow({ level, isLast, threshold }: { level: GraduationLevel; isLast:
       </div>
       <div className="flex shrink-0 gap-1">
         {level.isEstagiario && (
-          <span className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide bg-accent/20 text-accent">ESTAG.</span>
+          <span className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide bg-accent-soft text-accent-ink">ESTAG.</span>
         )}
         {level.isSpecial && !level.isEstagiario && (
           <span className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide bg-[#A78BFA]/20 text-[#A78BFA]">ESPEC.</span>
         )}
         {isEduc && (
-          <span className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide bg-accent/15 text-accent">EDUC.</span>
+          <span className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide bg-accent-soft text-accent-ink">EDUC.</span>
         )}
       </div>
     </div>
@@ -125,7 +125,7 @@ function GraduationSystemSection({ levels, title }: { levels: GraduationLevel[];
   const especiales  = levels.filter(l => !!l.isSpecial && !l.isEstagiario)
 
   return (
-    <section className="rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-5">
+    <section className="rounded-[22px] border border-border bg-card p-5">
       <div className="flex items-center justify-between">
         <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
           {title}
@@ -195,7 +195,7 @@ export default async function GroupPage({ params }: Props) {
       <div className="page-shell relative py-10">
         <Link
           href={`/${locale}/map?filter=groups`}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/20 hover:text-text"
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-text-muted transition-colors hover:text-text"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -203,7 +203,7 @@ export default async function GroupPage({ params }: Props) {
           {t('back')}
         </Link>
 
-        <section className="relative overflow-hidden rounded-[34px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 shadow-[0_30px_90px_var(--shadow)] sm:p-8">
+        <section className="relative overflow-hidden rounded-[34px] border border-border bg-card p-6 sm:p-8" style={{ boxShadow: 'var(--shadow-md)' }}>
           <div className="relative grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-center">
             <div className="flex justify-center lg:justify-start">
               <div className="relative h-[170px] w-[170px] overflow-hidden rounded-[30px] border border-border bg-surface shadow-[0_22px_60px_var(--shadow-soft)]">
@@ -242,13 +242,13 @@ export default async function GroupPage({ params }: Props) {
         </section>
 
         <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_390px]">
-          <section className="rounded-[30px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-6 shadow-[0_22px_60px_var(--shadow-soft)]">
+          <section className="rounded-[22px] border border-border bg-card p-6">
             <h2 className="text-[28px] font-semibold tracking-[-0.04em] text-text">
               {`${t('nucleos')} (${nucleos.length})`}
             </h2>
 
             {group.representedCountries && group.representedCountries.length > 0 ? (
-              <div className="mt-5 rounded-[22px] border border-border bg-surface/60 px-5 py-4 text-sm leading-7 text-text-secondary">
+              <div className="mt-5 rounded-[22px] border border-border bg-surface-muted px-5 py-4 text-sm leading-7 text-text-secondary">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-text-muted">
                   {t('representedCountries')}
                 </span>
@@ -262,7 +262,7 @@ export default async function GroupPage({ params }: Props) {
                   <NucleoListItem key={nucleo.id} nucleo={nucleo} isActive={false} showGroupLink={false} />
                 ))
               ) : (
-                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted/70 px-5 py-8 text-center text-sm leading-7 text-text-muted">
+                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted px-5 py-8 text-center text-sm leading-7 text-text-muted">
                   {t('noNucleos')}
                 </div>
               )}
@@ -270,7 +270,7 @@ export default async function GroupPage({ params }: Props) {
           </section>
 
           <aside className="space-y-6">
-            <section className="rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-5">
+            <section className="rounded-[22px] border border-border bg-card p-5">
               <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                 {t('stats')}
               </p>
@@ -278,7 +278,7 @@ export default async function GroupPage({ params }: Props) {
                 {stats.map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[18px] border border-border bg-surface px-4 py-4"
+                    className="rounded-[18px] border border-border bg-surface-muted px-4 py-4"
                   >
                     <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-text-muted">
                       {item.label}
@@ -299,12 +299,12 @@ export default async function GroupPage({ params }: Props) {
             ) : null}
 
             {adminUser ? (
-              <section className="rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-5">
+              <section className="rounded-[22px] border border-border bg-card p-5">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                   {t('admin')}
                 </p>
                 <div className="mt-5 text-center">
-                  <div className="relative mx-auto h-[84px] w-[84px] overflow-hidden rounded-full border border-accent/20 bg-surface">
+                  <div className="relative mx-auto h-[84px] w-[84px] overflow-hidden rounded-full border border-border bg-surface-muted">
                     {adminUser.avatarUrl ? (
                       <Image
                         src={adminUser.avatarUrl}
@@ -338,7 +338,7 @@ export default async function GroupPage({ params }: Props) {
 
                   <Link
                     href={`/${locale}/educator/${adminUser.uid}`}
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-border bg-surface px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:border-accent/20 hover:text-text"
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-border bg-surface-muted px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary transition-colors hover:text-text"
                   >
                     {t('viewProfile')}
                   </Link>
@@ -347,7 +347,7 @@ export default async function GroupPage({ params }: Props) {
             ) : null}
 
             {educators.length > 0 && (
-              <section className="rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(17,26,38,0.96),rgba(10,18,27,0.98))] p-5">
+              <section className="rounded-[22px] border border-border bg-card p-5">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                   {t('educators')} ({educators.length})
                 </p>
@@ -358,7 +358,7 @@ export default async function GroupPage({ params }: Props) {
                       <Link
                         key={edu.uid}
                         href={`/${locale}/educator/${edu.uid}`}
-                        className="flex items-center gap-3 rounded-[18px] border border-border bg-surface px-3 py-3 transition-colors hover:border-accent/30"
+                        className="flex items-center gap-3 rounded-[18px] border border-border bg-surface-muted px-3 py-3 transition-colors hover:border-text/20"
                       >
                         <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-border bg-card">
                           {edu.avatarUrl ? (

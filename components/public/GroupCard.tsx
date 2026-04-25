@@ -41,7 +41,7 @@ export default function GroupCard({ group, locale }: Props) {
   const cities = group.representedCities?.length ?? 0
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-colors duration-200 hover:border-accent/24">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-colors duration-200 hover:border-text/20">
       <Link href={`/${locale}/group/${group.id}`} className="flex h-full flex-col">
         <div className="border-b border-border px-5 pb-5 pt-6">
           <div className="flex items-start gap-4">
@@ -95,7 +95,7 @@ export default function GroupCard({ group, locale }: Props) {
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted">
               {group.memberCount ?? 0} {copy.members}
             </span>
-            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-accent-ink">
               {copy.open}
               <svg
                 width="14"

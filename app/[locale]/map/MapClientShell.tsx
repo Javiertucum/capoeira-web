@@ -237,19 +237,19 @@ export default function MapClientShell({
         <section className="relative overflow-hidden rounded-[30px] border border-border bg-card px-6 py-7 shadow-sm sm:px-8 sm:py-8">
           <div
             aria-hidden="true"
-            className="absolute right-[-90px] top-[-90px] h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(132,201,122,0.08)_0%,rgba(132,201,122,0)_72%)]"
+            className="absolute right-[-90px] top-[-90px] h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(217,84,43,0.06)_0%,rgba(217,84,43,0)_72%)]"
           />
           <div
             aria-hidden="true"
-            className="absolute left-[-70px] bottom-[-80px] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(208,162,96,0.08)_0%,rgba(208,162,96,0)_72%)]"
+            className="absolute left-[-70px] bottom-[-80px] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(201,154,58,0.07)_0%,rgba(201,154,58,0)_72%)]"
           />
 
           <div className="relative grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px] 2xl:grid-cols-[minmax(0,1fr)_360px]">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
+              <p className="text-[10px] uppercase tracking-[0.32em] text-accent-ink" style={{ fontFamily: 'var(--font-mono)' }}>
                 {copy.eyebrow}
               </p>
-              <h1 className="mt-4 text-[clamp(34px,5vw,58px)] font-semibold leading-[0.96] tracking-[-0.06em] text-text">
+              <h1 className="mt-4 text-[clamp(34px,5vw,58px)] leading-[0.96] tracking-[-0.03em] text-text">
                 {t('title')}
               </h1>
               <p className="page-copy-measure mt-4 text-sm leading-7 text-text-secondary">
@@ -259,10 +259,10 @@ export default function MapClientShell({
 
               <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
                 <div className="flex flex-col gap-3 lg:flex-row">
-                  <label className="flex min-w-0 flex-1 items-center gap-4 rounded-[24px] border border-border bg-surface/80 px-4 py-4 transition-all focus-within:border-accent/35 focus-within:ring-2 focus-within:ring-accent/70 focus-within:ring-offset-2 focus-within:ring-offset-card">
+                  <label className="flex min-w-0 flex-1 items-center gap-4 rounded-[24px] border border-border bg-card px-4 py-4 transition-all focus-within:border-accent/35 focus-within:ring-2 focus-within:ring-accent/30 focus-within:ring-offset-2 focus-within:ring-offset-bg">
                     <span
                       aria-hidden="true"
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-[16px] border border-accent/20 bg-[rgba(121,207,114,0.12)] text-accent"
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-[16px] border border-accent/20 bg-accent-soft text-accent"
                     >
                       <svg
                         width="18"
@@ -294,7 +294,7 @@ export default function MapClientShell({
 
                   <button
                     type="submit"
-                    className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                    className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   >
                     {isPending ? `${copy.searchButton}...` : copy.searchButton}
                   </button>
@@ -316,8 +316,8 @@ export default function MapClientShell({
                         onClick={() => handleFilterChange(item)}
                         className={`cursor-pointer rounded-full border px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                           isActive
-                            ? 'border-accent/30 bg-[rgba(121,207,114,0.14)] text-accent'
-                            : 'border-border bg-card/85 text-text-secondary hover:border-accent/18 hover:text-text'
+                            ? 'border-text bg-text text-bg'
+                            : 'border-border bg-card text-text-secondary hover:border-text/20 hover:text-text'
                         }`}
                       >
                         {`${labels[item]} (${filterCounts[item]})`}
@@ -338,7 +338,7 @@ export default function MapClientShell({
                 return (
                   <div
                     key={item}
-                    className="rounded-[24px] border border-border bg-card/80 px-4 py-4"
+                    className="rounded-[24px] border border-border bg-card px-4 py-4"
                   >
                     <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
                       {labels[item]}
@@ -355,13 +355,13 @@ export default function MapClientShell({
         </section>
 
         {hint ? (
-          <div className="mt-5 rounded-[22px] border border-accent/20 bg-[rgba(121,207,114,0.08)] px-5 py-4 text-sm leading-7 text-text-secondary">
+          <div className="mt-5 rounded-[22px] border border-accent/20 bg-accent-soft/40 px-5 py-4 text-sm leading-7 text-text-secondary">
             {hint as string}
           </div>
         ) : null}
 
         <div className="mt-5 lg:hidden">
-          <div className="flex rounded-full border border-border bg-card/80 p-1">
+          <div className="flex rounded-full border border-border bg-card p-1">
             {(['list', 'map'] as MobileView[]).map((view) => {
               const isActive = view === mobileView
 
@@ -372,7 +372,7 @@ export default function MapClientShell({
                   onClick={() => setMobileView(view)}
                   className={`flex-1 rounded-full px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
                     isActive
-                      ? 'bg-[rgba(121,207,114,0.14)] text-accent'
+                      ? 'bg-text text-bg'
                       : 'text-text-secondary'
                   }`}
                 >
@@ -399,7 +399,7 @@ export default function MapClientShell({
             </div>
 
             {dataUnavailable ? (
-              <div className="mt-4 rounded-[20px] border border-dashed border-border bg-surface-muted/80 px-4 py-5">
+              <div className="mt-4 rounded-[20px] border border-dashed border-border bg-surface-muted px-4 py-5">
                 <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-text">
                   {copy.unavailableTitle}
                 </h3>
@@ -437,8 +437,8 @@ export default function MapClientShell({
                   )
                 })
               ) : (
-                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted/80 px-5 py-10 text-center">
-                  <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl border border-accent/20 bg-accent/5 text-accent">
+                <div className="rounded-[22px] border border-dashed border-border bg-surface-muted px-5 py-10 text-center">
+                  <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl border border-accent/20 bg-accent-soft text-accent">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <circle cx="11" cy="11" r="7" />
                       <path d="m20 20-3.5-3.5" />
@@ -480,7 +480,7 @@ export default function MapClientShell({
               </div>
 
               {filter !== 'nucleos' ? (
-                <div className="mb-4 rounded-[20px] border border-border bg-card/80 px-4 py-4 text-sm leading-7 text-text-secondary">
+                <div className="mb-4 rounded-[20px] border border-border bg-card px-4 py-4 text-sm leading-7 text-text-secondary">
                   {activeEntity
                     ? `${copy.focusPrefix} ${getEntityName(activeEntity)}`
                     : copy.focusIdle}

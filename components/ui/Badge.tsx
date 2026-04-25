@@ -6,10 +6,10 @@ type Props = Readonly<{
 }>
 
 const styles: Record<Variant, string> = {
-  accent: 'border border-accent/20 bg-[rgba(121,207,114,0.14)] text-accent',
-  warning: 'border border-warning/20 bg-[rgba(216,173,99,0.14)] text-warning',
-  danger: 'border border-danger/20 bg-[rgba(252,129,129,0.12)] text-danger',
-  muted: 'border border-border bg-surface text-text-secondary',
+  accent: 'border border-accent/20 bg-accent-soft text-accent-ink',
+  warning: 'border border-gold/20 bg-[rgba(201,154,58,0.12)] text-gold',
+  danger: 'border border-[#C0392B]/20 bg-[rgba(192,57,43,0.08)] text-[#C0392B]',
+  muted: 'border border-border bg-surface-muted text-text-secondary',
 }
 
 export default function Badge({ children, variant = 'muted' }: Props) {

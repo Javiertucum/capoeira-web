@@ -14,33 +14,39 @@ type Props = Readonly<{
 
 const COPY = {
   es: {
-    heading: 'Educadores',
-    searchLabel: 'Busca por nombre, pais o grupo',
+    eyebrow: 'Personas · Maestros, profesores, instructores',
+    heading: (n: number) => `${n.toLocaleString()} educadoras y educadores`,
+    headingEm: 'con nombre y contacto.',
+    searchLabel: 'Busca por apodo, nombre, país o grupo',
     searchButton: 'Buscar',
+    filters: ['Todos', 'Mestres', 'Contramestres', 'Profesores', 'Instructores'],
     summaryLabel: 'educadores',
-    visibleLabel: 'visibles ahora',
-    emptyTitle: 'Sin resultados para esta busqueda',
-    emptyBody: 'Prueba otro nombre, pais o grupo para ampliar la exploracion.',
+    emptyTitle: 'Sin resultados para esta búsqueda',
+    emptyBody: 'Prueba otro nombre, país o grupo para ampliar la exploración.',
     unavailableTitle: 'Directorio no disponible por ahora',
-    unavailableBody: 'El directorio de educadores estara disponible en breve.',
+    unavailableBody: 'El directorio de educadores estará disponible en breve.',
   },
   pt: {
-    heading: 'Educadores',
-    searchLabel: 'Busque por nome, pais ou grupo',
+    eyebrow: 'Pessoas · Mestres, professores, instrutores',
+    heading: (n: number) => `${n.toLocaleString()} educadoras e educadores`,
+    headingEm: 'com nome e contato.',
+    searchLabel: 'Busque por apelido, nome, país ou grupo',
     searchButton: 'Buscar',
+    filters: ['Todos', 'Mestres', 'Contramestres', 'Professores', 'Instrutores'],
     summaryLabel: 'educadores',
-    visibleLabel: 'visiveis agora',
     emptyTitle: 'Nenhum resultado para esta busca',
-    emptyBody: 'Tente outro nome, pais ou grupo para ampliar a exploracao.',
-    unavailableTitle: 'Diretorio indisponivel no momento',
-    unavailableBody: 'O diretorio de educadores estara disponivel em breve.',
+    emptyBody: 'Tente outro nome, país ou grupo para ampliar a exploração.',
+    unavailableTitle: 'Diretório indisponível no momento',
+    unavailableBody: 'O diretório de educadores estará disponível em breve.',
   },
   en: {
-    heading: 'Educators',
-    searchLabel: 'Search by name, country, or group',
+    eyebrow: 'People · Masters, teachers, instructors',
+    heading: (n: number) => `${n.toLocaleString()} educators`,
+    headingEm: 'with name and contact.',
+    searchLabel: 'Search by nickname, name, country or group',
     searchButton: 'Search',
+    filters: ['All', 'Masters', 'Contramasters', 'Teachers', 'Instructors'],
     summaryLabel: 'educators',
-    visibleLabel: 'visible now',
     emptyTitle: 'No results for this search',
     emptyBody: 'Try another name, country, or group to widen the search.',
     unavailableTitle: 'Directory temporarily unavailable',
@@ -80,88 +86,90 @@ export default function EducatorsListShell({
   )
 
   return (
-    <div className="pb-16 pt-8 lg:pb-20">
+    <div className="pb-16 pt-10 lg:pb-20">
       <div className="page-shell">
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-end">
-          <div>
-            <h1 className="text-[clamp(28px,4vw,52px)] font-semibold leading-[0.96] tracking-[-0.05em] text-text">
-              {copy.heading}
-            </h1>
+        {/* Editorial heading */}
+        <div>
+          <span
+            className="text-[11px] uppercase tracking-[0.18em] text-text-muted"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            {copy.eyebrow}
+          </span>
+          <h1 className="mt-3 text-[clamp(32px,5vw,68px)] leading-[0.94] tracking-[-0.03em] text-text">
+            {copy.heading(initialEducators.length)}{' '}
+            <em className="italic text-accent">{copy.headingEm}</em>
+          </h1>
 
-            <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3 sm:flex-row">
-              <label className="flex min-w-0 flex-1 items-center gap-4 rounded-[24px] border border-border bg-surface/80 px-4 py-4 transition-all focus-within:border-accent/35 focus-within:ring-2 focus-within:ring-accent/70 focus-within:ring-offset-2 focus-within:ring-offset-bg">
-                <span
-                  aria-hidden="true"
-                  className="grid h-11 w-11 shrink-0 place-items-center rounded-[16px] border border-accent/20 bg-[rgba(121,207,114,0.12)] text-accent"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="11" cy="11" r="7" />
-                    <path d="m20 20-3.5-3.5" />
-                  </svg>
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.28em] text-text-muted">
-                    {copy.searchLabel}
-                  </span>
-                  <input
-                    type="search"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    placeholder={copy.searchLabel}
-                    aria-label={copy.searchLabel}
-                    className="mt-1 block w-full min-w-0 bg-transparent text-base text-text outline-none placeholder:text-text-muted"
-                  />
-                </span>
-              </label>
-              <button
-                type="submit"
-                className="inline-flex h-[68px] cursor-pointer items-center justify-center rounded-[24px] bg-accent px-6 text-sm font-semibold uppercase tracking-[0.18em] text-black transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          {/* Search bar */}
+          <form
+            onSubmit={handleSubmit}
+            className="mt-7 flex items-center gap-2 rounded-full border border-border bg-card px-2 py-2"
+            style={{ boxShadow: 'var(--shadow-md)' }}
+          >
+            <div className="flex flex-1 items-center gap-3 px-4 h-12 min-w-0">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                className="shrink-0 text-text-muted"
+                aria-hidden="true"
               >
-                {copy.searchButton}
-              </button>
-            </form>
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={copy.searchLabel}
+                aria-label={copy.searchLabel}
+                className="flex-1 min-w-0 bg-transparent text-[15px] text-text outline-none placeholder:text-text-muted"
+              />
+            </div>
+            <button
+              type="submit"
+              className="h-12 shrink-0 rounded-full bg-accent px-6 text-[13px] font-medium text-white transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            >
+              {copy.searchButton}
+            </button>
+          </form>
 
-            <p className="mt-3 text-sm text-text-secondary">
-              <strong className="font-semibold text-text">{initialEducators.length.toLocaleString()}</strong>{' '}
-              {copy.summaryLabel}
-            </p>
+          {/* Filter chips */}
+          <div className="mt-4 flex flex-wrap gap-2">
+            {copy.filters.map((f, i) => (
+              <span
+                key={f}
+                className={`inline-flex h-8 items-center rounded-full border px-3 text-[12px] cursor-pointer select-none transition-colors ${
+                  i === 0
+                    ? 'border-text bg-text text-bg'
+                    : 'border-border bg-card text-text-muted hover:text-text hover:border-text/20'
+                }`}
+              >
+                {f}
+              </span>
+            ))}
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-            <div className="rounded-[22px] border border-border bg-card/80 px-4 py-4">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-text-muted">
-                {copy.summaryLabel}
-              </p>
-              <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.04em] text-text">
-                {initialEducators.length.toLocaleString()}
-              </p>
-            </div>
-            <div className="rounded-[22px] border border-border bg-card/80 px-4 py-4">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-text-muted">
-                {copy.visibleLabel}
-              </p>
-              <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.04em] text-text">
-                {results.length.toLocaleString()}
-              </p>
-            </div>
-          </div>
+          <p className="mt-4 text-[13px] text-text-secondary">
+            <strong className="font-semibold text-text">{results.length.toLocaleString()}</strong>{' '}
+            {copy.summaryLabel}
+          </p>
         </div>
 
-        <div className="mt-6">
-          <div className="mb-4 flex items-center justify-between gap-4 px-1">
-            <p className="text-sm text-text-secondary">
-              {results.length} {copy.summaryLabel}
-            </p>
-          </div>
-
+        {/* Results grid */}
+        <div className="mt-8">
           {dataUnavailable ? (
-            <div className="rounded-[22px] border border-dashed border-border bg-surface-muted/80 px-5 py-8 text-center">
-              <h2 className="text-lg font-semibold text-text">{copy.unavailableTitle}</h2>
+            <div className="rounded-[22px] border border-dashed border-border bg-surface-muted px-5 py-8 text-center">
+              <h2 className="text-lg text-text">{copy.unavailableTitle}</h2>
               <p className="mt-3 text-sm leading-7 text-text-secondary">{copy.unavailableBody}</p>
             </div>
           ) : results.length === 0 ? (
-            <div className="rounded-[22px] border border-dashed border-border bg-surface-muted/80 px-5 py-8 text-center">
-              <h2 className="text-lg font-semibold text-text">{copy.emptyTitle}</h2>
+            <div className="rounded-[22px] border border-dashed border-border bg-surface-muted px-5 py-8 text-center">
+              <h2 className="text-lg text-text">{copy.emptyTitle}</h2>
               <p className="mt-3 text-sm leading-7 text-text-secondary">{copy.emptyBody}</p>
             </div>
           ) : (

@@ -1,19 +1,26 @@
-import { Manrope, Space_Grotesk } from 'next/font/google'
+import { Inter, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
 import type { Metadata } from 'next'
 import './globals.css'
 import { routing } from '@/i18n/routing'
 import { SITE_NAME, SITE_URL, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
 
-const bodyFont = Manrope({
+const bodyFont = Inter({
   subsets: ['latin'],
   variable: '--font-body',
   display: 'swap',
 })
 
-const displayFont = Space_Grotesk({
+const displayFont = Instrument_Serif({
   subsets: ['latin'],
+  weight: '400',
   variable: '--font-display',
+  display: 'swap',
+})
+
+const monoFont = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
   display: 'swap',
 })
 
@@ -77,10 +84,10 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${bodyFont.variable} ${displayFont.variable} h-full`}
+      className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full`}
     >
       <head>
-        <meta name="theme-color" content="#081019" />
+        <meta name="theme-color" content="#F4EFE6" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://maps.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />

@@ -1,17 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0b1117;
-  --color-card: #121a22;
-  --color-border: #27313b;
-  --color-text: #f3efe6;
-  --color-text-secondary: #d2cbbe;
-  --color-text-muted: #93a0a9;
-  --color-surface: #18212b;
-  --color-surface-muted: #0f151c;
-  --color-accent: #84c97a;
-  --color-warning: #d0a260;
-  --color-danger: #f08b8b;
+  /* Cream / editorial palette */
+  --color-bg:             #F4EFE6;
+  --color-bg-elev:        #FBF7EE;
+  --color-card:           #FFFFFF;
+  --color-border:         #D9CFBE;
+  --color-border-soft:    #E8DFCD;
+  --color-text:           #1A1814;
+  --color-text-secondary: #3D3833;
+  --color-text-muted:     #6B645A;
+  --color-text-faint:     #9A9388;
+  --color-surface:        #FFFFFF;
+  --color-surface-muted:  #EDE6D8;
+  --color-accent:         #D9542B;
+  --color-accent-ink:     #B23E1A;
+  --color-accent-soft:    #FBE7DC;
+  --color-gold:           #C99A3A;
+  --color-green:          #2F5D3B;
+  --color-green-soft:     #DDE8DD;
 
   --radius-sm: 10px;
   --radius-md: 16px;
@@ -20,59 +27,51 @@
 }
 
 :root {
-  --bg: #0b1117;
-  --card: #121a22;
-  --border: #27313b;
-  --text: #f3efe6;
-  --text-secondary: #d2cbbe;
-  --text-muted: #93a0a9;
-  --surface: #18212b;
-  --surface-muted: #0f151c;
-  --accent: #84c97a;
-  --warning: #d0a260;
-  --danger: #f08b8b;
-  --shadow: rgba(2, 6, 11, 0.34);
-  --shadow-soft: rgba(2, 6, 11, 0.18);
-  --page-max: 1440px;
+  --bg:              #F4EFE6;
+  --bg-elev:         #FBF7EE;
+  --card:            #FFFFFF;
+  --border:          #D9CFBE;
+  --border-soft:     #E8DFCD;
+  --text:            #1A1814;
+  --text-secondary:  #3D3833;
+  --text-muted:      #6B645A;
+  --text-faint:      #9A9388;
+  --surface:         #FFFFFF;
+  --surface-muted:   #EDE6D8;
+  --accent:          #D9542B;
+  --accent-ink:      #B23E1A;
+  --accent-soft:     #FBE7DC;
+  --gold:            #C99A3A;
+  --green:           #2F5D3B;
+  --green-soft:      #DDE8DD;
+  --shadow:          rgba(40, 28, 12, 0.06);
+  --shadow-soft:     rgba(40, 28, 12, 0.03);
+  --shadow-md:       0 4px 16px rgba(40,28,12,0.06), 0 1px 3px rgba(40,28,12,0.05);
+  --shadow-lg:       0 18px 46px rgba(40,28,12,0.10), 0 2px 6px rgba(40,28,12,0.05);
+  --page-max:        1440px;
 }
 
 html {
-  background: linear-gradient(180deg, #0b1117 0%, #0d141b 100%);
+  background: var(--bg);
 }
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top right, rgba(132, 201, 122, 0.06), transparent 24%),
-    linear-gradient(180deg, rgba(11, 17, 23, 0.98) 0%, rgba(13, 20, 27, 0.98) 100%);
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.005em;
   overflow-x: hidden;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
-  background-size: 96px 96px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 78%);
-  opacity: 0.12;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
 }
 
 a {
@@ -81,12 +80,26 @@ a {
 }
 
 ::selection {
-  background: rgba(132, 201, 122, 0.26);
-  color: #081019;
+  background: rgba(217, 84, 43, 0.18);
+  color: var(--text);
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Berimbau line — thin warm gradient separator, on-theme motif */
+.berimbau-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--gold) 12%,
+    var(--accent) 50%,
+    var(--gold) 88%,
+    transparent 100%
+  );
+  opacity: 0.75;
 }
 
 .page-shell {

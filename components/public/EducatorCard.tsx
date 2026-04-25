@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import Badge from '@/components/ui/Badge'
 import { normalizeSocialLink } from '@/lib/social-links'
 import type { PublicUserProfile } from '@/lib/types'
 
@@ -16,15 +15,13 @@ const COPY = {
     links: 'enlaces',
     open: 'Abrir perfil',
     empty: 'Perfil público listo para completar.',
-    profileLabel: 'Perfil público',
   },
   pt: {
     role: 'Educador',
-    locations: 'espacos',
+    locations: 'espaços',
     links: 'links',
     open: 'Abrir perfil',
     empty: 'Perfil público pronto para completar.',
-    profileLabel: 'Perfil público',
   },
   en: {
     role: 'Educator',
@@ -32,7 +29,6 @@ const COPY = {
     links: 'links',
     open: 'Open profile',
     empty: 'Public profile ready to be filled in.',
-    profileLabel: 'Public profile',
   },
 } as const
 
@@ -71,59 +67,66 @@ export default function EducatorCard({ educator, locale }: Props) {
     .slice(0, 3)
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-colors duration-200 hover:border-accent/24">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-border bg-card transition-colors hover:border-text/20">
       <Link
         href={`/${locale}/educator/${educator.uid}`}
         className="absolute inset-0 z-0"
         aria-label={displayName}
       />
-      <div className="flex h-full flex-col pointer-events-none">
+      <div className="pointer-events-none flex h-full flex-col">
+        {/* Header */}
         <div className="border-b border-border px-5 pb-5 pt-6">
-          <div className="flex items-start gap-4">
-            <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-[22px] border border-accent/20 bg-[rgba(121,207,114,0.14)]">
+          <div className="flex items-start gap-3">
+            {/* Avatar */}
+            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-border bg-surface-muted">
               {educator.avatarUrl ? (
                 <Image
                   src={educator.avatarUrl}
                   alt={displayName}
                   fill
-                  sizes="72px"
+                  sizes="64px"
                   className="object-cover"
                 />
               ) : (
-                <span className="text-lg font-semibold uppercase tracking-[0.14em] text-accent">
+                <span className="text-lg font-semibold uppercase tracking-[0.1em] text-text-muted">
                   {initials}
                 </span>
               )}
             </div>
 
             <div className="min-w-0 flex-1">
+              {/* Country chip */}
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="accent">{copy.role}</Badge>
-                {educator.country ? <Badge>{educator.country}</Badge> : null}
+                {educator.country ? (
+                  <span className="inline-flex h-6 items-center rounded-full border border-border bg-surface-muted px-2.5 text-[11px] text-text-muted">
+                    {educator.country}
+                  </span>
+                ) : null}
               </div>
 
-              <h3 className="mt-4 truncate text-[22px] font-semibold tracking-[-0.03em] text-text">
+              <h3 className="mt-2 truncate text-[19px] font-semibold tracking-[-0.02em] text-text">
                 {displayName}
               </h3>
 
               {educator.nickname && fullName ? (
-                <p className="mt-1 truncate text-sm text-text-muted">{fullName}</p>
+                <p className="mt-0.5 truncate text-[12px] text-text-muted">{fullName}</p>
               ) : null}
             </div>
           </div>
         </div>
 
+        {/* Body */}
         <div className="flex flex-1 flex-col px-5 py-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-text-muted">
-            {copy.profileLabel}
-          </p>
-          <p className="mt-3 overflow-hidden text-sm leading-7 text-text-secondary [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]">
+          <p className="overflow-hidden text-sm leading-7 text-text-secondary [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]">
             {educator.bio?.trim() || copy.empty}
           </p>
 
-          <div className="relative z-10 mt-5 flex flex-wrap gap-2 pointer-events-auto">
+          {/* Social links */}
+          <div className="relative z-10 mt-4 flex flex-wrap gap-2 pointer-events-auto">
             {typeof educator.nucleoIds?.length === 'number' && educator.nucleoIds.length > 0 ? (
-              <Badge>{`${educator.nucleoIds.length} ${copy.locations}`}</Badge>
+              <span className="inline-flex h-6 items-center rounded-full border border-border bg-surface-muted px-2.5 text-[11px] text-text-muted">
+                {educator.nucleoIds.length} {copy.locations}
+              </span>
             ) : null}
 
             {socials.map(([platform, value]) => {
@@ -131,16 +134,14 @@ export default function EducatorCard({ educator, locale }: Props) {
                 platform as Parameters<typeof normalizeSocialLink>[0],
                 value
               )
-
               if (!href) return null
-
               return (
                 <a
                   key={platform}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                  className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-text-muted transition-colors hover:text-text"
                 >
                   {SOCIAL_LABELS[platform] ?? platform.slice(0, 3).toUpperCase()}
                 </a>
@@ -148,15 +149,19 @@ export default function EducatorCard({ educator, locale }: Props) {
             })}
           </div>
 
-          <div className="mt-auto flex items-center justify-between border-t border-border/70 pt-5">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted">
+          {/* Footer */}
+          <div className="mt-auto flex items-center justify-between border-t border-border/60 pt-4">
+            <span
+              className="text-[11px] uppercase tracking-[0.18em] text-text-faint"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
               {socials.length} {copy.links}
             </span>
-            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-accent-ink">
               {copy.open}
               <svg
-                width="14"
-                height="14"
+                width="12"
+                height="12"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"

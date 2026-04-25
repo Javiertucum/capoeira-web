@@ -97,7 +97,6 @@ export default async function EducatorProfilePage({ params }: Props) {
     sl.website ? (sl.website.startsWith('http') ? sl.website : `https://${sl.website}`) : null,
   ].filter((v): v is string => v !== null)
 
-
   const personSchema = buildPersonSchema({
     name: fullName,
     url: getLocalizedUrl(locale, `/educator/${id}`),
@@ -115,23 +114,28 @@ export default async function EducatorProfilePage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div className="page-shell relative py-10">
+        {/* Back link */}
         <Link
-          href={`/${locale}/map`}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/20 hover:text-text"
+          href={`/${locale}/educators`}
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-text-muted transition-colors hover:text-text"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
           {t('back')}
         </Link>
+
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-[340px_minmax(0,1fr)] xl:gap-12">
-          {/* Left Sidebar — sticky */}
+          {/* ── Left sidebar ── */}
           <div className="flex flex-col items-center text-center xl:sticky xl:top-24 xl:self-start">
             <div className="flex flex-col items-center">
-              <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.32em] text-accent">
+              <p
+                className="mb-4 text-[10px] uppercase tracking-[0.32em] text-accent-ink"
+                style={{ fontFamily: 'var(--font-mono)' }}
+              >
                 {t('role')}
               </p>
-              <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-border bg-card shadow-xl xl:h-48 xl:w-48">
+              <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-border bg-card xl:h-48 xl:w-48">
                 {educator.avatarUrl ? (
                   <Image
                     src={educator.avatarUrl}
@@ -141,7 +145,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                     className="object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-surface text-4xl font-bold text-text-muted">
+                  <div className="flex h-full w-full items-center justify-center bg-surface-muted text-4xl font-bold text-text-muted">
                     {educator.name?.[0] ?? '?'}
                   </div>
                 )}
@@ -157,14 +161,19 @@ export default async function EducatorProfilePage({ params }: Props) {
               </p>
             )}
 
-            <div className="mt-4 inline-flex items-center rounded-full bg-accent/15 px-3 py-1 text-[12px] font-semibold tracking-wider text-accent uppercase">
+            <div className="mt-4 inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-[12px] font-semibold tracking-wider text-accent-ink uppercase">
               {educator.role}
             </div>
 
             <div className="mt-8 flex w-full flex-col gap-4 text-left">
-              {/* Graduation with CordaVisual */}
-              <div className="rounded-xl border border-border bg-card/40 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">{t('graduation')}</p>
+              {/* Graduation */}
+              <div className="rounded-[16px] border border-border bg-card p-4">
+                <p
+                  className="text-[11px] uppercase tracking-widest text-text-muted"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                >
+                  {t('graduation')}
+                </p>
                 {graduationLevel ? (
                   <div className="mt-3 flex items-center gap-3">
                     <CordaVisual
@@ -181,14 +190,20 @@ export default async function EducatorProfilePage({ params }: Props) {
                 )}
               </div>
 
+              {/* Group */}
               {group && (
-                <div className="rounded-xl border border-border bg-card/40 p-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">{t('group')}</p>
+                <div className="rounded-[16px] border border-border bg-card p-4">
+                  <p
+                    className="text-[11px] uppercase tracking-widest text-text-muted"
+                    style={{ fontFamily: 'var(--font-mono)' }}
+                  >
+                    {t('group')}
+                  </p>
                   <Link
                     href={`/${locale}/group/${group.id}`}
-                    className="mt-3 flex items-center gap-3 rounded-[18px] border border-border bg-surface px-3 py-3 text-left transition-colors hover:border-accent/30"
+                    className="mt-3 flex items-center gap-3 rounded-[14px] border border-border bg-surface-muted px-3 py-3 text-left transition-colors hover:border-text/20"
                   >
-                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[14px] border border-border bg-card">
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[12px] border border-border bg-card">
                       {group.logoUrl ? (
                         <Image
                           src={group.logoUrl}
@@ -205,14 +220,20 @@ export default async function EducatorProfilePage({ params }: Props) {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-semibold text-text">{group.name}</p>
-                      <p className="mt-1 text-xs text-accent">{t('viewProfile')}</p>
+                      <p className="mt-1 text-xs text-accent-ink">{t('viewProfile')}</p>
                     </div>
                   </Link>
                 </div>
               )}
 
-              <div className="rounded-xl border border-border bg-card/40 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-text-muted">{t('location')}</p>
+              {/* Location */}
+              <div className="rounded-[16px] border border-border bg-card p-4">
+                <p
+                  className="text-[11px] uppercase tracking-widest text-text-muted"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                >
+                  {t('location')}
+                </p>
                 <p className="mt-1 text-sm font-medium text-text-secondary">
                   {educator.country || t('unspecified')}
                 </p>
@@ -220,98 +241,100 @@ export default async function EducatorProfilePage({ params }: Props) {
             </div>
           </div>
 
-          {/* Right Column: Social links → Nucleos → Bio */}
+          {/* ── Right column ── */}
           <div className="flex-1 space-y-8">
-            {/* Social links — primero, sin heading */}
+            {/* Social links */}
             {(sl.instagram || sl.whatsapp || sl.facebook || sl.youtube || sl.tiktok || sl.website) && (
-              <section className="rounded-[26px] border border-border bg-card/40 p-5">
+              <section className="rounded-[22px] border border-border bg-card p-5">
                 <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">
-                {sl.whatsapp && (
-                  <a
-                    href={`https://wa.me/${sl.whatsapp.replace(/\D/g, '')}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#25D366]/40 hover:bg-[#25D366]/5 hover:text-text"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
-                    WhatsApp
-                  </a>
-                )}
-                {sl.instagram && (
-                  <a
-                    href={`https://instagram.com/${sl.instagram.replace('@', '')}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#E4405F]/40 hover:bg-[#E4405F]/5 hover:text-text"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E4405F" strokeWidth="2.2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" /></svg>
-                    Instagram
-                  </a>
-                )}
-                {sl.facebook && (
-                  <a
-                    href={`https://facebook.com/${sl.facebook.replace('@', '')}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-[#1877F2]/40 hover:text-text"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
-                    Facebook
-                  </a>
-                )}
-                {sl.youtube && (
-                  <a
-                    href={`https://youtube.com/@${sl.youtube.replace('@', '')}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-[#FF0000]/40 hover:text-text"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z" /><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" /></svg>
-                    YouTube
-                  </a>
-                )}
-                {sl.tiktok && (
-                  <a
-                    href={`https://tiktok.com/@${sl.tiktok.replace('@', '')}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-border hover:text-text"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
-                    TikTok
-                  </a>
-                )}
-                {sl.website && (
-                  <a
-                    href={sl.website.startsWith('http') ? sl.website : `https://${sl.website}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border bg-card/50 px-4 py-2 text-sm text-text-secondary transition-all hover:border-accent/40 hover:text-text"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>
-                    {t('website')}
-                  </a>
-                )}
+                  {sl.whatsapp && (
+                    <a
+                      href={`https://wa.me/${sl.whatsapp.replace(/\D/g, '')}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-[14px] border border-border bg-surface-muted px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#25D366]/30 hover:bg-[rgba(37,211,102,0.05)] hover:text-text"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
+                      WhatsApp
+                    </a>
+                  )}
+                  {sl.instagram && (
+                    <a
+                      href={`https://instagram.com/${sl.instagram.replace('@', '')}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-[14px] border border-border bg-surface-muted px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#E4405F]/30 hover:bg-[rgba(228,64,95,0.05)] hover:text-text"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E4405F" strokeWidth="2.2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" /></svg>
+                      Instagram
+                    </a>
+                  )}
+                  {sl.facebook && (
+                    <a
+                      href={`https://facebook.com/${sl.facebook.replace('@', '')}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-[14px] border border-border bg-surface-muted px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#1877F2]/30 hover:bg-[rgba(24,119,242,0.05)] hover:text-text"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
+                      Facebook
+                    </a>
+                  )}
+                  {sl.youtube && (
+                    <a
+                      href={`https://youtube.com/@${sl.youtube.replace('@', '')}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-[14px] border border-border bg-surface-muted px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-[#FF0000]/30 hover:bg-[rgba(255,0,0,0.05)] hover:text-text"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z" /><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" /></svg>
+                      YouTube
+                    </a>
+                  )}
+                  {sl.tiktok && (
+                    <a
+                      href={`https://tiktok.com/@${sl.tiktok.replace('@', '')}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-[14px] border border-border bg-surface-muted px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-border hover:text-text"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+                      TikTok
+                    </a>
+                  )}
+                  {sl.website && (
+                    <a
+                      href={sl.website.startsWith('http') ? sl.website : `https://${sl.website}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-[14px] border border-border bg-surface-muted px-5 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-accent/30 hover:text-text"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>
+                      {t('website')}
+                    </a>
+                  )}
                 </div>
               </section>
             )}
 
-            {/* Nucleos with schedules */}
+            {/* Nucleos */}
             {nucleos.length > 0 && (
-              <section className="rounded-[26px] border border-border bg-card/40 p-5 sm:p-6">
+              <section className="rounded-[22px] border border-border bg-card p-5 sm:p-6">
                 <h2 className="text-xl font-semibold text-text">{t('nucleos')}</h2>
                 <div className="mt-6 grid gap-4 2xl:grid-cols-2">
                   {nucleos.map((nucleo) => {
                     const VIEW_LABEL: Record<string, string> = { es: 'Ver núcleo', pt: 'Ver núcleo', en: 'View nucleo' }
                     const WHATSAPP_LABEL: Record<string, string> = { es: 'Contacto WhatsApp', pt: 'Contato WhatsApp', en: 'WhatsApp contact' }
                     return (
-                      <div key={nucleo.id} className="rounded-[22px] border border-border bg-card/40 p-5">
-                        {/* Header */}
+                      <div key={nucleo.id} className="rounded-[18px] border border-border bg-surface-muted p-5">
                         <div className="flex items-start justify-between gap-4">
                           <div className="min-w-0 flex-1">
                             {nucleo.groupName && (
-                              <p className="text-[10px] uppercase tracking-[0.22em] text-text-muted">
+                              <p
+                                className="text-[10px] uppercase tracking-[0.22em] text-text-muted"
+                                style={{ fontFamily: 'var(--font-mono)' }}
+                              >
                                 {nucleo.groupName}
                               </p>
                             )}
                             <h3 className="mt-1 text-base font-semibold text-text">{nucleo.name}</h3>
                             {(nucleo.city || nucleo.country) && (
                               <p className="mt-1.5 flex items-center gap-1.5 text-sm text-text-secondary">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" className="shrink-0 opacity-60">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 opacity-60">
                                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
                                   <circle cx="12" cy="9" r="2.5" />
                                 </svg>
@@ -320,30 +343,29 @@ export default async function EducatorProfilePage({ params }: Props) {
                             )}
                             {nucleo.address && (
                               <p className="mt-1 flex items-start gap-1.5 text-xs text-text-muted">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" className="mt-0.5 shrink-0 opacity-50">
-                                  <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
-                                </svg>
                                 {nucleo.address}
                               </p>
                             )}
                           </div>
                           <Link
                             href={`/${locale}/nucleo/${nucleo.groupId}/${nucleo.id}`}
-                            className="shrink-0 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-accent transition-colors hover:bg-accent/15"
+                            className="shrink-0 rounded-full border border-accent-soft bg-accent-soft px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-accent-ink transition-colors hover:bg-accent hover:text-white"
                           >
                             {VIEW_LABEL[locale] ?? VIEW_LABEL.en}
                           </Link>
                         </div>
 
-                        {/* Schedules */}
                         {nucleo.schedules && nucleo.schedules.length > 0 && (
                           <div className="mt-4 border-t border-border/50 pt-4">
-                            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-text-muted">
+                            <p
+                              className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-text-muted"
+                              style={{ fontFamily: 'var(--font-mono)' }}
+                            >
                               {t('schedules')}
                             </p>
                             <div className="flex flex-wrap gap-2">
                               {nucleo.schedules.map((s, i) => (
-                                <span key={i} className="rounded-full border border-border bg-surface px-3 py-1 text-xs text-text-secondary">
+                                <span key={i} className="rounded-full border border-border bg-card px-3 py-1 text-xs text-text-secondary">
                                   {getDay(locale, s.dayOfWeek)} {s.startTime}–{s.endTime}
                                 </span>
                               ))}
@@ -351,7 +373,6 @@ export default async function EducatorProfilePage({ params }: Props) {
                           </div>
                         )}
 
-                        {/* WhatsApp contact for this nucleo (from educator's own WhatsApp) */}
                         {sl.whatsapp && (
                           <div className="mt-4 border-t border-border/50 pt-4">
                             <a
@@ -372,8 +393,8 @@ export default async function EducatorProfilePage({ params }: Props) {
               </section>
             )}
 
-            {/* Bio — último */}
-            <section className="rounded-[26px] border border-border bg-card/40 p-5 sm:p-6">
+            {/* Bio */}
+            <section className="rounded-[22px] border border-border bg-card p-5 sm:p-6">
               <h2 className="text-xl font-semibold text-text">{t('bio')}</h2>
               <div className="page-copy-measure mt-4 whitespace-pre-wrap text-base leading-relaxed text-text-secondary">
                 {educator.bio || t('unspecified')}

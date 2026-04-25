@@ -124,8 +124,8 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
     <article
       className={`overflow-hidden rounded-[26px] border transition-all duration-200 ${
         isActive
-          ? 'border-accent/45 bg-surface shadow-sm'
-          : 'border-border bg-card hover:border-accent/24'
+          ? 'border-text/30 bg-card'
+          : 'border-border bg-card hover:border-text/20'
       }`}
     >
       <div
@@ -158,8 +158,8 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
             <span
               className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] ${
                 isActive
-                  ? 'border-accent/30 bg-[rgba(121,207,114,0.14)] text-accent'
-                  : 'border-border bg-surface text-text-muted'
+                  ? 'border-text bg-text text-bg'
+                  : 'border-border bg-surface-muted text-text-muted'
               }`}
             >
               {copy.showOnMap}
@@ -176,7 +176,7 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
         ) : null}
 
         <div className="mt-5 flex flex-wrap gap-2">
-          <span className="rounded-full border border-border bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
+          <span className="rounded-full border border-border bg-surface-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-text-secondary">
             {hasCoordinates ? copy.coordinatesReady : copy.coordinatesMissing}
           </span>
 
@@ -208,7 +208,7 @@ export default function NucleoListItem({ nucleo, isActive, onSelect, showGroupLi
 
           <Link
             href={`/${locale}/group/${nucleo.groupId}`}
-            className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent transition-opacity hover:opacity-80"
+            className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-ink transition-opacity hover:opacity-80"
           >
             {copy.openGroup}
             <svg
