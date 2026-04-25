@@ -202,12 +202,13 @@ export default async function LandingPage({ params }: Props) {
                 </div>
               ))}
             </div>
-            <div className="relative aspect-[9/16] w-full max-w-[400px] mx-auto rounded-[48px] overflow-hidden border border-bg/20 shadow-2xl bg-bg/5">
+            <div className="relative aspect-[4/5] w-full max-w-[400px] mx-auto">
+               <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full opacity-30" />
                <Image 
                  src="/images/app-grid.png" 
                  alt="Educator Functions Grid" 
                  fill 
-                 className="object-cover opacity-90 hover:opacity-100 transition-opacity"
+                 className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
                />
             </div>
           </div>
