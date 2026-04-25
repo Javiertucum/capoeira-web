@@ -12,19 +12,23 @@ const COPY = {
     eyebrow: 'Beta cerrada · Google Play Console',
     heroLine1: 'Tu comunidad', heroEm: 'conectada', heroLine2: 'en',
     heroLine3: 'Agenda Capoeiragem',
-    body: 'La herramienta definitiva para el capoeirista moderno. Gestiona tus núcleos, organiza batizados y workshops, personaliza tu sistema de graduación y mantente al día con la agenda global de nuestro arte.',
+    body: 'La herramienta definitiva para el capoeirista moderno. Gestiona tus núcleos, organiza batizados, pasa lista a tus alumnos y mantente al día con la agenda global de nuestro arte.',
     ctaHero: 'Unirse a la prueba cerrada',
-    featuresTitle: 'Todo lo que necesitas en tu bolsillo',
-    features: [
-      { t: 'Mapa de Núcleos', d: 'Geolocalización precisa de sedes de entrenamiento. Encuentra dónde treinar en cualquier ciudad del mundo con horarios y educadores responsables.' },
-      { t: 'Sistema de Cordas', d: 'Configura el sistema de colores y niveles de tu grupo. Asigna graduaciones a tus alumnos y sigue su evolución técnica e histórica.' },
-      { t: 'Agenda Inteligente', d: 'Batizados, rodas y workshops organizados por cercanía. Sincroniza eventos directamente con tu calendario y confirma asistencia con un toque.' },
-      { t: 'Gestión de Educadores', d: 'Registra tus núcleos y alumnos. Activa tu perfil profesional, sube tus redes sociales y co-organiza eventos con otros maestros.' },
-      { t: 'Privacidad y Control', d: 'Tú decides qué mostrar. Sistema seguro de solicitudes para unirse a grupos y núcleos, protegiendo la integridad de tu comunidad.' },
-      { t: 'Multi-idioma Global', d: 'Traducida íntegramente al Español, Portugués e Inglés. Diseñada para unir a capoeiristas de todos los linajes en una plataforma común.' },
+    showcaseTitle: 'Una plataforma, dos experiencias',
+    showcaseBody: 'Diseñada específicamente para las necesidades de quienes organizan el juego y quienes participan en él.',
+    educatorSubtitle: 'Para Educadores y Organizadores',
+    educatorFeatures: [
+      { t: 'Gestión de Cobros', d: 'Administra mensualidades, paquetes de clases y pagos por clase en múltiples monedas.' },
+      { t: 'Control de Asistencia', d: 'Pasa lista rápidamente y lleva un registro detallado de los alumnos presentes y ausentes.' },
+      { t: 'Sistema de Cordas', d: 'Configura colores, niveles y el umbral de graduación específicos para tu grupo.' },
+      { t: 'Eventos Multi-locación', d: 'Organiza batizados con cronogramas complejos, integrando pagos por PIX y co-organizadores.' }
     ],
-    showcaseTitle: 'Una experiencia diseñada para capoeiristas',
-    showcaseBody: 'Hemos cuidado cada detalle visual basándonos en la experiencia real en la roda. Una interfaz oscura que no cansa la vista, rápida y 100% funcional sin conexión.',
+    studentSubtitle: 'Para Alumnos y Viajeros',
+    studentFeatures: [
+      { t: 'Mapa de Núcleos', d: 'Encuentra sedes de entrenamiento con horarios detallados y educadores responsables en cualquier ciudad.' },
+      { t: 'Agenda Inteligente', d: 'Rodas y workshops organizados por cercanía. Confirma asistencia y guárdalos en tu calendario.' },
+      { t: 'Networking Comunitario', d: 'Conecta con otros capoeiristas, comparte tus redes sociales y sigue tu propio historial de graduaciones.' },
+    ],
     betaTitle: 'Solicita tu acceso a la beta',
     betaBody: 'Estamos en fase de pruebas cerradas en Google Play Console. Déjanos tus datos y te enviaremos una invitación personal para que empieces a organizar tu comunidad hoy mismo.',
     statsLabel1: 'Educadores',
@@ -36,21 +40,25 @@ const COPY = {
     eyebrow: 'Beta fechada · Google Play Console',
     heroLine1: 'Sua comunidade', heroEm: 'conectada', heroLine2: 'na',
     heroLine3: 'Agenda Capoeiragem',
-    body: 'A ferramenta definitiva para o capoeirista moderno. Gerencie seus núcleos, organize batizados e workshops, personalize seu sistema de graduação e acompanhe a agenda global da nossa arte.',
+    body: 'A ferramenta definitiva para o capoeirista moderno. Gerencie seus núcleos, organize batizados, faça chamadas e acompanhe a agenda global da nossa arte.',
     ctaHero: 'Participar do teste fechado',
-    featuresTitle: 'Tudo o que você precisa no seu bolso',
-    features: [
-      { t: 'Mapa de Núcleos', d: 'Geolocalização precisa de sedes de treino. Encontre onde treinar em qualquer cidade do mundo com horários e educadores responsáveis.' },
-      { t: 'Sistema de Cordas', d: 'Configure o sistema de cores e níveis do seu grupo. Atribua graduações aos seus alunos e acompanhe sua evolução técnica e histórica.' },
-      { t: 'Agenda Inteligente', d: 'Batizados, rodas e workshops organizados por proximidade. Sincronize eventos com seu calendário e confirme presença com um toque.' },
-      { t: 'Gestão de Educadores', d: 'Registre seus núcleos e alunos. Ative seu perfil profissional, adicione redes sociais e co-organize eventos com outros mestres.' },
-      { t: 'Privacidade e Controle', d: 'Você decide o que mostrar. Sistema seguro de solicitações para participar de grupos e núcleos, protegendo sua comunidade.' },
-      { t: 'Multi-idioma Global', d: 'Traduzida integralmente para Espanhol, Português e Inglês. Projetada para unir capoeiristas de todas as linhagens em uma plataforma comum.' },
+    showcaseTitle: 'Uma plataforma, duas experiências',
+    showcaseBody: 'Projetada especificamente para as necessidades de quem organiza a roda e de quem participa.',
+    educatorSubtitle: 'Para Educadores e Organizadores',
+    educatorFeatures: [
+      { t: 'Gestão de Cobranças', d: 'Administre mensalidades, pacotes de aulas e pagamentos por aula em várias moedas.' },
+      { t: 'Controle de Frequência', d: 'Faça a chamada rapidamente e mantenha um registro detalhado dos alunos presentes.' },
+      { t: 'Sistema de Cordas', d: 'Configure cores, níveis e limites de graduação específicos para o seu grupo.' },
+      { t: 'Eventos Multi-local', d: 'Organize batizados com cronogramas complexos, integrando pagamentos via PIX e co-organizadores.' }
     ],
-    showcaseTitle: 'Uma experiência projetada para capoeiristas',
-    showcaseBody: 'Cuidamos de cada detalhe visual com base na experiência real na roda. Uma interface escura que não cansa a vista, rápida e 100% funcional offline.',
+    studentSubtitle: 'Para Alunos e Viajantes',
+    studentFeatures: [
+      { t: 'Mapa de Núcleos', d: 'Encontre sedes de treino com horários detalhados e educadores responsáveis em qualquer cidade.' },
+      { t: 'Agenda Inteligente', d: 'Rodas e workshops organizados por proximidade. Confirme presença e salve no seu calendário.' },
+      { t: 'Networking Comunitário', d: 'Conecte-se com outros capoeiristas, compartilhe redes sociais e acompanhe seu histórico de graduação.' },
+    ],
     betaTitle: 'Solicite seu acesso à beta',
-    betaBody: 'Estamos em fase de testes fechados no Google Play Console. Deixe seus dados e enviaremos um convite pessoal para você começar a organizar sua comunidade hoje mesmo.',
+    betaBody: 'Estamos em fase de testes fechados no Google Play Console. Deixe seus dados e enviaremos um convite pessoal para você começar a organizar sua comunidade hoje.',
     statsLabel1: 'Educadores',
     statsLabel2: 'Núcleos',
     statsLabel3: 'Países',
@@ -60,22 +68,26 @@ const COPY = {
     eyebrow: 'Closed Beta · Google Play Console',
     heroLine1: 'Your community', heroEm: 'connected', heroLine2: 'on',
     heroLine3: 'Agenda Capoeiragem',
-    body: 'The ultimate tool for the modern capoeirista. Manage your training centers, organize batizados and workshops, customize your graduation system, and stay updated with the global agenda of our art.',
+    body: 'The ultimate tool for the modern capoeirista. Manage your schools, organize batizados, take attendance, and stay updated with the global agenda of our art.',
     ctaHero: 'Join Closed Testing',
-    featuresTitle: 'Everything you need in your pocket',
-    features: [
-      { t: 'Training Map', d: 'Precise geolocation of training centers. Find where to train in any city in the world with schedules and responsible educators.' },
-      { t: 'Corda System', d: 'Set up your group\'s color and level system. Assign graduations to your students and track their technical and historical evolution.' },
-      { t: 'Smart Agenda', d: 'Batizados, rodas, and workshops organized by proximity. Sync events directly with your calendar and confirm attendance with a tap.' },
-      { t: 'Educator Management', d: 'Register your training centers and students. Activate your professional profile, link social media, and co-organize events.' },
-      { t: 'Privacy and Control', d: 'You decide what to show. Secure request system to join groups and training centers, protecting your community\'s integrity.' },
-      { t: 'Global Multi-language', d: 'Fully translated into Spanish, Portuguese, and English. Designed to unite capoeiristas from all lineages in a common platform.' },
+    showcaseTitle: 'One platform, two experiences',
+    showcaseBody: 'Designed specifically for the needs of those who organize the roda and those who play in it.',
+    educatorSubtitle: 'For Educators and Organizers',
+    educatorFeatures: [
+      { t: 'Billing Management', d: 'Manage monthly fees, class packages, and per-class payments in multiple currencies.' },
+      { t: 'Attendance Control', d: 'Take attendance quickly and keep a detailed record of present and absent students.' },
+      { t: 'Corda System', d: 'Configure specific colors, levels, and graduation thresholds for your group.' },
+      { t: 'Multi-location Events', d: 'Organize batizados with complex schedules, integrating PIX payments and co-organizers.' }
     ],
-    showcaseTitle: 'An experience built for capoeiristas',
-    showcaseBody: 'We have taken care of every visual detail based on the real experience in the roda. A dark interface that is easy on the eyes, fast, and 100% functional offline.',
+    studentSubtitle: 'For Students and Travelers',
+    studentFeatures: [
+      { t: 'Training Map', d: 'Find training locations with detailed schedules and responsible educators in any city.' },
+      { t: 'Smart Agenda', d: 'Rodas and workshops organized by proximity. Confirm attendance and save to your calendar.' },
+      { t: 'Community Networking', d: 'Connect with other capoeiristas, share your social media, and track your graduation history.' },
+    ],
     betaTitle: 'Request your beta access',
-    betaBody: 'We are in the closed testing phase on Google Play Console. Leave us your details and we will personally invite you to start organizing your community today.',
-    statsLabel1: 'Educadores',
+    betaBody: 'We are in the closed testing phase on Google Play Console. Leave us your details and we will send a personal invite to start organizing your community today.',
+    statsLabel1: 'Educators',
     statsLabel2: 'Schools',
     statsLabel3: 'Countries',
   },
@@ -171,26 +183,50 @@ export default async function LandingPage({ params }: Props) {
           </p>
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-[1fr_450px] items-center">
-          <div className="grid gap-6 sm:grid-cols-2">
-            {c.features.map((f) => (
-              <div key={f.t} className="rounded-[40px] border border-bg/10 bg-bg/5 p-8 backdrop-blur-sm hover:bg-bg/10 transition-all group">
-                <div className="h-12 w-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
-                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        {/* Educator Features */}
+        <div className="mb-20">
+          <div className="section-head mb-10">
+            <span className="num">01</span>
+            <h2 className="text-2xl lg:text-3xl font-black text-bg">{c.educatorSubtitle}</h2>
+            <div className="rule" />
+          </div>
+          <div className="grid gap-12 lg:grid-cols-[1fr_450px] items-center">
+            <div className="grid gap-6 sm:grid-cols-2">
+              {c.educatorFeatures.map((f) => (
+                <div key={f.t} className="rounded-[40px] border border-bg/10 bg-bg/5 p-8 backdrop-blur-sm hover:bg-bg/10 transition-all group">
+                  <div className="h-12 w-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </div>
+                  <h3 className="text-xl font-black text-bg mb-3" style={{ fontFamily: 'var(--font-display)' }}>{f.t}</h3>
+                  <p className="text-[15px] leading-relaxed text-bg/50">{f.d}</p>
                 </div>
+              ))}
+            </div>
+            <div className="relative aspect-[9/16] w-full max-w-[400px] mx-auto rounded-[48px] overflow-hidden border border-bg/20 shadow-2xl bg-bg/5">
+               <Image 
+                 src="/images/app-grid.png" 
+                 alt="Educator Functions Grid" 
+                 fill 
+                 className="object-cover opacity-90 hover:opacity-100 transition-opacity"
+               />
+            </div>
+          </div>
+        </div>
+
+        {/* Student Features */}
+        <div>
+          <div className="section-head mb-10">
+            <span className="num">02</span>
+            <h2 className="text-2xl lg:text-3xl font-black text-bg">{c.studentSubtitle}</h2>
+            <div className="rule" />
+          </div>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {c.studentFeatures.map((f) => (
+              <div key={f.t} className="rounded-[32px] border border-bg/10 bg-ink-2 p-8 hover:border-bg/20 transition-colors">
                 <h3 className="text-xl font-black text-bg mb-3" style={{ fontFamily: 'var(--font-display)' }}>{f.t}</h3>
                 <p className="text-[15px] leading-relaxed text-bg/50">{f.d}</p>
               </div>
             ))}
-          </div>
-
-          <div className="relative aspect-[9/16] w-full rounded-[48px] overflow-hidden border border-bg/20 shadow-2xl bg-bg/5">
-             <Image 
-               src="/images/app-grid.png" 
-               alt="App Functions Grid" 
-               fill 
-               className="object-cover opacity-90 hover:opacity-100 transition-opacity"
-             />
           </div>
         </div>
       </section>
