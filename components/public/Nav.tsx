@@ -45,23 +45,16 @@ export default function Nav() {
     router.replace(search ? `${nextPathname}?${search}` : nextPathname)
   }
 
-  const currentFilter = searchParams.get('filter')
   const links = [
-    { href: `/${locale}/map`,              label: t('map'),       key: 'nucleos' },
-    { href: `/${locale}/map?filter=groups`, label: t('groups'),   key: 'groups' },
-    { href: `/${locale}/educators`,        label: t('educators'), key: 'educators' },
-    { href: `/${locale}/app`,             label: 'App',          key: 'app' },
+    { href: `/${locale}/admin`, label: 'Admin', key: 'admin' },
   ]
 
   function isActive(key: string) {
-    if (key === 'educators') return pathname === `/${locale}/educators` || pathname.startsWith(`/${locale}/educator/`)
-    if (key === 'app')       return pathname === `/${locale}/app`
-    const isMapRoute = pathname === `/${locale}/map`
-    if (key === 'nucleos')   return isMapRoute && !currentFilter
-    return isMapRoute && currentFilter === key
+    if (key === 'admin') return pathname.includes('/admin')
+    return false
   }
 
-  const isDark = pathname.endsWith('/app')
+  const isDark = pathname === `/${locale}` || pathname === `/${locale}/`
   const navBg = isDark
     ? (scrolled || menuOpen ? 'bg-ink/90 border-white/10' : 'bg-transparent border-transparent')
     : (scrolled || menuOpen ? 'bg-[color-mix(in_srgb,#F4EFE6_94%,transparent)] border-line-soft' : 'bg-[color-mix(in_srgb,#F4EFE6_88%,transparent)] border-transparent')
@@ -124,20 +117,6 @@ export default function Nav() {
 
           {/* Right: ⌘K + locale + hamburger */}
           <div className="flex items-center gap-2">
-            {/* ⌘K ghost button — desktop */}
-            <button
-              type="button"
-              onClick={() => router.push(`/${locale}/map`)}
-              className={`btn btn-sm hidden items-center gap-3 lg:inline-flex ${isDark ? 'text-bg/60 border-white/10 hover:text-bg bg-white/5' : 'btn-ghost'}`}
-              style={{ paddingLeft: 12, paddingRight: 10 }}
-            >
-              <span className={`text-[12px] ${faintTextColor}`}>Buscar ciudad o grupo</span>
-              <span
-                className={`mono rounded border px-1.5 py-0.5 text-[10px] ${isDark ? 'border-white/20' : 'border-line'}`}
-              >
-                ⌘K
-              </span>
-            </button>
 
             {/* Locale switcher — desktop */}
             <div className={`hidden rounded-full border px-1 py-1 sm:flex ${isDark ? 'border-white/10 bg-white/5' : 'border-line bg-surface'}`}>

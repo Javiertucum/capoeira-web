@@ -1,358 +1,267 @@
-import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import HeroSearch from '@/components/public/HeroSearch'
-import {
-  getLanguageAlternates, getLocalizedUrl, getSiteDescription,
-  getOgImageUrl, buildWebSiteSchema,
-} from '@/lib/site'
-import type { StatsData } from '@/lib/types'
-
-export const revalidate = 300
+import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
 
 type Props = Readonly<{ params: Promise<{ locale: string }> }>
 
-const EMPTY_STATS: StatsData = { nucleos: 0, groups: 0, educators: 0, countries: 0 }
-
-const META_TITLES = {
-  es: 'Directorio de Capoeira — Grupos, Núcleos y Educadores en el Mundo',
-  pt: 'Diretório de Capoeira — Grupos, Núcleos e Educadores no Mundo',
-  en: 'Capoeira Directory — Groups, Nucleos & Educators Worldwide',
+const COPY = {
+  es: {
+    title: 'Agenda Capoeiragem',
+    eyebrow: 'Companion móvil · Agenda Capoeiragem',
+    heroLine1: 'La', heroEm: 'app', heroLine2: 'es donde',
+    heroLine3: 'la comunidad', heroLine4: 'se organiza.',
+    body: 'Esta web es la cara pública del directorio: cualquiera puede encontrar un núcleo, un educador o un grupo. La app es la cocina: ahí los educadores publican y mantienen sus datos, gestionan cordas, organizan eventos y conectan entre sí.',
+    googlePlay: 'Google Play', appStore: 'App Store', appStoreSoon: 'Próximamente',
+    stat1: '2.4k', stat1Label: 'Practicantes',
+    stat2: '312', stat2Label: 'Núcleos publicados',
+    stat3: '44',  stat3Label: 'Países',
+    splitNum: '01 / Diferencias',
+    splitTitle: 'Una sola base de datos, dos puertas.',
+    webTag: 'Web pública', webTitle: 'Para encontrar.',
+    webBody: 'Sin login. Indexable. Para alguien que llega a una ciudad nueva, o que recién quiere empezar y busca un espacio cerca.',
+    webItems: ['Mapa y directorio de núcleos', 'Perfiles públicos de educadores', 'Información de grupos y linajes', 'Contacto directo (WhatsApp, IG)'],
+    appTag: 'App móvil', appTitle: 'Para participar.',
+    appBody: 'Com cuenta. Donde la comunidad publica, organiza, gestiona cordas y se conecta sin pasar por redes sociales.',
+    appItems: ['Crear y gestionar núcleos', 'Sistema de cordas personalizable', 'Agenda de eventos privada', 'Co-organización entre educadores', 'Mensajes y comunidad'],
+    featNum: '02 / Lo que hace la app',
+    featTitle: 'Pensada por practicantes y educadores.',
+    features: [
+      { tag: 'Para educadores', t: 'Crea y gestiona tus núcleos', d: 'Horarios, ubicación, equipo. Tu núcleo aparece publicado en la web automáticamente.' },
+      { tag: 'Para grupos',     t: 'Tu sistema de cordas, tu linaje', d: 'Define tu propia graduación. Asigna cordas a tus alumnos. Reconoce tu historia visualmente.' },
+      { tag: 'Para todos',      t: 'Agenda de eventos privada', d: 'Batizados, encuentros, workshops. Co-organiza con otros educadores. Visible solo dentro de la app.' },
+      { tag: 'Comunidad',       t: 'Perfil, contactos, mensajes', d: 'Conecta con educadores de tu linaje, sin pasar por redes sociales.' },
+    ],
+    ctaTag: 'Para educadores',
+    ctaTitle: '¿Tu núcleo todavía no aparece en la web?',
+    ctaBody: 'Descarga la app, registra tu núcleo en 3 minutos, y aparece publicado automáticamente en este directorio. Verificación humana, gratis.',
+    ctaBtn: 'Descargar app',
+    mockupDay: 'Mi núcleo · Hoy', mockupName: 'Pelourinho',
+    nextTraining: 'Próximo treino', nextTime: 'Hoy 19:00 · Adultos',
+    privateEvent: 'Evento privado', eventName: 'Batizado 2026',
+    badgeText: 'v1.0 · gratis',
+  },
+  pt: {
+    title: 'Agenda Capoeiragem',
+    eyebrow: 'Companion móvel · Agenda Capoeiragem',
+    heroLine1: 'O', heroEm: 'app', heroLine2: 'é onde',
+    heroLine3: 'a comunidade', heroLine4: 'se organiza.',
+    body: 'Esta web é a cara pública do diretório: qualquer pessoa pode encontrar um núcleo, um educador ou um grupo. O app é a cozinha: lá os educadores publicam seus dados, gerenciam cordas e se conectam.',
+    googlePlay: 'Google Play', appStore: 'App Store', appStoreSoon: 'Em breve',
+    stat1: '2.4k', stat1Label: 'Praticantes',
+    stat2: '312', stat2Label: 'Núcleos publicados',
+    stat3: '44',  stat3Label: 'Países',
+    splitNum: '01 / Diferenças',
+    splitTitle: 'Uma única base de dados, duas portas.',
+    webTag: 'Web pública', webTitle: 'Para encontrar.',
+    webBody: 'Sem login. Indexável. Para quem chega a uma cidade nova ou quer começar.',
+    webItems: ['Mapa e diretório de núcleos', 'Perfis públicos de educadores', 'Informações de grupos e linagens', 'Contato direto (WhatsApp, IG)'],
+    appTag: 'App móvel', appTitle: 'Para participar.',
+    appBody: 'Com conta. Onde a comunidade publica, organiza, gerencia cordas e se conecta.',
+    appItems: ['Criar e gerenciar núcleos', 'Sistema de cordas personalizável', 'Agenda de eventos privada', 'Co-organização entre educadores', 'Mensagens e comunidade'],
+    featNum: '02 / O que o app faz',
+    featTitle: 'Pensado por praticantes e educadores.',
+    features: [
+      { tag: 'Para educadores', t: 'Crie e gerencie seus núcleos', d: 'Horários, localização, equipe. Seu núcleo aparece publicado na web automaticamente.' },
+      { tag: 'Para grupos',     t: 'Seu sistema de cordas, sua linhagem', d: 'Defina sua própria graduação. Atribua cordas aos seus alunos.' },
+      { tag: 'Para todos',      t: 'Agenda de eventos privada', d: 'Batizados, encontros, workshops. Co-organize com outros educadores.' },
+      { tag: 'Comunidade',      t: 'Perfil, contatos, mensagens', d: 'Conecte-se com educadores da sua linhagem, sem passar pelas redes sociais.' },
+    ],
+    ctaTag: 'Para educadores',
+    ctaTitle: 'Seu núcleo ainda não aparece na web?',
+    ctaBody: 'Baixe o app, registre seu núcleo em 3 minutos e apareça publicado automaticamente neste diretório. Verificação humana, grátis.',
+    ctaBtn: 'Baixar app',
+    mockupDay: 'Meu núcleo · Hoje', mockupName: 'Pelourinho',
+    nextTraining: 'Próximo treino', nextTime: 'Hoje 19:00 · Adultos',
+    privateEvent: 'Evento privado', eventName: 'Batizado 2026',
+    badgeText: 'v1.0 · grátis',
+  },
+  en: {
+    title: 'Agenda Capoeiragem',
+    eyebrow: 'Mobile companion · Agenda Capoeiragem',
+    heroLine1: 'The', heroEm: 'app', heroLine2: 'is where',
+    heroLine3: 'the community', heroLine4: 'organizes.',
+    body: 'This website is the public face of the directory: anyone can find a nucleo, educator, or group. The app is the kitchen: that\'s where educators publish their data, manage cords, organize events, and connect with each other.',
+    googlePlay: 'Google Play', appStore: 'App Store', appStoreSoon: 'Coming soon',
+    stat1: '2.4k', stat1Label: 'Practitioners',
+    stat2: '312', stat2Label: 'Published nucleos',
+    stat3: '44',  stat3Label: 'Countries',
+    splitNum: '01 / Differences',
+    splitTitle: 'One database, two doors.',
+    webTag: 'Public web', webTitle: 'To find.',
+    webBody: 'No login. Indexable. For someone arriving in a new city, or just starting out.',
+    webItems: ['Nucleo map and directory', 'Public educator profiles', 'Group and lineage info', 'Direct contact (WhatsApp, IG)'],
+    appTag: 'Mobile app', appTitle: 'To participate.',
+    appBody: 'With an account. Where the community publishes, organizes, manages cords, and connects.',
+    appItems: ['Create and manage nucleos', 'Customizable cord system', 'Private event calendar', 'Co-organization between educators', 'Messages and community'],
+    featNum: '02 / What the app does',
+    featTitle: 'Built by practitioners and educators.',
+    features: [
+      { tag: 'For educators', t: 'Create and manage your nucleos', d: 'Schedules, location, team. Your nucleo appears published on the web automatically.' },
+      { tag: 'For groups',    t: 'Your cord system, your lineage', d: 'Define your own graduation. Assign cords to your students. Recognize your history visually.' },
+      { tag: 'For everyone',  t: 'Private event calendar', d: 'Batizados, meetups, workshops. Co-organize with other educators. Visible only inside the app.' },
+      { tag: 'Community',     t: 'Profile, contacts, messages', d: 'Connect with educators from your lineage, without going through social media.' },
+    ],
+    ctaTag: 'For educators',
+    ctaTitle: 'Is your nucleo missing from the web?',
+    ctaBody: 'Download the app, register your nucleo in 3 minutes, and appear published automatically in this directory. Human verification, free.',
+    ctaBtn: 'Download app',
+    mockupDay: 'My nucleo · Today', mockupName: 'Pelourinho',
+    nextTraining: 'Next class', nextTime: 'Today 7pm · Adults',
+    privateEvent: 'Private event', eventName: 'Batizado 2026',
+    badgeText: 'v1.0 · free',
+  },
 } as const
 
-const META_DESCRIPTIONS = {
-  es: 'Encuentra grupos de capoeira, núcleos de entrenamiento y educadores en todo el mundo.',
-  pt: 'Encontre grupos de capoeira, núcleos de treino e educadores em todo o mundo.',
-  en: 'Find capoeira groups, training nucleos, and educators worldwide.',
-} as const
+function getCopy(locale: string) {
+  return COPY[locale as keyof typeof COPY] ?? COPY.es
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
-  const title = META_TITLES[locale as keyof typeof META_TITLES] ?? META_TITLES.es
-  const description = META_DESCRIPTIONS[locale as keyof typeof META_DESCRIPTIONS] ?? getSiteDescription(locale)
-  const ogImage = getOgImageUrl({ title: 'Agenda Capoeiragem', sub: description.slice(0, 80) })
+  const copy = getCopy(locale)
   return {
-    title, description,
-    alternates: { canonical: getLocalizedUrl(locale), languages: getLanguageAlternates() },
-    openGraph: { title, description, url: getLocalizedUrl(locale), type: 'website', images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
-    twitter: { card: 'summary_large_image', title, description, images: [ogImage] },
+    title: copy.title,
+    description: getSiteDescription(locale),
+    alternates: { canonical: getLocalizedPath(locale, ''), languages: getLanguageAlternates('') },
+    openGraph: { title: formatPageTitle(copy.title), description: getSiteDescription(locale), url: getLocalizedPath(locale, ''), type: 'website' },
   }
-}
-
-/* ── lane content per locale ── */
-function getLanes(locale: string, stats: StatsData) {
-  const t = {
-    es: {
-      lanes: [
-        { tag: 'Mapa',        name: 'Núcleos',     desc: 'Espacios donde se entrena. Dirección, horarios, responsable y contacto directo.', tone: '#FBE7DC', icon: '📍', href: '/map' },
-        { tag: 'Comunidades', name: 'Grupos',       desc: 'La organización detrás del cordel. Sistema de graduación, países y núcleos asociados.', tone: '#DDE8DD', icon: '🤝', href: '/map?filter=groups' },
-        { tag: 'Personas',    name: 'Educadores',   desc: 'Maestros y profesores con su corda, su núcleo y un canal real de contacto.', tone: '#F0E5C8', icon: '👤', href: '/educators' },
-      ],
-      openDir: 'Abrir directorio',
-    },
-    pt: {
-      lanes: [
-        { tag: 'Mapa',        name: 'Núcleos',     desc: 'Espaços onde se treina. Endereço, horários, responsável e contato direto.', tone: '#FBE7DC', icon: '📍', href: '/map' },
-        { tag: 'Comunidades', name: 'Grupos',       desc: 'A organização por trás do cordel. Sistema de graduação, países e núcleos associados.', tone: '#DDE8DD', icon: '🤝', href: '/map?filter=groups' },
-        { tag: 'Pessoas',     name: 'Educadores',   desc: 'Mestres e professores com sua corda, seu núcleo e canal real de contato.', tone: '#F0E5C8', icon: '👤', href: '/educators' },
-      ],
-      openDir: 'Abrir diretório',
-    },
-    en: {
-      lanes: [
-        { tag: 'Map',         name: 'Nucleos',     desc: 'Training spaces. Address, schedule, responsible educator, and direct contact.', tone: '#FBE7DC', icon: '📍', href: '/map' },
-        { tag: 'Communities', name: 'Groups',       desc: 'The lineage behind the cord. Graduation system, countries, and nucleos.', tone: '#DDE8DD', icon: '🤝', href: '/map?filter=groups' },
-        { tag: 'People',      name: 'Educators',   desc: 'Masters and teachers with their cord, nucleo, and a real contact channel.', tone: '#F0E5C8', icon: '👤', href: '/educators' },
-      ],
-      openDir: 'Open directory',
-    },
-  }
-  const loc = t[locale as keyof typeof t] ?? t.es
-  return loc.lanes.map((l, i) => ({
-    ...l,
-    n: i === 0 ? stats.nucleos : i === 1 ? stats.groups : stats.educators,
-    href: `/${locale}${l.href}`,
-  }))
 }
 
 export default async function LandingPage({ params }: Props) {
   const { locale } = await params
+  const c = getCopy(locale)
 
-  const [tHero, tStats, tFooter] = await Promise.all([
-    getTranslations({ locale, namespace: 'hero' }),
-    getTranslations({ locale, namespace: 'stats' }),
-    getTranslations({ locale, namespace: 'footer' }),
-  ])
-
-  let stats = EMPTY_STATS
+  let stats = { educators: 0, nucleos: 0, countries: 0 }
   try {
     const { getStats } = await import('@/lib/queries')
-    stats = await getStats()
-  } catch {
-    if (process.env.NODE_ENV === 'development') console.error('Stats unavailable')
-  }
-
-  const webSiteSchema = buildWebSiteSchema(locale)
-  const lanes = getLanes(locale, stats)
+    const s = await getStats()
+    stats = { educators: s.educators, nucleos: s.nucleos, countries: s.countries }
+  } catch {}
 
   const statItems = [
-    { n: stats.nucleos,    label: tStats('nucleos') },
-    { n: stats.groups,     label: tStats('groups') },
-    { n: stats.educators,  label: tStats('educators') },
-    { n: stats.countries,  label: locale === 'en' ? 'Countries' : 'Países' },
+    { n: stats.educators, l: c.stat1Label },
+    { n: stats.nucleos,   l: c.stat2Label },
+    { n: stats.countries, l: c.stat3Label },
   ]
 
-  const heroText = {
-    es: { before: 'Encuentra', em: 'capoeira', after: '\ncerca de tu casa.' },
-    pt: { before: 'Encontre', em: 'capoeira', after: '\nperto de você.' },
-    en: { before: 'Find', em: 'capoeira', after: '\nnear you.' },
-  }[locale] ?? { before: 'Encuentra', em: 'capoeira', after: '\ncerca de tu casa.' }
-
-  const bodyText = {
-    es: `Núcleos, grupos y educadores en ${stats.countries} países. Para empezar de cero, o para no perder el ritmo cuando estás de viaje.`,
-    pt: `Núcleos, grupos e educadores em ${stats.countries} países. Para começar do zero ou manter o ritmo quando estiver viajando.`,
-    en: `Nucleos, groups and educators in ${stats.countries} countries. Whether starting from scratch or keeping the rhythm while traveling.`,
-  }[locale] ?? ''
-
-  const liveLabel = locale === 'en' ? 'Live · updated today' : locale === 'pt' ? 'Ao vivo · atualizado hoje' : 'En vivo · actualizado hoy'
-
-  const explorarLabel = {
-    es: '01 / Explorar', pt: '01 / Explorar', en: '01 / Explore',
-  }[locale] ?? '01 / Explorar'
-
-  const tresPuertasLabel = {
-    es: 'Tres puertas de entrada al directorio.',
-    pt: 'Três portas de entrada no diretório.',
-    en: 'Three ways into the directory.',
-  }[locale] ?? 'Tres puertas de entrada al directorio.'
-
-  const mapaTeaserLabel = {
-    es: 'Mapa global', pt: 'Mapa global', en: 'Global map',
-  }[locale] ?? 'Mapa global'
-
-  const abrirMapaLabel = { es: 'Abrir mapa', pt: 'Abrir mapa', en: 'Open map' }[locale] ?? 'Abrir mapa'
-
-  const ciudadLabel = { es: 'Ciudad de la semana', pt: 'Cidade da semana', en: 'City of the week' }[locale] ?? 'Ciudad de la semana'
-
-  const paraEdLabel = { es: 'Para educadores', pt: 'Para educadores', en: 'For educators' }[locale] ?? 'Para educadores'
-  const nucleoNoLabel = { es: '¿Tu núcleo no está en el mapa?', pt: 'Seu núcleo não está no mapa?', en: "Is your nucleo missing?" }[locale] ?? ''
-  const nucleoBodyLabel = {
-    es: 'Descarga la app, registra tu núcleo en 3 minutos y aparece aquí. Verificación humana, gratis.',
-    pt: 'Baixe o app, registre seu núcleo em 3 minutos e apareça aqui. Verificação humana, grátis.',
-    en: 'Download the app, register your nucleo in 3 minutes and appear here. Human verification, free.',
-  }[locale] ?? ''
-  const descargarLabel = { es: 'Descargar app', pt: 'Baixar app', en: 'Download app' }[locale] ?? ''
-
   return (
-    <div className="flex min-h-screen flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
-
+    <div className="min-h-screen bg-ink">
       {/* ── HERO ── */}
-      <section className="px-5 pt-14 pb-12 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-[1280px]">
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            {/* Left: headline */}
-            <div>
-              <div className="mb-6 flex items-center gap-3">
-                <span className="berimbau-dot" />
-                <div className="flex flex-col">
-                  <span className="eyebrow acc text-[10px] tracking-[0.25em]">Elegir día — Domingo</span>
-                  <span className="mt-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-4">Capoeira Viva</span>
-                </div>
-              </div>
-              <h1 style={{ fontSize: 'clamp(54px, 8vw, 110px)', lineHeight: 0.88, letterSpacing: '-0.05em' }}>
-                {heroText.before} <em className="italic">{heroText.em}</em><br />
-                {heroText.after.replace('\n', '')}
-              </h1>
-              <p className="mt-8 max-w-[520px] text-[19px] leading-[1.6] text-ink-2">
-                {bodyText}
-              </p>
-              {/* Search bar integrated in hero for desktop */}
-              <div className="mt-10 max-w-[600px]">
-                <HeroSearch />
-              </div>
+      <section className="page-shell relative overflow-hidden py-24 lg:py-32">
+        {/* Decorative background glow */}
+        <div className="absolute -top-24 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-accent-soft opacity-20 blur-[120px]" />
+        
+        <div className="relative z-10 grid gap-16 lg:grid-cols-[1fr_450px] lg:items-center">
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+              <span className="mono text-[10px] uppercase tracking-[0.2em] text-bg/80">{c.eyebrow}</span>
             </div>
+            <h1 className="text-bg" style={{ fontSize: 'clamp(56px, 8vw, 100px)', lineHeight: 0.88, letterSpacing: '-0.05em' }}>
+              Todo tu <br/>
+              universo <br/>
+              <em className="italic text-accent">capoeira</em>.
+            </h1>
+            <p className="mt-8 max-w-[500px] text-[18px] leading-[1.6] text-bg/80">{c.body}</p>
 
-            {/* Right: stats card stylized */}
-            <div className="hidden lg:flex justify-end">
-              <div className="card-ink w-full max-w-[360px] p-8 shadow-lg" style={{ borderRadius: 'var(--radius-xl)' }}>
-                <div className="mono mb-6 flex items-center gap-2.5 text-[11px] uppercase tracking-[0.2em] opacity-80">
-                  <span className="h-2 w-2 rounded-full bg-green animate-pulse" />
-                  {liveLabel}
-                </div>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-10">
-                  {statItems.map(({ n, label }) => (
-                    <div key={label}>
-                      <div className="text-[44px] font-black leading-none tracking-[-0.04em] text-bg" style={{ fontFamily: 'var(--font-display)' }}>
-                        {n.toLocaleString()}
-                      </div>
-                      <div className="mono mt-2 text-[10px] uppercase tracking-[0.2em] opacity-60">
-                        {label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Berimbau separator */}
-      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-16 mt-10">
-        <div className="berimbau-line" />
-      </div>
-
-      {/* ── TRES PUERTAS ── */}
-      <section className="px-5 py-12 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-[1280px]">
-          <div className="section-head">
-            <span className="num">{explorarLabel}</span>
-            <h2>{tresPuertasLabel}</h2>
-            <span className="rule" />
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            {lanes.map((c) => (
-              <Link
-                key={c.href}
-                href={c.href}
-                className="card group relative block overflow-hidden p-7 transition-all hover:-translate-y-0.5 hover:shadow-md"
-                style={{ ['--shadow-md' as string]: 'var(--shadow-md)' }}
+            {/* Store buttons */}
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a
+                href="https://play.google.com/store/apps/details?id=com.capoeiragem.app"
+                target="_blank" rel="noopener noreferrer"
+                className="btn btn-accent btn-lg h-14 px-8 shadow-xl hover:shadow-accent/20 transition-all"
               >
-                {/* Tonal blob */}
-                <div
-                  className="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full opacity-60"
-                  style={{ background: c.tone }}
-                />
-                <div className="relative">
-                  <div className="flex items-center justify-between">
-                    <span className="tag-mono">{c.tag}</span>
-                    <span
-                      className="grid h-9 w-9 place-items-center rounded-[12px] bg-ink text-bg"
-                      aria-hidden="true"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                      </svg>
-                    </span>
-                  </div>
-                  <div className="mt-8">
-                    <div
-                      className="text-[52px] leading-[0.9] tracking-[-0.03em] text-ink"
-                      style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
-                    >
-                      {c.n.toLocaleString()}
-                    </div>
-                    <h3 className="mt-2 text-[26px] text-ink">{c.name}</h3>
-                  </div>
-                  <p className="mt-3 text-[14px] leading-[1.6] text-ink-2">{c.desc}</p>
-                  <div className="mt-6 flex items-center gap-2 text-[13px] font-medium text-accent-ink">
-                    {lanes[0]?.href.includes('/map') && c.href === lanes[0]?.href
-                      ? (locale === 'en' ? 'Open directory' : locale === 'pt' ? 'Abrir diretório' : 'Abrir directorio')
-                      : (locale === 'en' ? 'Open directory' : locale === 'pt' ? 'Abrir diretório' : 'Abrir directorio')}
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── MAPA TEASER + SIDEBAR ── */}
-      <section className="px-5 pb-16 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-[1280px]">
-          <div className="grid gap-7 lg:grid-cols-[1.4fr_1fr]">
-            {/* Mapa card */}
-            <div className="card p-[22px]">
-              <div className="mb-3 flex items-baseline justify-between">
-                <div>
-                  <span className="tag-mono">{mapaTeaserLabel}</span>
-                  <h3 className="mt-2.5 text-[24px] text-ink">
-                    {stats.nucleos.toLocaleString()} {locale === 'en' ? 'nucleos in' : 'núcleos en'} {stats.countries} {locale === 'en' ? 'countries.' : 'países.'}
-                  </h3>
-                </div>
-                <Link
-                  href={`/${locale}/map`}
-                  className="btn btn-ghost btn-sm"
-                >
-                  {abrirMapaLabel}
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
+                {c.googlePlay}
+              </a>
+              <div className="flex items-center gap-3 rounded-full border border-bg/10 bg-bg/5 px-6 py-3 backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white" className="opacity-60">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                <span className="mono text-[10px] uppercase tracking-widest text-bg/70">{c.appStoreSoon}</span>
               </div>
-              {/* Map placeholder — will be real map in production */}
+            </div>
+
+            {/* Real Stats Social Proof */}
+            <div className="mt-16 flex flex-wrap gap-x-12 gap-y-8 border-t border-bg/10 pt-10">
+              {statItems.map(({ n, l }) => (
+                <div key={l}>
+                  <div className="text-[32px] font-black text-bg leading-none" style={{ fontFamily: 'var(--font-display)' }}>
+                    {n.toLocaleString()}
+                  </div>
+                  <div className="mono mt-2 text-[10px] uppercase tracking-widest text-bg/50">{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Phone mockup */}
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative" style={{ transform: 'rotate(-4deg)' }}>
+              <div className="absolute inset-0 rounded-[44px] bg-accent/20 blur-[60px]" />
               <div
-                className="img-ph relative overflow-hidden"
-                style={{ height: 300, borderRadius: 'var(--radius-lg)' }}
+                className="relative overflow-hidden rounded-[48px] bg-[#1A1814] p-3 shadow-2xl"
+                style={{ width: 280, height: 580, border: '1px solid rgba(255,255,255,0.1)' }}
               >
-                MAPA
-              </div>
-            </div>
-
-            {/* Info card instead of hardcoded city */}
-            <div className="flex flex-col gap-4">
-              <div className="card-paper p-6">
-                <span className="tag-mono">{locale === 'en' ? 'Community' : 'Comunidad'}</span>
-                <h3 className="mt-3 text-[24px] text-ink">{locale === 'en' ? 'Your city is here' : 'Tu ciudad está aquí'}</h3>
-                <p className="text-[13px] text-ink-2 mt-2">
-                  {locale === 'en' 
-                    ? 'Explore educators and training spaces in cities like Madrid, Salvador, or Buenos Aires.' 
-                    : 'Explora educadores y espacios de entrenamiento en ciudades como Madrid, Salvador o Buenos Aires.'}
-                </p>
-                <div className="berimbau-line my-5" />
-                <Link href={`/${locale}/map`} className="flex items-center justify-between text-[14px] font-semibold text-accent-ink hover:text-accent transition-colors">
-                  {locale === 'en' ? 'Start exploring' : 'Empezar a explorar'}
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-
-              {/* Card-ink educadores */}
-              <div className="card-ink p-6">
-                <div className="mono mb-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] opacity-70">
-                  {paraEdLabel}
+                <div className="flex h-full w-full flex-col overflow-hidden rounded-[38px] bg-[#F2EFE9]">
+                  <div className="h-6 w-full bg-[#1A1814]" />
+                  <div className="p-6">
+                    <span className="eyebrow acc text-[10px]">{c.mockupDay}</span>
+                    <h3 className="text-[24px] font-black mt-2 text-ink" style={{ fontFamily: 'var(--font-display)' }}>{c.mockupName}</h3>
+                  </div>
+                  <div className="flex-1 px-6 space-y-4">
+                    <div className="h-32 w-full rounded-[24px] bg-surface-muted border border-line-soft" />
+                    <div className="card p-4 shadow-sm" style={{ borderRadius: 'var(--radius-lg)' }}>
+                      <span className="eyebrow acc text-[9px]">{c.nextTraining}</span>
+                      <p className="mt-1 text-[15px] font-bold text-ink">{c.nextTime}</p>
+                    </div>
+                    <div className="bg-ink p-5 rounded-[28px] text-bg">
+                      <span className="mono text-[9px] uppercase tracking-widest opacity-70">{c.privateEvent}</span>
+                      <p className="mt-2 text-[16px] font-black">{c.eventName}</p>
+                    </div>
+                  </div>
+                  <div className="h-20 w-full bg-surface-muted border-t border-line" />
                 </div>
-                <h3 className="text-[26px] text-bg">{nucleoNoLabel}</h3>
-                <p className="mt-2.5 text-[14px] leading-[1.55] text-bg opacity-75">
-                  {nucleoBodyLabel}
-                </p>
-                <Link
-                  href={`/${locale}/app`}
-                  className="btn btn-accent mt-5"
-                >
-                  {descargarLabel}
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="mt-auto border-t border-line-soft py-10">
-        <div className="page-shell flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-[420px]">
-            <span className="eyebrow block mb-3">Agenda Capoeiragem</span>
-            <p className="text-sm leading-7 text-ink-2">{tFooter('credits')}</p>
-          </div>
-          <div className="flex flex-col gap-3 text-sm text-ink-3 md:items-end">
-            <span className="mono text-[11px]">© 2026 Agenda Capoeiragem</span>
-            <div className="flex gap-5 text-[11px] font-medium uppercase tracking-[0.18em]">
-              <Link href={`/${locale}/privacy`} className="transition-colors hover:text-ink">{tFooter('privacy')}</Link>
-              <Link href={`/${locale}/terms`}   className="transition-colors hover:text-ink">{tFooter('terms')}</Link>
+      {/* ── Features grid ── */}
+      <section className="page-shell py-24">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {c.features.map((f) => (
+            <div key={f.t} className="group rounded-[36px] border border-bg/10 bg-bg/5 p-8 transition-all hover:bg-bg/10 backdrop-blur-sm">
+              <span className="mono text-[10px] uppercase tracking-widest text-accent">{f.tag}</span>
+              <h3 className="mt-5 text-[22px] font-black text-bg" style={{ fontFamily: 'var(--font-display)' }}>{f.t}</h3>
+              <p className="mt-3 text-[14px] leading-[1.6] text-bg/75">{f.d}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA strip ── */}
+      <section className="page-shell pb-32">
+        <div className="rounded-[56px] bg-accent p-10 lg:p-16 text-center text-bg overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)] pointer-events-none" />
+          <span className="eyebrow block mb-4" style={{ color: 'rgba(255,255,255,0.8)' }}>{c.ctaTag}</span>
+          <h2 className="mx-auto max-w-[800px]" style={{ fontSize: 'clamp(36px, 5vw, 64px)', lineHeight: 0.9, letterSpacing: '-0.04em' }}>
+            {c.ctaTitle}
+          </h2>
+          <p className="mt-8 mx-auto max-w-[600px] text-[18px] opacity-80 leading-[1.6]">
+            {c.ctaBody}
+          </p>
+          <div className="mt-12">
+            <a
+              href="https://play.google.com/store/apps/details?id=com.capoeiragem.app"
+              target="_blank" rel="noopener noreferrer"
+              className="btn bg-bg text-ink h-16 px-12 text-[18px] font-black rounded-full hover:scale-105 transition-transform"
+            >
+              {c.ctaBtn}
+            </a>
           </div>
         </div>
-      </footer>
+      </section>
     </div>
   )
 }
