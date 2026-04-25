@@ -109,9 +109,9 @@ export default async function LandingPage({ params }: Props) {
   }[locale] ?? { before: 'Encuentra', em: 'capoeira', after: '\ncerca de tu casa.' }
 
   const bodyText = {
-    es: 'Núcleos, grupos y educadores en 44 países. Para empezar de cero, o para no perder el ritmo cuando estás de viaje.',
-    pt: 'Núcleos, grupos e educadores em 44 países. Para começar do zero ou manter o ritmo quando estiver viajando.',
-    en: 'Nucleos, groups and educators in 44 countries. Whether starting from scratch or keeping the rhythm while traveling.',
+    es: `Núcleos, grupos y educadores en ${stats.countries} países. Para empezar de cero, o para no perder el ritmo cuando estás de viaje.`,
+    pt: `Núcleos, grupos e educadores em ${stats.countries} países. Para começar do zero ou manter o ritmo quando estiver viajando.`,
+    en: `Nucleos, groups and educators in ${stats.countries} countries. Whether starting from scratch or keeping the rhythm while traveling.`,
   }[locale] ?? ''
 
   const liveLabel = locale === 'en' ? 'Live · updated today' : locale === 'pt' ? 'Ao vivo · atualizado hoje' : 'En vivo · actualizado hoy'
@@ -294,28 +294,23 @@ export default async function LandingPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Sidebar */}
+            {/* Info card instead of hardcoded city */}
             <div className="flex flex-col gap-4">
-              {/* Ciudad de la semana */}
               <div className="card-paper p-6">
-                <span className="tag-mono">{ciudadLabel}</span>
-                <h3 className="mt-3 text-[32px] text-ink">Salvador, BA</h3>
-                <p className="text-[13px] text-ink-2 mt-1">17 núcleos · 9 grupos representados</p>
+                <span className="tag-mono">{locale === 'en' ? 'Community' : 'Comunidad'}</span>
+                <h3 className="mt-3 text-[24px] text-ink">{locale === 'en' ? 'Your city is here' : 'Tu ciudad está aquí'}</h3>
+                <p className="text-[13px] text-ink-2 mt-2">
+                  {locale === 'en' 
+                    ? 'Explore educators and training spaces in cities like Madrid, Salvador, or Buenos Aires.' 
+                    : 'Explora educadores y espacios de entrenamiento en ciudades como Madrid, Salvador o Buenos Aires.'}
+                </p>
                 <div className="berimbau-line my-5" />
-                <div className="flex flex-col gap-3">
-                  {[
-                    'Pelourinho · Mestre Bimba',
-                    'Forte da Capoeira · Angola Palmares',
-                    'Rio Vermelho · GCAP',
-                  ].map((l) => (
-                    <div key={l} className="flex items-center justify-between">
-                      <span className="text-[14px] text-ink">{l}</span>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="text-ink-3" aria-hidden="true">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  ))}
-                </div>
+                <Link href={`/${locale}/map`} className="flex items-center justify-between text-[14px] font-semibold text-accent-ink hover:text-accent transition-colors">
+                  {locale === 'en' ? 'Start exploring' : 'Empezar a explorar'}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </Link>
               </div>
 
               {/* Card-ink educadores */}

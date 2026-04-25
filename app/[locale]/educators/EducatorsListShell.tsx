@@ -10,6 +10,7 @@ type Props = Readonly<{
   initialEducators: PublicUserProfile[]
   initialQuery: string
   dataUnavailable: boolean
+  stats: { countries: number; groups: number }
 }>
 
 const COPY = {
@@ -82,7 +83,7 @@ function createHaystack(e: PublicUserProfile) {
 
 function handleSubmit(e: { preventDefault(): void }) { e.preventDefault() }
 
-export default function EducatorsListShell({ locale, initialEducators, initialQuery, dataUnavailable }: Props) {
+export default function EducatorsListShell({ locale, initialEducators, initialQuery, dataUnavailable, stats }: Props) {
   const copy = getCopy(locale)
   const [query, setQuery] = useState(initialQuery)
   const [activeFilter, setActiveFilter] = useState(0)
@@ -112,13 +113,13 @@ export default function EducatorsListShell({ locale, initialEducators, initialQu
           <div className="flex gap-10 lg:pb-2">
             <div>
               <div className="text-[36px] font-black leading-none tracking-[-0.04em] text-ink" style={{ fontFamily: 'var(--font-display)' }}>
-                44
+                {stats.countries}
               </div>
               <div className="mono mt-2 text-[10px] uppercase tracking-[0.16em] text-ink-3">{copy.stats[1]?.label}</div>
             </div>
             <div>
               <div className="text-[36px] font-black leading-none tracking-[-0.04em] text-ink" style={{ fontFamily: 'var(--font-display)' }}>
-                68
+                {stats.groups}
               </div>
               <div className="mono mt-2 text-[10px] uppercase tracking-[0.16em] text-ink-3">{copy.stats[2]?.label}</div>
             </div>

@@ -59,10 +59,16 @@ export default async function EducatorsPage({ params, searchParams }: Props) {
 
   let educators: PublicUserProfile[] = []
   let dataUnavailable = false
+  let stats = { countries: 0, groups: 0 }
 
   try {
-    const { getAllEducators } = await import('@/lib/queries')
-    educators = await getAllEducators()
+    const { getAllEducators, getStats } = await import('@/lib/queries')
+    const [edRes, statsRes] = await Promise.all([
+      getAllEducators(),
+      getStats().catch(() => ({ countries: 0, groups: 0 }))
+    ])
+    educators = edRes
+    stats = { countries: statsRes.countries, groups: statsRes.groups }
   } catch (error) {
     dataUnavailable = true
     if (process.env.NODE_ENV === 'development') {
@@ -76,6 +82,7 @@ export default async function EducatorsPage({ params, searchParams }: Props) {
       initialEducators={educators}
       initialQuery={initialQuery}
       dataUnavailable={dataUnavailable}
+      stats={stats}
     />
   )
 }

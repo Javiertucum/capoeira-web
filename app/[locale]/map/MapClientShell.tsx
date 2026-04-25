@@ -16,6 +16,7 @@ type Props = Readonly<{
   initialQuery: string
   initialFilter: string
   dataUnavailable: boolean
+  countriesCount: number
 }>
 
 type FilterValue = 'nucleos' | 'groups'
@@ -142,6 +143,7 @@ export default function MapClientShell({
   initialQuery,
   initialFilter,
   dataUnavailable,
+  countriesCount,
 }: Props) {
   const t = useTranslations('map')
   const copy = getCopy(locale)
@@ -256,7 +258,7 @@ export default function MapClientShell({
             <div className="flex gap-8 sm:pb-2">
               {([
                 { n: filterCounts.groups,  l: filterLabels.groups },
-                { n: 44, l: locale === 'en' ? 'Countries' : 'Países' },
+                { n: countriesCount, l: locale === 'en' ? 'Countries' : 'Países' },
               ] as { n: number; l: string }[]).map(({ n, l }) => (
                 <div key={l}>
                   <div className="text-[36px] font-black leading-none tracking-[-0.04em] text-ink" style={{ fontFamily: 'var(--font-display)' }}>

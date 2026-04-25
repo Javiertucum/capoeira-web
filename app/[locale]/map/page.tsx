@@ -65,17 +65,20 @@ export default async function MapPage({ params, searchParams }: Props) {
   let nucleos: MapNucleo[] = []
   let dataUnavailable = false
 
+  let countriesCount = 0
   try {
-    const { getAllNucleos, getAllGroups } = await import('@/lib/queries')
+    const { getAllNucleos, getAllGroups, getStats } = await import('@/lib/queries')
     const results = await Promise.allSettled([
       getAllNucleos(),
       getAllGroups(),
+      getStats(),
     ])
 
     nucleos = results[0].status === 'fulfilled' ? results[0].value : []
     groups = results[1].status === 'fulfilled' ? results[1].value : []
+    countriesCount = results[2].status === 'fulfilled' ? results[2].value.countries : 0
 
-    if (results.every((result) => result.status === 'rejected')) {
+    if (results.slice(0, 2).every((result) => result.status === 'rejected')) {
       dataUnavailable = true
     }
   } catch (error) {
@@ -91,6 +94,7 @@ export default async function MapPage({ params, searchParams }: Props) {
       initialQuery={readParam(resolvedSearchParams.q)}
       initialFilter={readParam(resolvedSearchParams.filter)}
       dataUnavailable={dataUnavailable}
+      countriesCount={countriesCount}
     />
   )
 }

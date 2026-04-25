@@ -112,7 +112,6 @@ export default function HeroSearch() {
             className="chip"
           >
             {c.label}
-            <span className="text-ink-4 text-[11px]">{c.n}</span>
           </Link>
         ))}
       </div>
