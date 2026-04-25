@@ -242,41 +242,39 @@ export default function MapClientShell({
 
   return (
     <div className="flex min-h-screen flex-col pb-16">
-      {/* ── Header compacto ── */}
-      <div className="border-b border-line-soft px-5 pb-4 pt-8 sm:px-8 lg:px-16">
+      {/* ── Header expansivo ── */}
+      <div className="border-b border-line-soft px-5 pb-8 pt-10 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-[1280px]">
           {/* Title + stats */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <span className="eyebrow acc block mb-2">{copy.eyebrow}</span>
-              <h1 style={{ fontSize: 'clamp(28px, 4vw, 44px)', lineHeight: 1, letterSpacing: '-0.03em' }}>
-                {titleText}
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-[600px]">
+              <span className="eyebrow acc block mb-3">{copy.eyebrow}</span>
+              <h1 style={{ fontSize: 'clamp(42px, 6vw, 72px)', lineHeight: 0.9, letterSpacing: '-0.05em' }}>
+                {filterCounts.nucleos.toLocaleString()} {locale === 'en' ? 'nucleos' : 'núcleos'} <em className="italic">{locale === 'en' ? 'nearby' : 'cerca'}</em>.
               </h1>
             </div>
-            <div className="flex gap-6 sm:pb-1">
+            <div className="flex gap-8 sm:pb-2">
               {([
-                { n: filterCounts.nucleos, l: filterLabels.nucleos },
                 { n: filterCounts.groups,  l: filterLabels.groups },
                 { n: 44, l: locale === 'en' ? 'Countries' : 'Países' },
               ] as { n: number; l: string }[]).map(({ n, l }) => (
                 <div key={l}>
-                  <div className="text-[32px] font-bold leading-none tracking-[-0.03em] text-ink" style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}>
+                  <div className="text-[36px] font-black leading-none tracking-[-0.04em] text-ink" style={{ fontFamily: 'var(--font-display)' }}>
                     {n}
                   </div>
-                  <div className="mono mt-1 text-[11px] uppercase tracking-[0.14em] text-ink-3">{l}</div>
+                  <div className="mono mt-2 text-[10px] uppercase tracking-[0.16em] text-ink-3">{l}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Search + near + buscar + filtros */}
-          <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
             <div
-              className="flex flex-1 items-center gap-2 rounded-full border border-line bg-surface p-1.5"
-              style={{ boxShadow: 'var(--shadow-sm)' }}
+              className="flex flex-1 items-center gap-2 rounded-full border border-line bg-surface p-2 shadow-sm focus-within:border-ink transition-all"
             >
-              <div className="flex flex-1 items-center gap-3 px-4 h-11 min-w-0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-ink-3" aria-hidden="true">
+              <div className="flex flex-1 items-center gap-3 px-5 h-12 min-w-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-ink-4" aria-hidden="true">
                   <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
                 </svg>
                 <input
@@ -285,24 +283,23 @@ export default function MapClientShell({
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={t('searchPlaceholder')}
                   aria-label={t('searchPlaceholder')}
-                  className="flex-1 min-w-0 bg-transparent text-[15px] text-ink outline-none placeholder:text-ink-4"
+                  className="flex-1 min-w-0 bg-transparent text-[16px] font-medium text-ink outline-none placeholder:text-ink-4"
                 />
               </div>
-              <div className="hidden h-6 w-px bg-line sm:block" />
+              <div className="hidden h-8 w-px bg-line/60 sm:block" />
               <button
                 type="button"
                 onClick={() => setQuery('')}
-                className="hidden sm:flex h-11 items-center gap-2 px-4 text-[13px] text-ink-2 hover:text-ink transition-colors whitespace-nowrap"
+                className="hidden sm:flex h-12 items-center gap-2 px-5 text-[14px] font-semibold text-ink-2 hover:text-ink transition-colors whitespace-nowrap"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /><circle cx="12" cy="9" r="2.5" />
                 </svg>
                 {nearLabel}
               </button>
               <button
                 type="submit"
-                className="btn btn-accent shrink-0"
-                style={{ height: 44, paddingInline: 20 }}
+                className="btn btn-accent shrink-0 h-12 px-8 text-[15px] font-bold shadow-sm hover:shadow-md transition-all"
               >
                 {isPending ? '…' : copy.searchButton}
               </button>

@@ -192,82 +192,69 @@ export default async function GroupPage({ params }: Props) {
     <div className="relative min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(groupSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div className="page-shell relative py-10">
-        <Link
-          href={`/${locale}/map?filter=groups`}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-sm text-ink-3 transition-colors hover:text-ink"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          {t('back')}
-        </Link>
+      <div className="page-shell relative py-12">
+        <header className="mb-12">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="berimbau-dot" />
+                <span className="eyebrow acc">{t('group')} · {group.representedCountries?.[0]}</span>
+              </div>
+              <h1 style={{ fontSize: 'clamp(48px, 6vw, 92px)', lineHeight: 0.9, letterSpacing: '-0.06em' }}>
+                {group.name}
+              </h1>
+            </div>
+            {group.logoUrl && (
+              <div className="relative h-24 w-24 overflow-hidden rounded-[24px] border border-line bg-white p-3 shadow-sm lg:h-32 lg:w-32">
+                <Image src={group.logoUrl} alt={group.name} fill className="object-contain" priority />
+              </div>
+            )}
+          </div>
 
-        <section className="relative overflow-hidden rounded-[34px] border border-line bg-surface p-6 sm:p-8" style={{ boxShadow: 'var(--shadow-md)' }}>
-          <div className="relative grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-center">
-            <div className="flex justify-center lg:justify-start">
-              <div className="relative h-[170px] w-[170px] overflow-hidden rounded-[30px] border border-line bg-surface shadow-[0_22px_60px_var(--shadow-soft)]">
-                {group.logoUrl ? (
-                  <Image
-                    src={group.logoUrl}
-                    alt={group.name}
-                    fill
-                    sizes="170px"
-                    priority
-                    className="object-contain p-5"
-                  />
+          {/* Stats Row */}
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {[
+              { label: t('members'), value: group.memberCount?.toLocaleString() ?? '—' },
+              { label: t('nucleos'), value: nucleos.length },
+              { label: t('educators'), value: educators.length },
+              { label: locale === 'en' ? 'Countries' : 'Países', value: group.representedCountries?.length ?? 0 },
+              { label: locale === 'en' ? 'Founded' : 'Fundación', value: group.foundationYear ?? '—' },
+            ].map((s) => (
+              <div key={s.label} className="card-paper px-6 py-5" style={{ borderRadius: 'var(--radius-lg)' }}>
+                <div className="text-[32px] font-black leading-none tracking-tight text-ink" style={{ fontFamily: 'var(--font-display)' }}>
+                  {s.value}
+                </div>
+                <div className="mono mt-2 text-[9px] uppercase tracking-widest text-ink-4">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </header>
+
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_380px]">
+          <div className="space-y-12">
+            <section className="space-y-8">
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl font-bold text-ink">{t('nucleos')}</h2>
+                <div className="h-px flex-1 bg-line/60" />
+              </div>
+
+              <div className="grid gap-6 2xl:grid-cols-2">
+                {nucleos.length > 0 ? (
+                  nucleos.map((nucleo) => (
+                    <div key={nucleo.id} className="card p-6 shadow-sm transition-all hover:shadow-md" style={{ borderRadius: 'var(--radius-xl)' }}>
+                       <NucleoListItem nucleo={nucleo} isActive={false} showGroupLink={false} />
+                    </div>
+                  ))
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-4xl font-bold text-ink-3">
-                    {group.name?.[0] ?? '?'}
+                  <div className="rounded-[32px] border border-dashed border-line bg-surface-muted px-5 py-12 text-center text-sm leading-7 text-ink-3">
+                    {t('noNucleos')}
                   </div>
                 )}
               </div>
-            </div>
-
-            <div>
-              <h1 className="mt-4 text-[clamp(34px,5vw,60px)] font-semibold leading-[0.96] tracking-[-0.06em] text-ink">
-                {group.name}
-              </h1>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {graduationSystem ? (
-                  <Badge variant="accent">{t('graduationSystem') + ': ' + graduationSystem}</Badge>
-                ) : null}
-                {group.memberCount ? <Badge>{`${group.memberCount} ${t('members')}`}</Badge> : null}
-                {group.representedCountries?.length ? (
-                  <Badge>{`${group.representedCountries.length} ${t('representedCountries')}`}</Badge>
-                ) : null}
-              </div>
-            </div>
+            </section>
           </div>
-        </section>
-
-        <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_390px]">
-          <section className="rounded-[22px] border border-line bg-surface p-6">
-            <h2 className="text-[28px] font-semibold tracking-[-0.04em] text-ink">
-              {`${t('nucleos')} (${nucleos.length})`}
-            </h2>
-
-            {group.representedCountries && group.representedCountries.length > 0 ? (
-              <div className="mt-5 rounded-[22px] border border-line bg-surface-muted px-5 py-4 text-sm leading-7 text-ink-2">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-ink-3">
-                  {t('representedCountries')}
-                </span>
-                <div className="mt-2">{group.representedCountries.join(' | ')}</div>
-              </div>
-            ) : null}
-
-            <div className="mt-6 grid gap-4 2xl:grid-cols-2">
-              {nucleos.length > 0 ? (
-                nucleos.map((nucleo) => (
-                  <NucleoListItem key={nucleo.id} nucleo={nucleo} isActive={false} showGroupLink={false} />
-                ))
-              ) : (
-                <div className="rounded-[22px] border border-dashed border-line bg-surface-muted px-5 py-8 text-center text-sm leading-7 text-ink-3">
-                  {t('noNucleos')}
-                </div>
-              )}
-            </div>
-          </section>
 
           <aside className="space-y-6">
             <section className="rounded-[22px] border border-line bg-surface p-5">
@@ -346,53 +333,50 @@ export default async function GroupPage({ params }: Props) {
               </section>
             ) : null}
 
+            {/* Educators */}
             {educators.length > 0 && (
-              <section className="rounded-[22px] border border-line bg-surface p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ink-3">
-                  {t('educators')} ({educators.length})
-                </p>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+              <section className="space-y-8">
+                <div className="flex items-center gap-4">
+                  <h2 className="text-2xl font-bold text-ink">{t('educators')}</h2>
+                  <div className="h-px flex-1 bg-line/60" />
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
                   {educators.map((edu) => {
                     const gradLevel = edu.graduationLevelId ? gradLevelById.get(edu.graduationLevelId) : undefined
                     return (
                       <Link
                         key={edu.uid}
                         href={`/${locale}/educator/${edu.uid}`}
-                        className="flex items-center gap-3 rounded-[18px] border border-line bg-surface-muted px-3 py-3 transition-colors hover:border-text/20"
+                        className="card flex items-center gap-4 p-4 transition-all hover:shadow-md"
+                        style={{ borderRadius: 'var(--radius-lg)' }}
                       >
-                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-line bg-surface">
+                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[16px] border border-line bg-surface">
                           {edu.avatarUrl ? (
-                            <Image
-                              src={edu.avatarUrl}
-                              alt={edu.nickname || edu.name || 'Educator'}
-                              fill
-                              sizes="40px"
-                              className="object-cover"
-                            />
+                            <Image src={edu.avatarUrl} alt={edu.nickname || edu.name} fill className="object-cover" />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center text-sm font-bold text-ink-3">
+                            <div className="flex h-full w-full items-center justify-center text-lg font-bold text-ink-3">
                               {edu.name?.[0] ?? '?'}
                             </div>
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-ink">
+                          <p className="truncate text-[16px] font-bold text-ink">
                             {edu.nickname || `${edu.name} ${edu.surname}`}
                           </p>
                           {gradLevel ? (
-                            <div className="mt-1 flex items-center gap-2">
+                            <div className="mt-2 flex items-center gap-2">
                               <CordaVisual
                                 colors={gradLevel.colors}
                                 tipColorLeft={gradLevel.tipColorLeft}
                                 tipColorRight={gradLevel.tipColorRight}
-                                width={48}
-                                height={8}
+                                width={56}
+                                height={10}
                               />
-                              <span className="truncate text-[10px] text-ink-3">{gradLevel.name}</span>
+                              <span className="truncate text-[10px] uppercase tracking-wider text-ink-3">{gradLevel.name}</span>
                             </div>
                           ) : null}
                         </div>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-ink-3">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-ink-4">
                           <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
                       </Link>
@@ -401,6 +385,42 @@ export default async function GroupPage({ params }: Props) {
                 </div>
               </section>
             )}
+          </div>
+
+          {/* ── Right side ── */}
+          <aside className="space-y-10">
+            {graduationLevels.length > 0 ? (
+              <GraduationSystemSection
+                levels={graduationLevels}
+                title={graduationSystem ?? t('graduation')}
+              />
+            ) : null}
+
+            {adminUser ? (
+              <section className="card p-6" style={{ borderRadius: 'var(--radius-xl)' }}>
+                <p className="mono mb-6 text-[10px] uppercase tracking-[0.2em] text-ink-3">
+                  {t('admin')}
+                </p>
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative h-24 w-24 overflow-hidden rounded-full border border-line bg-surface-muted shadow-sm">
+                    {adminUser.avatarUrl ? (
+                      <Image src={adminUser.avatarUrl} alt={adminUser.nickname || adminUser.name} fill className="object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-3xl font-black text-ink-3">{adminUser.name?.[0]}</div>
+                    )}
+                  </div>
+                  <h3 className="mt-5 text-[18px] font-bold text-ink">
+                    {adminUser.nickname || `${adminUser.name} ${adminUser.surname}`}
+                  </h3>
+                  <Link
+                    href={`/${locale}/educator/${adminUser.uid}`}
+                    className="btn btn-ghost btn-sm mt-6 w-full"
+                  >
+                    {t('viewProfile')}
+                  </Link>
+                </div>
+              </section>
+            ) : null}
 
             <AdDisplay />
           </aside>

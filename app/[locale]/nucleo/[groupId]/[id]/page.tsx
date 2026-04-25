@@ -145,429 +145,136 @@ export default async function NucleoPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div className="page-shell relative py-10">
-        <Link
-          href={`/${locale}/group/${groupId}`}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-sm text-ink-3 transition-colors hover:text-ink"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          {t('back')}
-        </Link>
-
-        <section className="rounded-[22px] border border-line bg-surface p-6 sm:p-8">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ink-3">
-            {groupName}
-          </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-            {nucleo.name}
-          </h1>
-          {(nucleo.city || nucleo.country) && (
-            <p className="mt-2 text-base text-ink-2">
-              {[nucleo.city, nucleo.country].filter(Boolean).join(', ')}
-            </p>
-          )}
-          {nucleo.address && (
-            <div className="mt-4 flex items-start gap-2 text-sm text-ink-2">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="mt-0.5 shrink-0 text-ink-3"
-              >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              <span>{nucleo.address}</span>
+      <div className="page-shell relative py-12">
+        {/* Header Section */}
+        <header className="mb-12">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="berimbau-dot" />
+                <span className="eyebrow acc">{groupName} · {nucleo.country}</span>
+              </div>
+              <h1 style={{ fontSize: 'clamp(44px, 6vw, 84px)', lineHeight: 0.9, letterSpacing: '-0.05em' }}>
+                {nucleo.name}
+              </h1>
+              {nucleo.address && (
+                <p className="mt-6 flex items-center gap-2.5 text-[19px] font-medium text-ink-2">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent-ink">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                    <circle cx="12" cy="9" r="2.5" />
+                  </svg>
+                  {nucleo.address}
+                </p>
+              )}
             </div>
-          )}
-        </section>
+            
+            <div className="flex gap-4">
+              <Link href={`/${locale}/group/${groupId}`} className="btn btn-ghost">
+                {t('group')}
+              </Link>
+            </div>
+          </div>
+        </header>
 
-        <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_390px] 2xl:grid-cols-[minmax(0,1.08fr)_420px] xl:items-start">
-          <div className="space-y-6">
-            {responsibleEducator ? (
-              <section className="rounded-[22px] border border-line bg-surface p-6 sm:p-8">
-                <div className="grid gap-6 2xl:grid-cols-[260px_minmax(0,1fr)]">
-                  <div className="space-y-4">
-                    <div className="rounded-[24px] border border-line bg-surface-muted px-5 py-5 text-center">
-                      <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full border-4 border-line bg-surface shadow-lg xl:h-40 xl:w-40">
-                        {responsibleEducator.avatarUrl ? (
-                          <Image
-                            src={responsibleEducator.avatarUrl}
-                            alt={responsibleName ?? 'Educator'}
-                            fill
-                            sizes="(min-width: 1280px) 160px, 128px"
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-surface-muted text-3xl font-bold text-ink-3">
-                            {responsibleEducator.name?.[0] ?? '?'}
-                          </div>
-                        )}
-                      </div>
-                      <p className="mt-4 text-[11px] font-semibold uppercase tracking-widest text-ink-3">
-                        {t('responsibleEducator')}
-                      </p>
-                      <h2 className="mt-2 text-xl font-bold text-ink">{responsibleName}</h2>
-                      {responsibleEducator.graduationLevelId &&
-                      gradLevelById.get(responsibleEducator.graduationLevelId) ? (
-                        <div className="mt-3 flex items-center justify-center gap-2">
-                          <CordaVisual
-                            colors={gradLevelById.get(responsibleEducator.graduationLevelId)!.colors}
-                            tipColorLeft={gradLevelById.get(responsibleEducator.graduationLevelId)!.tipColorLeft}
-                            tipColorRight={gradLevelById.get(responsibleEducator.graduationLevelId)!.tipColorRight}
-                            width={64}
-                            height={10}
-                          />
-                          <span className="text-xs text-ink-2">
-                            {gradLevelById.get(responsibleEducator.graduationLevelId)!.name}
-                          </span>
-                        </div>
-                      ) : null}
-                    </div>
-
-                    {group ? (
-                      <Link
-                        href={`/${locale}/group/${groupId}`}
-                        className="flex items-center gap-4 rounded-[24px] border border-line bg-surface-muted px-4 py-4 transition-colors hover:border-text/20"
-                      >
-                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-[18px] border border-line bg-surface">
-                          {group.logoUrl ? (
-                            <Image
-                              src={group.logoUrl}
-                              alt={group.name}
-                              fill
-                              sizes="64px"
-                              className="object-contain p-2"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center text-lg font-bold text-ink-3">
-                              {group.name?.[0] ?? '?'}
-                            </div>
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-ink-3">
-                            {t('group')}
-                          </p>
-                          <p className="mt-1 truncate text-sm font-semibold text-ink">{group.name}</p>
-                        </div>
-                      </Link>
-                    ) : null}
-                  </div>
-
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-ink-3">
-                        {t('contact')}
-                      </h3>
-                      {responsibleEducator.socialLinks ? (
-                        <div className="grid gap-3 sm:grid-cols-2">
-                          {responsibleEducator.socialLinks.whatsapp ? (
-                            <a
-                              href={`https://wa.me/${responsibleEducator.socialLinks.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(`Hola, vi el nucleo "${nucleo.name}" en Agenda Capoeiragem y me gustaria saber mas.`)}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 rounded-[14px] border border-line bg-surface-muted px-4 py-2.5 text-sm font-semibold text-ink-2 transition-all hover:border-[#25D366]/40 hover:bg-[#25D366]/5 hover:text-ink"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
-                              WhatsApp
-                            </a>
-                          ) : null}
-                          {responsibleEducator.socialLinks.instagram ? (
-                            <a
-                              href={`https://instagram.com/${responsibleEducator.socialLinks.instagram.replace('@', '')}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 rounded-[14px] border border-line bg-surface-muted px-4 py-2.5 text-sm font-semibold text-ink-2 transition-all hover:border-[#E4405F]/40 hover:bg-[#E4405F]/5 hover:text-ink"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E4405F" strokeWidth="2.2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" /></svg>
-                              Instagram
-                            </a>
-                          ) : null}
-                          {responsibleEducator.socialLinks.facebook ? (
-                            <a
-                              href={`https://facebook.com/${responsibleEducator.socialLinks.facebook.replace('@', '')}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 rounded-[14px] border border-line bg-surface-muted px-4 py-2.5 text-sm font-semibold text-ink-2 transition-all hover:border-[#1877F2]/40 hover:bg-[#1877F2]/5 hover:text-ink"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
-                              Facebook
-                            </a>
-                          ) : null}
-                          {responsibleEducator.socialLinks.youtube ? (
-                            <a
-                              href={`https://youtube.com/@${responsibleEducator.socialLinks.youtube.replace('@', '')}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 rounded-[14px] border border-line bg-surface-muted px-4 py-2.5 text-sm font-semibold text-ink-2 transition-all hover:border-[#FF0000]/40 hover:bg-[#FF0000]/5 hover:text-ink"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z" /><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" /></svg>
-                              YouTube
-                            </a>
-                          ) : null}
-                          {responsibleEducator.socialLinks.tiktok ? (
-                            <a
-                              href={`https://tiktok.com/@${responsibleEducator.socialLinks.tiktok.replace('@', '')}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 rounded-[14px] border border-line bg-surface-muted px-4 py-2.5 text-sm font-semibold text-ink-2 transition-all hover:border-line hover:text-ink"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z" /></svg>
-                              TikTok
-                            </a>
-                          ) : null}
-                          {responsibleEducator.socialLinks.website ? (
-                            <a
-                              href={
-                                responsibleEducator.socialLinks.website.startsWith('http')
-                                  ? responsibleEducator.socialLinks.website
-                                  : `https://${responsibleEducator.socialLinks.website}`
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 rounded-[14px] border border-line bg-surface-muted px-4 py-2.5 text-sm font-semibold text-ink-2 transition-all hover:border-text/20 hover:text-ink"
-                            >
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>
-                              {t('website')}
-                            </a>
-                          ) : null}
-                        </div>
-                      ) : (
-                        <p className="text-sm italic text-ink-3">{t('unspecified')}</p>
-                      )}
-                    </div>
-
-                    <Link
-                      href={`/${locale}/educator/${responsibleEducator.uid}`}
-                      className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-xs font-semibold uppercase tracking-widest text-ink-2 transition-colors hover:text-ink"
-                    >
-                      {t('viewProfile')}
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                      </svg>
-                    </Link>
-                  </div>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_380px]">
+          {/* ── Main Column ── */}
+          <div className="space-y-12">
+            {/* Schedules */}
+            {nucleo.schedules && nucleo.schedules.length > 0 && (
+              <section className="space-y-8">
+                <div className="flex items-center gap-4">
+                  <h2 className="text-2xl font-bold text-ink">{t('schedules')}</h2>
+                  <div className="h-px flex-1 bg-line/60" />
                 </div>
-              </section>
-            ) : null}
-
-            {coEducatorProfiles.length > 0 ? (
-              <section className="rounded-[22px] border border-line bg-surface p-5">
-                <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-ink-3">
-                  {t('coEducators')}
-                </p>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {coEducatorProfiles.map((educator) => {
-                    const gradLevel = educator.graduationLevelId
-                      ? gradLevelById.get(educator.graduationLevelId)
-                      : undefined
-
-                    return (
-                      <Link
-                        key={educator.uid}
-                        href={`/${locale}/educator/${educator.uid}`}
-                        className="flex items-center gap-3 rounded-[18px] border border-line bg-surface-muted px-3 py-3 transition-colors hover:border-text/20"
-                      >
-                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-line bg-surface">
-                          {educator.avatarUrl ? (
-                            <Image
-                              src={educator.avatarUrl}
-                              alt={educator.nickname || educator.name || 'Co-educator'}
-                              fill
-                              sizes="40px"
-                              className="object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center text-xs font-bold text-ink-3">
-                              {educator.name?.[0] ?? '?'}
-                            </div>
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-ink">
-                            {educator.nickname || `${educator.name} ${educator.surname}`}
-                          </p>
-                          {gradLevel ? (
-                            <div className="mt-1 flex items-center gap-1.5">
-                              <CordaVisual
-                                colors={gradLevel.colors}
-                                tipColorLeft={gradLevel.tipColorLeft}
-                                tipColorRight={gradLevel.tipColorRight}
-                                width={36}
-                                height={7}
-                              />
-                              <span className="truncate text-[9px] text-ink-3">{gradLevel.name}</span>
-                            </div>
-                          ) : null}
-                        </div>
-                      </Link>
-                    )
-                  })}
-                </div>
-              </section>
-            ) : null}
-
-            {nucleo.schedules && nucleo.schedules.length > 0 ? (
-              <section className="rounded-[22px] border border-line bg-surface p-5">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-3">
-                  {t('schedules')}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   {nucleo.schedules.map((schedule, index) => (
-                    <span
-                      key={index}
-                      className="rounded-full border border-line bg-surface-muted px-3 py-1.5 text-sm font-medium text-ink-2"
-                    >
-                      {getDay(locale, schedule.dayOfWeek)} · {schedule.startTime}-{schedule.endTime}
-                    </span>
+                    <div key={index} className="card-paper flex items-center gap-4 px-6 py-4" style={{ borderRadius: 'var(--radius-lg)' }}>
+                      <div className="mono text-[11px] font-black uppercase tracking-widest text-accent-ink">
+                        {getDay(locale, schedule.dayOfWeek)}
+                      </div>
+                      <div className="h-4 w-px bg-line" />
+                      <div className="text-[15px] font-bold text-ink">
+                        {schedule.startTime} — {schedule.endTime}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </section>
-            ) : null}
+            )}
 
-            <section className="rounded-[22px] border border-line bg-surface p-5">
-              <div className="flex items-end justify-between gap-4">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-3">
-                  {t('members')}
-                </p>
-                <span className="text-sm text-ink-2">{members.length}</span>
+            {/* Members / Educators */}
+            <section className="space-y-8">
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl font-bold text-ink">{t('members')}</h2>
+                <div className="h-px flex-1 bg-line/60" />
               </div>
-
-              {members.length === 0 ? (
-                <p className="mt-4 text-sm text-ink-3">{t('noMembers')}</p>
-              ) : (
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {members.map((member) => {
-                    const gradLevel = member.graduationLevelId
-                      ? gradLevelById.get(member.graduationLevelId)
-                      : undefined
-
-                    const card = (
-                      <>
-                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-line bg-surface">
-                          {member.avatarUrl ? (
-                            <Image
-                              src={member.avatarUrl}
-                              alt={member.nickname || member.name || 'Member'}
-                              fill
-                              sizes="40px"
-                              className="object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center text-sm font-bold text-ink-3">
-                              {member.name?.[0] ?? '?'}
-                            </div>
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-ink">
-                            {member.nickname || `${member.name} ${member.surname}`}
-                          </p>
-                          {gradLevel ? (
-                            <div className="mt-1 flex items-center gap-2">
-                              <CordaVisual
-                                colors={gradLevel.colors}
-                                tipColorLeft={gradLevel.tipColorLeft}
-                                tipColorRight={gradLevel.tipColorRight}
-                                width={48}
-                                height={8}
-                              />
-                              <span className="truncate text-[10px] text-ink-3">{gradLevel.name}</span>
-                            </div>
-                          ) : null}
-                        </div>
-                        {member.role === 'educator' ? (
-                          <span className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-accent-ink">
-                            EDU
-                          </span>
-                        ) : null}
-                      </>
-                    )
-
-                    if (member.role === 'educator') {
-                      return (
-                        <Link
-                          key={member.uid}
-                          href={`/${locale}/educator/${member.uid}`}
-                          className="flex items-center gap-3 rounded-[18px] border border-line bg-surface-muted px-4 py-3 transition-colors hover:border-text/20"
-                        >
-                          {card}
-                        </Link>
-                      )
-                    }
-
-                    return (
-                      <div
-                        key={member.uid}
-                        className="flex items-center gap-3 rounded-[18px] border border-line bg-surface px-4 py-3"
-                      >
-                        {card}
+              <div className="grid gap-4 sm:grid-cols-2">
+                {members.map((member) => {
+                  const gradLevel = member.graduationLevelId ? gradLevelById.get(member.graduationLevelId) : undefined
+                  const content = (
+                    <div className="flex items-center gap-4 p-4">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[14px] border border-line bg-surface">
+                        {member.avatarUrl ? (
+                          <Image src={member.avatarUrl} alt={member.name} fill className="object-cover" />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-lg font-bold text-ink-4">{member.name?.[0]}</div>
+                        )}
                       </div>
-                    )
-                  })}
-                </div>
-              )}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-[15px] font-bold text-ink">{member.nickname || `${member.name} ${member.surname}`}</p>
+                        {gradLevel && (
+                          <div className="mt-1 flex items-center gap-2">
+                            <CordaVisual colors={gradLevel.colors} tipColorLeft={gradLevel.tipColorLeft} tipColorRight={gradLevel.tipColorRight} width={48} height={8} />
+                            <span className="text-[10px] uppercase tracking-wider text-ink-3">{gradLevel.name}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )
+
+                  return member.role === 'educator' ? (
+                    <Link key={member.uid} href={`/${locale}/educator/${member.uid}`} className="card transition-all hover:shadow-md" style={{ borderRadius: 'var(--radius-lg)' }}>
+                      {content}
+                    </Link>
+                  ) : (
+                    <div key={member.uid} className="card-paper" style={{ borderRadius: 'var(--radius-lg)' }}>
+                      {content}
+                    </div>
+                  )
+                })}
+              </div>
             </section>
           </div>
 
-          <div className="space-y-5 xl:sticky xl:top-24 xl:self-start">
-            {mapEmbedUrl ? (
-              <section className="overflow-hidden rounded-[22px] border border-line">
-                <iframe
-                  src={mapEmbedUrl}
-                  width="100%"
-                  height="380"
-                  style={{ border: 0, display: 'block' }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={nucleo.name}
-                />
-              </section>
-            ) : null}
-
-            <Link
-              href={`/${locale}/group/${groupId}`}
-              className="flex items-center gap-4 rounded-[22px] border border-line bg-surface px-5 py-4 transition-colors hover:border-text/20"
-            >
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[16px] border border-line bg-surface">
-                {group?.logoUrl ? (
-                  <Image
-                    src={group.logoUrl}
-                    alt={group.name}
-                    fill
-                    sizes="56px"
-                    className="object-contain p-2"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-lg font-bold text-ink-3">
-                    {groupName?.[0] ?? '?'}
+          {/* ── Sidebar ── */}
+          <aside className="space-y-10">
+            {responsibleEducator && (
+              <section className="card p-6" style={{ borderRadius: 'var(--radius-xl)' }}>
+                <p className="mono mb-6 text-[10px] uppercase tracking-[0.2em] text-ink-3">{t('responsibleEducator')}</p>
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative h-28 w-28 overflow-hidden rounded-full border border-line bg-surface shadow-sm">
+                    {responsibleEducator.avatarUrl ? (
+                      <Image src={responsibleEducator.avatarUrl} alt={responsibleName || ''} fill className="object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-4xl font-black text-ink-3">{responsibleEducator.name?.[0]}</div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-ink-3">{t('group')}</p>
-                <p className="mt-1 truncate text-sm font-semibold text-ink">{groupName}</p>
-              </div>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="shrink-0 text-ink-3"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
+                  <h3 className="mt-5 text-[20px] font-black text-ink">{responsibleName}</h3>
+                  <Link href={`/${locale}/educator/${responsibleEducator.uid}`} className="btn btn-ghost mt-6 w-full">{t('viewProfile')}</Link>
+                </div>
+              </section>
+            )}
+
+            {mapEmbedUrl && (
+              <section className="overflow-hidden rounded-[32px] border border-line bg-surface shadow-sm">
+                <iframe src={mapEmbedUrl} width="100%" height="320" style={{ border: 0 }} allowFullScreen loading="lazy" />
+              </section>
+            )}
+          </aside>
+        </div>
+      </div>
+    </div>
+  )
         </div>
       </div>
     </div>

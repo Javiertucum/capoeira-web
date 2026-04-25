@@ -132,190 +132,109 @@ export default async function AppPage({ params }: Props) {
   const c = getCopy(locale)
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-ink">
       {/* ── HERO ── */}
-      <section className="page-shell grid gap-14 py-16 lg:grid-cols-[1fr_400px] lg:items-center">
-        <div>
-          <span className="eyebrow acc block mb-4">{c.eyebrow}</span>
-          <h1 style={{ fontSize: 'clamp(52px, 7vw, 80px)', lineHeight: 0.94, letterSpacing: '-0.035em' }}>
-            {c.heroLine1} <em>{c.heroEm}</em> {c.heroLine2}
-            <span className="block">{c.heroLine3}</span>
-            <span className="block">{c.heroLine4}</span>
-          </h1>
-          <p className="mt-5 max-w-[540px] text-[16px] leading-[1.7] text-ink-2">{c.body}</p>
+      <section className="page-shell relative overflow-hidden py-24 lg:py-32">
+        {/* Decorative background glow */}
+        <div className="absolute -top-24 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-accent-soft opacity-20 blur-[120px]" />
+        
+        <div className="relative z-10 grid gap-16 lg:grid-cols-[1fr_450px] lg:items-center">
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+              <span className="mono text-[10px] uppercase tracking-[0.2em] text-bg/60">{c.eyebrow}</span>
+            </div>
+            <h1 className="text-bg" style={{ fontSize: 'clamp(56px, 8vw, 100px)', lineHeight: 0.88, letterSpacing: '-0.05em' }}>
+              Todo tu <br/>
+              universo <br/>
+              <em className="italic text-accent">capoeira</em>.
+            </h1>
+            <p className="mt-8 max-w-[500px] text-[18px] leading-[1.6] text-bg/70">{c.body}</p>
 
-          {/* Store buttons */}
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="https://play.google.com/store/apps/details?id=com.capoeiragem.app"
-              target="_blank" rel="noopener noreferrer"
-              className="btn btn-primary btn-lg"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92z" opacity=".8"/>
-                <path d="M14.208 12l3.696 3.696-9.979 5.765-3.736-3.736L14.208 12z" opacity=".6"/>
-                <path d="M20.302 10.067l2.106 1.217a1 1 0 0 1 0 1.432l-2.106 1.217-3.789-3.789 3.789-2.077z" opacity=".8"/>
-                <path d="M8.189 2.539l9.979 5.765-3.696 3.696-9.283-9.282 2.997-.179z" opacity=".6"/>
-              </svg>
-              {c.googlePlay}
-            </a>
-            <span className="btn btn-ghost btn-lg opacity-60 cursor-not-allowed select-none">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-              </svg>
-              <span>
-                <span className="block text-[10px] uppercase tracking-[0.14em] opacity-60">{c.appStoreSoon}</span>
-                {c.appStore}
-              </span>
-            </span>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-10 flex gap-10">
-            {[
-              { n: c.stat1, l: c.stat1Label },
-              { n: c.stat2, l: c.stat2Label },
-              { n: c.stat3, l: c.stat3Label },
-            ].map(({ n, l }) => (
-              <div key={l}>
-                <div className="text-[32px] font-bold leading-none tracking-[-0.03em] text-ink" style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}>{n}</div>
-                <div className="mono mt-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-3">{l}</div>
+            {/* Store buttons */}
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a
+                href="https://play.google.com/store/apps/details?id=com.capoeiragem.app"
+                target="_blank" rel="noopener noreferrer"
+                className="btn btn-accent btn-lg h-14 px-8 shadow-xl hover:shadow-accent/20 transition-all"
+              >
+                {c.googlePlay}
+              </a>
+              <div className="flex items-center gap-3 rounded-full border border-bg/10 bg-bg/5 px-6 py-3 backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white" className="opacity-40">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                <span className="mono text-[10px] uppercase tracking-widest text-bg/40">{c.appStoreSoon}</span>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
 
-        {/* Phone mockup */}
-        <div className="flex justify-center">
-          <div className="relative" style={{ transform: 'rotate(-3deg)' }}>
-            {/* Glow */}
-            <div className="absolute inset-[-40px] rounded-full opacity-50" style={{ background: 'var(--accent-soft)', filter: 'blur(40px)', zIndex: 0 }} />
-            {/* Frame */}
-            <div
-              className="relative overflow-hidden rounded-[36px] bg-ink"
-              style={{ width: 260, height: 520, padding: 8, boxShadow: '0 30px 80px rgba(40,28,12,0.2)', zIndex: 1 }}
-            >
-              <div className="flex h-full w-full flex-col overflow-hidden rounded-[30px] bg-bg">
-                {/* Status bar */}
-                <div className="mono flex items-center justify-between px-5 pt-5 text-[10px] text-ink-3">
-                  <span>9:41</span>
-                  <span>▮▮▮</span>
-                </div>
-                {/* Content */}
-                <div className="px-5 pt-2 pb-3">
-                  <span className="eyebrow acc text-[9px]">{c.mockupDay}</span>
-                  <h3 className="text-[22px] mt-1 text-ink">{c.mockupName}</h3>
-                </div>
-                {/* Image placeholder */}
-                <div className="img-ph mx-4 rounded-[14px]" style={{ height: 120 }}>foto</div>
-                <div className="flex flex-col gap-2.5 p-4 mt-1">
-                  {/* Next class card */}
-                  <div className="card p-3">
-                    <span className="eyebrow acc text-[9px]">{c.nextTraining}</span>
-                    <p className="mt-1 text-[13px] font-semibold text-ink">{c.nextTime}</p>
-                    <p className="mono text-[11px] text-ink-3 mt-0.5">14 confirmados</p>
+          {/* Phone mockup */}
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative" style={{ transform: 'rotate(-4deg)' }}>
+              <div className="absolute inset-0 rounded-[44px] bg-accent/20 blur-[60px]" />
+              <div
+                className="relative overflow-hidden rounded-[48px] bg-[#1A1814] p-3 shadow-2xl"
+                style={{ width: 280, height: 580, border: '1px solid rgba(255,255,255,0.1)' }}
+              >
+                <div className="flex h-full w-full flex-col overflow-hidden rounded-[38px] bg-[#F2EFE9]">
+                  <div className="h-6 w-full bg-[#1A1814]" />
+                  <div className="p-6">
+                    <span className="eyebrow acc text-[10px]">{c.mockupDay}</span>
+                    <h3 className="text-[24px] font-black mt-2 text-ink" style={{ fontFamily: 'var(--font-display)' }}>{c.mockupName}</h3>
                   </div>
-                  {/* Event card-ink */}
-                  <div className="card-ink p-3">
-                    <span className="eyebrow text-[9px] opacity-70">{c.privateEvent}</span>
-                    <p className="mt-1 text-[13px] font-semibold text-bg">{c.eventName}</p>
-                    <p className="mono text-[11px] text-bg opacity-70 mt-0.5">14–16 mar · 28 anotados</p>
+                  <div className="flex-1 px-6 space-y-4">
+                    <div className="h-32 w-full rounded-[24px] bg-surface-muted border border-line-soft" />
+                    <div className="card p-4 shadow-sm" style={{ borderRadius: 'var(--radius-lg)' }}>
+                      <span className="eyebrow acc text-[9px]">{c.nextTraining}</span>
+                      <p className="mt-1 text-[15px] font-bold text-ink">{c.nextTime}</p>
+                    </div>
+                    <div className="bg-ink p-5 rounded-[28px] text-bg">
+                      <span className="mono text-[9px] uppercase tracking-widest opacity-50">{c.privateEvent}</span>
+                      <p className="mt-2 text-[16px] font-black">{c.eventName}</p>
+                    </div>
                   </div>
+                  <div className="h-20 w-full bg-surface-muted border-t border-line" />
                 </div>
               </div>
             </div>
-            {/* Sticker */}
-            <div
-              className="absolute -top-4 -right-6 rounded-full bg-accent px-4 py-2 text-white"
-              style={{ transform: 'rotate(8deg)', boxShadow: 'var(--shadow-md)', zIndex: 2 }}
-            >
-              <span className="mono text-[11px] font-semibold uppercase tracking-[0.12em]">{c.badgeText}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="page-shell"><div className="berimbau-line" /></div>
-
-      {/* ── WEB vs APP ── */}
-      <section className="page-shell py-12">
-        <div className="section-head">
-          <span className="num">{c.splitNum}</span>
-          <h2>{c.splitTitle}</h2>
-          <span className="rule" />
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {/* Web */}
-          <div className="card p-7">
-            <span className="tag-mono">{c.webTag}</span>
-            <h3 className="mt-3 text-[28px] text-ink">{c.webTitle}</h3>
-            <p className="mt-2 text-[14px] leading-[1.6] text-ink-2">{c.webBody}</p>
-            <ul className="mt-5 space-y-3">
-              {c.webItems.map((it) => (
-                <li key={it} className="flex gap-2.5 text-[14px] text-ink-2">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.2" className="mt-0.5 shrink-0" aria-hidden="true">
-                    <path d="M4 12l5 5L20 6" />
-                  </svg>
-                  {it}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* App */}
-          <div className="card-ink p-7">
-            <span className="tag-mono" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--bg)', opacity: 0.8 }}>{c.appTag}</span>
-            <h3 className="mt-3 text-[28px] text-bg">{c.appTitle}</h3>
-            <p className="mt-2 text-[14px] leading-[1.6] text-bg opacity-75">{c.appBody}</p>
-            <ul className="mt-5 space-y-3">
-              {c.appItems.map((it) => (
-                <li key={it} className="flex gap-2.5 text-[14px] text-bg opacity-85">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.2" className="mt-0.5 shrink-0" aria-hidden="true">
-                    <path d="M4 12l5 5L20 6" />
-                  </svg>
-                  {it}
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>
 
       {/* ── Features grid ── */}
-      <section className="page-shell pb-12">
-        <div className="section-head">
-          <span className="num">{c.featNum}</span>
-          <h2>{c.featTitle}</h2>
-          <span className="rule" />
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+      <section className="page-shell py-24">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {c.features.map((f) => (
-            <div key={f.t} className="card-paper p-6">
-              <span className="tag-mono">{f.tag}</span>
-              <h3 className="mt-3 text-[22px] text-ink" style={{ fontFamily: 'var(--font-body)', fontWeight: 600, letterSpacing: '-0.01em' }}>{f.t}</h3>
-              <p className="mt-2 text-[14px] leading-[1.6] text-ink-2">{f.d}</p>
+            <div key={f.t} className="group rounded-[36px] border border-bg/10 bg-bg/5 p-8 transition-all hover:bg-bg/10 backdrop-blur-sm">
+              <span className="mono text-[10px] uppercase tracking-widest text-accent">{f.tag}</span>
+              <h3 className="mt-5 text-[22px] font-black text-bg" style={{ fontFamily: 'var(--font-display)' }}>{f.t}</h3>
+              <p className="mt-3 text-[14px] leading-[1.6] text-bg/60">{f.d}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── CTA strip ── */}
-      <section className="page-shell pb-16">
-        <div className="card flex flex-col gap-6 p-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <span className="eyebrow acc block mb-2">{c.ctaTag}</span>
-            <h3 className="text-[28px] text-ink">{c.ctaTitle}</h3>
-            <p className="mt-2 max-w-[500px] text-[14px] leading-[1.6] text-ink-2">{c.ctaBody}</p>
+      <section className="page-shell pb-32">
+        <div className="rounded-[56px] bg-accent p-10 lg:p-16 text-center text-bg overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)] pointer-events-none" />
+          <span className="eyebrow block mb-4" style={{ color: 'rgba(255,255,255,0.8)' }}>{c.ctaTag}</span>
+          <h2 className="mx-auto max-w-[800px]" style={{ fontSize: 'clamp(36px, 5vw, 64px)', lineHeight: 0.9, letterSpacing: '-0.04em' }}>
+            {c.ctaTitle}
+          </h2>
+          <p className="mt-8 mx-auto max-w-[600px] text-[18px] opacity-80 leading-[1.6]">
+            {c.ctaBody}
+          </p>
+          <div className="mt-12">
+            <a
+              href="https://play.google.com/store/apps/details?id=com.capoeiragem.app"
+              target="_blank" rel="noopener noreferrer"
+              className="btn bg-bg text-ink h-16 px-12 text-[18px] font-black rounded-full hover:scale-105 transition-transform"
+            >
+              {c.ctaBtn}
+            </a>
           </div>
-          <a
-            href="https://play.google.com/store/apps/details?id=com.capoeiragem.app"
-            target="_blank" rel="noopener noreferrer"
-            className="btn btn-accent btn-lg shrink-0"
-          >
-            {c.ctaBtn}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
         </div>
       </section>
     </div>

@@ -40,105 +40,69 @@ export default function EducatorCard({ educator, locale }: Props) {
     .filter((e): e is [string, string] => typeof e[1] === 'string' && Boolean(e[1]))
     .slice(0, 3)
 
-  const hasVerified = Boolean(educator.educatorEligible)
-
   return (
-    <article className="card group relative flex flex-col overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-md">
+    <article className="card group relative flex flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl" style={{ borderRadius: 'var(--radius-xl)' }}>
       {/* Invisible full-card link */}
       <Link
         href={`/${locale}/educator/${educator.uid}`}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-10"
         aria-label={displayName}
       />
 
       {/* ── Portrait ── */}
-      <div className="img-ph relative" style={{ height: 200 }}>
+      <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
         {educator.avatarUrl ? (
           <Image
             src={educator.avatarUrl}
             alt={displayName}
             fill
             sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <span className="pointer-events-none select-none">
+          <div className="flex h-full w-full items-center justify-center text-5xl font-black text-ink-4 opacity-20">
             {initials}
-          </span>
+          </div>
         )}
-        {/* Country chip */}
+        
+        {/* Role floating chip */}
+        <div className="absolute bottom-4 left-4 z-20">
+          <span className="chip acc font-black uppercase tracking-wider text-[9px] shadow-sm">
+            {educator.role || (locale === 'en' ? 'Educator' : 'Educador')}
+          </span>
+        </div>
+
+        {/* Country chip top-right */}
         {educator.country && (
-          <div className="absolute top-3 right-3 z-10">
-            <span className="chip sm bg-surface/90 border-line/60">
+          <div className="absolute top-4 right-4 z-20">
+            <span className="chip sm bg-black/40 text-white border-white/20 backdrop-blur-md">
               {educator.country}
             </span>
           </div>
         )}
-        {/* Corda at bottom */}
-        {/* We show corda only if graduation info is available via CordaVisual */}
       </div>
 
       {/* ── Body ── */}
-      <div className="pointer-events-none flex flex-1 flex-col p-4">
-        {/* Role eyebrow */}
-        <span className="eyebrow text-[10px]">
-          {educator.role === 'educator' ? (locale === 'en' ? 'Educator' : 'Educador') : 'Aluno'}
-        </span>
-
+      <div className="flex flex-1 flex-col p-6">
         {/* Name */}
-        <h3 className="mt-1 text-[19px] font-semibold leading-tight tracking-[-0.02em] text-ink" style={{ fontFamily: 'var(--font-body)' }}>
+        <h3 className="text-[22px] font-black leading-tight tracking-[-0.03em] text-ink" style={{ fontFamily: 'var(--font-display)' }}>
           {displayName}
         </h3>
+        
         {educator.nickname && fullName && (
-          <p className="mt-0.5 truncate text-[12px] text-ink-3">{fullName}</p>
+          <p className="mt-1 truncate text-[13px] font-medium text-ink-3">{fullName}</p>
         )}
 
-        {/* Location */}
-        {educator.country && (
-          <p className="mt-1 text-[12px] text-ink-3">{educator.country}</p>
-        )}
-
-        {/* Corda placeholder — shown when no graduation data */}
-        <div className="mt-3">
-          <div
-            className="corda"
-            style={{ '--c1': '#E5D7B0', '--c2': '#A07843', '--tip': '#1A1814', width: 80 } as React.CSSProperties}
-          />
-        </div>
-
-        {/* Socials + verified */}
-        <div className="pointer-events-auto relative z-10 mt-3 flex flex-wrap items-center gap-1.5">
-          {hasVerified && (
-            <span className="chip sm green">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true"><path d="M4 12l5 5L20 6" /></svg>
-              {copy.verified}
-            </span>
-          )}
-          {socials.map(([platform, value]) => {
-            const href = normalizeSocialLink(platform as Parameters<typeof normalizeSocialLink>[0], value)
-            if (!href) return null
-            return (
-              <a
-                key={platform}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="chip sm"
-              >
-                {SOCIAL_LABELS[platform] ?? platform.slice(0, 3).toUpperCase()}
-              </a>
-            )
-          })}
-        </div>
-
-        {/* Footer CTA */}
-        <div className="mt-auto flex items-center justify-between border-t border-line-soft pt-3 mt-4">
-          <span className="eyebrow text-[10px]">
-            {socials.length} {locale === 'en' ? 'links' : 'enlaces'}
-          </span>
-          <span className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-ink">
+        {/* Action icons row */}
+        <div className="mt-auto pt-6 flex items-center justify-between border-t border-line-soft/60">
+          <div className="flex gap-2">
+            {socials.map(([platform]) => (
+              <div key={platform} className="h-2 w-2 rounded-full bg-accent-soft" title={platform} />
+            ))}
+          </div>
+          <span className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.15em] text-ink opacity-40 group-hover:opacity-100 group-hover:text-accent-ink transition-all">
             {copy.open}
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" aria-hidden="true" className="translate-x-0 transition-transform group-hover:translate-x-1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="translate-x-0 transition-transform group-hover:translate-x-1">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </span>

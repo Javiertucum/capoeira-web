@@ -101,29 +101,26 @@ export default function EducatorsListShell({ locale, initialEducators, initialQu
       <div className="page-shell">
 
         {/* ── Editorial header ── */}
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
-          <div>
-            <span className="eyebrow mb-3 block">{copy.eyebrow}</span>
-            <h1 style={{ fontSize: 'clamp(36px, 5vw, 68px)', lineHeight: 0.94, letterSpacing: '-0.03em' }}>
-              {initialEducators.length.toLocaleString()} educadoras y educadores con{' '}
-              <em>{copy.headingEm}</em> {copy.headingAfter}
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-[700px]">
+            <span className="eyebrow acc block mb-3">{copy.eyebrow}</span>
+            <h1 style={{ fontSize: 'clamp(42px, 6vw, 84px)', lineHeight: 0.9, letterSpacing: '-0.05em' }}>
+              {initialEducators.length.toLocaleString()} {locale === 'en' ? 'educators' : 'educadores'} <em className="italic">{locale === 'en' ? 'worldwide' : 'en el mundo'}</em>.
             </h1>
           </div>
           {/* Stats inline — right */}
-          <div className="flex gap-8 xl:pb-2">
+          <div className="flex gap-10 lg:pb-2">
             <div>
-              <div className="text-[36px] font-bold leading-none tracking-[-0.03em] text-ink" style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}>
-                {totalN.replace(',', '.')}
+              <div className="text-[36px] font-black leading-none tracking-[-0.04em] text-ink" style={{ fontFamily: 'var(--font-display)' }}>
+                44
               </div>
-              <div className="mono mt-1 text-[11px] uppercase tracking-[0.16em] text-ink-3">{copy.stats[0]?.label}</div>
+              <div className="mono mt-2 text-[10px] uppercase tracking-[0.16em] text-ink-3">{copy.stats[1]?.label}</div>
             </div>
             <div>
-              <div className="text-[36px] font-bold leading-none tracking-[-0.03em] text-ink" style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}>44</div>
-              <div className="mono mt-1 text-[11px] uppercase tracking-[0.16em] text-ink-3">{copy.stats[1]?.label}</div>
-            </div>
-            <div>
-              <div className="text-[36px] font-bold leading-none tracking-[-0.03em] text-ink" style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}>68</div>
-              <div className="mono mt-1 text-[11px] uppercase tracking-[0.16em] text-ink-3">{copy.stats[2]?.label}</div>
+              <div className="text-[36px] font-black leading-none tracking-[-0.04em] text-ink" style={{ fontFamily: 'var(--font-display)' }}>
+                68
+              </div>
+              <div className="mono mt-2 text-[10px] uppercase tracking-[0.16em] text-ink-3">{copy.stats[2]?.label}</div>
             </div>
           </div>
         </div>
@@ -131,40 +128,32 @@ export default function EducatorsListShell({ locale, initialEducators, initialQu
         {/* ── Search bar ── */}
         <form
           onSubmit={handleSubmit}
-          className="mt-7 flex items-center gap-2 rounded-full border border-line bg-surface p-1.5"
-          style={{ boxShadow: 'var(--shadow-sm)' }}
+          className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center"
         >
-          <div className="flex flex-1 items-center gap-3 px-4 h-12 min-w-0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-ink-3" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
-            </svg>
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={copy.searchPlaceholder}
-              aria-label={copy.searchPlaceholder}
-              className="flex-1 min-w-0 bg-transparent text-[15px] text-ink outline-none placeholder:text-ink-4"
-            />
+          <div
+            className="flex flex-1 items-center gap-2 rounded-full border border-line bg-surface p-2 shadow-sm focus-within:border-ink transition-all"
+          >
+            <div className="flex flex-1 items-center gap-3 px-5 h-12 min-w-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-ink-4" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+              </svg>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={copy.searchPlaceholder}
+                aria-label={copy.searchPlaceholder}
+                className="flex-1 min-w-0 bg-transparent text-[16px] font-medium text-ink outline-none placeholder:text-ink-4"
+              />
+            </div>
+            <div className="hidden h-8 w-px bg-line/60 sm:block" />
+            <button
+              type="submit"
+              className="btn btn-accent shrink-0 h-12 px-8 text-[15px] font-bold shadow-sm hover:shadow-md transition-all"
+            >
+              {copy.searchButton}
+            </button>
           </div>
-          {/* Cerca de mí */}
-          <div className="hidden h-7 w-px bg-line sm:block" />
-          <button
-            type="button"
-            className="hidden sm:flex h-12 items-center gap-2 px-4 text-[13px] text-ink-2 hover:text-ink transition-colors whitespace-nowrap"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /><circle cx="12" cy="9" r="2.5" />
-            </svg>
-            {locale === 'en' ? 'Near me' : locale === 'pt' ? 'Perto de mim' : 'Cerca de mí'}
-          </button>
-          <button
-            type="submit"
-            className="btn btn-accent shrink-0"
-            style={{ height: 48, paddingInline: 20 }}
-          >
-            {copy.searchButton}
-          </button>
         </form>
 
         {/* ── Filter chips ── */}

@@ -148,46 +148,45 @@ export default async function LandingPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
 
       {/* ── HERO ── */}
-      <section className="px-5 pt-14 pb-6 sm:px-8 lg:px-16">
+      <section className="px-5 pt-14 pb-12 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-[1280px]">
-          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             {/* Left: headline */}
             <div>
-              <div className="mb-5 flex items-center gap-2.5">
+              <div className="mb-6 flex items-center gap-3">
                 <span className="berimbau-dot" />
-                <span className="eyebrow acc">Directorio global · Capoeira viva</span>
+                <div className="flex flex-col">
+                  <span className="eyebrow acc text-[10px] tracking-[0.25em]">Elegir día — Domingo</span>
+                  <span className="mt-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-4">Capoeira Viva</span>
+                </div>
               </div>
-              <h1 style={{ fontSize: 'clamp(48px, 7vw, 92px)', lineHeight: 0.92, letterSpacing: '-0.035em' }}>
-                {heroText.before} <em>{heroText.em}</em>
-                {heroText.after.split('\n').map((line, i) =>
-                  i === 0 ? null : <span key={i} className="block">{line}</span>
-                )}
+              <h1 style={{ fontSize: 'clamp(54px, 8vw, 110px)', lineHeight: 0.88, letterSpacing: '-0.05em' }}>
+                {heroText.before} <em className="italic">{heroText.em}</em><br />
+                {heroText.after.replace('\n', '')}
               </h1>
-              <p className="mt-6 max-w-[480px] text-[18px] leading-[1.55] text-ink-2">
+              <p className="mt-8 max-w-[520px] text-[19px] leading-[1.6] text-ink-2">
                 {bodyText}
               </p>
+              {/* Search bar integrated in hero for desktop */}
+              <div className="mt-10 max-w-[600px]">
+                <HeroSearch />
+              </div>
             </div>
 
-            {/* Right: live stats card */}
-            <div className="flex flex-col items-start lg:items-end">
-              <div className="card w-full max-w-[320px] p-[22px]">
-                <div className="mono flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-ink-3">
-                  <span
-                    className="h-1.5 w-1.5 rounded-full bg-green"
-                    style={{ boxShadow: '0 0 0 4px var(--green-soft)' }}
-                  />
+            {/* Right: stats card stylized */}
+            <div className="hidden lg:flex justify-end">
+              <div className="card-ink w-full max-w-[360px] p-8 shadow-lg" style={{ borderRadius: 'var(--radius-xl)' }}>
+                <div className="mono mb-6 flex items-center gap-2.5 text-[11px] uppercase tracking-[0.2em] opacity-80">
+                  <span className="h-2 w-2 rounded-full bg-green animate-pulse" />
                   {liveLabel}
                 </div>
-                <div className="mt-4 grid grid-cols-2 gap-[18px]">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-10">
                   {statItems.map(({ n, label }) => (
                     <div key={label}>
-                      <div
-                        className="text-[36px] leading-none tracking-[-0.02em] text-ink"
-                        style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
-                      >
+                      <div className="text-[44px] font-black leading-none tracking-[-0.04em] text-bg" style={{ fontFamily: 'var(--font-display)' }}>
                         {n.toLocaleString()}
                       </div>
-                      <div className="mono mt-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-3">
+                      <div className="mono mt-2 text-[10px] uppercase tracking-[0.2em] opacity-60">
                         {label}
                       </div>
                     </div>
@@ -195,11 +194,6 @@ export default async function LandingPage({ params }: Props) {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Search bar */}
-          <div className="mt-10">
-            <HeroSearch />
           </div>
         </div>
       </section>

@@ -3,83 +3,83 @@
 /* ─── Tailwind @theme — expone tokens como clases utilitarias ─── */
 @theme {
   /* Paleta crema */
-  --color-bg:            #F4EFE6;
-  --color-bg-elev:       #FBF7EE;
+  --color-bg:            #F2EFE9;
+  --color-bg-elev:       #FBF9F4;
   --color-surface:       #FFFFFF;
-  --color-surface-muted: #EDE6D8;
+  --color-surface-muted: #EBE4D8;
 
   /* Ink (texto) */
-  --color-ink:           #1A1814;
-  --color-ink-2:         #3D3833;
-  --color-ink-3:         #6B645A;
-  --color-ink-4:         #9A9388;
+  --color-ink:           #1A1A1A;
+  --color-ink-2:         #454039;
+  --color-ink-3:         #7A7368;
+  --color-ink-4:         #B5AFA4;
 
   /* Líneas */
-  --color-line:          #D9CFBE;
-  --color-line-soft:     #E8DFCD;
+  --color-line:          #E2D9C8;
+  --color-line-soft:     #F0E9DB;
 
   /* Acento brick */
-  --color-accent:        #D9542B;
-  --color-accent-ink:    #B23E1A;
-  --color-accent-soft:   #FBE7DC;
+  --color-accent:        #E85D33;
+  --color-accent-ink:    #C2421D;
+  --color-accent-soft:   #FDECE3;
 
   /* Especiales */
-  --color-gold:          #C99A3A;
-  --color-green:         #2F5D3B;
-  --color-green-soft:    #DDE8DD;
+  --color-gold:          #D4A017;
+  --color-green:         #3D7A4D;
+  --color-green-soft:    #E8F2E8;
 
   /* Aliases para compatibilidad con código existente */
   --color-card:          #FFFFFF;
-  --color-border:        #D9CFBE;
-  --color-border-soft:   #E8DFCD;
-  --color-text:          #1A1814;
-  --color-text-secondary:#3D3833;
-  --color-text-muted:    #6B645A;
-  --color-text-faint:    #9A9388;
+  --color-border:        #E2D9C8;
+  --color-border-soft:   #F0E9DB;
+  --color-text:          #1A1A1A;
+  --color-text-secondary:#454039;
+  --color-text-muted:    #7A7368;
+  --color-text-faint:    #B5AFA4;
 
-  /* Radios */
-  --radius-xs:  6px;
-  --radius-sm:  10px;
-  --radius-md:  16px;
-  --radius-lg:  22px;
-  --radius-xl:  28px;
-  --radius-2xl: 36px;
+  /* Radios - Extremadamente redondeados para look premium */
+  --radius-xs:  8px;
+  --radius-sm:  12px;
+  --radius-md:  18px;
+  --radius-lg:  28px;
+  --radius-xl:  42px;
+  --radius-2xl: 56px;
 }
 
 /* ─── CSS custom properties (usadas por utilities y componentes) ─── */
 :root {
-  --bg:              #F4EFE6;
-  --bg-elev:         #FBF7EE;
+  --bg:              #F2EFE9;
+  --bg-elev:         #FBF9F4;
   --surface:         #FFFFFF;
-  --surface-muted:   #EDE6D8;
-  --ink:             #1A1814;
-  --ink-2:           #3D3833;
-  --ink-3:           #6B645A;
-  --ink-4:           #9A9388;
-  --line:            #D9CFBE;
-  --line-soft:       #E8DFCD;
-  --accent:          #D9542B;
-  --accent-ink:      #B23E1A;
-  --accent-soft:     #FBE7DC;
-  --gold:            #C99A3A;
-  --green:           #2F5D3B;
-  --green-soft:      #DDE8DD;
+  --surface-muted:   #EBE4D8;
+  --ink:             #1A1A1A;
+  --ink-2:           #454039;
+  --ink-3:           #7A7368;
+  --ink-4:           #B5AFA4;
+  --line:            #E2D9C8;
+  --line-soft:       #F0E9DB;
+  --accent:          #E85D33;
+  --accent-ink:      #C2421D;
+  --accent-soft:     #FDECE3;
+  --gold:            #D4A017;
+  --green:           #3D7A4D;
+  --green-soft:      #E8F2E8;
 
-  /* Sombras cálidas */
-  --shadow-sm: 0 1px 2px rgba(40, 28, 12, 0.05);
-  --shadow-md: 0 4px 16px rgba(40, 28, 12, 0.06), 0 1px 3px rgba(40, 28, 12, 0.05);
-  --shadow-lg: 0 18px 46px rgba(40, 28, 12, 0.1),  0 2px 6px  rgba(40, 28, 12, 0.05);
+  /* Sombras cálidas y suaves */
+  --shadow-sm: 0 1px 3px rgba(26, 24, 20, 0.04);
+  --shadow-md: 0 8px 24px rgba(26, 24, 20, 0.05), 0 2px 6px rgba(26, 24, 20, 0.04);
+  --shadow-lg: 0 24px 64px rgba(26, 24, 20, 0.08), 0 4px 12px rgba(26, 24, 20, 0.04);
 
   /* Aliases legacy */
   --card:            #FFFFFF;
-  --border:          #D9CFBE;
-  --border-soft:     #E8DFCD;
-  --text:            #1A1814;
-  --text-secondary:  #3D3833;
-  --text-muted:      #6B645A;
-  --text-faint:      #9A9388;
-  --shadow:          rgba(40, 28, 12, 0.06);
-  --shadow-soft:     rgba(40, 28, 12, 0.03);
+  --border:          #E2D9C8;
+  --border-soft:     #F0E9DB;
+  --text:            #1A1A1A;
+  --text-secondary:  #454039;
+  --text-muted:      #7A7368;
+  --text-faint:      #B5AFA4;
+  --shadow:          rgba(26, 24, 20, 0.05);
+  --shadow-soft:     rgba(26, 24, 20, 0.02);
 
   --page-max: 1440px;
 }
@@ -94,19 +94,19 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.01em;
   overflow-x: hidden;
 }
 
 /* ─── Tipografía ─── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
   color: var(--ink);
   margin: 0;
 }

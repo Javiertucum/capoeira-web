@@ -1,4 +1,4 @@
-import { Inter, Poppins, JetBrains_Mono } from 'next/font/google'
+import { Inter, Outfit, JetBrains_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
 import type { Metadata } from 'next'
 import './globals.css'
@@ -11,7 +11,7 @@ const bodyFont = Inter({
   display: 'swap',
 })
 
-const displayFont = Poppins({
+const displayFont = Outfit({
   subsets: ['latin'],
   weight: ['700', '800'],
   variable: '--font-display',
