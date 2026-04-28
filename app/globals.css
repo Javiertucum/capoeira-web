@@ -19,14 +19,14 @@
   --color-line-soft:     #FBF7EF;
 
   /* Acento Naranja Real de la App */
-  --color-accent:        #FB923C;
-  --color-accent-ink:    #EA580C;
-  --color-accent-soft:   #FB923C20;
+  --color-accent:        #2E7D32;
+  --color-accent-ink:    #1B5E20;
+  --color-accent-soft:   #2E7D3220;
 
   /* Especiales */
   --color-gold:          #D4A017;
-  --color-green:         #3D7A4D;
-  --color-green-soft:    #E8F2E8;
+  --color-green:         #2E7D32;
+  --color-green-soft:    #2E7D3218;
 
   /* Aliases para compatibilidad con código existente */
   --color-card:          #FFFFFF;
@@ -38,12 +38,12 @@
   --color-text-faint:    #B5AFA4;
 
   /* Radios - Extremadamente redondeados para look premium */
-  --radius-xs:  8px;
-  --radius-sm:  12px;
-  --radius-md:  18px;
-  --radius-lg:  28px;
-  --radius-xl:  42px;
-  --radius-2xl: 56px;
+  --radius-xs:  6px;
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  20px;
+  --radius-2xl: 24px;
 }
 
 /* ─── CSS custom properties (usadas por utilities y componentes) ─── */
@@ -58,12 +58,15 @@
   --ink-4:           #4C463C;
   --line:            #E7DECF;
   --line-soft:       #FBF7EF;
-  --accent:          #FB923C;
-  --accent-ink:      #EA580C;
-  --accent-soft:     #FB923C20;
+  --accent:          #2E7D32;
+  --accent-ink:      #1B5E20;
+  --accent-soft:     #2E7D3220;
   --gold:            #D4A017;
-  --green:           #43A047;
-  --green-soft:      #43A04720;
+  --green:           #2E7D32;
+  --green-soft:      #2E7D3218;
+  --admin-panel:     #FFFDF8;
+  --admin-panel-soft:#F1E8D9;
+  --admin-border:    #E2D9C8;
 
   /* Sombras cálidas y suaves */
   --shadow-sm: 0 1px 3px rgba(26, 24, 20, 0.04);
@@ -199,6 +202,75 @@ a { color: inherit; text-decoration: none; }
   background: var(--ink);
   color: var(--bg);
   border-radius: var(--radius-lg);
+}
+
+.admin-shell {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.admin-panel {
+  background: var(--admin-panel);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-panel-soft {
+  background: var(--admin-panel-soft);
+  border: 1px solid var(--admin-border);
+}
+
+.admin-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.admin-input {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px 12px;
+  font-size: 13px;
+  outline: none;
+}
+
+.admin-input:focus {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-table td {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+  background: color-mix(in srgb, var(--surface-muted) 54%, transparent);
 }
 
 /* ─── Buttons ─── */
