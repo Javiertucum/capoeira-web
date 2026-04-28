@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { FieldValue } from 'firebase-admin/firestore'
+import { getMessaging } from 'firebase-admin/messaging'
 import { requireAdmin } from '@/lib/auth/verify-api-session'
 import { writeAdminAuditLog } from '@/lib/admin-audit'
-import { adminDb } from '@/lib/firebase-admin'
+import { adminDb, adminApp } from '@/lib/firebase-admin'
 
-const EXPO_PUSH_URL = 'https://exp.host/--/api/v2/push/send'
-const EXPO_BATCH_SIZE = 100
+// FCM multicast supports up to 500 tokens per batch
+const FIREBASE_BATCH_SIZE = 500
 
 type SegmentFilter = {
   roles?: string[]
@@ -16,10 +17,6 @@ type SegmentFilter = {
 }
 
 type TokenEntry = { uid: string; token: string }
-
-type ExpoTicket =
-  | { status: 'ok'; id: string }
-  | { status: 'error'; message: string; details?: { error: string } }
 
 async function collectTokens(segment: SegmentFilter): Promise<TokenEntry[]> {
   const snap = await adminDb.collection('users').get().catch(() => ({ docs: [] }))
@@ -74,9 +71,9 @@ async function purgeStaleTokens(uids: string[]): Promise<void> {
     })
   }
   await batch.commit().catch((err) => {
-    console.error('[Expo Push] failed to purge stale tokens:', err)
+    console.error('[FCM Push] failed to purge stale tokens:', err)
   })
-  console.log(`[Expo Push] purged ${uids.length} stale tokens`)
+  console.log(`[FCM Push] purged ${uids.length} stale tokens`)
 }
 
 type ChunkResult = {
@@ -86,52 +83,52 @@ type ChunkResult = {
   errors: string[]
 }
 
-async function sendExpoChunk(entries: TokenEntry[], title: string, body: string): Promise<ChunkResult> {
-  const messages = entries.map(({ token: to }) => ({
-    to,
-    title,
-    body,
-    sound: 'default',
-    priority: 'high',
-    channelId: 'default',
-  }))
-
-  const response = await fetch(EXPO_PUSH_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify(messages),
-    signal: AbortSignal.timeout(20000),
-  })
-
-  if (!response.ok) {
-    const text = await response.text().catch(() => response.status.toString())
-    console.error('[Expo Push] HTTP error:', response.status, text)
-    return { success: 0, failed: entries.length, staleUids: [], errors: [`HTTP ${response.status}: ${text}`] }
-  }
-
-  const result = await response.json() as { data: ExpoTicket[] }
-  const tickets = result.data ?? []
+async function sendFcmChunk(entries: TokenEntry[], title: string, body: string): Promise<ChunkResult> {
+  const fcm = getMessaging(adminApp)
   const staleUids: string[] = []
   const errors: string[] = []
+  let success = 0
+  let failed = 0
 
-  tickets.forEach((ticket, i) => {
-    if (ticket.status === 'error') {
-      const entry = entries[i]
-      const errorCode = ticket.details?.error ?? ''
-      const msg = ticket.message ?? errorCode ?? 'unknown error'
-      errors.push(msg)
-      console.error(`[Expo Push] ticket error for uid ${entry?.uid}: ${msg}`)
+  const results = await fcm.sendEachForMulticast({
+    tokens: entries.map(e => e.token),
+    notification: { title, body },
+    android: {
+      priority: 'high',
+      notification: {
+        channelId: 'default',
+        sound: 'default',
+      },
+    },
+    apns: {
+      payload: {
+        aps: { sound: 'default' },
+      },
+    },
+  })
 
-      if (errorCode === 'DeviceNotRegistered' && entry) {
-        staleUids.push(entry.uid)
+  results.responses.forEach((result, i) => {
+    const entry = entries[i]
+    if (result.success) {
+      success++
+    } else {
+      failed++
+      const errorCode = result.error?.code ?? 'unknown'
+      const errorMsg = result.error?.message ?? errorCode
+      errors.push(errorMsg)
+      console.error(`[FCM Push] failed for uid ${entry?.uid}: ${errorMsg}`)
+
+      // Mark stale if the token is no longer registered on the device
+      if (
+        errorCode === 'messaging/registration-token-not-registered' ||
+        errorCode === 'messaging/invalid-registration-token'
+      ) {
+        if (entry) staleUids.push(entry.uid)
       }
     }
   })
 
-  const success = tickets.filter((t) => t.status === 'ok').length
-  const failed = tickets.length - success
-
-  return { success, failed: failed + (entries.length - tickets.length), staleUids, errors }
+  return { success, failed, staleUids, errors }
 }
 
 export async function POST(request: NextRequest) {
@@ -168,9 +165,9 @@ export async function POST(request: NextRequest) {
   const allStaleUids: string[] = []
   const allErrors: string[] = []
 
-  for (let i = 0; i < entries.length; i += EXPO_BATCH_SIZE) {
-    const chunk = entries.slice(i, i + EXPO_BATCH_SIZE)
-    const { success, failed, staleUids, errors } = await sendExpoChunk(chunk, title, messageBody)
+  for (let i = 0; i < entries.length; i += FIREBASE_BATCH_SIZE) {
+    const chunk = entries.slice(i, i + FIREBASE_BATCH_SIZE)
+    const { success, failed, staleUids, errors } = await sendFcmChunk(chunk, title, messageBody)
     successCount += success
     failureCount += failed
     allStaleUids.push(...staleUids)
