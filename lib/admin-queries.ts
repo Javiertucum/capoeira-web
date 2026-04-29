@@ -990,7 +990,12 @@ export async function getAdminFeaturedContentRows(): Promise<AdminFeaturedConten
 }
 
 export async function getAdminEvents(limit = 50): Promise<AdminEvent[]> {
-  const snap = await adminDb.collection('events').limit(limit).get()
+  const now = new Date()
+  const snap = await adminDb
+    .collection('events')
+    .where('endDate', '>', now)
+    .limit(limit)
+    .get()
 
   return snap.docs
     .map((doc) => {
@@ -1027,6 +1032,10 @@ export async function getAdminEventById(id: string): Promise<AdminEvent | null> 
   if (!doc.exists) return null
 
   const data = doc.data() as FirestoreRecord
+
+  // Filter out past events
+  const endDate = toIsoString(data.endDate)
+  if (endDate && new Date(endDate) <= new Date()) return null
   return {
     id: doc.id,
     title: asString(data.title),
