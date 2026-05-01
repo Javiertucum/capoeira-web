@@ -47,7 +47,10 @@ export default function Nav() {
 
   // Homepage is now light (beige) by default in the vanguard design
   const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`
+  const isAdmin = pathname.includes('/admin')
   const isDark = !isHomepage // Most other pages (like admin) might be dark or default
+
+  if (isAdmin) return null
   
   const navBg = scrolled || menuOpen 
     ? 'glass border-bg/10 shadow-soft' 

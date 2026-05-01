@@ -17,11 +17,11 @@ export default function AdminPageHeader({
         <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-accent">
           {eyebrow}
         </p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-text sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-black tracking-[-0.03em] text-ink sm:text-4xl">
           {title}
         </h1>
         {description ? (
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-text-muted sm:text-[15px]">
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-ink-3 sm:text-[15px] font-medium">
             {description}
           </p>
         ) : null}
