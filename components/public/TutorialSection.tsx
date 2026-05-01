@@ -194,21 +194,125 @@ export default function TutorialSection({ locale }: { locale: string }) {
                ))}
              </div>
 
-             {/* Mockup Display */}
-             <div className="hidden lg:block aspect-[9/19] w-full max-w-[280px] mx-auto bg-ink rounded-[40px] border-[8px] border-bg/10 overflow-hidden relative shadow-2xl group-hover:scale-[1.02] transition-transform duration-700">
-                <Image
-                  src={`/images/user_mockup_${
-                    activeFlow === 'onboarding' ? '2' : 
-                    activeFlow === 'admin' ? '1' : 
-                    activeFlow === 'events' ? '4' : '5'
-                  }.jpg`}
-                  alt={currentFlow.title}
-                  fill
-                  priority
-                  className="object-cover object-top animate-in fade-in zoom-in-95 duration-700"
-                />
+             {/* Live UI Mockup (React-based for maximum sharpness and control) */}
+             <div className="hidden lg:block aspect-[9/19] w-full max-w-[300px] mx-auto bg-ink rounded-[44px] border-[10px] border-[#1A1E26] overflow-hidden relative shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] group-hover:scale-[1.02] transition-transform duration-700 ring-1 ring-white/10">
+                {/* Status Bar */}
+                <div className="h-10 px-6 pt-4 flex justify-between items-center text-[10px] font-bold text-bg/40 mono uppercase tracking-widest z-20 relative">
+                   <span>9:41</span>
+                   <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full border border-current" />
+                      <div className="w-3 h-3 rounded-full bg-current" />
+                   </div>
+                </div>
+
+                <div className="absolute inset-0 pt-12 p-5 flex flex-col overflow-hidden">
+                   {activeFlow === 'onboarding' && (
+                      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                         <div className="flex flex-col items-center mb-8">
+                            <div className="w-20 h-20 rounded-full bg-accent/20 border-2 border-accent flex items-center justify-center mb-4">
+                               <div className="w-12 h-12 rounded-full bg-accent/40" />
+                            </div>
+                            <h4 className="text-bg font-black text-lg">Javier Muñoz</h4>
+                            <p className="text-accent text-[11px] font-bold tracking-widest uppercase">Tucum</p>
+                         </div>
+                         <div className="space-y-3">
+                            <div className="h-12 rounded-2xl bg-white/5 border border-white/10 px-4 flex items-center">
+                               <div className="w-full h-2 bg-white/10 rounded-full" />
+                            </div>
+                            <div className="h-12 rounded-2xl bg-white/5 border border-white/10 px-4 flex items-center">
+                               <div className="w-2/3 h-2 bg-white/10 rounded-full" />
+                            </div>
+                            <div className="h-32 rounded-2xl bg-white/5 border border-white/10 p-4">
+                               <div className="w-full h-2 bg-white/10 rounded-full mb-3" />
+                               <div className="w-5/6 h-2 bg-white/10 rounded-full" />
+                            </div>
+                         </div>
+                      </div>
+                   )}
+
+                   {activeFlow === 'admin' && (
+                      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                         <div className="flex justify-between items-end mb-6">
+                            <div>
+                               <p className="text-bg/40 text-[9px] font-bold uppercase tracking-widest mb-1">Reporte Mensual</p>
+                               <h4 className="text-bg font-black text-xl">Marzo 2026</h4>
+                            </div>
+                            <div className="bg-accent px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-tighter">
+                               KPI +12%
+                            </div>
+                         </div>
+                         <div className="grid grid-cols-2 gap-3 mb-4">
+                            {[1, 2, 3, 4].map(i => (
+                               <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col gap-2">
+                                  <div className="w-4 h-4 rounded-lg bg-accent/20" />
+                                  <div className="h-4 w-12 bg-white/10 rounded-full" />
+                                  <div className="h-2 w-8 bg-white/5 rounded-full" />
+                               </div>
+                            ))}
+                         </div>
+                         <div className="h-12 rounded-2xl bg-accent flex items-center justify-center text-white font-bold text-xs">
+                            Descargar Reporte PDF
+                         </div>
+                      </div>
+                   )}
+
+                   {activeFlow === 'events' && (
+                      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                         <div className="aspect-[4/5] rounded-[24px] bg-gradient-to-br from-accent/40 to-accent/10 border border-accent/20 relative overflow-hidden mb-4">
+                            <div className="absolute inset-0 flex flex-col justify-end p-5 bg-gradient-to-t from-ink/80 to-transparent">
+                               <span className="bg-accent w-fit px-2 py-0.5 rounded text-[8px] font-black text-white uppercase mb-2">25-26 ABR</span>
+                               <h4 className="text-bg font-bold text-sm leading-tight">Batizado & Troca de Cordas</h4>
+                               <p className="text-bg/60 text-[10px] mt-1">Bom Caminho, Chile</p>
+                            </div>
+                         </div>
+                         <div className="flex gap-2">
+                            <div className="flex-1 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-[10px] font-bold text-bg">
+                               Confirmar
+                            </div>
+                            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                               <div className="w-4 h-4 border-2 border-white/20 rounded-full" />
+                            </div>
+                         </div>
+                      </div>
+                   )}
+
+                   {activeFlow === 'graduations' && (
+                      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                         <h4 className="text-bg font-black text-lg mb-6">Sistema de Cordas</h4>
+                         <div className="space-y-3">
+                            {[
+                               { c: '#008000', n: 'Corda Verde', r: 'Alumno Graduado' },
+                               { c: '#FFD700', n: 'Corda Amarela', r: 'Alumno Graduado I' },
+                               { c: '#0000FF', n: 'Corda Azul', r: 'Alumno Graduado II' },
+                               { c: '#008000', n: 'Branca / Verde', r: 'Instructor', split: true }
+                            ].map((belt, i) => (
+                               <div key={i} className="flex items-center gap-4 p-3 rounded-2xl bg-white/5 border border-white/10">
+                                  <div 
+                                    className="w-12 h-2.5 rounded-full" 
+                                    style={{ 
+                                      background: belt.split 
+                                        ? `linear-gradient(to right, white 50%, ${belt.c} 50%)` 
+                                        : belt.c 
+                                    }} 
+                                  />
+                                  <div>
+                                     <p className="text-bg font-bold text-[11px] leading-none mb-1">{belt.n}</p>
+                                     <p className="text-bg/40 text-[9px] font-medium leading-none">{belt.r}</p>
+                                  </div>
+                               </div>
+                            ))}
+                         </div>
+                      </div>
+                   )}
+                </div>
+
+                {/* Home Indicator */}
+                <div className="absolute bottom-2 inset-x-0 flex justify-center">
+                   <div className="w-20 h-1 rounded-full bg-white/10" />
+                </div>
+
                 {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/40 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/20 to-transparent pointer-events-none" />
              </div>
           </div>
         </div>

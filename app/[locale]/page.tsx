@@ -246,9 +246,9 @@ export default async function LandingPage({ params }: Props) {
       </section>
 
       {/* ── BETA SECTION ── */}
-      <section id="beta" className="page-shell py-32 bg-bg/5 relative overflow-hidden rounded-[64px] mb-8">
-
-        <div className="absolute top-0 right-0 h-[500px] w-[500px] bg-accent/20 blur-[140px] rounded-full translate-x-1/2 -translate-y-1/2" />
+      <section id="beta" className="page-shell py-32 bg-ink relative overflow-hidden rounded-[64px] mb-8 shadow-2xl">
+        <div className="absolute top-0 right-0 h-[500px] w-[500px] bg-accent/10 blur-[140px] rounded-full translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 left-0 h-[500px] w-[500px] bg-accent/5 blur-[140px] rounded-full -translate-x-1/2 translate-y-1/2" />
         
         <div className="max-w-[800px] mx-auto text-center relative z-10">
           <span className="mono text-[11px] uppercase tracking-[0.4em] text-accent mb-6 block font-black">Join the testing</span>
