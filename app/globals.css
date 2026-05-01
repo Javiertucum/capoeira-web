@@ -2,42 +2,34 @@
 
 /* ─── Tailwind @theme — expone tokens como clases utilitarias ─── */
 @theme {
-  /* Paleta crema real de la app */
+  /* --- App Official Palette (Light) --- */
   --color-bg:            #F7F3EB;
-  --color-bg-elev:       #FFFDF8;
-  --color-surface:       #FFFFFF;
-  --color-surface-muted: #F1E8D9;
+  --color-card:          #FFFDF8;
+  --color-surface:       #F1E8D9;
+  --color-surface-muted: #FBF7EF;
+  --color-border:        #E7DECF;
+  --color-text:          #211C15;
+  --color-text-secondary:#4C463C;
+  --color-text-muted:    #7B7468;
 
-  /* Ink (texto y fondos oscuros reales) */
+  /* --- App Official Palette (Dark) --- */
   --color-ink:           #10131A;
   --color-ink-2:         #181D26;
   --color-ink-3:         #27303D;
   --color-ink-4:         #4C463C;
 
-  /* Líneas */
-  --color-line:          #E7DECF;
-  --color-line-soft:     #FBF7EF;
-
-  /* Acento Naranja Real de la App */
+  /* --- Accents (Orange as primary for Web) --- */
   --color-accent:        #FB923C;
   --color-accent-ink:    #EA580C;
   --color-accent-soft:   #FB923C20;
 
-  /* Especiales */
+  /* --- States --- */
+  --color-success:       #2E7D32;
+  --color-warning:       #B7791F;
+  --color-danger:        #C53030;
   --color-gold:          #D4A017;
-  --color-green:         #3D7A4D;
-  --color-green-soft:    #E8F2E8;
 
-  /* Aliases para compatibilidad con código existente */
-  --color-card:          #FFFFFF;
-  --color-border:        #E2D9C8;
-  --color-border-soft:   #F0E9DB;
-  --color-text:          #1A1A1A;
-  --color-text-secondary:#454039;
-  --color-text-muted:    #7A7368;
-  --color-text-faint:    #B5AFA4;
-
-  /* Radios - Extremadamente redondeados para look premium */
+  /* --- Radii - Official App Tokens --- */
   --radius-xs:  8px;
   --radius-sm:  12px;
   --radius-md:  18px;
@@ -46,43 +38,43 @@
   --radius-2xl: 56px;
 }
 
-/* ─── CSS custom properties (usadas por utilities y componentes) ─── */
+/* ─── CSS custom properties ─── */
 :root {
+  /* Light Theme (Default) */
   --bg:              #F7F3EB;
-  --bg-elev:         #FFFDF8;
-  --surface:         #FFFFFF;
-  --surface-muted:   #F1E8D9;
+  --card:            #FFFDF8;
+  --surface:         #F1E8D9;
+  --surface-muted:   #FBF7EF;
+  --border:          #E7DECF;
+  --text:            #211C15;
+  --text-secondary:  #4C463C;
+  --text-muted:      #7B7468;
+
+  /* Dark Tokens (Ink) */
   --ink:             #10131A;
   --ink-2:           #181D26;
   --ink-3:           #27303D;
   --ink-4:           #4C463C;
-  --line:            #E7DECF;
-  --line-soft:       #FBF7EF;
+
+  /* Accent */
   --accent:          #FB923C;
   --accent-ink:      #EA580C;
   --accent-soft:     #FB923C20;
+
+  /* Others */
   --gold:            #D4A017;
-  --green:           #43A047;
-  --green-soft:      #43A04720;
+  --success:         #2E7D32;
+  --warning:         #B7791F;
+  --danger:          #C53030;
 
-  /* Sombras cálidas y suaves */
-  --shadow-sm: 0 1px 3px rgba(26, 24, 20, 0.04);
-  --shadow-md: 0 8px 24px rgba(26, 24, 20, 0.05), 0 2px 6px rgba(26, 24, 20, 0.04);
-  --shadow-lg: 0 24px 64px rgba(26, 24, 20, 0.08), 0 4px 12px rgba(26, 24, 20, 0.04);
-
-  /* Aliases legacy */
-  --card:            #FFFFFF;
-  --border:          #E2D9C8;
-  --border-soft:     #F0E9DB;
-  --text:            #1A1A1A;
-  --text-secondary:  #454039;
-  --text-muted:      #7A7368;
-  --text-faint:      #B5AFA4;
-  --shadow:          rgba(26, 24, 20, 0.05);
-  --shadow-soft:     rgba(26, 24, 20, 0.02);
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(33, 28, 21, 0.04);
+  --shadow-md: 0 8px 24px rgba(33, 28, 21, 0.05), 0 2px 6px rgba(33, 28, 21, 0.04);
+  --shadow-lg: 0 24px 64px rgba(33, 28, 21, 0.08), 0 4px 12px rgba(33, 28, 21, 0.04);
 
   --page-max: 1440px;
 }
+
 
 /* ─── Base ─── */
 *, *::before, *::after { box-sizing: border-box; }
@@ -187,12 +179,12 @@ a { color: inherit; text-decoration: none; }
 /* ─── Cards ─── */
 .card {
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
 }
 .card-paper {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
 }
 .card-ink {
@@ -224,7 +216,7 @@ a { color: inherit; text-decoration: none; }
 .btn-primary:hover { background: var(--accent); }
 .btn-accent  { background: var(--accent); color: #fff; }
 .btn-accent:hover { opacity: 0.9; }
-.btn-ghost   { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost   { background: transparent; color: var(--ink); border-color: var(--border); }
 .btn-ghost:hover { border-color: var(--ink); }
 .btn-sm { height: 36px; padding: 0 14px; font-size: 13px; }
 .btn-lg { height: 56px; padding: 0 28px; font-size: 15px; }
@@ -238,7 +230,7 @@ a { color: inherit; text-decoration: none; }
   padding: 0 12px;
   border-radius: 999px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 500;
@@ -292,7 +284,7 @@ a { color: inherit; text-decoration: none; }
 .section-head .rule {
   flex: 1;
   height: 1px;
-  background: var(--line);
+  background: var(--border);
   min-width: 0;
 }
 
@@ -335,5 +327,5 @@ a { color: inherit; text-decoration: none; }
 
 /* ─── Scrollbar (dentro de panels) ─── */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-thumb { background: var(--line); border-radius: 8px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
