@@ -93,7 +93,7 @@ export default function Nav() {
                 Capoeira platform
               </span>
               <span
-                className={`block text-[16px] sm:text-[18px] truncate text-ink`}
+                className={`block text-[16px] sm:text-[18px] truncate text-[#10131A]`}
                 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}
               >
                 Agenda Capoeiragem

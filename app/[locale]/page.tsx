@@ -151,13 +151,13 @@ export default async function LandingPage({ params }: Props) {
                 <span className="text-[11px] font-black uppercase tracking-[0.2em] text-accent-ink">{c.eyebrow}</span>
               </div>
               
-              <h1 className="text-ink font-black leading-[0.85] tracking-[-0.05em] animate-in fade-in slide-in-from-left-8 duration-1000" style={{ fontSize: 'clamp(56px, 10vw, 120px)' }}>
+              <h1 className="text-[#10131A] font-black leading-[0.85] tracking-[-0.05em] animate-in fade-in slide-in-from-left-8 duration-1000" style={{ fontSize: 'clamp(56px, 10vw, 120px)' }}>
                 {c.heroLine1} <br />
                 <span className="text-gradient italic">{c.heroEm}</span> <br/>
                 {c.heroLine3}
               </h1>
 
-              <p className="max-w-[540px] text-xl lg:text-2xl text-ink/50 leading-relaxed font-medium animate-in fade-in slide-in-from-left-12 duration-1000 delay-200 mx-auto lg:mx-0">
+              <p className="max-w-[540px] text-xl lg:text-2xl text-[#10131A]/60 leading-relaxed font-medium animate-in fade-in slide-in-from-left-12 duration-1000 delay-200 mx-auto lg:mx-0">
                 {c.body}
               </p>
 
@@ -166,14 +166,14 @@ export default async function LandingPage({ params }: Props) {
                   {c.ctaHero}
                 </Link>
                 
-                <div className="flex gap-8 border-l border-ink/10 pl-8">
+                <div className="flex gap-8 border-l border-[#10131A]/10 pl-8">
                   <div>
-                    <div className="text-2xl font-black text-ink tracking-tighter leading-none">{stats.educators.toLocaleString()}</div>
-                    <div className="eyebrow text-[9px] mt-1 text-ink/40">{c.statsLabel1}</div>
+                    <div className="text-2xl font-black text-[#10131A] tracking-tighter leading-none">{stats.educators.toLocaleString()}</div>
+                    <div className="eyebrow text-[9px] mt-1 text-[#10131A]/40">{c.statsLabel1}</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-black text-ink tracking-tighter leading-none">{stats.nucleos.toLocaleString()}</div>
-                    <div className="eyebrow text-[9px] mt-1 text-ink/40">{c.statsLabel2}</div>
+                    <div className="text-2xl font-black text-[#10131A] tracking-tighter leading-none">{stats.nucleos.toLocaleString()}</div>
+                    <div className="eyebrow text-[9px] mt-1 text-[#10131A]/40">{c.statsLabel2}</div>
                   </div>
                 </div>
               </div>
@@ -203,11 +203,11 @@ export default async function LandingPage({ params }: Props) {
       <section id="features" className="page-shell py-40">
         <div className="flex flex-col lg:flex-row justify-between items-end gap-12 mb-32">
           <div className="max-w-[800px]">
-             <h2 className="text-ink font-black leading-none tracking-[-0.05em]" style={{ fontSize: 'clamp(48px, 6vw, 96px)' }}>
+             <h2 className="text-[#10131A] font-black leading-none tracking-[-0.05em]" style={{ fontSize: 'clamp(48px, 6vw, 96px)' }}>
                {c.showcaseTitle}
              </h2>
           </div>
-          <p className="max-w-[400px] text-xl text-ink/50 leading-relaxed pb-2 font-medium">
+          <p className="max-w-[400px] text-xl text-[#10131A]/60 leading-relaxed pb-2 font-medium">
             {c.showcaseBody}
           </p>
         </div>
@@ -215,19 +215,19 @@ export default async function LandingPage({ params }: Props) {
         {/* Educator Features - Bento Style */}
         <div className="mb-48">
           <div className="section-head mb-16">
-            <span className="num text-ink/40">01</span>
-            <h2 className="text-3xl font-black text-ink tracking-tight">{c.educatorSubtitle}</h2>
-            <div className="rule border-ink/10" />
+            <span className="num text-[#10131A]/40">01</span>
+            <h2 className="text-3xl font-black text-[#10131A] tracking-tight">{c.educatorSubtitle}</h2>
+            <div className="rule border-[#10131A]/10" />
           </div>
           <div className="grid gap-12 lg:grid-cols-[1fr_400px] items-center">
             <div className="grid gap-6 sm:grid-cols-2">
               {c.educatorFeatures.map((f) => (
-                <div key={f.t} className="rounded-[48px] border border-ink/10 bg-ink/5 p-10 hover-lift group">
+                <div key={f.t} className="rounded-[48px] border border-[#10131A]/10 bg-[#10131A]/5 p-10 hover-lift group">
                   <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-8 group-hover:bg-accent group-hover:text-white transition-colors duration-500 shadow-soft">
                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </div>
-                  <h3 className="text-2xl font-black text-ink mb-4 leading-tight">{f.t}</h3>
-                  <p className="text-base leading-relaxed text-ink/50 font-medium">{f.d}</p>
+                  <h3 className="text-2xl font-black text-[#10131A] mb-4 leading-tight">{f.t}</h3>
+                  <p className="text-base leading-relaxed text-[#10131A]/60 font-medium">{f.d}</p>
                 </div>
               ))}
             </div>
@@ -240,9 +240,9 @@ export default async function LandingPage({ params }: Props) {
         {/* Student Features */}
         <div className="mb-48">
           <div className="section-head mb-16">
-            <span className="num text-ink/40">02</span>
-            <h2 className="text-3xl font-black text-ink tracking-tight">{c.studentSubtitle}</h2>
-            <div className="rule border-ink/10" />
+            <span className="num text-[#10131A]/40">02</span>
+            <h2 className="text-3xl font-black text-[#10131A] tracking-tight">{c.studentSubtitle}</h2>
+            <div className="rule border-[#10131A]/10" />
           </div>
           <div className="grid gap-20 lg:grid-cols-[400px_1fr] items-center">
             <div className="floating">
@@ -250,12 +250,12 @@ export default async function LandingPage({ params }: Props) {
             </div>
             <div className="grid gap-8 sm:grid-cols-2">
               {c.studentFeatures.map((f) => (
-                <div key={f.t} className="rounded-[40px] border border-ink/10 bg-white/40 p-10 backdrop-blur-sm shadow-soft hover:shadow-lg transition-all group">
+                <div key={f.t} className="rounded-[40px] border border-[#10131A]/10 bg-white/40 p-10 backdrop-blur-sm shadow-soft hover:shadow-lg transition-all group">
                   <div className="mb-6 opacity-20 group-hover:opacity-100 transition-opacity">
                      <div className="h-1 w-12 bg-accent rounded-full" />
                   </div>
-                  <h3 className="text-2xl font-black text-ink mb-4 leading-tight">{f.t}</h3>
-                  <p className="text-base leading-relaxed text-ink/50 font-medium">{f.d}</p>
+                  <h3 className="text-2xl font-black text-[#10131A] mb-4 leading-tight">{f.t}</h3>
+                  <p className="text-base leading-relaxed text-[#10131A]/60 font-medium">{f.d}</p>
                 </div>
               ))}
             </div>
