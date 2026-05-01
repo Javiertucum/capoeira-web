@@ -121,57 +121,84 @@ export default function TutorialSection({ locale }: { locale: string }) {
   const currentFlow = c.flows.find(f => f.id === activeFlow) ?? c.flows[0]
 
   return (
-    <div id="tutorials" className="py-24 border-t border-bg/10">
-      <div className="text-center mb-16">
-        <h2 className="text-bg font-black text-4xl lg:text-5xl tracking-tight mb-4">{c.title}</h2>
-        <p className="text-bg/50 text-lg max-w-[600px] mx-auto">{c.subtitle}</p>
+    <div id="tutorials" className="py-40">
+      <div className="flex flex-col lg:flex-row justify-between items-end gap-12 mb-24">
+        <div className="max-w-[800px]">
+          <h2 className="text-bg font-black leading-none tracking-[-0.05em]" style={{ fontSize: 'clamp(40px, 5vw, 80px)' }}>
+            {c.title}
+          </h2>
+        </div>
+        <p className="max-w-[400px] text-xl text-bg/50 leading-relaxed pb-2 font-medium">
+          {c.subtitle}
+        </p>
       </div>
 
-      <div className="grid gap-12 lg:grid-cols-[300px_1fr]">
-        {/* Tabs */}
-        <div className="flex flex-col gap-3">
+      <div className="grid gap-16 lg:grid-cols-[340px_1fr]">
+        {/* Tabs - Vertical Stack */}
+        <div className="flex flex-col gap-4">
           {c.flows.map(f => (
             <button
               key={f.id}
               onClick={() => setActiveFlow(f.id)}
-              className={`flex items-center gap-4 px-6 py-5 rounded-[24px] border transition-all text-left ${
+              className={`group flex items-center justify-between gap-4 px-8 py-7 rounded-[32px] border transition-all text-left relative overflow-hidden ${
                 activeFlow === f.id 
-                  ? 'bg-accent border-accent text-white shadow-lg shadow-accent/20 scale-[1.02]' 
-                  : 'bg-bg/5 border-bg/10 text-bg/60 hover:bg-bg/10 hover:border-bg/20'
+                  ? 'bg-accent border-accent text-white shadow-vanguard scale-[1.05] z-10' 
+                  : 'bg-bg/5 border-bg/10 text-bg/40 hover:bg-bg/10 hover:border-bg/20'
               }`}
             >
-              <span className="font-black text-lg tracking-tight">{f.title}</span>
+              <div className="relative z-10">
+                 <p className={`text-[10px] font-black uppercase tracking-[0.2em] mb-1 ${activeFlow === f.id ? 'text-white/60' : 'text-accent'}`}>Modulo {f.id === 'home' ? '01' : f.id === 'attendance' ? '02' : '03'}</p>
+                 <span className="font-black text-xl tracking-tighter">{f.title}</span>
+              </div>
+              <div className={`transition-transform duration-500 group-hover:translate-x-1 ${activeFlow === f.id ? 'opacity-100' : 'opacity-0'}`}>
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </div>
+              {activeFlow === f.id && (
+                 <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-50" />
+              )}
             </button>
           ))}
         </div>
 
-        {/* Content */}
-        <div className="bg-bg/5 rounded-[48px] border border-bg/10 p-8 lg:p-12 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 h-64 w-64 bg-accent/10 blur-[80px] rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-accent/20 transition-all duration-700" />
-          
-          <div className="grid gap-10 lg:grid-cols-[1fr_320px] items-center relative z-10">
-             <div className="space-y-10">
-               {currentFlow.steps.map((s, idx) => (
-                 <div key={s.title} className="flex gap-6 animate-in slide-in-from-left-4 duration-500" style={{ animationDelay: `${idx * 100}ms` }}>
-                    <div className="h-10 w-10 rounded-xl bg-accent text-white flex items-center justify-center font-black flex-shrink-0 shadow-lg shadow-accent/20">
-                      {idx + 1}
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-bg mb-2">{s.title}</h4>
-                      <p className="text-bg/50 leading-relaxed">{s.desc}</p>
-                    </div>
+        {/* Content Panel */}
+        <div className="relative group">
+           {/* Background Glow */}
+           <div className="absolute inset-0 bg-accent/5 blur-[120px] rounded-full opacity-50" />
+           
+           <div className="relative glass p-10 lg:p-16 rounded-[56px] border-white/40 shadow-vanguard">
+              <div className="grid gap-16 lg:grid-cols-[1fr_340px] items-center">
+                 <div className="space-y-12">
+                   {currentFlow.steps.map((s, idx) => (
+                     <div key={idx} className="flex gap-8 animate-in slide-in-from-left-8 duration-700" style={{ animationDelay: `${idx * 150}ms` }}>
+                        <div className="h-12 w-12 rounded-2xl bg-accent text-white flex items-center justify-center font-black flex-shrink-0 shadow-lg shadow-accent/20 text-xl rotate-3">
+                          {idx + 1}
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="text-2xl font-black text-bg tracking-tight">{s.title}</h4>
+                          <p className="text-lg text-bg/50 leading-relaxed font-medium">{s.desc}</p>
+                        </div>
+                     </div>
+                   ))}
+                   
+                   <div className="pt-10 border-t border-bg/10 flex items-center gap-6">
+                      <div className="flex -space-x-3">
+                         {[1,2,3].map(i => (
+                            <div key={i} className="h-10 w-10 rounded-full border-2 border-white bg-bg/10 backdrop-blur-sm" />
+                         ))}
+                      </div>
+                      <div>
+                         <p className="text-bg font-black text-sm tracking-tight leading-none">v2.5.1 Experience</p>
+                         <p className="text-accent text-[10px] font-bold uppercase tracking-widest mt-1">Native components replication</p>
+                      </div>
+                   </div>
                  </div>
-               ))}
-               <div className="pt-6 border-t border-white/5">
-                  <p className="text-bg/30 text-[11px] font-bold uppercase tracking-widest">Vista previa real v2.5.1</p>
-                  <p className="text-accent text-xs font-medium mt-1">Componentes nativos replicados con exactitud</p>
-               </div>
-             </div>
 
-             <div className="animate-in zoom-in duration-500" key={currentFlow.id}>
-                <FeatureMockup type={currentFlow.mockup as any} />
-             </div>
-          </div>
+                 <div className="animate-in zoom-in duration-700 relative" key={currentFlow.id}>
+                    <div className="absolute inset-0 bg-accent/10 blur-[60px] rounded-full floating" />
+                    <FeatureMockup type={currentFlow.mockup as any} />
+                 </div>
+              </div>
+           </div>
         </div>
       </div>
     </div>

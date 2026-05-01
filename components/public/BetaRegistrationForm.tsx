@@ -69,62 +69,81 @@ export default function BetaRegistrationForm({ locale }: { locale: string }) {
 
   if (status === 'success') {
     return (
-      <div className="rounded-[40px] bg-accent/10 border border-accent/20 p-10 text-center animate-in fade-in zoom-in duration-500">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white mb-6">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6L9 17l-5-5"/></svg>
+      <div className="rounded-[40px] bg-accent/5 border border-accent/20 p-12 text-center animate-in fade-in zoom-in duration-700">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-accent text-white mb-8 shadow-lg shadow-accent/20 rotate-3">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
         </div>
-        <h3 className="text-2xl font-black text-bg">{c.successTitle}</h3>
-        <p className="mt-4 text-bg/70 leading-relaxed max-w-[320px] mx-auto">{c.successBody}</p>
+        <h3 className="text-3xl font-black text-white leading-tight">{c.successTitle}</h3>
+        <p className="mt-6 text-white/50 text-lg leading-relaxed max-w-[320px] mx-auto font-medium">{c.successBody}</p>
       </div>
     )
   }
 
+  const inputClasses = "h-16 rounded-[24px] border border-white/5 bg-white/[0.03] px-8 text-white placeholder:text-white/30 focus:border-accent/50 focus:bg-white/[0.06] outline-none transition-all duration-300 font-medium"
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <input
-          required
-          name="name"
-          placeholder={c.name}
-          className="h-14 rounded-2xl border border-white/20 bg-white/10 px-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all"
-        />
-        <input
-          required
-          type="email"
-          name="email"
-          placeholder={c.email}
-          className="h-14 rounded-2xl border border-white/20 bg-white/10 px-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all"
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="space-y-2">
+          <input
+            required
+            name="name"
+            placeholder={c.name}
+            className={`w-full ${inputClasses}`}
+          />
+        </div>
+        <div className="space-y-2">
+          <input
+            required
+            type="email"
+            name="email"
+            placeholder={c.email}
+            className={`w-full ${inputClasses}`}
+          />
+        </div>
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="space-y-2">
+          <input
+            name="role"
+            placeholder={c.role}
+            className={`w-full ${inputClasses}`}
+          />
+        </div>
+        <div className="space-y-2">
+          <input
+            name="group"
+            placeholder={c.group}
+            className={`w-full ${inputClasses}`}
+          />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <textarea
+          name="message"
+          rows={4}
+          placeholder={c.message}
+          className={`w-full rounded-[32px] border border-white/5 bg-white/[0.03] p-8 text-white placeholder:text-white/30 focus:border-accent/50 focus:bg-white/[0.06] outline-none transition-all duration-300 resize-none font-medium`}
         />
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <input
-          name="role"
-          placeholder={c.role}
-          className="h-14 rounded-2xl border border-white/20 bg-white/10 px-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all"
-        />
-        <input
-          name="group"
-          placeholder={c.group}
-          className="h-14 rounded-2xl border border-white/20 bg-white/10 px-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all"
-        />
-      </div>
-      <textarea
-        name="message"
-        rows={3}
-        placeholder={c.message}
-        className="w-full rounded-2xl border border-white/20 bg-white/10 p-6 text-white placeholder:text-white/60 focus:border-accent outline-none transition-all resize-none"
-      />
       
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="btn btn-accent btn-lg w-full h-16 rounded-full font-black text-lg disabled:opacity-50"
+        className="btn btn-accent btn-lg w-full h-18 rounded-[24px] font-black text-xl shadow-vanguard disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98] transition-transform"
       >
-        {status === 'loading' ? c.loading : c.submit}
+        {status === 'loading' ? (
+           <div className="flex items-center gap-3">
+              <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>{c.loading}</span>
+           </div>
+        ) : c.submit}
       </button>
 
       {status === 'error' && (
-        <p className="text-center text-red-400 text-sm font-medium">{c.error}</p>
+        <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-center text-red-400 text-sm font-bold uppercase tracking-widest animate-in shake-1">
+           {c.error}
+        </div>
       )}
     </form>
   )

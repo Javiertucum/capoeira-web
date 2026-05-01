@@ -191,41 +191,55 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
   }
 
   return (
-    <div 
-      className={`relative aspect-[9/19] w-full max-w-[300px] mx-auto bg-ink rounded-[44px] border-[10px] border-[#1A1E26] overflow-hidden shadow-[0_48px_80px_-16px_rgba(0,0,0,0.8)] ring-1 ring-white/10 transition-transform duration-500 ${interactive ? 'cursor-pointer hover:scale-[1.02]' : ''}`}
-      onClick={() => interactive && setCurrentStep(prev => (prev + 1) % 3)}
-    >
-      {/* Status Bar */}
-      <div className="h-10 px-6 pt-4 flex justify-between items-center text-[9px] font-bold text-bg/30 mono uppercase tracking-widest z-20 relative">
-        <span>9:41</span>
-        <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full border border-current" />
-          <div className="w-2.5 h-2.5 rounded-full bg-current" />
+    <div className="relative group perspective-1000">
+      {/* Glow Effect behind the phone */}
+      <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-1000" />
+      
+      <div 
+        className={`relative aspect-[9/19] w-full max-w-[300px] mx-auto bg-[#0A0C10] rounded-[52px] border-[8px] border-[#1A1E26] overflow-hidden shadow-vanguard ring-1 ring-white/10 transition-all duration-700 hover:rotate-y-2 hover:scale-[1.02] ${interactive ? 'cursor-pointer' : ''}`}
+        onClick={() => interactive && setCurrentStep(prev => (prev + 1) % 3)}
+      >
+        {/* Notch / Dynamic Island replication */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-6 bg-[#1A1E26] rounded-full z-30 flex items-center justify-center gap-2">
+           <div className="w-1.5 h-1.5 rounded-full bg-white/5" />
+           <div className="w-8 h-1 bg-white/5 rounded-full" />
         </div>
-      </div>
 
-      <div className="absolute inset-0 pt-12 p-6 flex flex-col overflow-hidden">
-         {renderScreen()}
-      </div>
+        {/* Status Bar */}
+        <div className="h-12 px-8 pt-5 flex justify-between items-center text-[10px] font-black text-bg/30 mono uppercase tracking-widest z-20 relative">
+          <span>9:41</span>
+          <div className="flex gap-2">
+            <div className="w-3 h-3 rounded-full border border-current opacity-50" />
+            <div className="w-3 h-3 rounded-full bg-current" />
+          </div>
+        </div>
 
-      {/* Real App Navigation replication */}
-      <div className="absolute bottom-0 inset-x-0 h-20 bg-bg/5 backdrop-blur-xl border-t border-white/5 flex items-center justify-around px-4 pb-2">
-         {[
-            { icon: 'home', active: type === 'home' },
-            { icon: 'calendar', active: type === 'event' },
-            { icon: 'people', active: type === 'graduation' },
-            { icon: 'person', active: false }
-         ].map((item, i) => (
-            <div key={i} className={`flex flex-col items-center gap-1 ${item.active ? 'text-accent' : 'text-bg/20'}`}>
-               <div className={`w-5 h-5 rounded-md border-2 border-current`} />
-               <div className={`w-1 h-1 rounded-full ${item.active ? 'bg-accent' : 'transparent'}`} />
-            </div>
-         ))}
-      </div>
+        <div className="absolute inset-0 pt-14 p-6 flex flex-col overflow-hidden">
+           {renderScreen()}
+        </div>
 
-      {/* Home Indicator */}
-      <div className="absolute bottom-2 inset-x-0 flex justify-center">
-        <div className="w-16 h-1 rounded-full bg-white/20" />
+        {/* Glass Reflection Overlay */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-30 z-40" />
+
+        {/* Real App Navigation replication */}
+        <div className="absolute bottom-0 inset-x-0 h-22 bg-bg/5 backdrop-blur-2xl border-t border-white/5 flex items-center justify-around px-6 pb-4 z-30">
+           {[
+              { icon: 'home', active: type === 'home' },
+              { icon: 'calendar', active: type === 'event' },
+              { icon: 'people', active: type === 'graduation' },
+              { icon: 'person', active: false }
+           ].map((item, i) => (
+              <div key={i} className={`flex flex-col items-center gap-1.5 transition-colors ${item.active ? 'text-accent' : 'text-bg/15'}`}>
+                 <div className={`w-6 h-6 rounded-lg border-2 border-current transition-transform ${item.active ? 'scale-110' : 'scale-100'}`} />
+                 {item.active && <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />}
+              </div>
+           ))}
+        </div>
+
+        {/* Home Indicator */}
+        <div className="absolute bottom-2.5 inset-x-0 flex justify-center z-30">
+          <div className="w-20 h-1.5 rounded-full bg-white/10" />
+        </div>
       </div>
     </div>
   )
