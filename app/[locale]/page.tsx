@@ -2,8 +2,10 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
+import Nav from '@/components/public/Nav'
 import BetaRegistrationForm from '@/components/public/BetaRegistrationForm'
 import TutorialSection from '@/components/public/TutorialSection'
+import FeatureMockup from '@/components/public/FeatureMockup'
 
 type Props = Readonly<{ params: Promise<{ locale: string }> }>
 
@@ -131,6 +133,8 @@ export default async function LandingPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-ink text-bg/90 selection:bg-accent/30 selection:text-white">
+      <Nav />
+
       {/* ── HERO ── */}
       <section className="page-shell relative overflow-hidden pt-32 pb-24 lg:pt-48">
         <div className="absolute -top-24 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-accent-soft opacity-10 blur-[140px]" />
@@ -151,33 +155,30 @@ export default async function LandingPage({ params }: Props) {
             </p>
 
             <div className="mt-12 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8">
-              <a href="#beta" className="btn btn-accent btn-lg h-16 px-10 rounded-full font-black text-lg shadow-2xl hover:scale-105 transition-all">
+              <Link href="#beta" className="btn btn-accent btn-lg h-16 px-10 rounded-full font-black text-lg shadow-2xl hover:scale-105 transition-all">
                 {c.ctaHero}
-              </a>
+              </Link>
               
               <div className="flex gap-10">
                 <div>
                   <div className="text-[28px] font-black text-bg tracking-tighter">{stats.educators.toLocaleString()}</div>
-                  <div className="mono text-[9px] uppercase tracking-widest text-bg/40 font-bold">{c.statsLabel1}</div>
+                  <div className="eyebrow text-[9px]">{c.statsLabel1}</div>
                 </div>
                 <div>
                   <div className="text-[28px] font-black text-bg tracking-tighter">{stats.nucleos.toLocaleString()}</div>
-                  <div className="mono text-[9px] uppercase tracking-widest text-bg/40 font-bold">{c.statsLabel2}</div>
+                  <div className="eyebrow text-[9px]">{c.statsLabel2}</div>
+                </div>
+                <div>
+                  <div className="text-[28px] font-black text-bg tracking-tighter">{stats.countries.toLocaleString()}</div>
+                  <div className="eyebrow text-[9px]">{c.statsLabel3}</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Hero Image */}
-          <div className="relative aspect-[9/19] w-full max-w-[320px] mx-auto lg:max-w-none lg:w-[320px] lg:justify-self-center rounded-[40px] border-[8px] border-bg/10 bg-bg/5 shadow-2xl overflow-hidden">
-            <div className="absolute inset-0 bg-accent/20 blur-[120px] rounded-full opacity-50 pointer-events-none" />
-            <Image 
-              src="/images/user_mockup_4.jpg" 
-              alt="Agenda Capoeiragem App Hero" 
-              fill 
-              className="object-cover object-top scale-[1.02]"
-              priority
-            />
+          <div className="hidden lg:block relative">
+             <div className="absolute inset-0 bg-accent/20 blur-[120px] rounded-full opacity-40 pointer-events-none" />
+             <FeatureMockup type="educator" />
           </div>
         </div>
       </section>
@@ -212,15 +213,7 @@ export default async function LandingPage({ params }: Props) {
                 </div>
               ))}
             </div>
-            <div className="relative aspect-[9/19] w-full max-w-[300px] mx-auto rounded-[40px] border-[8px] border-bg/10 bg-bg/5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden">
-               <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full opacity-30 pointer-events-none" />
-               <Image 
-                 src="/images/user_mockup_1.jpg" 
-                 alt="Educator Functions Grid" 
-                 fill 
-                 className="object-cover object-top scale-[1.02]"
-               />
-            </div>
+            <FeatureMockup type="finance" />
           </div>
         </div>
 
@@ -231,13 +224,16 @@ export default async function LandingPage({ params }: Props) {
             <h2 className="text-2xl lg:text-4xl font-black text-bg tracking-tight">{c.studentSubtitle}</h2>
             <div className="rule" />
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {c.studentFeatures.map((f) => (
-              <div key={f.t} className="rounded-[32px] border border-bg/10 bg-ink-2 p-8 hover:border-bg/20 transition-colors">
-                <h3 className="text-xl font-black text-bg mb-3" style={{ fontFamily: 'var(--font-display)' }}>{f.t}</h3>
-                <p className="text-[15px] leading-relaxed text-bg/50">{f.d}</p>
-              </div>
-            ))}
+          <div className="grid gap-12 lg:grid-cols-[450px_1fr] items-center">
+            <FeatureMockup type="student" />
+            <div className="grid gap-6 sm:grid-cols-2">
+              {c.studentFeatures.map((f) => (
+                <div key={f.t} className="rounded-[32px] border border-bg/10 bg-ink-2 p-8 hover:border-bg/20 transition-colors">
+                  <h3 className="text-xl font-black text-bg mb-3" style={{ fontFamily: 'var(--font-display)' }}>{f.t}</h3>
+                  <p className="text-[15px] leading-relaxed text-bg/50">{f.d}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -246,44 +242,27 @@ export default async function LandingPage({ params }: Props) {
       </section>
 
       {/* ── BETA SECTION ── */}
-      <section id="beta" className="page-shell py-32 bg-ink relative overflow-hidden rounded-[64px] mb-8 shadow-2xl">
+      <section id="beta" className="page-shell py-32 bg-ink relative overflow-hidden rounded-[64px] mb-16 shadow-2xl">
         <div className="absolute top-0 right-0 h-[500px] w-[500px] bg-accent/10 blur-[140px] rounded-full translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 left-0 h-[500px] w-[500px] bg-accent/5 blur-[140px] rounded-full -translate-x-1/2 translate-y-1/2" />
         
         <div className="max-w-[800px] mx-auto text-center relative z-10">
           <span className="mono text-[11px] uppercase tracking-[0.4em] text-accent mb-6 block font-black">Join the testing</span>
-          <h2 className="text-bg font-black" style={{ fontSize: 'clamp(40px, 6vw, 84px)', lineHeight: 0.85, letterSpacing: '-0.05em' }}>
+          <h2 className="text-bg font-black mb-8" style={{ fontSize: 'clamp(32px, 6vw, 64px)', lineHeight: 1, letterSpacing: '-0.04em' }}>
             {c.betaTitle}
           </h2>
           <p className="mt-8 text-[19px] text-bg/60 leading-[1.6] mb-16 max-w-[600px] mx-auto">
             {c.betaBody}
           </p>
-
-          <div className="bg-ink p-1 rounded-[48px] border border-bg/20 shadow-2xl overflow-hidden max-w-[640px] mx-auto">
-            <div className="p-8 sm:p-12">
-              <BetaRegistrationForm locale={locale} />
-            </div>
+          <div className="max-w-[600px] mx-auto">
+            <BetaRegistrationForm locale={locale} />
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="page-shell py-16 border-t border-bg/10">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-10">
-          <div className="flex items-center gap-4">
-             <span className="grid h-8 w-8 place-items-center rounded-xl bg-accent text-[14px] font-black text-white">a·c</span>
-             <span className="text-[14px] font-bold text-bg/30 tracking-tight">Agenda Capoeiragem &copy; {new Date().getFullYear()}</span>
-          </div>
-          <div className="flex gap-10">
-            <Link href={`/${locale}/privacy`} className="text-[11px] font-bold text-bg/40 hover:text-accent transition-colors uppercase tracking-[0.2em]">
-              {locale === 'en' ? 'Privacy' : locale === 'pt' ? 'Privacidade' : 'Privacidad'}
-            </Link>
-            <Link href={`/${locale}/terms`} className="text-[11px] font-bold text-bg/40 hover:text-accent transition-colors uppercase tracking-[0.2em]">
-              {locale === 'en' ? 'Terms' : locale === 'pt' ? 'Termos' : 'Términos'}
-            </Link>
-            <Link href={`/${locale}/admin`} className="text-[11px] font-bold text-bg/40 hover:text-accent transition-colors uppercase tracking-[0.2em]">Admin</Link>
-          </div>
-        </div>
+      {/* Footer */}
+      <footer className="page-shell py-12 border-t border-bg/5 text-center">
+        <p className="eyebrow text-bg/20">© 2026 Agenda Capoeiragem • Crafted for the Community</p>
       </footer>
     </div>
   )

@@ -8,15 +8,8 @@ interface FlowStep {
   desc: string
 }
 
-interface Flow {
-  id: string
-  title: string
-  icon: React.ReactNode
-  steps: FlowStep[]
-}
-
 export default function TutorialSection({ locale }: { locale: string }) {
-  const [activeFlow, setActiveFlow] = useState('onboarding')
+  const [activeFlow, setActiveFlow] = useState('daily')
 
   const copy = {
     es: {
@@ -24,81 +17,81 @@ export default function TutorialSection({ locale }: { locale: string }) {
       subtitle: 'Tutoriales paso a paso para dominar tu comunidad',
       flows: [
         {
-          id: 'onboarding',
-          title: 'Onboarding',
+          id: 'daily',
+          title: 'Gestión Diaria',
           steps: [
-            { title: 'Perfil', desc: 'Configura tu avatar, bio y redes sociales para que el mundo te conozca.' },
-            { title: 'Grupo', desc: 'Busca tu grupo actual o crea uno nuevo definiendo el sistema de cordas.' },
-            { title: 'Sede', desc: 'Registra tu núcleo de entrenamiento, mapa y horarios oficiales.' }
+            { title: 'Perfil & Onboarding', desc: 'Configura tu identidad, grupo y especialidades en segundos.' },
+            { title: 'Asistencia Rápida', desc: 'Toma lista con un toque seleccionando el horario del día.' },
+            { title: 'Buscador Global', desc: 'Encuentra cualquier alumno, núcleo o profesor al instante.' }
           ]
         },
         {
           id: 'admin',
           title: 'Administración',
           steps: [
-            { title: 'Asistencia', desc: 'Pasa lista en segundos seleccionando el horario del día.' },
-            { title: 'Pagos', desc: 'Registra mensualidades y clases sueltas con estados de pago claros.' },
-            { title: 'Reportes', desc: 'Genera PDFs y CSVs mensuales para una gestión profesional.' }
+            { title: 'Control de Pagos', desc: 'Gestiona mensualidades, deudas y estados financieros claros.' },
+            { title: 'Dashboard KPI', desc: 'Analiza el crecimiento y salud de tu escuela con gráficos.' },
+            { title: 'Exportación CSV/PDF', desc: 'Genera reportes profesionales listos para compartir.' }
           ]
         },
         {
-          id: 'events',
-          title: 'Eventos',
+          id: 'community',
+          title: 'Comunidad',
           steps: [
-            { title: 'Creación', desc: 'Define fechas, ubicación interactiva y categorías del evento.' },
-            { title: 'Posters', desc: 'Sube múltiples imágenes para darle visibilidad a tu batizado.' },
-            { title: 'Colaboradores', desc: 'Invita a otros educadores para gestionar el evento en equipo.' }
+            { title: 'Feed Personalizado', desc: 'Mantente al día con noticias y eventos de tu mundo capoeira.' },
+            { title: 'Mapa de Núcleos', desc: 'Encuentra dónde entrenar en cualquier parte del mundo.' },
+            { title: 'Gestión de Eventos', desc: 'Publica batizados y rodas con posters y ubicación GPS.' }
           ]
         },
         {
-          id: 'graduations',
-          title: 'Graduaciones',
+          id: 'leadership',
+          title: 'Liderazgo',
           steps: [
-            { title: 'Sistema', desc: 'Define los niveles de cordas, sus colores y nombres oficiales.' },
-            { title: 'Umbral', desc: 'Marca a partir de qué nivel un alumno se considera educador.' },
-            { title: 'Asignación', desc: 'Gradúa a tus alumnos de forma masiva o individual desde su perfil.' }
+            { title: 'Jerarquía de Grupo', desc: 'Supervisa múltiples profesores y sedes de forma centralizada.' },
+            { title: 'Sistema de Cordas', desc: 'Define el sistema de grados oficial de tu organización.' },
+            { title: 'Métricas de Avance', desc: 'Analiza quién está listo para subir de nivel objetivamente.' }
           ]
         }
       ]
     },
     pt: {
       title: 'Explore os fluxos da App',
-      subtitle: 'Tutoriais passo a paso para dominar sua comunidade',
+      subtitle: 'Tutoriais passo a passo para dominar sua comunidade',
       flows: [
         {
-          id: 'onboarding',
-          title: 'Onboarding',
+          id: 'daily',
+          title: 'Gestão Diária',
           steps: [
-            { title: 'Perfil', desc: 'Configure seu avatar, bio e redes sociais para o mundo te conhecer.' },
-            { title: 'Grupo', desc: 'Busque seu grupo atual ou crie um novo definindo o sistema de cordas.' },
-            { title: 'Sede', desc: 'Registre seu núcleo de treino, mapa e horários oficiais.' }
+            { title: 'Perfil & Onboarding', desc: 'Configure sua identidade, grupo e especialidades em segundos.' },
+            { title: 'Chamada Rápida', desc: 'Faça a chamada com um toque selecionando o horário do dia.' },
+            { title: 'Busca Global', desc: 'Encontre qualquer aluno, núcleo ou professor instantaneamente.' }
           ]
         },
         {
           id: 'admin',
           title: 'Administração',
           steps: [
-            { title: 'Chamada', desc: 'Faça a chamada em segundos selecionando o horário do dia.' },
-            { title: 'Pagos', desc: 'Registre mensalidades e aulas avulsas com estados de pagamento claros.' },
-            { title: 'Relatórios', desc: 'Gere PDFs e CSVs mensais para uma gestão profissional.' }
+            { title: 'Controle de Pagamentos', desc: 'Gerencie mensalidades, dívidas e estados financeiros claros.' },
+            { title: 'Dashboard KPI', desc: 'Analise o crescimento e saúde da sua escola com gráficos.' },
+            { title: 'Exportação CSV/PDF', desc: 'Gere relatórios profissionais prontos para compartilhar.' }
           ]
         },
         {
-          id: 'events',
-          title: 'Eventos',
+          id: 'community',
+          title: 'Comunidade',
           steps: [
-            { title: 'Criação', desc: 'Defina datas, localização interativa e categorias do evento.' },
-            { title: 'Posters', desc: 'Suba múltiplas imagens para dar visibilidade ao seu batizado.' },
-            { title: 'Colaboradores', desc: 'Convide outros educadores para gerenciar o evento em equipe.' }
+            { title: 'Feed Personalizado', desc: 'Fique em dia com notícias e eventos do seu mundo capoeira.' },
+            { title: 'Mapa de Núcleos', desc: 'Encontre onde treinar em qualquer parte do mundo.' },
+            { title: 'Gestão de Eventos', desc: 'Publique batizados e rodas com posters e localização GPS.' }
           ]
         },
         {
-          id: 'graduations',
-          title: 'Graduações',
+          id: 'leadership',
+          title: 'Liderança',
           steps: [
-            { title: 'Sistema', desc: 'Defina os níveis de cordas, suas cores e nomes oficiais.' },
-            { title: 'Limite', desc: 'Marque a partir de qual nível um aluno é considerado educador.' },
-            { title: 'Atribuição', desc: 'Gradue seus alunos de forma massiva ou individual no perfil.' }
+            { title: 'Hierarquia de Grupo', desc: 'Supervisione múltiplos professores e sedes de forma centralizada.' },
+            { title: 'Sistema de Cordas', desc: 'Defina o sistema de graus oficial da sua organização.' },
+            { title: 'Métricas de Avanço', desc: 'Analise quem está pronto para subir de nível objetivamente.' }
           ]
         }
       ]
@@ -108,39 +101,39 @@ export default function TutorialSection({ locale }: { locale: string }) {
       subtitle: 'Step-by-step tutorials to master your community',
       flows: [
         {
-          id: 'onboarding',
-          title: 'Onboarding',
+          id: 'daily',
+          title: 'Daily Management',
           steps: [
-            { title: 'Profile', desc: 'Setup your avatar, bio, and social links to show yourself to the world.' },
-            { title: 'Group', desc: 'Find your current group or create a new one defining the corda system.' },
-            { title: 'Location', desc: 'Register your training school, map, and official schedules.' }
+            { title: 'Profile & Onboarding', desc: 'Setup your identity, group, and specialties in seconds.' },
+            { title: 'Quick Attendance', desc: 'Take attendance with a tap by selecting the daily schedule.' },
+            { title: 'Global Search', desc: 'Find any student, center, or teacher instantly.' }
           ]
         },
         {
           id: 'admin',
           title: 'Administration',
           steps: [
-            { title: 'Attendance', desc: 'Take attendance in seconds by selecting the daily schedule.' },
-            { title: 'Payments', desc: 'Record monthly fees and single classes with clear payment statuses.' },
-            { title: 'Reports', desc: 'Generate monthly PDFs and CSVs for professional management.' }
+            { title: 'Payment Control', desc: 'Manage monthly fees, debts, and clear financial statuses.' },
+            { title: 'KPI Dashboard', desc: 'Analyze your school growth and health with charts.' },
+            { title: 'CSV/PDF Export', desc: 'Generate professional reports ready to share.' }
           ]
         },
         {
-          id: 'events',
-          title: 'Events',
+          id: 'community',
+          title: 'Community',
           steps: [
-            { title: 'Creation', desc: 'Define dates, interactive location, and event categories.' },
-            { title: 'Posters', desc: 'Upload multiple images to give visibility to your batizado.' },
-            { title: 'Collaborators', desc: 'Invite other educators to manage the event as a team.' }
+            { title: 'Personalized Feed', desc: 'Stay up to date with news and events from your capoeira world.' },
+            { title: 'Center Map', desc: 'Find where to train anywhere in the world.' },
+            { title: 'Event Management', desc: 'Publish batizados and rodas with posters and GPS location.' }
           ]
         },
         {
-          id: 'graduations',
-          title: 'Graduations',
+          id: 'leadership',
+          title: 'Leadership',
           steps: [
-            { title: 'System', desc: 'Define corda levels, colors, and official names.' },
-            { title: 'Threshold', desc: 'Mark at which level a student is considered an educator.' },
-            { title: 'Assignment', desc: 'Graduate students in bulk or individually from their profile.' }
+            { title: 'Group Hierarchy', desc: 'Supervise multiple teachers and locations centrally.' },
+            { title: 'Belt System', desc: 'Define your organization\'s official grading system.' },
+            { title: 'Progress Metrics', desc: 'Analyze who is ready to level up objectively.' }
           ]
         }
       ]
@@ -206,7 +199,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
                 </div>
 
                 <div className="absolute inset-0 pt-12 p-5 flex flex-col overflow-hidden">
-                   {activeFlow === 'onboarding' && (
+                   {activeFlow === 'daily' && (
                       <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                          <div className="flex flex-col items-center mb-8">
                             <div className="w-20 h-20 rounded-full bg-accent/20 border-2 border-accent flex items-center justify-center mb-4">
@@ -216,11 +209,19 @@ export default function TutorialSection({ locale }: { locale: string }) {
                             <p className="text-accent text-[11px] font-bold tracking-widest uppercase">Tucum</p>
                          </div>
                          <div className="space-y-3">
-                            <div className="h-12 rounded-2xl bg-white/5 border border-white/10 px-4 flex items-center">
-                               <div className="w-full h-2 bg-white/10 rounded-full" />
+                            <div className="h-12 rounded-2xl bg-white/5 border border-white/10 px-4 flex items-center justify-between">
+                               <div className="flex items-center gap-3">
+                                  <div className="w-6 h-6 rounded-lg bg-green-500/20 flex items-center justify-center text-green-500">✓</div>
+                                  <div className="w-24 h-2 bg-white/10 rounded-full" />
+                               </div>
+                               <div className="w-8 h-2 bg-white/5 rounded-full" />
                             </div>
-                            <div className="h-12 rounded-2xl bg-white/5 border border-white/10 px-4 flex items-center">
-                               <div className="w-2/3 h-2 bg-white/10 rounded-full" />
+                            <div className="h-12 rounded-2xl bg-white/5 border border-white/10 px-4 flex items-center justify-between">
+                               <div className="flex items-center gap-3">
+                                  <div className="w-6 h-6 rounded-lg bg-white/10" />
+                                  <div className="w-20 h-2 bg-white/10 rounded-full" />
+                               </div>
+                               <div className="w-8 h-2 bg-white/5 rounded-full" />
                             </div>
                             <div className="h-32 rounded-2xl bg-white/5 border border-white/10 p-4">
                                <div className="w-full h-2 bg-white/10 rounded-full mb-3" />
@@ -234,7 +235,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
                       <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                          <div className="flex justify-between items-end mb-6">
                             <div>
-                               <p className="text-bg/40 text-[9px] font-bold uppercase tracking-widest mb-1">Reporte Mensual</p>
+                               <p className="text-bg/40 text-[9px] font-bold uppercase tracking-widest mb-1">Finanzas</p>
                                <h4 className="text-bg font-black text-xl">Marzo 2026</h4>
                             </div>
                             <div className="bg-accent px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-tighter">
@@ -244,19 +245,19 @@ export default function TutorialSection({ locale }: { locale: string }) {
                          <div className="grid grid-cols-2 gap-3 mb-4">
                             {[1, 2, 3, 4].map(i => (
                                <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col gap-2">
-                                  <div className="w-4 h-4 rounded-lg bg-accent/20" />
+                                  <div className={`w-4 h-4 rounded-lg ${i % 2 === 0 ? 'bg-green-500/20' : 'bg-accent/20'}`} />
                                   <div className="h-4 w-12 bg-white/10 rounded-full" />
                                   <div className="h-2 w-8 bg-white/5 rounded-full" />
                                </div>
                             ))}
                          </div>
-                         <div className="h-12 rounded-2xl bg-accent flex items-center justify-center text-white font-bold text-xs">
+                         <div className="h-12 rounded-2xl bg-accent flex items-center justify-center text-white font-bold text-xs shadow-lg shadow-accent/20">
                             Descargar Reporte PDF
                          </div>
                       </div>
                    )}
 
-                   {activeFlow === 'events' && (
+                   {activeFlow === 'community' && (
                       <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                          <div className="aspect-[4/5] rounded-[24px] bg-gradient-to-br from-accent/40 to-accent/10 border border-accent/20 relative overflow-hidden mb-4">
                             <div className="absolute inset-0 flex flex-col justify-end p-5 bg-gradient-to-t from-ink/80 to-transparent">
@@ -267,28 +268,28 @@ export default function TutorialSection({ locale }: { locale: string }) {
                          </div>
                          <div className="flex gap-2">
                             <div className="flex-1 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-[10px] font-bold text-bg">
-                               Confirmar
+                               Ver en el Mapa
                             </div>
-                            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                               <div className="w-4 h-4 border-2 border-white/20 rounded-full" />
+                            <div className="w-10 h-10 rounded-xl bg-accent border border-accent flex items-center justify-center shadow-lg shadow-accent/20">
+                               <div className="w-4 h-4 border-2 border-white rounded-full" />
                             </div>
                          </div>
                       </div>
                    )}
 
-                   {activeFlow === 'graduations' && (
+                   {activeFlow === 'leadership' && (
                       <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                         <h4 className="text-bg font-black text-lg mb-6">Sistema de Cordas</h4>
+                         <h4 className="text-bg font-black text-lg mb-6">Jerarquía & Cordas</h4>
                          <div className="space-y-3">
                             {[
-                               { c: '#008000', n: 'Corda Verde', r: 'Alumno Graduado' },
-                               { c: '#FFD700', n: 'Corda Amarela', r: 'Alumno Graduado I' },
-                               { c: '#0000FF', n: 'Corda Azul', r: 'Alumno Graduado II' },
-                               { c: '#008000', n: 'Branca / Verde', r: 'Instructor', split: true }
+                               { c: '#008000', n: 'Corda Verde', r: '7 Alumnos' },
+                               { c: '#FFD700', n: 'Corda Amarela', r: '4 Alumnos' },
+                               { c: '#0000FF', n: 'Corda Azul', r: '2 Alumnos' },
+                               { c: '#008000', n: 'Monitor', r: '1 Profesor', split: true }
                             ].map((belt, i) => (
                                <div key={i} className="flex items-center gap-4 p-3 rounded-2xl bg-white/5 border border-white/10">
                                   <div 
-                                    className="w-12 h-2.5 rounded-full" 
+                                    className="w-12 h-2.5 rounded-full shadow-inner" 
                                     style={{ 
                                       background: belt.split 
                                         ? `linear-gradient(to right, white 50%, ${belt.c} 50%)` 
