@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-import Nav from '@/components/public/Nav'
+import LocaleChrome from '@/components/public/LocaleChrome'
 import { routing } from '@/i18n/routing'
 
 type Props = Readonly<{
@@ -26,10 +26,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <div className="min-h-screen">
-        <Nav />
-        <main className="pt-[72px]">{children}</main>
-      </div>
+      <LocaleChrome>{children}</LocaleChrome>
     </NextIntlClientProvider>
   )
 }

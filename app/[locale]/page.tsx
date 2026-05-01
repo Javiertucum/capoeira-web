@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
-import Nav from '@/components/public/Nav'
 import BetaRegistrationForm from '@/components/public/BetaRegistrationForm'
 import TutorialSection from '@/components/public/TutorialSection'
 import FeatureMockup from '@/components/public/FeatureMockup'
@@ -154,8 +153,6 @@ export default async function LandingPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-bg selection:bg-accent/20 overflow-x-hidden">
-      <Nav />
-
       {/* ── HERO SECTION ── */}
       <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-40 overflow-hidden">
         {/* Vanguard Background Elements */}
