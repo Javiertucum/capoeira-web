@@ -213,7 +213,7 @@ export default async function LandingPage({ params }: Props) {
                 </div>
               ))}
             </div>
-            <FeatureMockup type="finance" />
+            <FeatureMockup type="educator" />
           </div>
         </div>
 
