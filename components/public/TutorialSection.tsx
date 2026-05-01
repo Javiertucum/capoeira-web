@@ -4,143 +4,113 @@ import { useState } from 'react'
 import FeatureMockup from './FeatureMockup'
 
 export default function TutorialSection({ locale }: { locale: string }) {
-  const [activeFlow, setActiveFlow] = useState('daily')
+  const [activeFlow, setActiveFlow] = useState('home')
 
   const copy = {
     es: {
-      title: 'Tu escuela en la palma de tu mano',
-      subtitle: 'Explora la interfaz real de Agenda Capoeiragem con datos de ejemplo',
+      title: 'Funciones reales, diseño nativo',
+      subtitle: 'Explora la interfaz exacta de la App v2.5.1 replicada en la web',
       flows: [
         {
-          id: 'daily',
-          title: 'Gestión Diaria',
+          id: 'home',
+          title: 'Panel Personalizado',
+          mockup: 'home',
+          steps: [
+            { title: 'Tu Agenda al Día', desc: 'Visualiza tus próximos eventos, rodas y clases directamente en el inicio con un saludo personalizado.' },
+            { title: 'Buscador de Red', desc: 'Encuentra núcleos, profesores o eventos en segundos usando filtros por fecha y ubicación.' },
+            { title: 'Event Cards Reales', desc: 'Cada evento muestra su poster, categoría (Batizado, Workshop), precio y confirmados.' }
+          ]
+        },
+        {
+          id: 'attendance',
+          title: 'Control de Asistencia',
           mockup: 'attendance',
           steps: [
-            { title: 'Toma de Asistencia', desc: 'Controla quién entrena hoy con un simple toque. Los datos se sincronizan con la nube al instante.' },
-            { title: 'Perfiles Detallados', desc: 'Consulta el avance de cada alumno, su corda actual y su frecuencia de entrenamiento.' },
-            { title: 'Buscador Inteligente', desc: 'Encuentra cualquier contacto o centro de entrenamiento por nombre o apodo.' }
+            { title: 'Sesiones de Entrenamiento', desc: 'Pasa lista seleccionando el horario del día (Iniciantes, Avançados, etc) con un solo toque.' },
+            { title: 'Identificación Visual', desc: 'Cada alumno muestra su apodo y su corda actual con los colores oficiales de tu grupo.' },
+            { title: 'Sincronización Cloud', desc: 'Al guardar la asistencia, los datos se suben a Firebase para generar tus reportes mensuales.' }
           ]
         },
         {
-          id: 'admin',
-          title: 'Administración',
-          mockup: 'finance',
+          id: 'graduation',
+          title: 'Sistema de Cordas',
+          mockup: 'graduation',
           steps: [
-            { title: 'Finanzas Claras', desc: 'Visualiza la recaudación mensual y el estado de pagos de todo tu grupo sin Excel.' },
-            { title: 'Métricas KPI', desc: 'Analiza el crecimiento de alumnos nuevos y la retención con gráficos profesionales.' },
-            { title: 'Reportes en PDF', desc: 'Genera el informe mensual de tu núcleo listo para enviar a tus supervisores.' }
-          ]
-        },
-        {
-          id: 'student',
-          title: 'Para Alumnos',
-          mockup: 'student',
-          steps: [
-            { title: 'Próximas Clases', desc: 'Revisa cuándo y dónde entrenas hoy. Recibe notificaciones de cambios de última hora.' },
-            { title: 'Tu Graduación', desc: 'Mira cuánto te falta para tu próxima corda basándote en tus asistencias reales.' },
-            { title: 'Eventos Globales', desc: 'Descubre rodas, workshops y batizados cerca de ti y confirma tu presencia.' }
-          ]
-        },
-        {
-          id: 'group',
-          title: 'Para Grupos',
-          mockup: 'educator',
-          steps: [
-            { title: 'Control de Sedes', desc: 'Supervisa múltiples núcleos y profesores bajo una misma organización centralizada.' },
-            { title: 'Jerarquía Oficial', desc: 'Configura el sistema de cordas único de tu grupo para todos tus profesores.' },
-            { title: 'Moderación', desc: 'Aprueba solicitudes de nuevos alumnos y edita la información pública de tus sedes.' }
+            { title: 'Jerarquía Visual', desc: 'Define el sistema de grados de tu grupo. Soporta cordas sólidas, split y trenzadas diagonalmente.' },
+            { title: 'Umbral de Educador', desc: 'Configura a partir de qué grado un alumno es considerado educador para supervisar sus propios núcleos.' },
+            { title: 'Puntas y Especiales', desc: 'Gestiona graduaciones estagiarias con puntas de colores y niveles infantiles o juveniles.' }
           ]
         }
       ]
     },
     pt: {
-      title: 'Sua escola na palma da mão',
-      subtitle: 'Explore a interface real do Agenda Capoeiragem com dados de exemplo',
+      title: 'Funções reais, design nativo',
+      subtitle: 'Explore a interface exata da App v2.5.1 replicada na web',
       flows: [
         {
-          id: 'daily',
-          title: 'Gestão Diária',
+          id: 'home',
+          title: 'Painel Personalizado',
+          mockup: 'home',
+          steps: [
+            { title: 'Sua Agenda em Dia', desc: 'Visualize seus próximos eventos, rodas e aulas diretamente no início com saudação personalizada.' },
+            { title: 'Busca de Rede', desc: 'Encontre núcleos, professores ou eventos em segundos usando filtros por data e localização.' },
+            { title: 'Cards Reais', desc: 'Cada evento mostra seu poster, categoria (Batizado, Workshop), preço e confirmados.' }
+          ]
+        },
+        {
+          id: 'attendance',
+          title: 'Controle de Presença',
           mockup: 'attendance',
           steps: [
-            { title: 'Chamada Rápida', desc: 'Controle quem treina hoje com um simples toque. Dados sincronizados na nuvem.' },
-            { title: 'Perfis Detalhados', desc: 'Consulte o progresso de cada aluno, sua corda atual e frequência de treino.' },
-            { title: 'Busca Inteligente', desc: 'Encontre qualquer contato ou centro de treino por nome ou apelido.' }
+            { title: 'Sessões de Treino', desc: 'Faça a chamada selecionando o horário do dia (Iniciantes, Avançados, etc) com um toque.' },
+            { title: 'Identificação Visual', desc: 'Cada aluno mostra seu apelido e sua corda atual com as cores oficiais do seu grupo.' },
+            { title: 'Sincronização Cloud', desc: 'Ao salvar a presença, os dados sobem para o Firebase para gerar seus relatórios mensais.' }
           ]
         },
         {
-          id: 'admin',
-          title: 'Administração',
-          mockup: 'finance',
+          id: 'graduation',
+          title: 'Sistema de Cordas',
+          mockup: 'graduation',
           steps: [
-            { title: 'Finanças Claras', desc: 'Visualize a arrecadação mensal e o status de pagamentos de todo o grupo.' },
-            { title: 'Métricas KPI', desc: 'Analise o crescimento de novos alunos e retenção com gráficos profissionais.' },
-            { title: 'Relatórios em PDF', desc: 'Gere o relatório mensal do seu núcleo pronto para enviar aos supervisores.' }
-          ]
-        },
-        {
-          id: 'student',
-          title: 'Para Alunos',
-          mockup: 'student',
-          steps: [
-            { title: 'Próximos Treinos', desc: 'Veja quando e onde treina hoje. Receba notificações de mudanças.' },
-            { title: 'Sua Graduação', desc: 'Veja quanto falta para sua próxima corda baseado em suas presenças reais.' },
-            { title: 'Eventos Globais', desc: 'Descubra rodas e batizados perto de você e confirme presença.' }
-          ]
-        },
-        {
-          id: 'group',
-          title: 'Para Grupos',
-          mockup: 'educator',
-          steps: [
-            { title: 'Controle de Sedes', desc: 'Supervisione múltiplos núcleos e professores sob uma mesma organização.' },
-            { title: 'Hierarquia Oficial', desc: 'Configure o sistema de cordas único do seu grupo para todos os professores.' },
-            { title: 'Moderação', desc: 'Aprove solicitações de novos alunos e edite informações públicas.' }
+            { title: 'Hierarquia Visual', desc: 'Defina o sistema de graus do seu grupo. Suporta cordas sólidas, split e trançadas diagonalmente.' },
+            { title: 'Limite de Educador', desc: 'Configure a partir de qual grau um aluno é considerado educador para supervisionar núcleos.' },
+            { title: 'Pontas e Especiais', desc: 'Gerencie graduações estagiárias com pontas coloridas e níveis infantis ou juvenis.' }
           ]
         }
       ]
     },
     en: {
-      title: 'Your school in your pocket',
-      subtitle: 'Explore the real Agenda Capoeiragem interface with sample data',
+      title: 'Real features, native design',
+      subtitle: 'Explore the exact App v2.5.1 interface replicated on the web',
       flows: [
         {
-          id: 'daily',
-          title: 'Daily Management',
+          id: 'home',
+          title: 'Personalized Panel',
+          mockup: 'home',
+          steps: [
+            { title: 'Your Daily Agenda', desc: 'View your upcoming events, rodas, and classes directly on home with a personalized greeting.' },
+            { title: 'Network Search', desc: 'Find centers, teachers, or events in seconds using date and location filters.' },
+            { title: 'Real Event Cards', desc: 'Each event displays its poster, category (Batizado, Workshop), price, and attendees.' }
+          ]
+        },
+        {
+          id: 'attendance',
+          title: 'Attendance Control',
           mockup: 'attendance',
           steps: [
-            { title: 'Quick Attendance', desc: 'Control who trains today with a simple tap. Data syncs instantly to the cloud.' },
-            { title: 'Detailed Profiles', desc: 'Check each student\'s progress, current belt, and training frequency.' },
-            { title: 'Smart Search', desc: 'Find any contact or training center by name or nickname.' }
+            { title: 'Training Sessions', desc: 'Take attendance by selecting the daily schedule (Beginners, Advanced, etc) with one tap.' },
+            { title: 'Visual Identification', desc: 'Each student displays their nickname and current belt with your group\'s official colors.' },
+            { title: 'Cloud Sync', desc: 'When saving attendance, data is uploaded to Firebase to generate your monthly reports.' }
           ]
         },
         {
-          id: 'admin',
-          title: 'Administration',
-          mockup: 'finance',
+          id: 'graduation',
+          title: 'Graduation System',
+          mockup: 'graduation',
           steps: [
-            { title: 'Clear Finances', desc: 'Visualize monthly revenue and payment status for your entire group.' },
-            { title: 'KPI Metrics', desc: 'Analyze new student growth and retention with professional charts.' },
-            { title: 'PDF Reports', desc: 'Generate your center\'s monthly report ready to send to supervisors.' }
-          ]
-        },
-        {
-          id: 'student',
-          title: 'For Students',
-          mockup: 'student',
-          steps: [
-            { title: 'Upcoming Classes', desc: 'Check when and where you train today. Get notifications for changes.' },
-            { title: 'Your Graduation', desc: 'See how much is left for your next belt based on your real attendance.' },
-            { title: 'Global Events', desc: 'Discover rodas and batizados near you and confirm your presence.' }
-          ]
-        },
-        {
-          id: 'group',
-          title: 'For Groups',
-          mockup: 'educator',
-          steps: [
-            { title: 'Branch Control', desc: 'Supervise multiple centers and teachers under one centralized organization.' },
-            { title: 'Official Hierarchy', desc: 'Set up your group\'s unique belt system for all your teachers.' },
-            { title: 'Moderation', desc: 'Approve new student requests and edit public branch information.' }
+            { title: 'Visual Hierarchy', desc: 'Define your group\'s grading system. Supports solid, split, and diagonally braided belts.' },
+            { title: 'Educator Threshold', desc: 'Configure at which rank a student is considered an educator to supervise their own centers.' },
+            { title: 'Tips and Specials', desc: 'Manage intern graduations with colored tips and child or youth levels.' }
           ]
         }
       ]
@@ -193,13 +163,13 @@ export default function TutorialSection({ locale }: { locale: string }) {
                  </div>
                ))}
                <div className="pt-6 border-t border-white/5">
-                  <p className="text-bg/30 text-[11px] font-bold uppercase tracking-widest">Vista previa interactiva</p>
-                  <p className="text-accent text-xs font-medium mt-1">Interactúa con el teléfono para ver más detalles</p>
+                  <p className="text-bg/30 text-[11px] font-bold uppercase tracking-widest">Vista previa real v2.5.1</p>
+                  <p className="text-accent text-xs font-medium mt-1">Componentes nativos replicados con exactitud</p>
                </div>
              </div>
 
-             <div className="animate-in zoom-in duration-500">
-                <FeatureMockup type={currentFlow.mockup as any} interactive />
+             <div className="animate-in zoom-in duration-500" key={currentFlow.id}>
+                <FeatureMockup type={currentFlow.mockup as any} />
              </div>
           </div>
         </div>

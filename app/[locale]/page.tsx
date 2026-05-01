@@ -177,8 +177,9 @@ export default async function LandingPage({ params }: Props) {
           </div>
 
           <div className="hidden lg:block relative">
-             <div className="absolute inset-0 bg-accent/20 blur-[120px] rounded-full opacity-40 pointer-events-none" />
-             <FeatureMockup type="educator" />
+             <div className="relative animate-in fade-in zoom-in-95 duration-1000 delay-200">
+               <FeatureMockup type="home" />
+            </div>
           </div>
         </div>
       </section>
@@ -213,7 +214,7 @@ export default async function LandingPage({ params }: Props) {
                 </div>
               ))}
             </div>
-            <FeatureMockup type="educator" />
+            <FeatureMockup type="attendance" />
           </div>
         </div>
 
@@ -225,7 +226,7 @@ export default async function LandingPage({ params }: Props) {
             <div className="rule" />
           </div>
           <div className="grid gap-12 lg:grid-cols-[450px_1fr] items-center">
-            <FeatureMockup type="student" />
+            <FeatureMockup type="graduation" />
             <div className="grid gap-6 sm:grid-cols-2">
               {c.studentFeatures.map((f) => (
                 <div key={f.t} className="rounded-[32px] border border-bg/10 bg-ink-2 p-8 hover:border-bg/20 transition-colors">
