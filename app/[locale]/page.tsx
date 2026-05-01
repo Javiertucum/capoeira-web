@@ -9,7 +9,7 @@ type Props = Readonly<{ params: Promise<{ locale: string }> }>
 const COPY = {
   es: {
     title: 'Agenda Capoeiragem',
-    eyebrow: 'Versión 2.3.0 · Beta cerrada',
+    eyebrow: 'Versión 2.5.1 · Beta cerrada',
     heroLine1: 'Tu comunidad', heroEm: 'conectada', heroLine2: 'en',
     heroLine3: 'Agenda Capoeiragem',
     body: 'La herramienta definitiva para el capoeirista moderno. Gestiona tus núcleos, organiza batizados, pasa lista a tus alumnos y genera reportes profesionales de tu actividad.',
@@ -37,7 +37,7 @@ const COPY = {
   },
   pt: {
     title: 'Agenda Capoeiragem',
-    eyebrow: 'Versão 2.3.0 · Beta fechada',
+    eyebrow: 'Versão 2.5.1 · Beta fechada',
     heroLine1: 'Sua comunidade', heroEm: 'conectada', heroLine2: 'na',
     heroLine3: 'Agenda Capoeiragem',
     body: 'A ferramenta definitiva para o capoeirista moderno. Gerencie seus núcleos, organize batizados, faça chamadas e gere relatórios profissionais da sua atividade.',
@@ -65,7 +65,7 @@ const COPY = {
   },
   en: {
     title: 'Agenda Capoeiragem',
-    eyebrow: 'Version 2.3.0 · Closed Beta',
+    eyebrow: 'Version 2.5.1 · Closed Beta',
     heroLine1: 'Your community', heroEm: 'connected', heroLine2: 'on',
     heroLine3: 'Agenda Capoeiragem',
     body: 'The ultimate tool for the modern capoeirista. Manage your schools, organize batizados, take attendance, and generate professional reports of your activity.',
