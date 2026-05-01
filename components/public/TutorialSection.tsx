@@ -124,11 +124,11 @@ export default function TutorialSection({ locale }: { locale: string }) {
     <div id="tutorials" className="py-40">
       <div className="flex flex-col lg:flex-row justify-between items-end gap-12 mb-24">
         <div className="max-w-[800px]">
-          <h2 className="text-bg font-black leading-none tracking-[-0.05em]" style={{ fontSize: 'clamp(40px, 5vw, 80px)' }}>
+          <h2 className="text-ink font-black leading-none tracking-[-0.05em]" style={{ fontSize: 'clamp(40px, 5vw, 80px)' }}>
             {c.title}
           </h2>
         </div>
-        <p className="max-w-[400px] text-xl text-bg/50 leading-relaxed pb-2 font-medium">
+        <p className="max-w-[400px] text-xl text-ink/50 leading-relaxed pb-2 font-medium">
           {c.subtitle}
         </p>
       </div>
@@ -143,7 +143,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
               className={`group flex items-center justify-between gap-4 px-8 py-7 rounded-[32px] border transition-all text-left relative overflow-hidden ${
                 activeFlow === f.id 
                   ? 'bg-accent border-accent text-white shadow-vanguard scale-[1.05] z-10' 
-                  : 'bg-bg/5 border-bg/10 text-bg/40 hover:bg-bg/10 hover:border-bg/20'
+                  : 'bg-ink/5 border-ink/10 text-ink/40 hover:bg-ink/10 hover:border-ink/20'
               }`}
             >
               <div className="relative z-10">
@@ -174,20 +174,20 @@ export default function TutorialSection({ locale }: { locale: string }) {
                           {idx + 1}
                         </div>
                         <div className="space-y-2">
-                          <h4 className="text-2xl font-black text-bg tracking-tight">{s.title}</h4>
-                          <p className="text-lg text-bg/50 leading-relaxed font-medium">{s.desc}</p>
+                          <h4 className="text-2xl font-black text-ink tracking-tight">{s.title}</h4>
+                          <p className="text-lg text-ink/50 leading-relaxed font-medium">{s.desc}</p>
                         </div>
                      </div>
                    ))}
                    
-                   <div className="pt-10 border-t border-bg/10 flex items-center gap-6">
+                   <div className="pt-10 border-t border-ink/10 flex items-center gap-6">
                       <div className="flex -space-x-3">
                          {[1,2,3].map(i => (
-                            <div key={i} className="h-10 w-10 rounded-full border-2 border-white bg-bg/10 backdrop-blur-sm" />
+                            <div key={i} className="h-10 w-10 rounded-full border-2 border-white bg-ink/10 backdrop-blur-sm" />
                          ))}
                       </div>
                       <div>
-                         <p className="text-bg font-black text-sm tracking-tight leading-none">v2.5.1 Experience</p>
+                         <p className="text-ink font-black text-sm tracking-tight leading-none">v2.5.1 Experience</p>
                          <p className="text-accent text-[10px] font-bold uppercase tracking-widest mt-1">Native components replication</p>
                       </div>
                    </div>

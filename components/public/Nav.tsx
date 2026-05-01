@@ -45,19 +45,21 @@ export default function Nav() {
     router.replace(search ? `${nextPathname}?${search}` : nextPathname)
   }
 
-  const isDark = pathname === `/${locale}` || pathname === `/${locale}/`
+  // Homepage is now light (beige) by default in the vanguard design
+  const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`
+  const isDark = !isHomepage // Most other pages (like admin) might be dark or default
   
-  const navBg = isDark
-    ? (scrolled || menuOpen ? 'bg-ink/90 border-white/10 shadow-2xl' : 'bg-transparent border-transparent')
-    : (scrolled || menuOpen ? 'bg-[color-mix(in_srgb,#F4EFE6_94%,transparent)] border-line-soft shadow-sm' : 'bg-[color-mix(in_srgb,#F4EFE6_88%,transparent)] border-transparent')
+  const navBg = scrolled || menuOpen 
+    ? 'glass border-bg/10 shadow-soft' 
+    : 'bg-transparent border-transparent'
 
-  const textColor = isDark ? 'text-bg' : 'text-ink'
-  const mutedTextColor = isDark ? 'text-bg/70' : 'text-ink-2'
-  const faintTextColor = isDark ? 'text-bg/40' : 'text-ink-3'
+  const textColor = 'text-ink'
+  const mutedTextColor = 'text-ink/60'
+  const faintTextColor = 'text-ink/30'
 
   const links = [
-    { href: isDark ? '#features' : `/${locale}/#features`, label: t('features'), key: 'features' },
-    { href: isDark ? '#tutorials' : `/${locale}/#tutorials`, label: t('tutorials'), key: 'tutorials' },
+    { href: isHomepage ? '#features' : `/${locale}/#features`, label: t('features'), key: 'features' },
+    { href: isHomepage ? '#tutorials' : `/${locale}/#tutorials`, label: t('tutorials'), key: 'tutorials' },
     { href: `/${locale}/admin`, label: 'Admin', key: 'admin' },
   ]
 
@@ -77,21 +79,21 @@ export default function Nav() {
           {/* Logo */}
           <Link
             href={`/${locale}`}
-            className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent flex-shrink-0"
+            className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent flex-shrink-0 group"
           >
             {/* Monograma a·c */}
             <span
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[16px] leading-none ${isDark ? 'bg-accent text-white' : 'bg-ink text-bg'}`}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-[18px] leading-none bg-ink text-bg transition-transform group-hover:scale-110`}
               style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
             >
-              a<span style={{ color: isDark ? 'white' : 'var(--accent)' }}>·</span>c
+              a<span style={{ color: 'var(--accent)' }}>·</span>c
             </span>
             <span className="flex flex-col justify-center min-w-0 whitespace-nowrap overflow-hidden">
-              <span className={`eyebrow block truncate ${isDark ? 'text-bg/50' : ''}`} style={{ fontSize: 9, letterSpacing: '0.2em' }}>
+              <span className={`eyebrow block truncate opacity-40`} style={{ fontSize: 9, letterSpacing: '0.2em' }}>
                 Capoeira platform
               </span>
               <span
-                className={`block text-[15px] sm:text-[16px] truncate ${textColor}`}
+                className={`block text-[16px] sm:text-[18px] truncate text-ink`}
                 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}
               >
                 Agenda Capoeiragem
@@ -101,15 +103,15 @@ export default function Nav() {
 
           {/* Pill nav — desktop */}
           <div className="hidden items-center lg:flex">
-            <div className={`flex items-center gap-1 rounded-full border px-1 py-1 ${isDark ? 'border-white/10 bg-white/5' : 'border-line bg-surface'}`}>
+            <div className={`flex items-center gap-1 rounded-full border px-1 py-1 border-ink/5 bg-ink/5`}>
               {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`rounded-full px-[18px] py-2 text-[14px] font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     isActive(link.key)
-                      ? (isDark ? 'bg-accent text-white' : 'bg-ink text-bg')
-                      : (isDark ? 'text-bg/70 hover:text-bg hover:bg-white/5' : 'text-ink-2 hover:text-ink hover:bg-ink/5')
+                      ? 'bg-ink text-bg'
+                      : 'text-ink/60 hover:text-ink hover:bg-white/10'
                   }`}
                 >
                   {link.label}
@@ -122,7 +124,7 @@ export default function Nav() {
           <div className="flex items-center gap-4">
 
             {/* Locale switcher — desktop */}
-            <div className={`hidden rounded-full border px-1 py-1 sm:flex ${isDark ? 'border-white/10 bg-white/5' : 'border-line bg-surface'}`}>
+            <div className={`hidden rounded-full border px-1 py-1 sm:flex border-ink/5 bg-ink/5`}>
               {LOCALES.map((item) => (
                 <button
                   key={item}
@@ -131,8 +133,8 @@ export default function Nav() {
                   aria-pressed={item === locale}
                   className={`mono w-8 h-[30px] rounded-full text-[11px] uppercase tracking-[0.1em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     item === locale
-                      ? (isDark ? 'bg-accent text-white' : 'bg-ink text-bg')
-                      : (isDark ? 'text-bg/40 hover:text-bg' : 'text-ink-3 hover:text-ink')
+                      ? 'bg-ink text-bg shadow-sm'
+                      : 'text-ink/30 hover:text-ink'
                   }`}
                 >
                   {item}
@@ -146,14 +148,12 @@ export default function Nav() {
               aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((p) => !p)}
-              className={`grid h-11 w-11 place-items-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden ${
-                isDark ? 'border-white/20 bg-white/10 text-bg' : 'border-line bg-surface text-ink'
-              }`}
+              className={`grid h-11 w-11 place-items-center rounded-full border border-ink/10 bg-white/50 text-ink backdrop-blur-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden`}
             >
               <span className="relative block h-4 w-5">
-                <span className={`absolute left-0 top-0.5 h-px w-5 transition-all ${menuOpen ? 'translate-y-[6px] rotate-45' : ''} ${isDark ? 'bg-bg' : 'bg-current'}`} />
-                <span className={`absolute left-0 top-[7px] h-px w-5 transition-opacity ${menuOpen ? 'opacity-0' : ''} ${isDark ? 'bg-bg' : 'bg-current'}`} />
-                <span className={`absolute left-0 top-[13px] h-px w-5 transition-all ${menuOpen ? '-translate-y-[6px] -rotate-45' : ''} ${isDark ? 'bg-bg' : 'bg-current'}`} />
+                <span className={`absolute left-0 top-0.5 h-px w-5 transition-all ${menuOpen ? 'translate-y-[6px] rotate-45' : ''} bg-current`} />
+                <span className={`absolute left-0 top-[7px] h-px w-5 transition-opacity ${menuOpen ? 'opacity-0' : ''} bg-current`} />
+                <span className={`absolute left-0 top-[13px] h-px w-5 transition-all ${menuOpen ? '-translate-y-[6px] -rotate-45' : ''} bg-current`} />
               </span>
             </button>
           </div>
