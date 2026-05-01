@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
 import BetaRegistrationForm from '@/components/public/BetaRegistrationForm'
+import TutorialSection from '@/components/public/TutorialSection'
 
 type Props = Readonly<{ params: Promise<{ locale: string }> }>
 
@@ -18,16 +19,19 @@ const COPY = {
     showcaseBody: 'Diseñada específicamente para las necesidades de quienes organizan el juego y quienes participan en él.',
     educatorSubtitle: 'Para Educadores y Organizadores',
     educatorFeatures: [
+      { t: 'Panel de Control KPI', d: 'Visualiza alumnos activos, porcentaje de asistencia y salud financiera de tu núcleo en un solo vistazo.' },
       { t: 'Gestión de Cobros', d: 'Administra mensualidades, paquetes de clases y pagos en múltiples monedas con total claridad.' },
-      { t: 'Reportes y Asistencia', d: 'Pasa lista rápidamente y exporta reportes detallados de asistencia y finanzas en PDF o CSV.' },
+      { t: 'Reportes Profesionales', d: 'Pasa lista rápidamente y exporta reportes detallados de asistencia y finanzas en PDF o CSV.' },
       { t: 'Sistema de Graduación', d: 'Configura colores, niveles y jerarquías de cordas específicas para la identidad de tu grupo.' },
+      { t: 'Supervisión de Grupo', d: 'Estructura roles de administrador y supervisión educativa para grandes organizaciones.' },
       { t: 'Eventos y Colaboración', d: 'Organiza batizados con cronogramas complejos, integrando co-organizadores y pagos directos.' }
     ],
     studentSubtitle: 'Para Alumnos y Viajeros',
     studentFeatures: [
       { t: 'Mapa de Núcleos', d: 'Localiza sedes de entrenamiento con horarios detallados y educadores responsables en cualquier ciudad.' },
-      { t: 'Agenda Inteligente', d: 'Rodas y workshops organizados por proximidad. Confirma asistencia y guárdalos en tu calendario.' },
+      { t: 'Agenda Global', d: 'Rodas y workshops organizados por proximidad. Confirma asistencia y guárdalos en tu calendario.' },
       { t: 'Perfil Comunitario', d: 'Sigue tu historial de graduaciones, conecta tus redes sociales y descubre la red global de capoeira.' },
+      { t: 'Feed Personalizado', d: 'Recibe noticias y actualizaciones de tu grupo y eventos de interés directamente en tu inicio.' }
     ],
     betaTitle: 'Solicita tu acceso a la beta',
     betaBody: 'Estamos en fase de pruebas cerradas en Google Play Console. Déjanos tus datos y te enviaremos una invitación personal para que empieces a organizar tu comunidad hoy mismo.',
@@ -46,16 +50,19 @@ const COPY = {
     showcaseBody: 'Projetada especificamente para as necessidades de quem organiza a roda e de quem participa.',
     educatorSubtitle: 'Para Educadores e Organizadores',
     educatorFeatures: [
+      { t: 'Painel de Controle KPI', d: 'Visualize alunos ativos, porcentagem de frequência e saúde financeira do seu núcleo em um relance.' },
       { t: 'Gestão de Cobranças', d: 'Administre mensalidades, pacotes de aulas e pagamentos em várias moedas com total clareza.' },
-      { t: 'Relatórios e Chamadas', d: 'Faça a chamada rapidamente e exporte relatórios detalhados de frequência e finanças em PDF ou CSV.' },
+      { t: 'Relatórios Profissionais', d: 'Faça a chamada rapidamente e exporte relatórios detalhados de frequência e finanças em PDF ou CSV.' },
       { t: 'Sistema de Cordas', d: 'Configure cores, níveis e hierarquias de graduação específicas para a identidade do seu grupo.' },
+      { t: 'Supervisão de Grupo', d: 'Estruture papéis de administrador e supervisão educativa para grandes organizações.' },
       { t: 'Eventos e Colaboração', d: 'Organize batizados com cronogramas complexos, integrando co-organizadores e pagamentos diretos.' }
     ],
     studentSubtitle: 'Para Alunos e Viajantes',
     studentFeatures: [
       { t: 'Mapa de Núcleos', d: 'Encontre sedes de treino com horários detalhados e educadores responsáveis em qualquer cidade.' },
-      { t: 'Agenda Inteligente', d: 'Rodas e workshops organizados por proximidade. Confirme presença e salve no seu calendário.' },
+      { t: 'Agenda Global', d: 'Rodas e workshops organizados por proximidade. Confirme presença e salve no seu calendário.' },
       { t: 'Perfil Comunitário', d: 'Acompanhe seu histórico de graduação, conecte suas redes sociais e descubra a rede global de capoeira.' },
+      { t: 'Feed Personalizado', d: 'Receba notícias e atualizações do seu grupo e eventos de interesse diretamente no seu início.' }
     ],
     betaTitle: 'Solicite seu acesso à beta',
     betaBody: 'Estamos em fase de testes fechados no Google Play Console. Deixe seus dados e enviaremos um convite pessoal para você começar a organizar sua comunidade hoje.',
@@ -74,16 +81,19 @@ const COPY = {
     showcaseBody: 'Designed specifically for the needs of those who organize the roda and those who play in it.',
     educatorSubtitle: 'For Educators and Organizers',
     educatorFeatures: [
+      { t: 'KPI Dashboard', d: 'View active students, attendance percentage, and financial health of your school at a glance.' },
       { t: 'Billing Management', d: 'Manage monthly fees, class packages, and payments in multiple currencies with total clarity.' },
-      { t: 'Reports & Attendance', d: 'Take attendance quickly and export detailed attendance and finance reports in PDF or CSV.' },
+      { t: 'Professional Reports', d: 'Take attendance quickly and export detailed attendance and finance reports in PDF or CSV.' },
       { t: 'Graduation System', d: 'Configure specific colors, levels, and graduation hierarchies for your group’s identity.' },
+      { t: 'Group Supervision', d: 'Structure administrator roles and educational supervision for large organizations.' },
       { t: 'Events & Collaboration', d: 'Organize batizados with complex schedules, integrating co-organizers and direct payments.' }
     ],
     studentSubtitle: 'For Students and Travelers',
     studentFeatures: [
       { t: 'Training Map', d: 'Find training locations with detailed schedules and responsible educators in any city.' },
-      { t: 'Smart Agenda', d: 'Rodas and workshops organized by proximity. Confirm attendance and save to your calendar.' },
+      { t: 'Global Agenda', d: 'Rodas and workshops organized by proximity. Confirm attendance and save to your calendar.' },
       { t: 'Community Profile', d: 'Track your graduation history, connect your social media, and discover the global capoeira network.' },
+      { t: 'Personalized Feed', d: 'Receive news and updates from your group and events of interest directly in your home.' }
     ],
     betaTitle: 'Request your beta access',
     betaBody: 'We are in the closed testing phase on Google Play Console. Leave us your details and we will send a personal invite to start organizing your community today.',
@@ -184,10 +194,10 @@ export default async function LandingPage({ params }: Props) {
         </div>
 
         {/* Educator Features */}
-        <div className="mb-20">
-          <div className="section-head mb-10">
+        <div className="mb-32">
+          <div className="section-head mb-12">
             <span className="num">01</span>
-            <h2 className="text-2xl lg:text-3xl font-black text-bg">{c.educatorSubtitle}</h2>
+            <h2 className="text-2xl lg:text-4xl font-black text-bg tracking-tight">{c.educatorSubtitle}</h2>
             <div className="rule" />
           </div>
           <div className="grid gap-12 lg:grid-cols-[1fr_450px] items-center">
@@ -215,13 +225,13 @@ export default async function LandingPage({ params }: Props) {
         </div>
 
         {/* Student Features */}
-        <div>
-          <div className="section-head mb-10">
+        <div className="mb-32">
+          <div className="section-head mb-12">
             <span className="num">02</span>
-            <h2 className="text-2xl lg:text-3xl font-black text-bg">{c.studentSubtitle}</h2>
+            <h2 className="text-2xl lg:text-4xl font-black text-bg tracking-tight">{c.studentSubtitle}</h2>
             <div className="rule" />
           </div>
-          <div className="grid gap-6 sm:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {c.studentFeatures.map((f) => (
               <div key={f.t} className="rounded-[32px] border border-bg/10 bg-ink-2 p-8 hover:border-bg/20 transition-colors">
                 <h3 className="text-xl font-black text-bg mb-3" style={{ fontFamily: 'var(--font-display)' }}>{f.t}</h3>
@@ -230,10 +240,14 @@ export default async function LandingPage({ params }: Props) {
             ))}
           </div>
         </div>
+
+        {/* ── TUTORIALS SECTION ── */}
+        <TutorialSection locale={locale} />
       </section>
 
       {/* ── BETA SECTION ── */}
       <section id="beta" className="page-shell py-32 bg-bg/5 relative overflow-hidden rounded-[64px] mb-8">
+
         <div className="absolute top-0 right-0 h-[500px] w-[500px] bg-accent/20 blur-[140px] rounded-full translate-x-1/2 -translate-y-1/2" />
         
         <div className="max-w-[800px] mx-auto text-center relative z-10">
