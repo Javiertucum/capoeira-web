@@ -183,7 +183,7 @@ export default async function LandingPage({ params }: Props) {
       </section>
 
       {/* ── SHOWCASE GRID ── */}
-      <section className="page-shell py-32 border-t border-bg/10">
+      <section id="features" className="page-shell py-32 border-t border-bg/10">
         <div className="text-center mb-24">
           <h2 className="text-bg font-black" style={{ fontSize: 'clamp(36px, 5vw, 72px)', lineHeight: 0.9, letterSpacing: '-0.04em' }}>
             {c.showcaseTitle}

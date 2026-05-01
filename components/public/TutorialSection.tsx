@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 interface FlowStep {
   title: string
@@ -150,7 +151,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
   const currentFlow = c.flows.find(f => f.id === activeFlow) ?? c.flows[0]
 
   return (
-    <div className="py-24 border-t border-bg/10">
+    <div id="tutorials" className="py-24 border-t border-bg/10">
       <div className="text-center mb-16">
         <h2 className="text-bg font-black text-4xl lg:text-5xl tracking-tight mb-4">{c.title}</h2>
         <p className="text-bg/50 text-lg">{c.subtitle}</p>
@@ -193,13 +194,21 @@ export default function TutorialSection({ locale }: { locale: string }) {
                ))}
              </div>
 
-             {/* Mockup Placeholder */}
-             <div className="hidden lg:block aspect-[9/19] bg-bg/10 rounded-[32px] border-[6px] border-bg/20 overflow-hidden relative shadow-2xl">
-                <div className="absolute inset-0 flex items-center justify-center text-bg/20 font-black tracking-widest text-xs uppercase vertical-rl opacity-50">
-                   {currentFlow.title} VIEW
-                </div>
+             {/* Mockup Display */}
+             <div className="hidden lg:block aspect-[9/19] w-full max-w-[280px] mx-auto bg-ink rounded-[40px] border-[8px] border-bg/10 overflow-hidden relative shadow-2xl group-hover:scale-[1.02] transition-transform duration-700">
+                <Image
+                  src={`/images/user_mockup_${
+                    activeFlow === 'onboarding' ? '2' : 
+                    activeFlow === 'admin' ? '1' : 
+                    activeFlow === 'events' ? '4' : '5'
+                  }.jpg`}
+                  alt={currentFlow.title}
+                  fill
+                  priority
+                  className="object-cover object-top animate-in fade-in zoom-in-95 duration-700"
+                />
                 {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/40 to-transparent pointer-events-none" />
              </div>
           </div>
         </div>

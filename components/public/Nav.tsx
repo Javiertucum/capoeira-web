@@ -45,7 +45,19 @@ export default function Nav() {
     router.replace(search ? `${nextPathname}?${search}` : nextPathname)
   }
 
+  const isDark = pathname === `/${locale}` || pathname === `/${locale}/`
+  
+  const navBg = isDark
+    ? (scrolled || menuOpen ? 'bg-ink/90 border-white/10 shadow-2xl' : 'bg-transparent border-transparent')
+    : (scrolled || menuOpen ? 'bg-[color-mix(in_srgb,#F4EFE6_94%,transparent)] border-line-soft shadow-sm' : 'bg-[color-mix(in_srgb,#F4EFE6_88%,transparent)] border-transparent')
+
+  const textColor = isDark ? 'text-bg' : 'text-ink'
+  const mutedTextColor = isDark ? 'text-bg/70' : 'text-ink-2'
+  const faintTextColor = isDark ? 'text-bg/40' : 'text-ink-3'
+
   const links = [
+    { href: isDark ? '#features' : `/${locale}/#features`, label: t('features'), key: 'features' },
+    { href: isDark ? '#tutorials' : `/${locale}/#tutorials`, label: t('tutorials'), key: 'tutorials' },
     { href: `/${locale}/admin`, label: 'Admin', key: 'admin' },
   ]
 
@@ -54,20 +66,11 @@ export default function Nav() {
     return false
   }
 
-  const isDark = pathname === `/${locale}` || pathname === `/${locale}/`
-  const navBg = isDark
-    ? (scrolled || menuOpen ? 'bg-ink/90 border-white/10' : 'bg-transparent border-transparent')
-    : (scrolled || menuOpen ? 'bg-[color-mix(in_srgb,#F4EFE6_94%,transparent)] border-line-soft' : 'bg-[color-mix(in_srgb,#F4EFE6_88%,transparent)] border-transparent')
-
-  const textColor = isDark ? 'text-bg' : 'text-ink'
-  const mutedTextColor = isDark ? 'text-bg/60' : 'text-ink-2'
-  const faintTextColor = isDark ? 'text-bg/40' : 'text-ink-3'
-
   return (
     <>
       {/* ── Desktop nav ── */}
       <nav
-        className={`fixed inset-x-0 top-0 z-50 transition-all border-b backdrop-blur-[10px] ${navBg}`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all border-b backdrop-blur-[12px] ${navBg}`}
       >
         <div className="page-shell flex h-[72px] items-center justify-between gap-4">
 
@@ -84,7 +87,7 @@ export default function Nav() {
               a<span style={{ color: isDark ? 'white' : 'var(--accent)' }}>·</span>c
             </span>
             <span className="flex flex-col justify-center min-w-0 whitespace-nowrap overflow-hidden">
-              <span className={`eyebrow block truncate ${isDark ? 'text-bg/40' : ''}`} style={{ fontSize: 9, letterSpacing: '0.2em' }}>
+              <span className={`eyebrow block truncate ${isDark ? 'text-bg/50' : ''}`} style={{ fontSize: 9, letterSpacing: '0.2em' }}>
                 Capoeira platform
               </span>
               <span
@@ -103,10 +106,10 @@ export default function Nav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`rounded-full px-[14px] py-2 text-[13px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  className={`rounded-full px-[18px] py-2 text-[14px] font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     isActive(link.key)
                       ? (isDark ? 'bg-accent text-white' : 'bg-ink text-bg')
-                      : (isDark ? 'text-bg/60 hover:text-bg' : 'text-ink-2 hover:text-ink')
+                      : (isDark ? 'text-bg/70 hover:text-bg hover:bg-white/5' : 'text-ink-2 hover:text-ink hover:bg-ink/5')
                   }`}
                 >
                   {link.label}

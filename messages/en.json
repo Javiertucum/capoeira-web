@@ -5,7 +5,9 @@
     "educators": "Educators",
     "events": "Events",
     "comingSoon": "Coming Soon",
-    "appPreview": "See the App"
+    "appPreview": "Preview App",
+    "features": "Features",
+    "tutorials": "Tutorials"
   },
   "hero": {
     "eyebrow": "Global Capoeira Directory",
