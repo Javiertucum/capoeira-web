@@ -69,6 +69,7 @@ export default function AdminSidebar({
     {
       label: 'Sistema',
       items: [
+        { label: 'Configuracion', href: `/${locale}/admin/settings` },
         { label: 'Finanzas', href: `/${locale}/admin/finances` },
         { label: 'Notificaciones', href: `/${locale}/admin/notifications` },
         { label: 'Exportar datos', href: `/${locale}/admin/exports` },

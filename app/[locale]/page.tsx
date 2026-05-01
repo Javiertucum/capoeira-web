@@ -21,12 +21,13 @@ const COPY = {
     showcaseBody: 'Diseñada específicamente para las necesidades de quienes organizan el juego y quienes participan en él.',
     educatorSubtitle: 'Para Educadores y Organizadores',
     educatorFeatures: [
-      { t: 'Panel de Control KPI', d: 'Visualiza alumnos activos, porcentaje de asistencia y salud financiera de tu núcleo en un solo vistazo.' },
-      { t: 'Gestión de Cobros', d: 'Administra mensualidades, paquetes de clases y pagos en múltiples monedas con total claridad.' },
-      { t: 'Reportes Profesionales', d: 'Pasa lista rápidamente y exporta reportes detallados de asistencia y finanzas en PDF o CSV.' },
-      { t: 'Sistema de Graduación', d: 'Configura colores, niveles y jerarquías de cordas específicas para la identidad de tu grupo.' },
-      { t: 'Supervisión de Grupo', d: 'Estructura roles de administrador y supervisión educativa para grandes organizaciones.' },
-      { t: 'Eventos y Colaboración', d: 'Organiza batizados con cronogramas complejos, integrando co-organizadores y pagos directos.' }
+      { t: 'KPI Dashboard', d: 'Visualiza alumnos activos, retención mensual y salud financiera de tu núcleo en tiempo real.' },
+      { t: 'Asistencia con QR', d: 'Pasa lista de forma instantánea escaneando el código QR único de cada alumno desde la app.' },
+      { t: 'Gestión de Cobros', d: 'Administra mensualidades, paquetes de clases y pagos multi-moneda con total claridad.' },
+      { t: 'Reportes y Diplomas', d: 'Exporta reportes de asistencia en PDF/CSV y genera certificados de graduación automáticos.' },
+      { t: 'Notificaciones Push', d: 'Envía avisos segmentados a tus núcleos o grupos específicos para rodas y workshops.' },
+      { t: 'Horarios Flexibles', d: 'Gestiona turmas dinámicas, cambios de sede y avisos de última hora de forma centralizada.' },
+      { t: 'Directorio de Alumnos', d: 'Base de datos completa con historial de graduación, deudas y contacto de emergencia.' }
     ],
     studentSubtitle: 'Para Alumnos y Viajeros',
     studentFeatures: [
@@ -34,6 +35,12 @@ const COPY = {
       { t: 'Agenda Global', d: 'Rodas y workshops organizados por proximidad. Confirma asistencia y guárdalos en tu calendario.' },
       { t: 'Perfil Comunitario', d: 'Sigue tu historial de graduaciones, conecta tus redes sociales y descubre la red global de capoeira.' },
       { t: 'Feed Personalizado', d: 'Recibe noticias y actualizaciones de tu grupo y eventos de interés directamente en tu inicio.' }
+    ],
+    advancedTitle: 'Ecosistema Avanzado',
+    advancedFeatures: [
+      { t: 'Finanzas e Ingresos', d: 'Control total de mensualidades y deudas con reportes automáticos y multi-moneda.', mockup: 'finances' },
+      { t: 'KPIs y Estadísticas', d: 'Gráficos de asistencia, retención y crecimiento para una gestión basada en datos.', mockup: 'kpi' },
+      { t: 'Geolocalización', d: 'Mapa interactivo para el descubrimiento de entrenamientos y eventos en tiempo real.', mockup: 'map' }
     ],
     betaTitle: 'Solicita tu acceso a la beta',
     betaBody: 'Estamos en fase de pruebas cerradas en Google Play Console. Déjanos tus datos y te enviaremos una invitación personal para que empieces a organizar tu comunidad hoy mismo.',
@@ -52,19 +59,26 @@ const COPY = {
     showcaseBody: 'Projetada especificamente para as necessidades de quem organiza a roda e de quem participa.',
     educatorSubtitle: 'Para Educadores e Organizadores',
     educatorFeatures: [
-      { t: 'Painel de Controle KPI', d: 'Visualize alunos ativos, porcentagem de frequência e saúde financeira do seu núcleo em um relance.' },
-      { t: 'Gestão de Cobranças', d: 'Administre mensalidades, pacotes de aulas e pagamentos em várias moedas com total clareza.' },
-      { t: 'Relatórios Profissionais', d: 'Faça a chamada rapidamente e exporte relatórios detalhados de frequência e finanças em PDF ou CSV.' },
-      { t: 'Sistema de Cordas', d: 'Configure cores, níveis e hierarquias de graduação específicas para a identidade do seu grupo.' },
-      { t: 'Supervisão de Grupo', d: 'Estruture papéis de administrador e supervisão educativa para grandes organizações.' },
-      { t: 'Eventos e Colaboração', d: 'Organize batizados com cronogramas complexos, integrando co-organizadores e pagamentos diretos.' }
+      { t: 'Painel KPI', d: 'Visualize alunos ativos, retenção mensal e saúde financeira do seu núcleo em tempo real.' },
+      { t: 'Chamada com QR', d: 'Faça a chamada instantaneamente escaneando o código QR único de cada aluno pelo app.' },
+      { t: 'Gestão de Cobranças', d: 'Administre mensalidades, pacotes de aulas e pagamentos multi-moeda com total clareza.' },
+      { t: 'Relatórios e Diplomas', d: 'Exporte relatórios de frequência em PDF/CSV e gere certificados de graduação automáticos.' },
+      { t: 'Notificações Push', d: 'Envie avisos segmentados para seus núcleos ou grupos específicos para rodas e workshops.' },
+      { t: 'Horários Flexíveis', d: 'Gerencie turmas dinâmicas, mudanças de sede e avisos de última hora de forma centralizada.' },
+      { t: 'Diretório de Alunos', d: 'Base de dados completa com histórico de graduação, dívidas e contato de emergência.' }
     ],
     studentSubtitle: 'Para Alunos e Viajantes',
     studentFeatures: [
       { t: 'Mapa de Núcleos', d: 'Encontre sedes de treino com horários detalhados e educadores responsáveis em qualquer cidade.' },
       { t: 'Agenda Global', d: 'Rodas e workshops organizados por proximidade. Confirme presença e salve no seu calendário.' },
-      { t: 'Perfil Comunitário', d: 'Acompanhe seu histórico de graduação, conecte suas redes sociais e descubra a rede global de capoeira.' },
+      { t: 'Perfil Comunitario', d: 'Acompanhe seu histórico de graduação, conecte suas redes sociais e descubra a rede global de capoeira.' },
       { t: 'Feed Personalizado', d: 'Receba notícias e atualizações do seu grupo e eventos de interesse diretamente no seu início.' }
+    ],
+    advancedTitle: 'Ecossistema Avançado',
+    advancedFeatures: [
+      { t: 'Finanças e Ganhos', d: 'Controle total de mensalidades e dívidas com relatórios automáticos e multi-moeda.', mockup: 'finances' },
+      { t: 'KPIs e Estatísticas', d: 'Gráficos de frequência, retenção e crescimento para uma gestão baseada em dados.', mockup: 'kpi' },
+      { t: 'Geolocalização', d: 'Mapa interativo para descoberta de treinos e eventos em tempo real.', mockup: 'map' }
     ],
     betaTitle: 'Solicite seu acesso à beta',
     betaBody: 'Estamos em fase de testes fechados no Google Play Console. Deixe seus dados e enviaremos um convite pessoal para você começar a organizar sua comunidade hoje.',
@@ -83,12 +97,13 @@ const COPY = {
     showcaseBody: 'Designed specifically for the needs of those who organize the roda and those who play in it.',
     educatorSubtitle: 'For Educators and Organizers',
     educatorFeatures: [
-      { t: 'KPI Dashboard', d: 'View active students, attendance percentage, and financial health of your school at a glance.' },
-      { t: 'Billing Management', d: 'Manage monthly fees, class packages, and payments in multiple currencies with total clarity.' },
-      { t: 'Professional Reports', d: 'Take attendance quickly and export detailed attendance and finance reports in PDF or CSV.' },
-      { t: 'Graduation System', d: 'Configure specific colors, levels, and graduation hierarchies for your group’s identity.' },
-      { t: 'Group Supervision', d: 'Structure administrator roles and educational supervision for large organizations.' },
-      { t: 'Events & Collaboration', d: 'Organize batizados with complex schedules, integrating co-organizers and direct payments.' }
+      { t: 'KPI Dashboard', d: 'Visualize active students, monthly retention, and financial health in real-time.' },
+      { t: 'QR Attendance', d: 'Take attendance instantly by scanning each student’s unique QR code from the app.' },
+      { t: 'Billing Management', d: 'Manage monthly fees, class packages, and multi-currency payments with total clarity.' },
+      { t: 'Reports & Diplomas', d: 'Export attendance reports in PDF/CSV and generate automatic graduation certificates.' },
+      { t: 'Push Notifications', d: 'Send segmented alerts to specific schools or groups for rodas and workshops.' },
+      { t: 'Flexible Scheduling', d: 'Manage dynamic classes, venue changes, and last-minute announcements centrally.' },
+      { t: 'Student Directory', d: 'Complete database with graduation history, debts, and emergency contact info.' }
     ],
     studentSubtitle: 'For Students and Travelers',
     studentFeatures: [
@@ -96,6 +111,12 @@ const COPY = {
       { t: 'Global Agenda', d: 'Rodas and workshops organized by proximity. Confirm attendance and save to your calendar.' },
       { t: 'Community Profile', d: 'Track your graduation history, connect your social media, and discover the global capoeira network.' },
       { t: 'Personalized Feed', d: 'Receive news and updates from your group and events of interest directly in your home.' }
+    ],
+    advancedTitle: 'Advanced Ecosystem',
+    advancedFeatures: [
+      { t: 'Financial Insights', d: 'Full control over monthly fees and debts with automatic multi-currency reports.', mockup: 'finances' },
+      { t: 'KPIs & Analytics', d: 'Growth, attendance, and retention charts for data-driven management.', mockup: 'kpi' },
+      { t: 'Geographic Discovery', d: 'Interactive map for real-time discovery of training sessions and events.', mockup: 'map' }
     ],
     betaTitle: 'Request your beta access',
     betaBody: 'We are in the closed testing phase on Google Play Console. Leave us your details and we will send a personal invite to start organizing your community today.',
@@ -260,6 +281,30 @@ export default async function LandingPage({ params }: Props) {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Advanced Ecosystem */}
+        <div className="mb-40">
+           <div className="section-head mb-16">
+             <span className="num text-[#10131A]/40">03</span>
+             <h2 className="text-3xl font-black text-[#10131A] tracking-tight">{('advancedTitle' in c) ? (c as any).advancedTitle : 'Ecosistema Avanzado'}</h2>
+             <div className="rule border-[#10131A]/10" />
+           </div>
+           <div className="grid gap-12 lg:grid-cols-3">
+              {(('advancedFeatures' in c) ? (c as any).advancedFeatures : []).map((f: any, i: number) => (
+                <div key={f.t} className="flex flex-col gap-8">
+                   <div className="rounded-[48px] border border-[#10131A]/10 bg-white p-8 hover:shadow-vanguard transition-all duration-700">
+                      <h3 className="text-xl font-black text-[#10131A] mb-3 tracking-tight">{f.t}</h3>
+                      <p className="text-sm text-[#10131A]/50 font-medium leading-relaxed mb-8">{f.d}</p>
+                      <div className="relative overflow-hidden rounded-[32px] bg-[#0A0C10] aspect-[9/12] group/screen">
+                         <div className="absolute inset-0 scale-[0.9] origin-top translate-y-4 group-hover/screen:scale-[0.95] group-hover/screen:translate-y-2 transition-all duration-700">
+                            <FeatureMockup type={f.mockup} />
+                         </div>
+                      </div>
+                   </div>
+                </div>
+              ))}
+           </div>
         </div>
 
         {/* ── TUTORIALS SECTION ── */}

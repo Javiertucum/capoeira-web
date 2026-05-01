@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 
 interface FeatureMockupProps {
-  type: 'home' | 'attendance' | 'graduation' | 'event' | 'educator'
+  type: 'home' | 'attendance' | 'graduation' | 'event' | 'educator' | 'finances' | 'kpi' | 'map'
   interactive?: boolean
 }
 
@@ -178,6 +178,143 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
                             <h5 className="text-bg font-bold text-xs">Corda Amarela (Puntas Verdes)</h5>
                          </div>
                          <CordaVisual colors={['#FFD700']} tipLeft="#008000" tipRight="#008000" width={160} height={14} />
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        )
+
+        )
+
+      case 'finances':
+        return (
+          <div className="space-y-6 animate-in fade-in duration-500">
+             <div className="pt-2">
+                <p className="text-accent text-[9px] font-bold tracking-[0.2em] uppercase mb-1">Tesorería</p>
+                <h4 className="text-bg font-black text-2xl leading-tight">Finanzas</h4>
+             </div>
+             
+             {/* Multi-currency balance card */}
+             <div className="bg-gradient-to-br from-accent/20 to-accent/5 p-5 rounded-[28px] border border-white/10">
+                <p className="text-[10px] font-bold text-bg/40 uppercase tracking-widest mb-1">Balance Total</p>
+                <div className="flex items-baseline gap-2">
+                   <span className="text-2xl font-black text-bg">$450.000</span>
+                   <span className="text-xs text-bg/30 font-bold">CLP</span>
+                </div>
+                <div className="mt-4 flex gap-3">
+                   <div className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold text-bg/60 border border-white/5">U$D 120.00</div>
+                   <div className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold text-bg/60 border border-white/5">€ 85.00</div>
+                </div>
+             </div>
+
+             {/* Recent Transactions */}
+             <div className="space-y-3">
+                <p className="text-[10px] font-black text-bg/30 uppercase tracking-widest">Cobros Recientes</p>
+                {[
+                   { name: 'Mola', date: 'Hoy', amount: '35.000', type: 'Mensualidad' },
+                   { name: 'Tucum', date: 'Ayer', amount: '5.000', type: 'Clase suelta' },
+                ].map((t, i) => (
+                   <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
+                      <div className="flex gap-3 items-center">
+                         <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-[10px] font-black text-accent">{t.name[0]}</div>
+                         <div>
+                            <p className="text-xs font-bold text-bg">{t.name}</p>
+                            <p className="text-[9px] text-bg/40">{t.type}</p>
+                         </div>
+                      </div>
+                      <p className="text-xs font-black text-bg">${t.amount}</p>
+                   </div>
+                ))}
+             </div>
+          </div>
+        )
+
+      case 'kpi':
+        return (
+          <div className="space-y-6 animate-in fade-in duration-500">
+             <div className="pt-2">
+                <p className="text-accent text-[9px] font-bold tracking-[0.2em] uppercase mb-1">Métricas</p>
+                <h4 className="text-bg font-black text-2xl leading-tight">Rendimiento</h4>
+             </div>
+
+             {/* Growth Chart Mockup */}
+             <div className="h-40 w-full bg-white/5 rounded-3xl border border-white/10 p-4 flex flex-col justify-between">
+                <div className="flex justify-between items-start">
+                   <div>
+                      <p className="text-[10px] font-bold text-bg/40">Alumnos Activos</p>
+                      <p className="text-xl font-black text-bg">+24% <span className="text-[10px] text-green-400 font-bold">↑</span></p>
+                   </div>
+                   <div className="px-2 py-1 bg-accent/20 rounded-md text-[8px] font-black text-accent uppercase">30 Días</div>
+                </div>
+                <div className="flex items-end gap-1 h-16">
+                   {[40, 60, 45, 70, 85, 65, 90].map((h, i) => (
+                      <div key={i} className="flex-1 bg-accent/40 rounded-t-sm" style={{ height: `${h}%` }} />
+                   ))}
+                </div>
+             </div>
+
+             <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
+                   <p className="text-[9px] font-bold text-bg/40 mb-1">Asistencia</p>
+                   <p className="text-lg font-black text-bg">88%</p>
+                </div>
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
+                   <p className="text-[9px] font-bold text-bg/40 mb-1">Retención</p>
+                   <p className="text-lg font-black text-bg">92%</p>
+                </div>
+             </div>
+          </div>
+        )
+
+      case 'map':
+        return (
+          <div className="relative h-full animate-in fade-in duration-500">
+             {/* Map Background Mockup */}
+             <div className="absolute inset-0 bg-[#1A1E26]">
+                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(#ffffff 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }} />
+                
+                {/* Map Pins */}
+                <div className="absolute top-[30%] left-[40%] group">
+                   <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center border-4 border-[#0A0C10] shadow-lg animate-bounce">
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                   </div>
+                   <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-[#0A0C10] px-3 py-1 rounded-full border border-white/10 whitespace-nowrap">
+                      <p className="text-[9px] font-black text-bg uppercase tracking-widest">Sede Central</p>
+                   </div>
+                </div>
+
+                <div className="absolute top-[60%] left-[20%]">
+                   <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center border-4 border-[#0A0C10]">
+                      <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                   </div>
+                </div>
+
+                <div className="absolute top-[50%] left-[70%]">
+                   <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center border-4 border-[#0A0C10]">
+                      <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                   </div>
+                </div>
+             </div>
+
+             {/* Search Floating bar */}
+             <div className="absolute top-4 inset-x-4 h-12 glass-dark rounded-full border border-white/10 flex items-center px-5 gap-3 shadow-2xl">
+                <div className="w-4 h-4 border-2 border-white/20 rounded-full" />
+                <p className="text-xs text-bg/40 font-medium">Buscar núcleos...</p>
+             </div>
+
+             {/* Location Detail Card */}
+             <div className="absolute bottom-4 inset-x-4 glass-dark p-4 rounded-[28px] border border-white/10 shadow-2xl">
+                <div className="flex gap-4">
+                   <div className="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center border border-white/5">
+                      <div className="w-6 h-6 rounded-lg border-2 border-accent" />
+                   </div>
+                   <div>
+                      <h5 className="text-bg font-black text-sm">Núcleo Tucum</h5>
+                      <p className="text-bg/50 text-[10px] mt-0.5">Santiago, Chile • 15 Alumnos</p>
+                      <div className="flex gap-2 mt-2">
+                         <span className="px-2 py-0.5 bg-accent text-white text-[8px] font-black rounded-full uppercase">Activo</span>
+                         <span className="px-2 py-0.5 bg-white/5 text-bg/40 text-[8px] font-bold rounded-full border border-white/10 uppercase">Ver detalles</span>
                       </div>
                    </div>
                 </div>
