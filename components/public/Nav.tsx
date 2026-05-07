@@ -75,7 +75,7 @@ export default function Nav() {
     <>
       {/* ── Desktop nav ── */}
       <nav
-        className={`fixed inset-x-0 top-0 z-50 transition-all border-b backdrop-blur-[12px] ${navBg}`}
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-200 ease-[var(--ease-out)] border-b backdrop-blur-[12px] ${navBg}`}
       >
         <div className="page-shell flex h-[72px] items-center justify-between gap-4">
 
@@ -86,7 +86,7 @@ export default function Nav() {
           >
             {/* Monograma a·c */}
             <span
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-[18px] leading-none bg-ink text-bg transition-transform group-hover:scale-110`}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-[18px] leading-none bg-ink text-bg transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-[1.05]`}
               style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
             >
               a<span style={{ color: 'var(--accent)' }}>·</span>c
@@ -111,7 +111,7 @@ export default function Nav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`rounded-full px-[18px] py-2 text-[14px] font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  className={`rounded-full px-[18px] py-2 text-[14px] font-bold transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     isActive(link.key)
                       ? 'bg-ink text-bg'
                       : 'text-ink/60 hover:text-ink hover:bg-white/10'
@@ -134,7 +134,7 @@ export default function Nav() {
                   type="button"
                   onClick={() => switchLocale(item)}
                   aria-pressed={item === locale}
-                  className={`mono w-8 h-[30px] rounded-full text-[11px] uppercase tracking-[0.1em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  className={`mono w-8 h-[30px] rounded-full text-[11px] uppercase tracking-[0.1em] transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     item === locale
                       ? 'bg-ink text-bg shadow-sm'
                       : 'text-ink/30 hover:text-ink'
@@ -151,12 +151,12 @@ export default function Nav() {
               aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((p) => !p)}
-              className={`grid h-11 w-11 place-items-center rounded-full border border-ink/10 bg-white/50 text-ink backdrop-blur-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden`}
+              className={`grid h-11 w-11 place-items-center rounded-full border border-ink/10 bg-white/50 text-ink backdrop-blur-md transition-colors duration-200 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden active:scale-95`}
             >
               <span className="relative block h-4 w-5">
-                <span className={`absolute left-0 top-0.5 h-px w-5 transition-all ${menuOpen ? 'translate-y-[6px] rotate-45' : ''} bg-current`} />
-                <span className={`absolute left-0 top-[7px] h-px w-5 transition-opacity ${menuOpen ? 'opacity-0' : ''} bg-current`} />
-                <span className={`absolute left-0 top-[13px] h-px w-5 transition-all ${menuOpen ? '-translate-y-[6px] -rotate-45' : ''} bg-current`} />
+                <span className={`absolute left-0 top-0.5 h-px w-5 transition-transform duration-200 ease-[var(--ease-out)] ${menuOpen ? 'translate-y-[6px] rotate-45' : ''} bg-current`} />
+                <span className={`absolute left-0 top-[7px] h-px w-5 transition-opacity duration-200 ease-[var(--ease-out)] ${menuOpen ? 'opacity-0' : ''} bg-current`} />
+                <span className={`absolute left-0 top-[13px] h-px w-5 transition-transform duration-200 ease-[var(--ease-out)] ${menuOpen ? '-translate-y-[6px] -rotate-45' : ''} bg-current`} />
               </span>
             </button>
           </div>
@@ -180,7 +180,7 @@ export default function Nav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center justify-between rounded-[16px] border border-line bg-surface px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  className={`flex items-center justify-between rounded-[16px] border border-line bg-surface px-4 py-3 text-sm font-medium transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-[0.98] ${
                     isActive(link.key) ? 'border-ink/20 bg-ink/5 text-ink' : 'text-ink-2 hover:text-ink'
                   }`}
                 >
@@ -196,7 +196,7 @@ export default function Nav() {
                   type="button"
                   onClick={() => switchLocale(item)}
                   aria-pressed={item === locale}
-                  className={`mono flex-1 rounded-full py-2 text-[10px] uppercase tracking-[0.18em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  className={`mono flex-1 rounded-full py-2 text-[10px] uppercase tracking-[0.18em] transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-95 ${
                     item === locale ? 'bg-ink text-bg' : 'text-ink-3 hover:text-ink'
                   }`}
                 >

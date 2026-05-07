@@ -164,22 +164,22 @@ export default async function LandingPage({ params }: Props) {
         <div className="page-shell relative z-10">
           <div className="grid gap-16 lg:grid-cols-[1.2fr_0.8fr] items-center">
             <div className="space-y-10 text-center lg:text-left">
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full glass border-white/40 shadow-soft animate-in fade-in slide-in-from-top-4 duration-700 mx-auto lg:mx-0">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full glass border-white/40 shadow-soft emil-enter mx-auto lg:mx-0">
                 <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
                 <span className="text-[11px] font-black uppercase tracking-[0.2em] text-accent-ink">{c.eyebrow}</span>
               </div>
               
-              <h1 className="text-[#10131A] font-black leading-[0.85] tracking-[-0.05em] animate-in fade-in slide-in-from-left-8 duration-1000" style={{ fontSize: 'clamp(56px, 10vw, 120px)' }}>
+              <h1 className="text-[#10131A] font-black leading-[0.85] tracking-[-0.05em] emil-enter-stagger emil-stagger-1" style={{ fontSize: 'clamp(56px, 10vw, 120px)' }}>
                 {c.heroLine1} <br />
                 <span className="text-gradient italic">{c.heroEm}</span> <br/>
                 {c.heroLine3}
               </h1>
 
-              <p className="max-w-[540px] text-xl lg:text-2xl text-[#10131A]/60 leading-relaxed font-medium animate-in fade-in slide-in-from-left-12 duration-1000 delay-200 mx-auto lg:mx-0">
+              <p className="max-w-[540px] text-xl lg:text-2xl text-[#10131A]/60 leading-relaxed font-medium emil-enter-stagger emil-stagger-2 mx-auto lg:mx-0">
                 {c.body}
               </p>
 
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 pt-6 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 pt-6 emil-enter-stagger emil-stagger-3">
                 <Link href="#beta" className="btn btn-accent btn-lg shadow-vanguard hover:scale-105 transition-transform px-10 h-16 text-lg font-black">
                   {c.ctaHero}
                 </Link>
@@ -197,7 +197,7 @@ export default async function LandingPage({ params }: Props) {
               </div>
             </div>
 
-            <div className="relative animate-in fade-in zoom-in-95 duration-1000 delay-300">
+            <div className="relative emil-enter-stagger emil-stagger-4">
                <div className="absolute inset-0 bg-accent/20 blur-[120px] rounded-full opacity-40 floating" />
                <FeatureMockup type="home" />
             </div>
@@ -209,7 +209,7 @@ export default async function LandingPage({ params }: Props) {
       <section className="py-24 border-y border-bg/10 glass-dark">
          <div className="page-shell text-center">
             <p className="eyebrow acc mb-12 opacity-60">Impulsando la cultura capoeiragem</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 items-center opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 items-center opacity-30 grayscale hover:grayscale-0 transition-[filter,opacity] duration-200 ease-[var(--ease-out)]">
                {['Agendamento', 'Financeiro', 'Graduação', 'Comunidade'].map(v => (
                   <span key={v} className="text-white font-black text-2xl tracking-tighter italic">{v}</span>
                ))}
@@ -239,9 +239,9 @@ export default async function LandingPage({ params }: Props) {
           </div>
           <div className="grid gap-12 lg:grid-cols-[1fr_400px] items-center">
             <div className="grid gap-6 sm:grid-cols-2">
-              {c.educatorFeatures.map((f) => (
-                <div key={f.t} className="rounded-[48px] border border-[#10131A]/10 bg-[#10131A]/5 p-10 hover-lift group">
-                  <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-8 group-hover:bg-accent group-hover:text-white transition-colors duration-500 shadow-soft">
+              {c.educatorFeatures.map((f, i) => (
+                <div key={f.t} className={`rounded-[48px] border border-[#10131A]/10 bg-[#10131A]/5 p-10 hover-lift group emil-enter-stagger emil-stagger-${i % 7 + 1}`}>
+                  <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-8 group-hover:bg-accent group-hover:text-white transition-colors duration-200 ease-[var(--ease-out)] shadow-soft">
                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </div>
                   <h3 className="text-2xl font-black text-[#10131A] mb-4 leading-tight">{f.t}</h3>
@@ -267,9 +267,9 @@ export default async function LandingPage({ params }: Props) {
                <FeatureMockup type="graduation" />
             </div>
             <div className="grid gap-8 sm:grid-cols-2">
-              {c.studentFeatures.map((f) => (
-                <div key={f.t} className="rounded-[40px] border border-[#10131A]/10 bg-white/40 p-10 backdrop-blur-sm shadow-soft hover:shadow-lg transition-all group">
-                  <div className="mb-6 opacity-20 group-hover:opacity-100 transition-opacity">
+              {c.studentFeatures.map((f, i) => (
+                <div key={f.t} className={`rounded-[40px] border border-[#10131A]/10 bg-white/40 p-10 backdrop-blur-sm shadow-soft hover-lift group emil-enter-stagger emil-stagger-${i % 7 + 1}`}>
+                  <div className="mb-6 opacity-20 group-hover:opacity-100 transition-opacity duration-200 ease-[var(--ease-out)]">
                      <div className="h-1 w-12 bg-accent rounded-full" />
                   </div>
                   <h3 className="text-2xl font-black text-[#10131A] mb-4 leading-tight">{f.t}</h3>
@@ -289,12 +289,12 @@ export default async function LandingPage({ params }: Props) {
            </div>
            <div className="grid gap-12 lg:grid-cols-3">
               {(('advancedFeatures' in c) ? (c as any).advancedFeatures : []).map((f: any, i: number) => (
-                <div key={f.t} className="flex flex-col gap-8">
-                   <div className="rounded-[48px] border border-[#10131A]/10 bg-white p-8 hover:shadow-vanguard transition-all duration-700">
+                <div key={f.t} className={`flex flex-col gap-8 emil-enter-stagger emil-stagger-${i % 7 + 1}`}>
+                   <div className="rounded-[48px] border border-[#10131A]/10 bg-white p-8 hover-lift">
                       <h3 className="text-xl font-black text-[#10131A] mb-3 tracking-tight">{f.t}</h3>
                       <p className="text-sm text-[#10131A]/50 font-medium leading-relaxed mb-8">{f.d}</p>
                       <div className="relative overflow-hidden rounded-[32px] bg-[#0A0C10] aspect-[9/12] group/screen">
-                         <div className="absolute inset-0 scale-[0.9] origin-top translate-y-4 group-hover/screen:scale-[0.95] group-hover/screen:translate-y-2 transition-all duration-700">
+                         <div className="absolute inset-0 scale-[0.9] origin-top translate-y-4 group-hover/screen:scale-[0.95] group-hover/screen:translate-y-2 transition-all duration-300 ease-[var(--ease-out)]">
                             <FeatureMockup type={f.mockup} />
                          </div>
                       </div>

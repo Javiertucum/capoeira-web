@@ -48,7 +48,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
     switch (type) {
       case 'home':
         return (
-          <div className="space-y-6 animate-in fade-in duration-500">
+          <div className="space-y-6 emil-enter">
              {/* REAL HomeHeader replication */}
              <div className="pt-2">
                 <p className="text-accent text-[9px] font-bold tracking-[0.2em] uppercase mb-1">Viernes, 1 de Mayo</p>
@@ -97,7 +97,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
 
       case 'attendance':
         return (
-          <div className="space-y-5 animate-in fade-in duration-500">
+          <div className="space-y-5 emil-enter">
              <div className="flex justify-between items-center mb-2">
                 <h4 className="text-bg font-black text-xl">Nueva Sesión</h4>
                 <div className="bg-accent/20 px-3 py-1.5 rounded-xl text-[9px] font-black text-accent uppercase">Hoy</div>
@@ -124,7 +124,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
                             <span className="text-bg/30 text-[10px] font-medium">{s.corda.name}</span>
                          </div>
                       </div>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${s.present ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'bg-white/5 text-bg/10 border border-white/5'}`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-[background-color,color,box-shadow,border-color] duration-200 ease-[var(--ease-out)] ${s.present ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'bg-white/5 text-bg/10 border border-white/5'}`}>
                          {s.present && <span className="text-sm font-black">✓</span>}
                       </div>
                    </div>
@@ -141,7 +141,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
 
       case 'graduation':
         return (
-          <div className="space-y-6 animate-in fade-in duration-500">
+          <div className="space-y-6 emil-enter">
              <div className="mb-4">
                 <h4 className="text-bg font-black text-xl">Graduaciones</h4>
                 <p className="text-bg/40 text-[11px] mt-1">Adultos educadores desde orden #12</p>
@@ -187,7 +187,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
 
       case 'finances':
         return (
-          <div className="space-y-6 animate-in fade-in duration-500">
+          <div className="space-y-6 emil-enter">
              <div className="pt-2">
                 <p className="text-accent text-[9px] font-bold tracking-[0.2em] uppercase mb-1">Tesorería</p>
                 <h4 className="text-bg font-black text-2xl leading-tight">Finanzas</h4>
@@ -230,7 +230,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
 
       case 'kpi':
         return (
-          <div className="space-y-6 animate-in fade-in duration-500">
+          <div className="space-y-6 emil-enter">
              <div className="pt-2">
                 <p className="text-accent text-[9px] font-bold tracking-[0.2em] uppercase mb-1">Métricas</p>
                 <h4 className="text-bg font-black text-2xl leading-tight">Rendimiento</h4>
@@ -267,7 +267,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
 
       case 'map':
         return (
-          <div className="relative h-full animate-in fade-in duration-500">
+          <div className="relative h-full emil-enter">
              {/* Map Background Mockup */}
              <div className="absolute inset-0 bg-[#1A1E26]">
                 <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(#ffffff 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }} />
@@ -322,7 +322,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
 
       case 'event':
         return (
-          <div className="space-y-5 animate-in fade-in duration-500">
+          <div className="space-y-5 emil-enter">
             {/* Poster */}
             <div className="aspect-[16/9] bg-accent/15 rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center relative">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -364,7 +364,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
 
       case 'notifications':
         return (
-          <div className="space-y-4 animate-in fade-in duration-500">
+          <div className="space-y-4 emil-enter">
             <div className="pt-2 mb-2">
               <p className="text-accent text-[9px] font-bold tracking-[0.2em] uppercase mb-1">Centro</p>
               <h4 className="text-bg font-black text-xl leading-tight">Notificaciones</h4>
@@ -375,7 +375,7 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
               { icon: '🎓', title: 'Nueva graduación', desc: 'Mola ascendió a Corda Verde-Azul', time: 'Ayer', accent: false },
               { icon: '💸', title: 'Pago confirmado', desc: 'Mensualidad de Tucum — Mayo 2026', time: 'Hace 3 días', accent: false },
             ].map((n, i) => (
-              <div key={i} className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all ${n.accent ? 'bg-accent/10 border-accent/20' : 'bg-white/5 border-white/5'}`}>
+              <div key={i} className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-[background-color,border-color] duration-200 ease-[var(--ease-out)] ${n.accent ? 'bg-accent/10 border-accent/20' : 'bg-white/5 border-white/5'}`}>
                 <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-base flex-shrink-0">
                   {n.icon}
                 </div>
@@ -397,10 +397,10 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
   return (
     <div className="relative group perspective-1000">
       {/* Glow Effect behind the phone */}
-      <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-1000" />
+      <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-300 ease-[var(--ease-out)]" />
       
       <div 
-        className={`relative aspect-[9/19] w-full max-w-[300px] mx-auto bg-[#0A0C10] rounded-[52px] border-[8px] border-[#1A1E26] overflow-hidden shadow-vanguard ring-1 ring-white/10 transition-all duration-700 hover:rotate-y-2 hover:scale-[1.02] ${interactive ? 'cursor-pointer' : ''}`}
+        className={`relative aspect-[9/19] w-full max-w-[300px] mx-auto bg-[#0A0C10] rounded-[52px] border-[8px] border-[#1A1E26] overflow-hidden shadow-vanguard ring-1 ring-white/10 transition-transform duration-300 ease-[var(--ease-out)] hover:scale-[1.02] ${interactive ? 'cursor-pointer' : ''}`}
         onClick={() => interactive && setCurrentStep(prev => (prev + 1) % 3)}
       >
         {/* Notch / Dynamic Island replication */}
@@ -433,8 +433,8 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
               { icon: 'people', active: type === 'graduation' },
               { icon: 'person', active: false }
            ].map((item, i) => (
-              <div key={i} className={`flex flex-col items-center gap-1.5 transition-colors ${item.active ? 'text-accent' : 'text-bg/15'}`}>
-                 <div className={`w-6 h-6 rounded-lg border-2 border-current transition-transform ${item.active ? 'scale-110' : 'scale-100'}`} />
+              <div key={i} className={`flex flex-col items-center gap-1.5 transition-colors duration-200 ease-[var(--ease-out)] ${item.active ? 'text-accent' : 'text-bg/15'}`}>
+                 <div className={`w-6 h-6 rounded-lg border-2 border-current transition-transform duration-200 ease-[var(--ease-out)] ${item.active ? 'scale-110' : 'scale-100'}`} />
                  {item.active && <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />}
               </div>
            ))}

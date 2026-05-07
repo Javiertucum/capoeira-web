@@ -69,8 +69,8 @@ export default function BetaRegistrationForm({ locale }: { locale: string }) {
 
   if (status === 'success') {
     return (
-      <div className="rounded-[40px] bg-accent/5 border border-accent/20 p-12 text-center animate-in fade-in zoom-in duration-700">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-accent text-white mb-8 shadow-lg shadow-accent/20 rotate-3">
+      <div className="rounded-[40px] bg-accent/5 border border-accent/20 p-12 text-center emil-enter-stagger">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-accent text-white mb-8 shadow-lg shadow-accent/20 rotate-3 transition-transform hover:scale-105 duration-200 ease-[var(--ease-out)]">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
         </div>
         <h3 className="text-3xl font-black text-white leading-tight">{c.successTitle}</h3>
@@ -79,7 +79,7 @@ export default function BetaRegistrationForm({ locale }: { locale: string }) {
     )
   }
 
-  const inputClasses = "h-16 rounded-[24px] border border-white/5 bg-white/[0.03] px-8 text-white placeholder:text-white/30 focus:border-accent/50 focus:bg-white/[0.06] outline-none transition-all duration-300 font-medium"
+  const inputClasses = "h-16 rounded-[24px] border border-white/5 bg-white/[0.03] px-8 text-white placeholder:text-white/30 focus:border-accent/50 focus:bg-white/[0.06] outline-none transition-colors duration-200 ease-[var(--ease-out)] font-medium"
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -123,14 +123,14 @@ export default function BetaRegistrationForm({ locale }: { locale: string }) {
           name="message"
           rows={4}
           placeholder={c.message}
-          className={`w-full rounded-[32px] border border-white/5 bg-white/[0.03] p-8 text-white placeholder:text-white/30 focus:border-accent/50 focus:bg-white/[0.06] outline-none transition-all duration-300 resize-none font-medium`}
+          className={`w-full rounded-[32px] border border-white/5 bg-white/[0.03] p-8 text-white placeholder:text-white/30 focus:border-accent/50 focus:bg-white/[0.06] outline-none transition-colors duration-200 ease-[var(--ease-out)] resize-none font-medium`}
         />
       </div>
       
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="btn btn-accent btn-lg w-full h-18 rounded-[24px] font-black text-xl shadow-vanguard disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98] transition-transform"
+        className="btn btn-accent btn-lg w-full h-18 rounded-[24px] font-black text-xl shadow-vanguard disabled:opacity-50"
       >
         {status === 'loading' ? (
            <div className="flex items-center gap-3">

@@ -201,7 +201,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
             <button
               key={f.id}
               onClick={() => setActiveFlow(f.id)}
-              className={`group flex items-center justify-between gap-4 px-7 py-6 rounded-[28px] border transition-all text-left relative overflow-hidden ${
+              className={`group flex items-center justify-between gap-4 px-7 py-6 rounded-[28px] border transition-[background-color,border-color,color,transform,box-shadow] duration-200 ease-[var(--ease-out)] text-left relative overflow-hidden active:scale-[0.98] ${
                 activeFlow === f.id
                   ? 'bg-accent border-accent text-white shadow-vanguard scale-[1.03] z-10'
                   : 'bg-[#10131A]/5 border-[#10131A]/10 text-[#10131A]/40 hover:bg-[#10131A]/8 hover:border-[#10131A]/20'
@@ -213,7 +213,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
                 </p>
                 <span className="font-black text-[18px] tracking-tight leading-tight">{f.title}</span>
               </div>
-              <div className={`transition-transform duration-500 group-hover:translate-x-1 flex-shrink-0 ${activeFlow === f.id ? 'opacity-100' : 'opacity-0'}`}>
+              <div className={`transition-[transform,opacity] duration-200 ease-[var(--ease-out)] group-hover:translate-x-1 flex-shrink-0 ${activeFlow === f.id ? 'opacity-100' : 'opacity-0'}`}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </div>
               {activeFlow === f.id && (
@@ -232,7 +232,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
             <div className="grid gap-16 lg:grid-cols-[1fr_320px] items-center">
               <div className="space-y-10">
                 {currentFlow.steps.map((s, idx) => (
-                  <div key={idx} className="flex gap-7 animate-in slide-in-from-left-8 duration-700" style={{ animationDelay: `${idx * 120}ms` }}>
+                  <div key={idx} className="flex gap-7 emil-enter-stagger" style={{ animationDelay: `${idx * 80}ms` }}>
                     <div className="h-11 w-11 rounded-2xl bg-accent text-white flex items-center justify-center font-black flex-shrink-0 shadow-lg shadow-accent/20 text-lg rotate-3">
                       {idx + 1}
                     </div>
@@ -256,7 +256,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
                 </div>
               </div>
 
-              <div className="animate-in zoom-in duration-700 relative" key={currentFlow.id}>
+              <div className="emil-enter relative" key={currentFlow.id}>
                 <div className="absolute inset-0 bg-accent/10 blur-[60px] rounded-full floating" />
                 <FeatureMockup type={currentFlow.mockup as any} />
               </div>
