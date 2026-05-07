@@ -2,81 +2,81 @@
 
 /* ─── Tailwind @theme — expone tokens como clases utilitarias ─── */
 @theme {
-  /* --- App Official Palette (Light) --- */
-  --color-bg:            #F7F3EB;
-  --color-card:          #FFFDF8;
-  --color-surface:       #F1E8D9;
-  --color-surface-muted: #FBF7EF;
-  --color-border:        #E7DECF;
-  --color-text:          #211C15;
-  --color-text-secondary:#4C463C;
-  --color-text-muted:    #7B7468;
+  /* --- Community Sports Palette (Light) --- */
+  --color-bg:            #FFFFFF;
+  --color-card:          #F9FAFB;
+  --color-surface:       #F3F4F6;
+  --color-surface-muted: #E5E7EB;
+  --color-border:        #E5E7EB;
+  --color-text:          #111827;
+  --color-text-secondary:#4B5563;
+  --color-text-muted:    #9CA3AF;
 
-  /* --- App Official Palette (Dark) --- */
-  --color-ink:           #10131A;
-  --color-ink-2:         #181D26;
-  --color-ink-3:         #27303D;
-  --color-ink-4:         #4C463C;
+  /* --- Dark Ink Tokens --- */
+  --color-ink:           #111827;
+  --color-ink-2:         #1F2937;
+  --color-ink-3:         #374151;
+  --color-ink-4:         #4B5563;
 
-  /* --- Accents (Orange as primary for Web) --- */
-  --color-accent:        #FB923C;
-  --color-accent-ink:    #EA580C;
-  --color-accent-soft:   #FB923C20;
+  /* --- Accent: Vibrant Green (Brasil Energy) --- */
+  --color-accent:        #10B981;
+  --color-accent-ink:    #047857;
+  --color-accent-soft:   #D1FAE5;
 
   /* --- States --- */
-  --color-success:       #2E7D32;
-  --color-warning:       #B7791F;
-  --color-danger:        #C53030;
-  --color-gold:          #D4A017;
+  --color-success:       #059669;
+  --color-warning:       #D97706;
+  --color-danger:        #DC2626;
+  --color-gold:          #F59E0B;
 
-  /* --- Radii - Official App Tokens --- */
+  /* --- Radii --- */
   --radius-xs:  8px;
   --radius-sm:  12px;
   --radius-md:  18px;
-  --radius-lg:  28px;
-  --radius-xl:  42px;
-  --radius-2xl: 56px;
+  --radius-lg:  24px;
+  --radius-xl:  36px;
+  --radius-2xl: 48px;
 
-  /* --- Vanguard Elevations --- */
-  --shadow-soft: 0 2px 4px rgba(0,0,0,0.02), 0 10px 20px rgba(0,0,0,0.04);
-  --shadow-float: 0 20px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.02);
-  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  /* --- Organic Elevations --- */
+  --shadow-soft:  0 1px 3px rgb(0 0 0 / 0.06), 0 4px 12px rgb(0 0 0 / 0.04);
+  --shadow-float: 0 8px 30px rgb(0 0 0 / 0.08), 0 2px 6px rgb(0 0 0 / 0.04);
+  --shadow-glass: 0 4px 20px rgb(16 185 129 / 0.08);
 }
 
 /* ─── CSS custom properties ─── */
 :root {
   /* Light Theme (Default) */
-  --bg:              #F7F3EB;
-  --card:            #FFFDF8;
-  --surface:         #F1E8D9;
-  --surface-muted:   #FBF7EF;
-  --border:          #E7DECF;
-  --text:            #211C15;
-  --text-secondary:  #4C463C;
-  --text-muted:      #7B7468;
+  --bg:              #FFFFFF;
+  --card:            #F9FAFB;
+  --surface:         #F3F4F6;
+  --surface-muted:   #E5E7EB;
+  --border:          #E5E7EB;
+  --text:            #111827;
+  --text-secondary:  #4B5563;
+  --text-muted:      #9CA3AF;
 
   /* Dark Tokens (Ink) */
-  --ink:             #10131A;
-  --ink-2:           #181D26;
-  --ink-3:           #27303D;
-  --ink-4:           #4C463C;
+  --ink:             #111827;
+  --ink-2:           #1F2937;
+  --ink-3:           #374151;
+  --ink-4:           #4B5563;
 
-  /* Accent */
-  --accent:          #FB923C;
-  --accent-ink:      #EA580C;
-  --accent-soft:     #FB923C20;
+  /* Accent - Vibrant Green */
+  --accent:          #10B981;
+  --accent-ink:      #047857;
+  --accent-soft:     #D1FAE5;
 
   /* Others */
-  --gold:            #D4A017;
-  --success:         #2E7D32;
-  --warning:         #B7791F;
-  --danger:          #C53030;
+  --gold:            #F59E0B;
+  --success:         #059669;
+  --warning:         #D97706;
+  --danger:          #DC2626;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(33, 28, 21, 0.04);
-  --shadow-md: 0 8px 24px rgba(33, 28, 21, 0.05), 0 2px 6px rgba(33, 28, 21, 0.04);
-  --shadow-lg: 0 24px 64px rgba(33, 28, 21, 0.08), 0 4px 12px rgba(33, 28, 21, 0.04);
-  --shadow-vanguard: 0 40px 100px -20px rgba(0, 0, 0, 0.15), 0 30px 60px -30px rgba(0, 0, 0, 0.2);
+  /* Shadows - Organic and soft */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-vanguard: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
 
   --page-max: 1440px;
 
@@ -123,7 +123,7 @@ h1 em, h2 em, h3 em {
 
 a { color: inherit; text-decoration: none; }
 
-::selection { background: rgba(217, 84, 43, 0.18); color: var(--ink); }
+::selection { background: rgba(16, 185, 129, 0.15); color: var(--ink); }
 
 /* ─── Layout shells ─── */
 .page-shell {
@@ -326,19 +326,19 @@ a { color: inherit; text-decoration: none; }
 .corda::before { left:  -1px; }
 .corda::after  { right: -1px; background: var(--tip2, var(--tip, var(--ink-4))); }
 
-/* ─── Vanguard Utilities ─── */
+/* ─── Community Sport Utilities ─── */
 .glass {
-  background: rgba(255, 253, 248, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .glass-dark {
-  background: rgba(16, 19, 26, 0.8);
+  background: rgba(17, 24, 39, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .text-gradient {
