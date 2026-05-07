@@ -1,5 +1,6 @@
 import { getAllGroups } from '@/lib/queries'
 import AdminTopbar from '@/components/admin/AdminTopbar'
+import AdminDeleteButton from '@/components/admin/AdminDeleteButton'
 import Badge from '@/components/ui/Badge'
 import Link from 'next/link'
 
@@ -67,13 +68,20 @@ export default async function AdminGroupsPage({ params }: Props) {
                     <td className="px-6 py-4 text-sm text-text-secondary font-medium">
                       {group.memberCount || 0}
                     </td>
-                    <td className="px-6 py-4 text-right">
-                      <Link
-                        href={`/${locale}/admin/groups/${group.id}`}
-                        className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-surface px-4 text-xs font-bold text-accent transition-all hover:bg-accent/10 hover:border-accent/30 no-underline"
-                      >
-                        Gestionar
-                      </Link>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          href={`/${locale}/admin/groups/${group.id}`}
+                          className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-surface px-4 text-xs font-bold text-accent transition-all hover:bg-accent/10 hover:border-accent/30 no-underline"
+                        >
+                          Gestionar
+                        </Link>
+                        <AdminDeleteButton
+                          endpoint={`/api/admin/groups/${group.id}`}
+                          confirmMessage={`¿Eliminar permanentemente el grupo "${group.name}"? Esta acción no se puede deshacer.`}
+                          label="Eliminar"
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import AdminTopbar from '@/components/admin/AdminTopbar'
+import AdminDeleteButton from '@/components/admin/AdminDeleteButton'
 import Badge from '@/components/ui/Badge'
 import { getAdminNucleos } from '@/lib/admin-queries'
 
@@ -65,13 +66,20 @@ export default async function AdminNucleosPage({ params }: Props) {
                     <td className="px-4 py-4 text-sm text-text-secondary">
                       {nucleo.schedules?.length ?? 0}
                     </td>
-                    <td className="px-4 py-4 text-right">
-                      <Link
-                        href={`/${locale}/admin/nucleos/${nucleo.groupId}/${nucleo.id}`}
-                        className="inline-flex items-center justify-center rounded-xl border border-border bg-surface px-4 py-2 text-xs font-semibold text-accent transition-colors hover:border-accent/30"
-                      >
-                        Editar
-                      </Link>
+                    <td className="px-4 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          href={`/${locale}/admin/nucleos/${nucleo.groupId}/${nucleo.id}`}
+                          className="inline-flex items-center justify-center rounded-xl border border-border bg-surface px-4 py-2 text-xs font-semibold text-accent transition-colors hover:border-accent/30"
+                        >
+                          Editar
+                        </Link>
+                        <AdminDeleteButton
+                          endpoint={`/api/admin/nucleos/${nucleo.groupId}/${nucleo.id}`}
+                          confirmMessage={`¿Eliminar permanentemente el núcleo "${nucleo.name}"? Esta acción no se puede deshacer.`}
+                          label="Eliminar"
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}

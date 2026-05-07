@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { AdminEntityOption, AdminEntityType, AdminEvent } from '@/lib/admin-queries'
+import type { AdminEntityOption, AdminEntityType, AdminEvent, AdminEventAttendee } from '@/lib/admin-queries'
 
 interface Props {
   event: AdminEvent
   locale: string
   entityOptions: AdminEntityOption[]
+  attendees?: AdminEventAttendee[]
 }
 
 type AdminEventLocation = NonNullable<AdminEvent['locations']>[number]
@@ -293,7 +294,7 @@ function EntityLookup({ options }: { options: AdminEntityOption[] }) {
   )
 }
 
-export default function EventEditForm({ event, locale, entityOptions }: Props) {
+export default function EventEditForm({ event, locale, entityOptions, attendees: initialAttendees = [] }: Props) {
   const router = useRouter()
   const groupOptions = useMemo(
     () => entityOptions.filter((option) => option.type === 'group'),
@@ -303,6 +304,8 @@ export default function EventEditForm({ event, locale, entityOptions }: Props) {
     () => entityOptions.filter((option) => option.type === 'user'),
     [entityOptions]
   )
+  const [attendees, setAttendees] = useState<AdminEventAttendee[]>(initialAttendees)
+  const [removingUserId, setRemovingUserId] = useState<string | null>(null)
   const [form, setForm] = useState({
     title: event.title || '',
     description: event.description || '',
@@ -869,6 +872,112 @@ export default function EventEditForm({ event, locale, entityOptions }: Props) {
 
       <section className={sectionClass}>
         <EntityLookup options={entityOptions} />
+      </section>
+
+      {/* ── Attendees & Interested ────────────────────────────────────── */}
+      <section className={sectionClass}>
+        <div className="flex items-center justify-between gap-3 mb-5">
+          <div>
+            <h3 className="text-sm font-semibold text-text">Asistentes e Interesados</h3>
+            <p className="mt-1 text-xs text-text-muted">
+              {attendees.filter(a => a.status === 'going').length} confirmados · {attendees.filter(a => a.status === 'interested').length} interesados
+            </p>
+          </div>
+        </div>
+
+        {attendees.length === 0 ? (
+          <p className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text-muted">
+            Este evento no tiene asistentes registrados.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {/* Going */}
+            {attendees.filter(a => a.status === 'going').length > 0 && (
+              <div className="mb-3">
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">🔥 Confirmados ({attendees.filter(a => a.status === 'going').length})</p>
+                <div className="space-y-2">
+                  {attendees.filter(a => a.status === 'going').map(a => (
+                    <div key={a.userId} className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-text">{a.displayName}</p>
+                        <p className="font-mono text-[10px] text-text-muted">{a.userId}</p>
+                      </div>
+                      <button
+                        type="button"
+                        disabled={removingUserId === a.userId}
+                        onClick={async () => {
+                          if (!confirm(`¿Eliminar a ${a.displayName} de los confirmados?`)) return
+                          setRemovingUserId(a.userId)
+                          try {
+                            const res = await fetch(`/api/admin/events/${event.id}/attendees`, {
+                              method: 'DELETE',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ userId: a.userId }),
+                            })
+                            if (res.ok) {
+                              setAttendees(prev => prev.filter(x => x.userId !== a.userId))
+                            } else {
+                              const payload = await res.json().catch(() => null)
+                              alert(payload?.error || 'Error al eliminar')
+                            }
+                          } finally {
+                            setRemovingUserId(null)
+                          }
+                        }}
+                        className="text-xs font-semibold text-danger transition-opacity hover:opacity-70 disabled:opacity-40"
+                      >
+                        {removingUserId === a.userId ? '...' : 'Quitar'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Interested */}
+            {attendees.filter(a => a.status === 'interested').length > 0 && (
+              <div>
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">👀 Interesados ({attendees.filter(a => a.status === 'interested').length})</p>
+                <div className="space-y-2">
+                  {attendees.filter(a => a.status === 'interested').map(a => (
+                    <div key={a.userId} className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-text">{a.displayName}</p>
+                        <p className="font-mono text-[10px] text-text-muted">{a.userId}</p>
+                      </div>
+                      <button
+                        type="button"
+                        disabled={removingUserId === a.userId}
+                        onClick={async () => {
+                          if (!confirm(`¿Eliminar a ${a.displayName} de los interesados?`)) return
+                          setRemovingUserId(a.userId)
+                          try {
+                            const res = await fetch(`/api/admin/events/${event.id}/attendees`, {
+                              method: 'DELETE',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ userId: a.userId }),
+                            })
+                            if (res.ok) {
+                              setAttendees(prev => prev.filter(x => x.userId !== a.userId))
+                            } else {
+                              const payload = await res.json().catch(() => null)
+                              alert(payload?.error || 'Error al eliminar')
+                            }
+                          } finally {
+                            setRemovingUserId(null)
+                          }
+                        }}
+                        className="text-xs font-semibold text-danger transition-opacity hover:opacity-70 disabled:opacity-40"
+                      >
+                        {removingUserId === a.userId ? '...' : 'Quitar'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

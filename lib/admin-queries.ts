@@ -1033,9 +1033,6 @@ export async function getAdminEventById(id: string): Promise<AdminEvent | null> 
 
   const data = doc.data() as FirestoreRecord
 
-  // Filter out past events
-  const endDate = toIsoString(data.endDate)
-  if (endDate && new Date(endDate) <= new Date()) return null
   return {
     id: doc.id,
     title: asString(data.title),
@@ -1500,3 +1497,43 @@ export async function getAdminUsersForExport(limit = 2000): Promise<Array<{
     })
   )
 }
+
+// ─── Event Attendees ─────────────────────────────────────────────────────────
+
+export interface AdminEventAttendee {
+  userId: string
+  displayName: string
+  status: 'going' | 'interested'
+  createdAt: string | null
+}
+
+export async function getAdminEventAttendees(eventId: string): Promise<AdminEventAttendee[]> {
+  const attendeesSnap = await adminDb
+    .collection('events')
+    .doc(eventId)
+    .collection('attendees')
+    .get()
+    .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] }))
+
+  if (attendeesSnap.docs.length === 0) return []
+
+  const userIds = attendeesSnap.docs.map((d) => d.id)
+  const nameMap = await getUsersNameMap(userIds)
+
+  return attendeesSnap.docs
+    .map((d) => {
+      const data = d.data() as FirestoreRecord
+      const status = asString(data.status)
+      return {
+        userId: d.id,
+        displayName: nameMap.get(d.id) ?? d.id,
+        status: (status === 'interested' ? 'interested' : 'going') as 'going' | 'interested',
+        createdAt: toIsoString(data.createdAt),
+      }
+    })
+    .sort((a, b) => {
+      if (a.status !== b.status) return a.status === 'going' ? -1 : 1
+      return a.displayName.localeCompare(b.displayName)
+    })
+}
+

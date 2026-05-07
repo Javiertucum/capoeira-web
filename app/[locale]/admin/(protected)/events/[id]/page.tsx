@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import EventEditForm from '@/components/admin/EventEditForm'
-import { getAdminEntityOptions, getAdminEventById } from '@/lib/admin-queries'
+import { getAdminEntityOptions, getAdminEventAttendees, getAdminEventById } from '@/lib/admin-queries'
 
 type Props = {
   params: Promise<{ locale: string; id: string }>
@@ -10,10 +10,12 @@ type Props = {
 
 export default async function AdminEventDetailPage({ params }: Props) {
   const { locale, id } = await params
-  const [event, entityOptions] = await Promise.all([
+  const [event, entityOptions, attendees] = await Promise.all([
     getAdminEventById(id).catch(() => null),
     getAdminEntityOptions().catch(() => []),
+    getAdminEventAttendees(id).catch(() => []),
   ])
+
 
   if (!event) {
     notFound()
@@ -70,7 +72,7 @@ export default async function AdminEventDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <EventEditForm event={event} locale={locale} entityOptions={entityOptions} />
+        <EventEditForm event={event} locale={locale} entityOptions={entityOptions} attendees={attendees} />
       </div>
     </div>
   )

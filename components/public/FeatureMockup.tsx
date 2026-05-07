@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 
 interface FeatureMockupProps {
-  type: 'home' | 'attendance' | 'graduation' | 'event' | 'educator' | 'finances' | 'kpi' | 'map'
+  type: 'home' | 'attendance' | 'graduation' | 'event' | 'educator' | 'finances' | 'kpi' | 'map' | 'notifications'
   interactive?: boolean
 }
 
@@ -317,6 +317,75 @@ export default function FeatureMockup({ type, interactive = false }: FeatureMock
                    </div>
                 </div>
              </div>
+          </div>
+        )
+
+      case 'event':
+        return (
+          <div className="space-y-5 animate-in fade-in duration-500">
+            {/* Poster */}
+            <div className="aspect-[16/9] bg-accent/15 rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center relative">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-3 left-3 right-3">
+                <span className="bg-accent text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">BATIZADO</span>
+                <h5 className="text-white font-black text-sm mt-1 leading-tight">Batizado Bom Caminho 2026</h5>
+                <p className="text-white/60 text-[9px] mt-0.5">Santiago, Chile · 15-17 Mayo</p>
+              </div>
+            </div>
+
+            {/* Attendance buttons */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-accent rounded-2xl py-3 flex items-center justify-center gap-2 shadow-lg shadow-accent/25">
+                <span className="text-white font-black text-xs">🔥 Confirmado</span>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl py-3 flex items-center justify-center gap-2">
+                <span className="text-bg/50 font-bold text-xs">👀 Interesado</span>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="flex gap-3">
+              {[{ label: 'Confirmados', val: '42' }, { label: 'Interesados', val: '118' }, { label: 'Precio', val: '$35K' }].map(s => (
+                <div key={s.label} className="flex-1 bg-white/5 border border-white/5 rounded-2xl p-3 text-center">
+                  <p className="text-bg font-black text-sm">{s.val}</p>
+                  <p className="text-bg/30 text-[8px] uppercase font-bold tracking-widest mt-0.5">{s.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Description snippet */}
+            <div className="bg-white/5 border border-white/5 rounded-2xl p-4">
+              <p className="text-bg/60 text-[10px] leading-relaxed">
+                El encuentro anual de Capoeira Bom Caminho reúne practicantes de toda Sudamérica para una semana de talleres, rodas y graduaciones...
+              </p>
+            </div>
+          </div>
+        )
+
+      case 'notifications':
+        return (
+          <div className="space-y-4 animate-in fade-in duration-500">
+            <div className="pt-2 mb-2">
+              <p className="text-accent text-[9px] font-bold tracking-[0.2em] uppercase mb-1">Centro</p>
+              <h4 className="text-bg font-black text-xl leading-tight">Notificaciones</h4>
+            </div>
+            {[
+              { icon: '📅', title: 'Batizado Bom Caminho', desc: 'Mañana a las 09:00 — no olvides confirmar asistencia', time: 'Hace 5 min', accent: true },
+              { icon: '✅', title: 'Asistencia registrada', desc: 'Sesión del lunes guardada — 8 presentes', time: 'Hace 2 h', accent: false },
+              { icon: '🎓', title: 'Nueva graduación', desc: 'Mola ascendió a Corda Verde-Azul', time: 'Ayer', accent: false },
+              { icon: '💸', title: 'Pago confirmado', desc: 'Mensualidad de Tucum — Mayo 2026', time: 'Hace 3 días', accent: false },
+            ].map((n, i) => (
+              <div key={i} className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all ${n.accent ? 'bg-accent/10 border-accent/20' : 'bg-white/5 border-white/5'}`}>
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-base flex-shrink-0">
+                  {n.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={`font-black text-[11px] truncate ${n.accent ? 'text-accent' : 'text-bg'}`}>{n.title}</p>
+                  <p className="text-bg/40 text-[9px] leading-relaxed mt-0.5">{n.desc}</p>
+                </div>
+                <p className="text-bg/20 text-[8px] font-bold uppercase tracking-widest flex-shrink-0 mt-0.5">{n.time}</p>
+              </div>
+            ))}
           </div>
         )
 

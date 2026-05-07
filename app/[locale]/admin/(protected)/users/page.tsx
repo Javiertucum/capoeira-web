@@ -1,5 +1,6 @@
 import { getAdminUsers } from '@/lib/admin-queries'
 import AdminTopbar from '@/components/admin/AdminTopbar'
+import AdminDeleteButton from '@/components/admin/AdminDeleteButton'
 import Badge from '@/components/ui/Badge'
 import Link from 'next/link'
 
@@ -33,7 +34,7 @@ export default async function UsersPage({ params }: Props) {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-surface/30">
-                  {['Nombre', 'Email', 'Rol', 'País', 'Estado', ''].map(h => (
+                  {['Nombre', 'Email', 'Rol', 'País', 'Estado', 'Acciones'].map(h => (
                     <th key={h} className="text-left text-[10px] tracking-[0.2em] uppercase text-text-muted px-6 py-4 border-b border-border font-bold">
                       {h}
                     </th>
@@ -63,13 +64,20 @@ export default async function UsersPage({ params }: Props) {
                         {user.disabled ? 'Bloqueado' : 'Activo'}
                       </Badge>
                     </td>
-                    <td className="px-6 py-4 text-right">
-                      <Link
-                        href={`/${locale}/admin/users/${user.uid}`}
-                        className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-surface px-4 text-xs font-bold text-accent transition-all hover:bg-accent/10 hover:border-accent/30 no-underline"
-                      >
-                        Editar
-                      </Link>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          href={`/${locale}/admin/users/${user.uid}`}
+                          className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-surface px-4 text-xs font-bold text-accent transition-all hover:bg-accent/10 hover:border-accent/30 no-underline"
+                        >
+                          Editar
+                        </Link>
+                        <AdminDeleteButton
+                          endpoint={`/api/admin/users/${user.uid}`}
+                          confirmMessage={`¿Eliminar permanentemente a ${user.name} ${user.surname}? Esta acción no se puede deshacer.`}
+                          label="Eliminar"
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}
