@@ -85,6 +85,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full`}
+      suppressHydrationWarning
     >
       <head>
         <meta name="theme-color" content="#F4EFE6" />

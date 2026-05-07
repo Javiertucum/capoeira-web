@@ -21,25 +21,25 @@ const COPY = {
     educatorSubtitle: 'Para Educadores y Organizadores',
     educatorFeatures: [
       { t: 'KPI Dashboard', d: 'Visualiza alumnos activos, retención mensual y salud financiera de tu núcleo en tiempo real.' },
-      { t: 'Asistencia con QR', d: 'Pasa lista de forma instantánea escaneando el código QR único de cada alumno desde la app.' },
-      { t: 'Gestión de Cobros', d: 'Administra mensualidades, paquetes de clases y pagos multi-moneda con total claridad.' },
-      { t: 'Reportes y Diplomas', d: 'Exporta reportes de asistencia en PDF/CSV y genera certificados de graduación automáticos.' },
-      { t: 'Notificaciones Push', d: 'Envía avisos segmentados a tus núcleos o grupos específicos para rodas y workshops.' },
-      { t: 'Horarios Flexibles', d: 'Gestiona turmas dinámicas, cambios de sede y avisos de última hora de forma centralizada.' },
-      { t: 'Directorio de Alumnos', d: 'Base de datos completa con historial de graduación, deudas y contacto de emergencia.' }
+      { t: 'Control de Asistencia', d: 'Pasa lista de forma inmediata en cada sesión del día y mantén el registro actualizado en la nube.' },
+      { t: 'Sistema de Graduación', d: 'Configura la jerarquía de cordas de tu grupo, define umbrales de educador y gestiona asignaciones.' },
+      { t: 'Tesorería del Núcleo', d: 'Administra pagos pendientes, mensualidades y clases sueltas con insignias visuales de estado y control multi-moneda.' },
+      { t: 'Reportes Exportables', d: 'Genera reportes de asistencia y finanzas automáticamente para exportarlos en PDF y CSV.' },
+      { t: 'Gestión de Eventos', d: 'Crea batizados y rodas, fija la ubicación en el mapa, sube múltiples pósters y asigna co-organizadores.' },
+      { t: 'Directorio de Alumnos', d: 'Base de datos completa con el historial de graduaciones, progreso y contacto de cada miembro.' }
     ],
     studentSubtitle: 'Para Alumnos y Viajeros',
     studentFeatures: [
-      { t: 'Mapa de Núcleos', d: 'Localiza sedes de entrenamiento con horarios detallados y educadores responsables en cualquier ciudad.' },
-      { t: 'Agenda Global', d: 'Rodas y workshops organizados por proximidad. Confirma asistencia y guárdalos en tu calendario.' },
-      { t: 'Perfil Comunitario', d: 'Sigue tu historial de graduaciones, conecta tus redes sociales y descubre la red global de capoeira.' },
-      { t: 'Feed Personalizado', d: 'Recibe noticias y actualizaciones de tu grupo y eventos de interés directamente en tu inicio.' }
+      { t: 'Directorio y Mapa Global', d: 'Busca núcleos, grupos y educadores por ciudad o país en un mapa interactivo para encontrar dónde entrenar.' },
+      { t: 'Calendario de Eventos', d: 'Descubre rodas, talleres y batizados organizados por proximidad. Confirma tu interés y agrégalos a tu calendario.' },
+      { t: 'Perfil Comunitario', d: 'Lleva tu historial capoeirístico en el bolsillo: tu corda, tu grupo, y la red de núcleos donde entrenas.' },
+      { t: 'Feed Personalizado', d: 'Recibe noticias, notificaciones push de tus educadores y avisos de última hora directamente en tu inicio.' }
     ],
     advancedTitle: 'Ecosistema Avanzado',
     advancedFeatures: [
-      { t: 'Finanzas e Ingresos', d: 'Control total de mensualidades y deudas con reportes automáticos y multi-moneda.', mockup: 'finances' },
-      { t: 'KPIs y Estadísticas', d: 'Gráficos de asistencia, retención y crecimiento para una gestión basada en datos.', mockup: 'kpi' },
-      { t: 'Geolocalización', d: 'Mapa interactivo para el descubrimiento de entrenamientos y eventos en tiempo real.', mockup: 'map' }
+      { t: 'Jerarquía de Grupo', d: 'Supervisa educativamente múltiples núcleos y gestiona a los administradores de tu organización.', mockup: 'home' },
+      { t: 'Métricas Reales', d: 'Gráficos de retención, crecimiento de alumnos y finanzas consolidadas para una toma de decisiones inteligente.', mockup: 'kpi' },
+      { t: 'Sincronización Cloud', d: 'Datos encriptados y respaldados en la nube para garantizar que el historial de tu grupo siempre esté seguro.', mockup: 'finances' }
     ],
     betaTitle: 'Solicita tu acceso a la beta',
     betaBody: 'Estamos en fase de pruebas cerradas en Google Play Console. Déjanos tus datos y te enviaremos una invitación personal para que empieces a organizar tu comunidad hoy mismo.',
@@ -59,25 +59,25 @@ const COPY = {
     educatorSubtitle: 'Para Educadores e Organizadores',
     educatorFeatures: [
       { t: 'Painel KPI', d: 'Visualize alunos ativos, retenção mensal e saúde financeira do seu núcleo em tempo real.' },
-      { t: 'Chamada com QR', d: 'Faça a chamada instantaneamente escaneando o código QR único de cada aluno pelo app.' },
-      { t: 'Gestão de Cobranças', d: 'Administre mensalidades, pacotes de aulas e pagamentos multi-moeda com total clareza.' },
-      { t: 'Relatórios e Diplomas', d: 'Exporte relatórios de frequência em PDF/CSV e gere certificados de graduação automáticos.' },
-      { t: 'Notificações Push', d: 'Envie avisos segmentados para seus núcleos ou grupos específicos para rodas e workshops.' },
-      { t: 'Horários Flexíveis', d: 'Gerencie turmas dinâmicas, mudanças de sede e avisos de última hora de forma centralizada.' },
-      { t: 'Diretório de Alunos', d: 'Base de dados completa com histórico de graduação, dívidas e contato de emergência.' }
+      { t: 'Controle de Presença', d: 'Faça a chamada instantaneamente em cada sessão do dia e mantenha o registro atualizado na nuvem.' },
+      { t: 'Sistema de Graduação', d: 'Configure a hierarquia de cordas do seu grupo, defina limites de educador e gerencie atribuições.' },
+      { t: 'Tesouraria do Núcleo', d: 'Administre pagamentos pendentes, mensalidades e aulas avulsas com emblemas visuais e controle multi-moeda.' },
+      { t: 'Relatórios Exportáveis', d: 'Gere relatórios de frequência e finanças automaticamente para exportá-los em PDF e CSV.' },
+      { t: 'Gestão de Eventos', d: 'Crie batizados e rodas, marque a localização no mapa, faça upload de vários pôsteres e atribua co-organizadores.' },
+      { t: 'Diretório de Alunos', d: 'Base de dados completa com o histórico de graduação, progresso e contato de cada membro.' }
     ],
     studentSubtitle: 'Para Alunos e Viajantes',
     studentFeatures: [
-      { t: 'Mapa de Núcleos', d: 'Encontre sedes de treino com horários detalhados e educadores responsáveis em qualquer cidade.' },
-      { t: 'Agenda Global', d: 'Rodas e workshops organizados por proximidade. Confirme presença e salve no seu calendário.' },
-      { t: 'Perfil Comunitario', d: 'Acompanhe seu histórico de graduação, conecte suas redes sociais e descubra a rede global de capoeira.' },
-      { t: 'Feed Personalizado', d: 'Receba notícias e atualizações do seu grupo e eventos de interesse diretamente no seu início.' }
+      { t: 'Diretório e Mapa Global', d: 'Busque núcleos, grupos e educadores por cidade ou país em um mapa interativo para encontrar onde treinar.' },
+      { t: 'Calendário de Eventos', d: 'Descubra rodas, oficinas e batizados por proximidade. Confirme seu interesse e adicione-os ao seu calendário.' },
+      { t: 'Perfil Comunitário', d: 'Leve seu histórico de capoeira no bolso: sua corda, seu grupo e a rede de núcleos onde treina.' },
+      { t: 'Feed Personalizado', d: 'Receba notícias, notificações push de seus educadores e avisos de última hora diretamente no seu início.' }
     ],
     advancedTitle: 'Ecossistema Avançado',
     advancedFeatures: [
-      { t: 'Finanças e Ganhos', d: 'Controle total de mensalidades e dívidas com relatórios automáticos e multi-moeda.', mockup: 'finances' },
-      { t: 'KPIs e Estatísticas', d: 'Gráficos de frequência, retenção e crescimento para uma gestão baseada em dados.', mockup: 'kpi' },
-      { t: 'Geolocalização', d: 'Mapa interativo para descoberta de treinos e eventos em tempo real.', mockup: 'map' }
+      { t: 'Hierarquia de Grupo', d: 'Supervisione educativamente múltiplos núcleos e gerencie os administradores da sua organização.', mockup: 'home' },
+      { t: 'Métricas Reais', d: 'Gráficos de retenção, crescimento de alunos e finanças consolidadas para uma tomada de decisão inteligente.', mockup: 'kpi' },
+      { t: 'Sincronização Cloud', d: 'Dados criptografados e com backup na nuvem para garantir que o histórico do seu grupo esteja sempre seguro.', mockup: 'finances' }
     ],
     betaTitle: 'Solicite seu acesso à beta',
     betaBody: 'Estamos em fase de testes fechados no Google Play Console. Deixe seus dados e enviaremos um convite pessoal para você começar a organizar sua comunidade hoje.',
@@ -97,25 +97,25 @@ const COPY = {
     educatorSubtitle: 'For Educators and Organizers',
     educatorFeatures: [
       { t: 'KPI Dashboard', d: 'Visualize active students, monthly retention, and financial health in real-time.' },
-      { t: 'QR Attendance', d: 'Take attendance instantly by scanning each student’s unique QR code from the app.' },
-      { t: 'Billing Management', d: 'Manage monthly fees, class packages, and multi-currency payments with total clarity.' },
-      { t: 'Reports & Diplomas', d: 'Export attendance reports in PDF/CSV and generate automatic graduation certificates.' },
-      { t: 'Push Notifications', d: 'Send segmented alerts to specific schools or groups for rodas and workshops.' },
-      { t: 'Flexible Scheduling', d: 'Manage dynamic classes, venue changes, and last-minute announcements centrally.' },
-      { t: 'Student Directory', d: 'Complete database with graduation history, debts, and emergency contact info.' }
+      { t: 'Attendance Control', d: 'Take attendance instantly for each daily session and keep records synced in the cloud.' },
+      { t: 'Graduation System', d: 'Configure your group’s belt hierarchy, define educator thresholds, and manage assignments.' },
+      { t: 'Center Treasury', d: 'Manage pending payments, monthly fees, and single classes with visual status badges and multi-currency control.' },
+      { t: 'Exportable Reports', d: 'Generate automatic attendance and financial reports to export as PDF and CSV.' },
+      { t: 'Event Management', d: 'Create batizados and rodas, pin map locations, upload multiple posters, and assign co-organizers.' },
+      { t: 'Student Directory', d: 'Complete database with graduation history, progress, and contact info for each member.' }
     ],
     studentSubtitle: 'For Students and Travelers',
     studentFeatures: [
-      { t: 'Training Map', d: 'Find training locations with detailed schedules and responsible educators in any city.' },
-      { t: 'Global Agenda', d: 'Rodas and workshops organized by proximity. Confirm attendance and save to your calendar.' },
-      { t: 'Community Profile', d: 'Track your graduation history, connect your social media, and discover the global capoeira network.' },
-      { t: 'Personalized Feed', d: 'Receive news and updates from your group and events of interest directly in your home.' }
+      { t: 'Global Directory & Map', d: 'Search for centers, groups, and educators by city or country on an interactive map to find where to train.' },
+      { t: 'Event Calendar', d: 'Discover rodas, workshops, and batizados by proximity. Confirm your interest and add them to your calendar.' },
+      { t: 'Community Profile', d: 'Carry your capoeira history in your pocket: your belt, your group, and the network of centers where you train.' },
+      { t: 'Personalized Feed', d: 'Receive news, push notifications from your educators, and last-minute announcements directly on your home screen.' }
     ],
     advancedTitle: 'Advanced Ecosystem',
     advancedFeatures: [
-      { t: 'Financial Insights', d: 'Full control over monthly fees and debts with automatic multi-currency reports.', mockup: 'finances' },
-      { t: 'KPIs & Analytics', d: 'Growth, attendance, and retention charts for data-driven management.', mockup: 'kpi' },
-      { t: 'Geographic Discovery', d: 'Interactive map for real-time discovery of training sessions and events.', mockup: 'map' }
+      { t: 'Group Hierarchy', d: 'Educatively supervise multiple centers and manage the administrators of your organization.', mockup: 'home' },
+      { t: 'Real Metrics', d: 'Retention charts, student growth, and consolidated finances for smart decision making.', mockup: 'kpi' },
+      { t: 'Cloud Synchronization', d: 'Encrypted data backed up in the cloud to ensure your group’s history is always safe.', mockup: 'finances' }
     ],
     betaTitle: 'Request your beta access',
     betaBody: 'We are in the closed testing phase on Google Play Console. Leave us your details and we will send a personal invite to start organizing your community today.',
