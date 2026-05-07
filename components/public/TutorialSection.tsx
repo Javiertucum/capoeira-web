@@ -9,7 +9,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
   const copy = {
     es: {
       title: 'Funciones reales, diseño nativo',
-      subtitle: 'Explora la interfaz exacta de la App v2.6 replicada en la web',
+      subtitle: 'Explora la interfaz de la App replicada en la web',
       flows: [
         {
           id: 'home',
@@ -65,7 +65,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
     },
     pt: {
       title: 'Funções reais, design nativo',
-      subtitle: 'Explore a interface exata da App v2.6 replicada na web',
+      subtitle: 'Explore a interface do App replicada na web',
       flows: [
         {
           id: 'home',
@@ -121,7 +121,7 @@ export default function TutorialSection({ locale }: { locale: string }) {
     },
     en: {
       title: 'Real features, native design',
-      subtitle: 'Explore the exact App v2.6 interface replicated on the web',
+      subtitle: 'Explore the App interface replicated on the web',
       flows: [
         {
           id: 'home',
@@ -250,8 +250,8 @@ export default function TutorialSection({ locale }: { locale: string }) {
                     ))}
                   </div>
                   <div>
-                    <p className="text-[#10131A] font-black text-sm tracking-tight leading-none">v2.6 Experience</p>
-                    <p className="text-accent text-[10px] font-bold uppercase tracking-widest mt-1">Native components replication</p>
+                    <p className="text-[#10131A] font-black text-sm tracking-tight leading-none">Experiencia Fluida</p>
+                    <p className="text-accent text-[10px] font-bold uppercase tracking-widest mt-1">Navegación nativa y rápida</p>
                   </div>
                 </div>
               </div>
