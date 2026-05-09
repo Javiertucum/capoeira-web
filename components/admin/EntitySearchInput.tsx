@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo, useState } from 'react'
 import type { AdminEntityOption, AdminEntityType } from '@/lib/admin-queries'
 
@@ -12,7 +14,7 @@ export function normalizeSearch(value: string): string {
   return value
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
 }
 
 export function entitySearchText(option: AdminEntityOption): string {
