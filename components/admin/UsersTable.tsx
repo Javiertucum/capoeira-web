@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import type { AdminUser } from '@/lib/admin-queries'
+import { computeOnboardingProgress } from '@/lib/admin-queries'
 import AdminDeleteButton from '@/components/admin/AdminDeleteButton'
 import Badge from '@/components/ui/Badge'
 
@@ -78,7 +79,7 @@ export default function UsersTable({ users, locale }: Props) {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-surface/30">
-                {['Nombre', 'Email', 'Rol', 'País', 'Estado', 'Acciones'].map((h) => (
+                {['Nombre', 'Email', 'Rol', 'País', 'Perfil', 'Estado', 'Acciones'].map((h) => (
                   <th
                     key={h}
                     className="border-b border-border px-6 py-4 text-left text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted"
@@ -107,6 +108,24 @@ export default function UsersTable({ users, locale }: Props) {
                   <td className="px-6 py-4 text-xs capitalize text-text-secondary">{user.role}</td>
                   <td className="px-6 py-4 text-xs text-text-secondary">{user.country || '—'}</td>
                   <td className="px-6 py-4">
+                    {(() => {
+                      const progress = computeOnboardingProgress(user)
+                      return (
+                        <div className="flex items-center gap-2">
+                          <div className="h-1.5 w-16 overflow-hidden rounded-full bg-border">
+                            <div
+                              className={`h-full rounded-full transition-all ${
+                                progress === 100 ? 'bg-accent' : progress >= 60 ? 'bg-warning' : 'bg-danger/60'
+                              }`}
+                              style={{ width: `${progress}%` }}
+                            />
+                          </div>
+                          <span className="text-[10px] font-semibold tabular-nums text-text-muted">{progress}%</span>
+                        </div>
+                      )
+                    })()}
+                  </td>
+                  <td className="px-6 py-4">
                     <Badge variant={user.disabled ? 'danger' : 'accent'}>
                       {user.disabled ? 'Bloqueado' : 'Activo'}
                     </Badge>
@@ -131,7 +150,7 @@ export default function UsersTable({ users, locale }: Props) {
               {filtered.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={6}
+                    colSpan={7}
                     className="px-6 py-10 text-center text-sm italic text-text-muted"
                   >
                     No hay usuarios que coincidan con los filtros.

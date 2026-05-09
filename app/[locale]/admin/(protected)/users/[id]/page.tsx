@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getAdminUserById } from '@/lib/admin-queries'
+import { getAdminUserById, computeOnboardingProgress } from '@/lib/admin-queries'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import UserEditForm from '@/components/admin/UserEditForm'
 import Link from 'next/link'
@@ -40,6 +40,25 @@ export default async function UserEditPage({ params }: Props) {
               ID: <code className="text-[10px] bg-surface-muted px-1.5 py-0.5 rounded">{user.uid}</code>
               {user.email && <span className="ml-3 font-medium text-text-secondary">{user.email}</span>}
             </p>
+            <div className="mt-3 flex items-center gap-3">
+              {(() => {
+                const progress = computeOnboardingProgress(user)
+                return (
+                  <>
+                    <div className="h-2 w-32 overflow-hidden rounded-full bg-border">
+                      <div
+                        className={`h-full rounded-full ${progress === 100 ? 'bg-accent' : progress >= 60 ? 'bg-warning' : 'bg-danger/60'}`}
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                    <span className="text-sm font-semibold text-text-muted">{progress}% perfil completo</span>
+                    {user.setupComplete ? (
+                      <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent">Onboarding ✓</span>
+                    ) : null}
+                  </>
+                )
+              })()}
+            </div>
           </div>
           <div className="flex gap-3">
              <div className={`rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest border
