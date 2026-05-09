@@ -15,7 +15,7 @@ export default function Hero({ copy, stats }: { copy: any; stats: any }) {
       </div>
 
       <div className="page-shell relative z-10 py-16 lg:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1fr] lg:gap-10">
 
           {/* ── Left column — content ── */}
           <div className="space-y-8 lg:space-y-10">
@@ -101,7 +101,7 @@ export default function Hero({ copy, stats }: { copy: any; stats: any }) {
               className="floating-rot relative"
               style={{ '--rot': '2deg' } as React.CSSProperties}
             >
-              <FeatureMockup type="home" />
+              <FeatureMockup type="home" size="lg" />
             </div>
           </div>
 
