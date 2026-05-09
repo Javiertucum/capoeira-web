@@ -69,7 +69,7 @@ export default async function GroupAdminPage({ params }: Props) {
         </div>
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
-          <GroupEditForm group={group as any} locale={locale} entityOptions={entityOptions} />
+          <GroupEditForm group={group} locale={locale} entityOptions={entityOptions} />
 
           <aside className="space-y-6">
             <section className="rounded-[24px] border border-border bg-card p-5 shadow-sm sm:p-6">

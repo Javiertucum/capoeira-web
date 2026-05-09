@@ -138,6 +138,7 @@ function mapGroup(id: string, data: FirestoreRecord): Group {
   return {
     id,
     name: asString(data.name) ?? '',
+    description: asNullableString(data.description),
     logoUrl: asNullableString(data.logoUrl),
     adminUserIds: asStringArray(data.adminUserIds),
     coAdminIds: asStringArray(data.coAdminIds),

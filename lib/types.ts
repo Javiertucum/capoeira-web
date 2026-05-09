@@ -32,6 +32,7 @@ export interface PublicModerationState {
 export interface Group {
   id: string
   name: string
+  description?: string | null
   logoUrl?: string | null
   adminUserIds?: string[]
   coAdminIds?: string[]

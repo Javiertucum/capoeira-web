@@ -6,12 +6,8 @@ import type { AdminEntityOption } from '@/lib/admin-queries'
 import type { Group } from '@/lib/types'
 import EntitySearchInput from '@/components/admin/EntitySearchInput'
 
-interface AdminGroup extends Group {
-  description?: string | null
-}
-
 interface Props {
-  group: AdminGroup
+  group: Group
   locale: string
   entityOptions: AdminEntityOption[]
 }
