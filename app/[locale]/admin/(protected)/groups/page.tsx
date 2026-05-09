@@ -1,4 +1,5 @@
 import { getAllGroups } from '@/lib/queries'
+import type { Group } from '@/lib/types'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import AdminDeleteButton from '@/components/admin/AdminDeleteButton'
 import Badge from '@/components/ui/Badge'
@@ -8,7 +9,7 @@ type Props = { params: Promise<{ locale: string }> }
 
 export default async function AdminGroupsPage({ params }: Props) {
   const { locale } = await params
-  let groups: any[] = []
+  let groups: Group[] = []
   try {
     groups = await getAllGroups({ includeHidden: true })
   } catch (error) {
