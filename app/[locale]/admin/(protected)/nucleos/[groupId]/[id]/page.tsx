@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import NucleoEditForm from '@/components/admin/NucleoEditForm'
-import { getAdminNucleoById } from '@/lib/admin-queries'
+import { getAdminNucleoById, getAdminEntityOptions } from '@/lib/admin-queries'
 
 type Props = {
   params: Promise<{ locale: string; groupId: string; id: string }>
@@ -10,7 +10,10 @@ type Props = {
 
 export default async function AdminNucleoDetailPage({ params }: Props) {
   const { locale, groupId, id } = await params
-  const nucleo = await getAdminNucleoById(groupId, id).catch(() => null)
+  const [nucleo, entityOptions] = await Promise.all([
+    getAdminNucleoById(groupId, id).catch(() => null),
+    getAdminEntityOptions().catch(() => []),
+  ])
 
   if (!nucleo) {
     notFound()
@@ -64,7 +67,7 @@ export default async function AdminNucleoDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <NucleoEditForm nucleo={nucleo} locale={locale} />
+        <NucleoEditForm nucleo={nucleo} locale={locale} entityOptions={entityOptions} />
       </div>
     </div>
   )

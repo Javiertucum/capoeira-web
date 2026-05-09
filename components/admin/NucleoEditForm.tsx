@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { AdminNucleo } from '@/lib/admin-queries'
+import type { AdminEntityOption, AdminNucleo } from '@/lib/admin-queries'
+import EntitySearchInput from '@/components/admin/EntitySearchInput'
 
 interface Props {
   nucleo: AdminNucleo
   locale: string
+  entityOptions: AdminEntityOption[]
 }
 
 type Schedule = {
@@ -25,8 +27,13 @@ const DAY_OPTIONS = [
   { value: 6, label: 'Sabado' },
 ]
 
-export default function NucleoEditForm({ nucleo, locale }: Props) {
+export default function NucleoEditForm({ nucleo, locale, entityOptions }: Props) {
   const router = useRouter()
+  const userOptions = useMemo(
+    () => entityOptions.filter((o) => o.type === 'user'),
+    [entityOptions]
+  )
+
   const [form, setForm] = useState({
     name: nucleo.name,
     city: nucleo.city ?? '',
@@ -34,9 +41,12 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
     address: nucleo.address ?? '',
     latitude: nucleo.latitude?.toString() ?? '',
     longitude: nucleo.longitude?.toString() ?? '',
-    responsibleEducatorId: nucleo.responsibleEducatorId ?? '',
-    coEducatorIds: (nucleo.coEducatorIds ?? []).join(', '),
   })
+  const [responsibleEducatorId, setResponsibleEducatorId] = useState(
+    nucleo.responsibleEducatorId ?? ''
+  )
+  const [coEducatorIds, setCoEducatorIds] = useState<string[]>(nucleo.coEducatorIds ?? [])
+  const [coEducatorToAdd, setCoEducatorToAdd] = useState('')
   const [schedules, setSchedules] = useState<Schedule[]>(nucleo.schedules ?? [])
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -55,7 +65,10 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
   }
 
   function addSchedule() {
-    setSchedules((current) => [...current, { dayOfWeek: 1, startTime: '19:00', endTime: '20:30' }])
+    setSchedules((current) => [
+      ...current,
+      { dayOfWeek: 1, startTime: '19:00', endTime: '20:30' },
+    ])
   }
 
   function removeSchedule(index: number) {
@@ -77,11 +90,8 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
           address: form.address || null,
           latitude: form.latitude ? Number(form.latitude) : null,
           longitude: form.longitude ? Number(form.longitude) : null,
-          responsibleEducatorId: form.responsibleEducatorId || null,
-          coEducatorIds: form.coEducatorIds
-            .split(',')
-            .map((item) => item.trim())
-            .filter(Boolean),
+          responsibleEducatorId: responsibleEducatorId || null,
+          coEducatorIds,
           schedules,
         }),
       })
@@ -128,6 +138,7 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
   const inputClass =
     'w-full rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none transition-colors focus:border-accent/35'
   const labelClass = 'mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted'
+  const sectionClass = 'rounded-[24px] border border-border bg-card p-5 shadow-sm sm:p-6'
 
   return (
     <div className="space-y-6">
@@ -143,7 +154,7 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
         </div>
       ) : null}
 
-      <section className="rounded-[24px] border border-border bg-card p-5 shadow-sm sm:p-6">
+      <section className={sectionClass}>
         <h3 className="text-sm font-semibold text-text">Datos del nucleo</h3>
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           <div className="md:col-span-2">
@@ -154,7 +165,6 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
               onChange={(event) => set('name', event.target.value)}
             />
           </div>
-
           <div>
             <label className={labelClass}>Ciudad</label>
             <input
@@ -163,7 +173,6 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
               onChange={(event) => set('city', event.target.value)}
             />
           </div>
-
           <div>
             <label className={labelClass}>Pais</label>
             <input
@@ -172,7 +181,6 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
               onChange={(event) => set('country', event.target.value)}
             />
           </div>
-
           <div className="md:col-span-2">
             <label className={labelClass}>Direccion</label>
             <input
@@ -181,7 +189,6 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
               onChange={(event) => set('address', event.target.value)}
             />
           </div>
-
           <div>
             <label className={labelClass}>Latitud</label>
             <input
@@ -191,7 +198,6 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
               inputMode="decimal"
             />
           </div>
-
           <div>
             <label className={labelClass}>Longitud</label>
             <input
@@ -201,36 +207,85 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
               inputMode="decimal"
             />
           </div>
+        </div>
+      </section>
 
+      <section className={sectionClass}>
+        <h3 className="text-sm font-semibold text-text">Educadores</h3>
+        <div className="mt-5 grid gap-6 md:grid-cols-2">
           <div>
-            <label className={labelClass}>Educador responsable</label>
-            <input
-              className={inputClass}
-              value={form.responsibleEducatorId}
-              onChange={(event) => set('responsibleEducatorId', event.target.value)}
-              placeholder="uid del educador"
+            <EntitySearchInput
+              label="Educador responsable"
+              value={responsibleEducatorId}
+              options={userOptions}
+              placeholder="Busca por nombre o apodo"
+              emptyLabel="Sin educador responsable asignado."
+              onChange={setResponsibleEducatorId}
             />
           </div>
-
           <div>
-            <label className={labelClass}>Coeducadores</label>
-            <input
-              className={inputClass}
-              value={form.coEducatorIds}
-              onChange={(event) => set('coEducatorIds', event.target.value)}
-              placeholder="uid1, uid2, uid3"
+            <EntitySearchInput
+              label="Agregar co-educador"
+              value={coEducatorToAdd}
+              options={userOptions}
+              placeholder="Busca por nombre o apodo"
+              emptyLabel="Selecciona un usuario para agregar."
+              onChange={setCoEducatorToAdd}
             />
+            <button
+              type="button"
+              disabled={!coEducatorToAdd || coEducatorIds.includes(coEducatorToAdd)}
+              onClick={() => {
+                setCoEducatorIds((ids) => [...ids, coEducatorToAdd])
+                setCoEducatorToAdd('')
+              }}
+              className="mt-3 rounded-xl border border-accent/30 px-4 py-2 text-xs font-semibold text-accent transition-opacity disabled:opacity-40"
+            >
+              Agregar co-educador
+            </button>
+            <div className="mt-4 space-y-2">
+              {coEducatorIds.length > 0 ? (
+                coEducatorIds.map((id) => {
+                  const option = userOptions.find((o) => o.id === id)
+                  return (
+                    <div
+                      key={id}
+                      className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 py-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-text">
+                          {option?.label || id}
+                        </p>
+                        <p className="truncate font-mono text-[10px] text-text-muted">{id}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setCoEducatorIds((ids) => ids.filter((x) => x !== id))
+                        }
+                        className="text-xs font-semibold text-danger"
+                      >
+                        Quitar
+                      </button>
+                    </div>
+                  )
+                })
+              ) : (
+                <p className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text-muted">
+                  Sin co-educadores registrados.
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="rounded-[24px] border border-border bg-card p-5 shadow-sm sm:p-6">
+      <section className={sectionClass}>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-sm font-semibold text-text">Horarios</h3>
             <p className="mt-1 text-sm text-text-muted">Edita los bloques visibles en la ficha publica.</p>
           </div>
-
           <button
             type="button"
             onClick={addSchedule}
@@ -250,7 +305,9 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
                 <select
                   className={inputClass}
                   value={schedule.dayOfWeek}
-                  onChange={(event) => updateSchedule(index, 'dayOfWeek', Number(event.target.value))}
+                  onChange={(event) =>
+                    updateSchedule(index, 'dayOfWeek', Number(event.target.value))
+                  }
                 >
                   {DAY_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -258,21 +315,18 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
                     </option>
                   ))}
                 </select>
-
                 <input
                   type="time"
                   className={inputClass}
                   value={schedule.startTime}
                   onChange={(event) => updateSchedule(index, 'startTime', event.target.value)}
                 />
-
                 <input
                   type="time"
                   className={inputClass}
                   value={schedule.endTime}
                   onChange={(event) => updateSchedule(index, 'endTime', event.target.value)}
                 />
-
                 <button
                   type="button"
                   onClick={() => removeSchedule(index)}
@@ -298,7 +352,6 @@ export default function NucleoEditForm({ nucleo, locale }: Props) {
         >
           {deleting ? 'Eliminando...' : 'Eliminar nucleo'}
         </button>
-
         <button
           onClick={handleSave}
           disabled={saving}
