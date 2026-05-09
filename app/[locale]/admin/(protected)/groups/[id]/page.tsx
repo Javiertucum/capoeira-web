@@ -4,6 +4,7 @@ import AdminTopbar from '@/components/admin/AdminTopbar'
 import GroupEditForm from '@/components/admin/GroupEditForm'
 import Badge from '@/components/ui/Badge'
 import { getGroupWithNucleos } from '@/lib/queries'
+import { getAdminEntityOptions } from '@/lib/admin-queries'
 
 type Props = {
   params: Promise<{ locale: string; id: string }>
@@ -11,7 +12,10 @@ type Props = {
 
 export default async function GroupAdminPage({ params }: Props) {
   const { locale, id } = await params
-  const data = await getGroupWithNucleos(id, { includeHidden: true }).catch(() => null)
+  const [data, entityOptions] = await Promise.all([
+    getGroupWithNucleos(id, { includeHidden: true }).catch(() => null),
+    getAdminEntityOptions().catch(() => []),
+  ])
 
   if (!data) notFound()
 
@@ -65,7 +69,7 @@ export default async function GroupAdminPage({ params }: Props) {
         </div>
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
-          <GroupEditForm group={group} locale={locale} />
+          <GroupEditForm group={group as any} locale={locale} entityOptions={entityOptions} />
 
           <aside className="space-y-6">
             <section className="rounded-[24px] border border-border bg-card p-5 shadow-sm sm:p-6">
