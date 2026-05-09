@@ -1,17 +1,64 @@
+const ROW_1 = [
+  'Asistencia', 'Financeiro', 'Graduação', 'Comunidade',
+  'Batizado',   'Agendamento', 'Directorio', 'Eventos',
+]
+
+const ROW_2 = [
+  'Corda',   'Nucleo',    'Roda',       'Grupo',
+  'Mestre',  'Berimbau',  'Capoeiragem', 'Ginga',
+]
+
+function Separator() {
+  return (
+    <span
+      aria-hidden
+      className="mx-6 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60"
+    />
+  )
+}
+
+function MarqueeRow({
+  items,
+  reverse = false,
+}: {
+  items: string[]
+  reverse?: boolean
+}) {
+  const doubled = [...items, ...items]
+
+  return (
+    <div className="overflow-hidden" aria-hidden>
+      <div className={reverse ? 'marquee-track-r flex w-max' : 'marquee-track flex w-max'}>
+        {doubled.map((term, i) => (
+          <span key={i} className="inline-flex items-center">
+            <span className="whitespace-nowrap text-xl font-black uppercase tracking-[-0.02em] text-white/90 lg:text-2xl">
+              {term}
+            </span>
+            <Separator />
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function ValueProposition() {
   return (
-    <section className="py-20 bg-accent overflow-hidden relative">
-       {/* Organic pattern overlay */}
-       <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNGRkZGRkYiLz48L3N2Zz4=')] mix-blend-overlay" />
-       
-       <div className="page-shell text-center relative z-10">
-          <p className="text-white/80 text-sm font-bold uppercase tracking-widest mb-10">Impulsando la cultura capoeiragem</p>
-          <div className="flex flex-wrap justify-center md:justify-between gap-8 opacity-90 transition-[opacity] duration-300">
-             {['Agendamento', 'Financeiro', 'Graduação', 'Comunidade'].map(v => (
-                <span key={v} className="text-white font-black text-2xl md:text-3xl tracking-tighter italic">{v}</span>
-             ))}
-          </div>
-       </div>
+    <section className="overflow-hidden bg-ink py-12 lg:py-16">
+      {/* Subtle dot-grid texture */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
+
+      <div className="relative space-y-5">
+        <MarqueeRow items={ROW_1} />
+        <MarqueeRow items={ROW_2} reverse />
+      </div>
     </section>
   )
 }

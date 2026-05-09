@@ -1,44 +1,69 @@
 import BetaRegistrationForm from '@/components/public/BetaRegistrationForm'
 
-export default function CallToAction({ copy, locale }: { copy: any, locale: string }) {
+export default function CallToAction({ copy, locale }: { copy: any; locale: string }) {
   return (
-    <section id="join" className="relative py-32 bg-surface overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-      </div>
+    <section id="join" className="relative overflow-hidden bg-ink">
+      {/* Subtle dot-grid texture — same as marquee section for visual language consistency */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+        }}
+      />
 
-      <div className="page-shell relative z-10">
-        <div className="bg-white rounded-[3rem] p-10 lg:p-20 shadow-xl shadow-ink/5 border border-border grid gap-16 lg:grid-cols-[1fr_450px] items-center">
-          <div className="space-y-10 text-center lg:text-left">
-             <div className="inline-flex px-4 py-2 rounded-full bg-accent/10 text-accent font-bold text-xs tracking-widest uppercase mx-auto lg:mx-0">
-                Agenda Capoeiragem
-             </div>
-             <h2 className="text-ink font-black leading-[1.05] tracking-tight" style={{ fontSize: 'clamp(40px, 6vw, 72px)' }}>
-               {copy.betaTitle.split(' ')[0]} <br className="hidden lg:block"/>
-               <span className="text-accent">{copy.betaTitle.split(' ').slice(1).join(' ')}</span>
-             </h2>
-             <p className="text-text-secondary text-lg lg:text-xl leading-relaxed max-w-[500px] mx-auto lg:mx-0">
-               {copy.betaBody}
-             </p>
-             
-             <div className="grid grid-cols-2 gap-8 pt-6 border-t border-border">
-                <div>
-                   <p className="text-ink font-black text-3xl mb-1">100%</p>
-                   <p className="text-text-muted text-[10px] font-bold uppercase tracking-wider">Conexión Global</p>
-                </div>
-                <div>
-                   <p className="text-ink font-black text-3xl mb-1">Global</p>
-                   <p className="text-text-muted text-[10px] font-bold uppercase tracking-wider">Comunidad Integrada</p>
-                </div>
-             </div>
+      {/* Green atmospheric glow — top-left, out of the way */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-64 -top-64 h-[600px] w-[600px] rounded-full bg-accent/10 blur-[120px]"
+      />
+
+      <div className="page-shell relative z-10 py-24 lg:py-32">
+        <div className="grid gap-16 lg:grid-cols-[1fr_420px] lg:gap-24">
+
+          {/* ── Left: statement ── */}
+          <div className="space-y-8">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-accent">
+              Agenda Capoeiragem
+            </p>
+
+            <h2
+              className="font-black leading-[0.95] tracking-[-0.04em] text-white"
+              style={{ fontSize: 'clamp(38px, 6vw, 68px)' }}
+            >
+              {copy.betaTitle}
+            </h2>
+
+            <p className="max-w-[40ch] text-base leading-relaxed text-white/55 lg:text-lg">
+              {copy.betaBody}
+            </p>
+
+            {/* Benefits list — replaces fake "100% / Global" metrics */}
+            <ul className="space-y-3 pt-4">
+              {[
+                'Disponible en iOS y Android',
+                'Sin tarjeta de crédito requerida',
+                'Configuración en menos de 5 minutos',
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-sm text-white/60">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/20">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M2 5l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent" />
+                    </svg>
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="relative">
-             <div className="absolute inset-0 bg-accent/10 blur-[50px] rounded-full opacity-50" />
-             <div className="relative bg-card p-8 lg:p-10 rounded-[2.5rem] shadow-lg border border-border">
-                <BetaRegistrationForm locale={locale} />
-             </div>
+          {/* ── Right: registration form ── */}
+          {/* Single-level wrapper — no nested cards */}
+          <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm lg:p-10">
+            <BetaRegistrationForm locale={locale} />
           </div>
+
         </div>
       </div>
     </section>

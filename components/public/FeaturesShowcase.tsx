@@ -1,98 +1,167 @@
 import FeatureMockup from '@/components/public/FeatureMockup'
 import TutorialSection from '@/components/public/TutorialSection'
 
-export default function FeaturesShowcase({ copy, locale }: { copy: any, locale: string }) {
+function SectionLabel({
+  number,
+  label,
+  accent = false,
+}: {
+  number: string
+  label: string
+  accent?: boolean
+}) {
   return (
-    <section id="features" className="page-shell py-32 bg-bg">
-      <div className="flex flex-col lg:flex-row justify-between items-end gap-12 mb-24">
-        <div className="max-w-[800px]">
-           <h2 className="text-ink font-black leading-[1.05] tracking-tight" style={{ fontSize: 'clamp(40px, 5vw, 80px)' }}>
-             {copy.showcaseTitle}
-           </h2>
-        </div>
-        <p className="max-w-[400px] text-lg lg:text-xl text-text-secondary leading-relaxed pb-2 font-medium">
-          {copy.showcaseBody}
+    <div className="flex items-center gap-4 mb-16">
+      <span
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-[11px] font-bold tracking-widest"
+        style={{
+          background: accent ? 'var(--accent)' : 'var(--ink)',
+          color: 'var(--bg)',
+        }}
+      >
+        {number}
+      </span>
+      <h2 className="text-2xl font-black tracking-tight text-ink lg:text-3xl">{label}</h2>
+      <div className="hidden flex-1 border-t border-border sm:block" />
+    </div>
+  )
+}
+
+function FeatureRow({
+  index,
+  title,
+  description,
+}: {
+  index: number
+  title: string
+  description: string
+}) {
+  return (
+    <div className="group grid cursor-default grid-cols-[3.5rem_1fr] gap-6 border-t border-border py-7 transition-colors duration-150 ease-[var(--ease-out)] hover:bg-accent/[0.03]">
+      <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-text-muted transition-colors duration-150 ease-[var(--ease-out)] group-hover:text-accent mt-0.5">
+        {String(index).padStart(2, '0')}
+      </span>
+      <div>
+        <h3 className="text-base font-bold text-ink transition-colors duration-150 ease-[var(--ease-out)] group-hover:text-accent">
+          {title}
+        </h3>
+        <p className="mt-2 max-w-[54ch] text-sm leading-relaxed text-text-secondary">
+          {description}
         </p>
       </div>
+    </div>
+  )
+}
 
-      {/* Educator Features - Clean Solid Bento */}
-      <div className="mb-40">
-        <div className="flex items-center gap-4 mb-12">
-          <span className="flex items-center justify-center h-10 w-10 rounded-full bg-accent/10 text-accent font-black text-sm">01</span>
-          <h2 className="text-3xl font-black text-ink tracking-tight">{copy.educatorSubtitle}</h2>
-          <div className="flex-1 h-px bg-border ml-4 hidden sm:block" />
+export default function FeaturesShowcase({ copy, locale }: { copy: any; locale: string }) {
+  return (
+    <section id="features" className="bg-bg py-24 lg:py-32">
+      <div className="page-shell">
+
+        {/* ── Section intro ── */}
+        <div className="mb-24 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <h2
+            className="max-w-[18ch] font-black leading-[0.96] tracking-[-0.04em] text-ink"
+            style={{ fontSize: 'clamp(38px, 5vw, 72px)' }}
+          >
+            {copy.showcaseTitle}
+          </h2>
+          <p className="max-w-[38ch] text-base leading-relaxed text-text-secondary lg:pb-2 lg:text-lg">
+            {copy.showcaseBody}
+          </p>
         </div>
-        <div className="grid gap-8 lg:grid-cols-[1fr_400px] items-center">
-          <div className="grid gap-6 sm:grid-cols-2">
-            {copy.educatorFeatures.map((f: any, i: number) => (
-              <div key={f.t} className={`rounded-3xl border border-border bg-card p-8 hover:-translate-y-2 group transition-all duration-300 emil-enter-stagger emil-stagger-${i % 7 + 1} hover:shadow-lg`}>
-                <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:bg-accent group-hover:text-white transition-colors duration-300">
-                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+
+        {/* ── 01 Educators ── */}
+        <div className="mb-28">
+          <SectionLabel number="01" label={copy.educatorSubtitle} accent />
+
+          <div className="grid items-start gap-12 lg:grid-cols-[1fr_340px]">
+            {/* Feature rows — NO cards */}
+            <div>
+              {copy.educatorFeatures.map((f: any, i: number) => (
+                <FeatureRow
+                  key={f.t}
+                  index={i + 1}
+                  title={f.t}
+                  description={f.d}
+                />
+              ))}
+              {/* Closing rule */}
+              <div className="border-t border-border" />
+            </div>
+
+            {/* Sticky mockup */}
+            <div className="hidden lg:block">
+              <div className="sticky top-24">
+                <div className="floating">
+                  <FeatureMockup type="attendance" />
                 </div>
-                <h3 className="text-xl font-bold text-ink mb-3">{f.t}</h3>
-                <p className="text-base leading-relaxed text-text-secondary font-medium">{f.d}</p>
               </div>
-            ))}
-          </div>
-          <div className="floating bg-surface rounded-[2.5rem] p-4 border border-border">
-             <div className="rounded-[2rem] overflow-hidden shadow-sm">
-               <FeatureMockup type="attendance" />
-             </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Student Features */}
-      <div className="mb-40">
-        <div className="flex items-center gap-4 mb-12">
-          <span className="flex items-center justify-center h-10 w-10 rounded-full bg-gold/10 text-gold font-black text-sm">02</span>
-          <h2 className="text-3xl font-black text-ink tracking-tight">{copy.studentSubtitle}</h2>
-          <div className="flex-1 h-px bg-border ml-4 hidden sm:block" />
-        </div>
-        <div className="grid gap-16 lg:grid-cols-[400px_1fr] items-center">
-          <div className="floating bg-surface rounded-[2.5rem] p-4 border border-border order-last lg:order-first">
-             <div className="rounded-[2rem] overflow-hidden shadow-sm">
-               <FeatureMockup type="graduation" />
-             </div>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2">
-            {copy.studentFeatures.map((f: any, i: number) => (
-              <div key={f.t} className={`rounded-3xl border border-border bg-white p-8 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 emil-enter-stagger emil-stagger-${i % 7 + 1}`}>
-                <div className="w-10 h-1 bg-gold rounded-full mb-6 opacity-80" />
-                <h3 className="text-xl font-bold text-ink mb-3">{f.t}</h3>
-                <p className="text-base leading-relaxed text-text-secondary font-medium">{f.d}</p>
+        {/* ── 02 Students ── */}
+        <div className="mb-28">
+          <SectionLabel number="02" label={copy.studentSubtitle} />
+
+          <div className="grid items-start gap-12 lg:grid-cols-[340px_1fr]">
+            {/* Sticky mockup — left for visual rhythm change */}
+            <div className="hidden lg:block">
+              <div className="sticky top-24">
+                <div className="floating">
+                  <FeatureMockup type="graduation" />
+                </div>
               </div>
-            ))}
+            </div>
+
+            {/* Feature rows */}
+            <div>
+              {copy.studentFeatures.map((f: any, i: number) => (
+                <FeatureRow
+                  key={f.t}
+                  index={i + 1}
+                  title={f.t}
+                  description={f.d}
+                />
+              ))}
+              <div className="border-t border-border" />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Advanced Ecosystem */}
-      <div className="mb-32">
-         <div className="flex items-center gap-4 mb-12">
-           <span className="flex items-center justify-center h-10 w-10 rounded-full bg-ink/5 text-ink font-black text-sm">03</span>
-           <h2 className="text-3xl font-black text-ink tracking-tight">{('advancedTitle' in copy) ? (copy as any).advancedTitle : 'Ecosistema Avanzado'}</h2>
-           <div className="flex-1 h-px bg-border ml-4 hidden sm:block" />
-         </div>
-         <div className="grid gap-8 lg:grid-cols-3">
-            {(('advancedFeatures' in copy) ? (copy as any).advancedFeatures : []).map((f: any, i: number) => (
-              <div key={f.t} className={`flex flex-col emil-enter-stagger emil-stagger-${i % 7 + 1}`}>
-                 <div className="rounded-3xl border border-border bg-white p-8 hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
-                    <h3 className="text-xl font-bold text-ink mb-3">{f.t}</h3>
-                    <p className="text-sm text-text-secondary font-medium leading-relaxed mb-8 flex-1">{f.d}</p>
-                    <div className="relative overflow-hidden rounded-2xl bg-surface aspect-[9/12] group border border-border/50">
-                       <div className="absolute inset-0 scale-[0.92] origin-top translate-y-4 group-hover:scale-95 group-hover:translate-y-2 transition-all duration-500 ease-out">
-                          <FeatureMockup type={f.mockup} />
-                       </div>
+        {/* ── 03 Advanced ecosystem — full-width horizontal strip ── */}
+        <div className="mb-28">
+          <SectionLabel number="03" label={('advancedTitle' in copy) ? (copy as any).advancedTitle : 'Ecosistema Avanzado'} />
+
+          <div className="grid gap-px bg-border sm:grid-cols-3">
+            {(('advancedFeatures' in copy) ? (copy as any).advancedFeatures : []).map(
+              (f: any, i: number) => (
+                <div key={f.t} className="group relative bg-bg p-8 lg:p-10">
+                  <div className="mb-5 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                  <h3 className="mb-3 text-lg font-bold text-ink transition-colors duration-150 ease-[var(--ease-out)] group-hover:text-accent">
+                    {f.t}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-text-secondary">{f.d}</p>
+
+                  {/* Subtle app preview — inline, not in a card */}
+                  <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-surface">
+                    <div className="pointer-events-none scale-[0.88] origin-top transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-[0.92]">
+                      <FeatureMockup type={f.mockup} />
                     </div>
-                 </div>
-              </div>
-            ))}
-         </div>
-      </div>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        </div>
 
-      {/* Tutorials */}
-      <TutorialSection locale={locale} />
+        {/* ── Tutorials ── */}
+        <TutorialSection locale={locale} />
+
+      </div>
     </section>
   )
 }

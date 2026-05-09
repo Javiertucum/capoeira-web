@@ -1,12 +1,13 @@
-import { Inter, Outfit, JetBrains_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans, Outfit, JetBrains_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
 import type { Metadata } from 'next'
 import './globals.css'
 import { routing } from '@/i18n/routing'
 import { SITE_NAME, SITE_URL, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
 
-const bodyFont = Inter({
+const bodyFont = Plus_Jakarta_Sans({
   subsets: ['latin'],
+  weight: ['400', '500', '600'],
   variable: '--font-body',
   display: 'swap',
 })

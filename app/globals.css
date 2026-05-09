@@ -432,3 +432,37 @@ a { color: inherit; text-decoration: none; }
     transform: translateY(0) scale(1);
   }
 }
+
+/* ─── Marquee (ValueProposition) ─── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-r {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.marquee-track   { animation: marquee   34s linear infinite; }
+.marquee-track-r { animation: marquee-r 34s linear infinite; }
+
+@media (hover: hover) and (pointer: fine) {
+  .marquee-track:hover,
+  .marquee-track-r:hover { animation-play-state: paused; }
+}
+
+/* ─── Float with custom rotate support ─── */
+@keyframes float-rot {
+  0%, 100% { transform: translateY(0px) rotate(var(--rot, 0deg)); }
+  50%       { transform: translateY(-16px) rotate(var(--rot, 0deg)); }
+}
+.floating-rot { animation: float-rot 6s ease-in-out infinite; }
+
+/* ─── Reduced motion overrides ─── */
+@media (prefers-reduced-motion: reduce) {
+  .floating, .floating-rot, .marquee-track, .marquee-track-r {
+    animation: none !important;
+  }
+  .marquee-track   { transform: translateX(0); }
+  .marquee-track-r { transform: translateX(0); }
+}
