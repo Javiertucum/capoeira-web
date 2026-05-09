@@ -1507,19 +1507,6 @@ export interface AdminEventAttendee {
   createdAt: string | null
 }
 
-export function computeOnboardingProgress(
-  user: Pick<AdminUser, 'avatarUrl' | 'groupId' | 'graduationLevelId' | 'country' | 'bio'>
-): number {
-  const steps = [
-    Boolean(user.avatarUrl),
-    Boolean(user.groupId),
-    Boolean(user.graduationLevelId),
-    Boolean(user.country),
-    Boolean(user.bio),
-  ]
-  return Math.round((steps.filter(Boolean).length / steps.length) * 100)
-}
-
 export async function getAdminEventAttendees(eventId: string): Promise<AdminEventAttendee[]> {
   const attendeesSnap = await adminDb
     .collection('events')

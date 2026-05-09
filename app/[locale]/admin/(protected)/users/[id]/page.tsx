@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
-import { getAdminUserById, computeOnboardingProgress } from '@/lib/admin-queries'
+import { getAdminUserById } from '@/lib/admin-queries'
+import { computeOnboardingProgress } from '@/lib/user-utils'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import UserEditForm from '@/components/admin/UserEditForm'
 import Link from 'next/link'

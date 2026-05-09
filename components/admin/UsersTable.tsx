@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import type { AdminUser } from '@/lib/admin-queries'
-import { computeOnboardingProgress } from '@/lib/admin-queries'
+import { computeOnboardingProgress } from '@/lib/user-utils'
 import AdminDeleteButton from '@/components/admin/AdminDeleteButton'
 import Badge from '@/components/ui/Badge'
 
