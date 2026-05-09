@@ -179,6 +179,9 @@ export default function EventEditForm({ event, locale, entityOptions, attendees:
   )
   const [attendees, setAttendees] = useState<AdminEventAttendee[]>(initialAttendees)
   const [removingUserId, setRemovingUserId] = useState<string | null>(null)
+  const [addingUserId, setAddingUserId] = useState<string | null>(null)
+  const [attendeeToAdd, setAttendeeToAdd] = useState('')
+  const [attendeeStatus, setAttendeeStatus] = useState<'going' | 'interested'>('going')
   const [form, setForm] = useState({
     title: event.title || '',
     description: event.description || '',
@@ -317,6 +320,36 @@ export default function EventEditForm({ event, locale, entityOptions, attendees:
         text: error instanceof Error ? error.message : 'Error al eliminar',
       })
       setDeleting(false)
+    }
+  }
+
+  async function handleAddAttendee() {
+    if (!attendeeToAdd) return
+    setAddingUserId(attendeeToAdd)
+    try {
+      const res = await fetch(`/api/admin/events/${event.id}/attendees`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: attendeeToAdd, status: attendeeStatus }),
+      })
+      if (!res.ok) {
+        const payload = await res.json().catch(() => null) as { error?: string } | null
+        alert(payload?.error || 'Error al agregar')
+        return
+      }
+      const option = userOptions.find((o) => o.id === attendeeToAdd)
+      setAttendees((prev) => [
+        ...prev,
+        {
+          userId: attendeeToAdd,
+          displayName: option?.label || attendeeToAdd,
+          status: attendeeStatus,
+          createdAt: null,
+        },
+      ])
+      setAttendeeToAdd('')
+    } finally {
+      setAddingUserId(null)
     }
   }
 
@@ -755,6 +788,42 @@ export default function EventEditForm({ event, locale, entityOptions, attendees:
             <p className="mt-1 text-xs text-text-muted">
               {attendees.filter(a => a.status === 'going').length} confirmados · {attendees.filter(a => a.status === 'interested').length} interesados
             </p>
+          </div>
+        </div>
+
+        <div className="mb-5 rounded-2xl border border-border bg-surface p-4">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">
+            Agregar asistente
+          </p>
+          <div className="grid gap-3 md:grid-cols-[1fr_auto_auto]">
+            <EntitySearchInput
+              label=""
+              value={attendeeToAdd}
+              options={userOptions}
+              placeholder="Busca por nombre, apodo o correo"
+              emptyLabel=""
+              onChange={setAttendeeToAdd}
+            />
+            <div className="flex flex-col justify-end">
+              <select
+                className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none transition-colors focus:border-accent/35"
+                value={attendeeStatus}
+                onChange={(e) => setAttendeeStatus(e.target.value as 'going' | 'interested')}
+              >
+                <option value="going">Confirmado</option>
+                <option value="interested">Interesado</option>
+              </select>
+            </div>
+            <div className="flex flex-col justify-end">
+              <button
+                type="button"
+                disabled={!attendeeToAdd || addingUserId !== null}
+                onClick={handleAddAttendee}
+                className="rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-[#081019] transition-opacity hover:opacity-90 disabled:opacity-40"
+              >
+                {addingUserId ? 'Agregando...' : 'Agregar'}
+              </button>
+            </div>
           </div>
         </div>
 

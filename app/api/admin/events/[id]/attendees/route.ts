@@ -33,6 +33,53 @@ export async function GET(req: NextRequest, { params }: RouteContext) {
 }
 
 /**
+ * POST /api/admin/events/[id]/attendees
+ * Body: { userId: string; status?: 'going' | 'interested' }
+ * Adds a user to an event's attendees and increments the appropriate counter.
+ */
+export async function POST(request: NextRequest, { params }: RouteContext) {
+  const authResult = await requireAdmin(request)
+  if (authResult instanceof NextResponse) return authResult
+
+  const { id } = await params
+  const body = await request.json() as { userId?: string; status?: string }
+  const { userId, status } = body
+
+  if (!userId || typeof userId !== 'string') {
+    return NextResponse.json({ error: 'userId requerido' }, { status: 400 })
+  }
+
+  const validStatus = status === 'interested' ? 'interested' : 'going'
+
+  try {
+    const eventRef = adminDb.collection('events').doc(id)
+    const attendeeRef = eventRef.collection('attendees').doc(userId)
+
+    const existing = await attendeeRef.get()
+    if (existing.exists) {
+      return NextResponse.json({ error: 'El usuario ya está registrado en este evento' }, { status: 409 })
+    }
+
+    const counterField = validStatus === 'going' ? 'goingCount' : 'interestedCount'
+
+    await adminDb.runTransaction(async (tx) => {
+      tx.set(attendeeRef, {
+        status: validStatus,
+        createdAt: FieldValue.serverTimestamp(),
+      })
+      tx.update(eventRef, {
+        [counterField]: FieldValue.increment(1),
+      })
+    })
+
+    return NextResponse.json({ ok: true })
+  } catch (error) {
+    console.error('[API/Events/Attendees/POST] error:', error)
+    return NextResponse.json({ error: 'Error al agregar asistente' }, { status: 500 })
+  }
+}
+
+/**
  * DELETE /api/admin/events/[id]/attendees
  * Body: { userId: string }
  * Removes the attendee doc and decrements the appropriate counter on the event.
