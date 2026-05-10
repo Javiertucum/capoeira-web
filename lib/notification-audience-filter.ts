@@ -14,7 +14,7 @@ export type TokenEntry = {
   email: string
 }
 
-type RawUserDoc = {
+export type RawUserDoc = {
   id: string
   fcmToken: unknown
   displayName: unknown

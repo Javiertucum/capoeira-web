@@ -1,11 +1,11 @@
 import 'server-only'
 import { adminDb } from './firebase-admin'
-import { type SegmentFilter, type TokenEntry, filterUserDocs } from './notification-audience-filter'
+import { type RawUserDoc, type SegmentFilter, type TokenEntry, filterUserDocs } from './notification-audience-filter'
 
 /** Resolves audience entries from Firestore. Handles subscriptionPlans with sub-doc lookup. */
 export async function resolveAudience(segment: SegmentFilter): Promise<TokenEntry[]> {
   const snap = await adminDb.collection('users').get()
-  const rawUsers = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Record<string, unknown>[]
+  const rawUsers = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as RawUserDoc[]
 
   // Split subscription plan filtering out (requires sub-doc read) from the rest
   const needsPlanFilter = segment.subscriptionPlans && segment.subscriptionPlans.length > 0
