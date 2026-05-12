@@ -4,6 +4,7 @@ import { getMessaging } from 'firebase-admin/messaging'
 import { requireAdmin } from '@/lib/auth/verify-api-session'
 import { writeAdminAuditLog } from '@/lib/admin-audit'
 import { adminDb, adminApp } from '@/lib/firebase-admin'
+import { toStoredDeepLink } from '@/lib/notification-deep-link'
 import { resolveAudience, type SegmentFilter, type TokenEntry } from '@/lib/notification-audience'
 
 // FCM multicast supports up to 500 tokens per batch
@@ -132,6 +133,7 @@ export async function POST(request: NextRequest) {
           entityType: typeof body.entityType === 'string' ? body.entityType : undefined,
         }
       : undefined
+  const storedDeepLink = toStoredDeepLink(deepLink)
 
   if (segment.adminsOnly && segment.groupIds?.length === 0 && segment.nucleoIds?.length === 0) {
     return NextResponse.json(
@@ -156,7 +158,7 @@ export async function POST(request: NextRequest) {
       scheduledAt: scheduledDate,
       type: 'push',
       segment,
-      deepLink: deepLink ?? null,
+      deepLink: storedDeepLink,
       metrics: {
         targeted: 0,
         sent: 0,
@@ -223,7 +225,7 @@ export async function POST(request: NextRequest) {
     status: successCount > 0 ? 'sent' : 'failed',
     type: 'push',
     segment,
-    deepLink: deepLink ?? null,
+    deepLink: storedDeepLink,
     metrics: {
       targeted: entries.length,
       sent: successCount,

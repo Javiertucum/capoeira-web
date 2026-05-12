@@ -192,7 +192,19 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      const data = (await response.json()) as SendResult
+      const data = await response.json().catch(() => null) as SendResult | null
+      if (!response.ok) {
+        setResult({
+          ok: false,
+          error: data?.error ?? `Error ${response.status} al procesar la notificación`,
+          errors: data?.errors,
+        })
+        return
+      }
+      if (!data) {
+        setResult({ ok: false, error: 'La API respondió sin JSON válido' })
+        return
+      }
       setResult(data)
       if (data.ok) {
         if (!isScheduled) {
