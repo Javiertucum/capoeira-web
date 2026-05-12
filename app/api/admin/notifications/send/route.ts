@@ -63,8 +63,8 @@ async function sendFcmChunk(
       const errorCode = result.error?.code ?? 'unknown'
       errors.push(result.error?.message ?? errorCode)
       if (
-        errorCode === 'messaging/registration-token-not-registered' ||
-        errorCode === 'messaging/invalid-registration-token'
+          errorCode === 'messaging/registration-token-not-registered' ||
+          errorCode === 'messaging/invalid-registration-token'
       ) {
         if (entry) staleUids.push(entry.uid)
       }
@@ -79,7 +79,6 @@ async function writeRecipients(
   entries: TokenEntry[],
   sentUids: Set<string>,
 ): Promise<void> {
-  // Firestore batch limit is 500 writes
   for (let i = 0; i < entries.length; i += 500) {
     const chunk = entries.slice(i, i + 500)
     const batch = adminDb.batch()
@@ -108,6 +107,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const title = typeof body.title === 'string' ? body.title.trim() : ''
   const messageBody = typeof body.body === 'string' ? body.body.trim() : ''
+  const scheduledAt = typeof body.scheduledAt === 'string' ? body.scheduledAt : null
 
   if (!title || !messageBody) {
     return NextResponse.json({ error: 'Título y cuerpo son requeridos' }, { status: 400 })
@@ -117,9 +117,11 @@ export async function POST(request: NextRequest) {
     roles: Array.isArray(body.roles) ? (body.roles as string[]) : [],
     countries: Array.isArray(body.countries) ? (body.countries as string[]) : [],
     groupIds: Array.isArray(body.groupIds) ? (body.groupIds as string[]) : [],
+    nucleoIds: Array.isArray(body.nucleoIds) ? (body.nucleoIds as string[]) : [],
     subscriptionPlans: Array.isArray(body.subscriptionPlans) ? (body.subscriptionPlans as string[]) : [],
     userIds: Array.isArray(body.userIds) ? (body.userIds as string[]) : [],
     noGroup: body.noGroup === true,
+    adminsOnly: body.adminsOnly === true,
   }
 
   const deepLink: DeepLink | undefined =
@@ -131,6 +133,54 @@ export async function POST(request: NextRequest) {
         }
       : undefined
 
+  if (segment.adminsOnly && segment.groupIds?.length === 0 && segment.nucleoIds?.length === 0) {
+    return NextResponse.json(
+      { error: 'Selecciona al menos un grupo o un núcleo para usar el modo solo admins' },
+      { status: 400 },
+    )
+  }
+
+  const ref = adminDb.collection('adminNotificationCampaigns').doc()
+  const campaignId = ref.id
+
+  if (scheduledAt) {
+    const scheduledDate = new Date(scheduledAt)
+    if (isNaN(scheduledDate.getTime())) {
+      return NextResponse.json({ error: 'Fecha de programación inválida' }, { status: 400 })
+    }
+
+    await ref.set({
+      title,
+      body: messageBody,
+      status: 'scheduled',
+      scheduledAt: scheduledDate,
+      type: 'push',
+      segment,
+      deepLink: deepLink ?? null,
+      metrics: {
+        targeted: 0,
+        sent: 0,
+        failed: 0,
+        opened: 0,
+        purged: 0,
+      },
+      createdBy: authResult.uid,
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
+    })
+
+    await writeAdminAuditLog({
+      actorUid: authResult.uid,
+      action: 'notification.schedule',
+      entity: { type: 'adminNotificationCampaign', id: campaignId, path: `adminNotificationCampaigns/${campaignId}` },
+      summary: `Scheduled push "${title}" for ${scheduledDate.toISOString()}`,
+      metadata: { scheduledAt, segment },
+    })
+
+    return NextResponse.json({ ok: true, id: campaignId, status: 'scheduled' })
+  }
+
+  // Immediate send logic
   const entries = await resolveAudience(segment)
 
   if (entries.length === 0) {
@@ -139,10 +189,6 @@ export async function POST(request: NextRequest) {
       { status: 400 },
     )
   }
-
-  // Create campaign doc first so we have the ID for the FCM data payload
-  const ref = adminDb.collection('adminNotificationCampaigns').doc()
-  const campaignId = ref.id
 
   let successCount = 0
   let failureCount = 0
@@ -163,12 +209,10 @@ export async function POST(request: NextRequest) {
     failureCount += failed
     allStaleUids.push(...staleUids)
     allErrors.push(...errors)
-    // Track which UIDs were successfully sent
     chunk.forEach((entry) => {
       sentUids.add(entry.uid)
     })
   }
-  // Remove stale UIDs from sentUids (they failed)
   for (const uid of allStaleUids) sentUids.delete(uid)
 
   void purgeStaleTokens(allStaleUids)
@@ -192,7 +236,6 @@ export async function POST(request: NextRequest) {
     updatedAt: FieldValue.serverTimestamp(),
   })
 
-  // Write recipients subcollection (non-blocking on response)
   void writeRecipients(campaignId, entries, sentUids)
 
   await writeAdminAuditLog({

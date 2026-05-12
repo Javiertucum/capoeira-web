@@ -1,5 +1,12 @@
 import { notFound } from 'next/navigation'
-import { getAdminUserById } from '@/lib/admin-queries'
+import {
+  getAdminUserById,
+  getAdminEntityOptions,
+  getAdminGraduationRows,
+  type AdminEntityOption,
+  type AdminGraduationLevelRow,
+  type AdminUser,
+} from '@/lib/admin-queries'
 import { computeOnboardingProgress } from '@/lib/user-utils'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import UserEditForm from '@/components/admin/UserEditForm'
@@ -9,11 +16,21 @@ type Props = { params: Promise<{ locale: string; id: string }> }
 
 export default async function UserEditPage({ params }: Props) {
   const { locale, id } = await params
-  let user = null
+  let user: AdminUser | null = null
+  let entityOptions: AdminEntityOption[] = []
+  let graduationLevels: AdminGraduationLevelRow[] = []
+
   try {
-    user = await getAdminUserById(id)
+    const [userData, optionsData, gradData] = await Promise.all([
+      getAdminUserById(id),
+      getAdminEntityOptions(),
+      getAdminGraduationRows(),
+    ])
+    user = userData
+    entityOptions = optionsData
+    graduationLevels = gradData
   } catch (error) {
-    console.error('[UserEditPage] failed to fetch user', error)
+    console.error('[UserEditPage] failed to fetch data', error)
   }
   
   if (!user) notFound()
@@ -69,7 +86,12 @@ export default async function UserEditPage({ params }: Props) {
           </div>
         </div>
 
-        <UserEditForm user={user} locale={locale} />
+        <UserEditForm 
+          user={user} 
+          locale={locale} 
+          entityOptions={entityOptions} 
+          graduationLevels={graduationLevels} 
+        />
       </div>
     </div>
   )

@@ -12,9 +12,11 @@ type SendResult = {
   purged?: number
   error?: string
   errors?: string[]
+  status?: string
 }
 
 type Group = { id: string; name: string }
+type Nucleo = { id: string; name: string; groupId: string }
 type UserResult = { uid: string; displayName: string; email: string; photoURL: string | null }
 
 type ContentItem = { id: string; title: string; subtitle: string | null }
@@ -34,9 +36,10 @@ type ScreenValue = typeof SCREEN_OPTIONS[number]['value']
 
 type Props = {
   groups: Group[]
+  nucleos: Nucleo[]
 }
 
-export default function AdminNotificationSendForm({ groups }: Props) {
+export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
   const router = useRouter()
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
@@ -46,8 +49,14 @@ export default function AdminNotificationSendForm({ groups }: Props) {
   const [countries, setCountries] = useState('')
   const [plans, setPlans] = useState<string[]>([])
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([])
+  const [selectedNucleoIds, setSelectedNucleoIds] = useState<string[]>([])
   const [noGroup, setNoGroup] = useState(false)
+  const [adminsOnly, setAdminsOnly] = useState(false)
   const [selectedUsers, setSelectedUsers] = useState<UserResult[]>([])
+
+  // Scheduling
+  const [isScheduled, setIsScheduled] = useState(false)
+  const [scheduledAt, setScheduledAt] = useState('')
 
   // Deep link
   const [screen, setScreen] = useState<ScreenValue>('')
@@ -75,14 +84,21 @@ export default function AdminNotificationSendForm({ groups }: Props) {
     setSelectedGroupIds((prev) => toggleItem(prev, id))
   }
 
+  function toggleNucleo(id: string) {
+    setSelectedNucleoIds((prev) => toggleItem(prev, id))
+  }
+
   // Audience estimate
   const buildSegment = useCallback(() => ({
     roles,
     countries: countries.split(',').map((c) => c.trim()).filter(Boolean),
+    subscriptionPlans: plans,
     groupIds: selectedGroupIds,
+    nucleoIds: selectedNucleoIds,
     noGroup,
+    adminsOnly,
     userIds: selectedUsers.map((u) => u.uid),
-  }), [roles, countries, selectedGroupIds, noGroup, selectedUsers])
+  }), [roles, countries, plans, selectedGroupIds, selectedNucleoIds, noGroup, adminsOnly, selectedUsers])
 
   useEffect(() => {
     if (estimateDebounce.current) clearTimeout(estimateDebounce.current)
@@ -139,6 +155,15 @@ export default function AdminNotificationSendForm({ groups }: Props) {
 
   async function handleSend() {
     if (!title.trim() || !body.trim()) return
+    if (isScheduled && !scheduledAt) {
+      alert('Por favor selecciona una fecha de programación.')
+      return
+    }
+    if (adminsOnly && selectedGroupIds.length === 0 && selectedNucleoIds.length === 0) {
+      alert('Selecciona al menos un grupo o un núcleo para enviar solo a sus admins/responsables.')
+      return
+    }
+
     setSending(true)
     setResult(null)
 
@@ -147,6 +172,10 @@ export default function AdminNotificationSendForm({ groups }: Props) {
       title: title.trim(),
       body: body.trim(),
       ...segment,
+    }
+
+    if (isScheduled) {
+      payload.scheduledAt = new Date(scheduledAt).toISOString()
     }
 
     if (screen) {
@@ -166,13 +195,12 @@ export default function AdminNotificationSendForm({ groups }: Props) {
       const data = (await response.json()) as SendResult
       setResult(data)
       if (data.ok) {
-        setTitle('')
-        setBody('')
+        if (!isScheduled) {
+          setTitle('')
+          setBody('')
+        }
         setScreen('')
         setContentItem(null)
-        setSelectedUsers([])
-        setSelectedGroupIds([])
-        setNoGroup(false)
         router.refresh()
       }
     } catch {
@@ -186,38 +214,91 @@ export default function AdminNotificationSendForm({ groups }: Props) {
 
   return (
     <div className="rounded-[22px] border border-border bg-card p-6 shadow-sm">
-      <h3 className="mb-1 text-base font-semibold text-text">Enviar notificación push</h3>
-      <p className="mb-6 text-sm text-text-muted">
-        Se enviará inmediatamente a los dispositivos del segmento seleccionado.
-      </p>
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <div>
+          <h3 className="text-base font-semibold text-text">Crear notificación push</h3>
+          <p className="text-sm text-text-muted">
+            Configura el mensaje, segmento y momento de envío.
+          </p>
+        </div>
+        <div className="flex items-center gap-2 rounded-xl bg-surface p-1 border border-border">
+          <button 
+            onClick={() => setIsScheduled(false)}
+            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${!isScheduled ? 'bg-accent text-[#081019] shadow-sm' : 'text-text-muted hover:text-text'}`}
+          >
+            Inmediato
+          </button>
+          <button 
+            onClick={() => setIsScheduled(true)}
+            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${isScheduled ? 'bg-accent text-[#081019] shadow-sm' : 'text-text-muted hover:text-text'}`}
+          >
+            Programado
+          </button>
+        </div>
+      </div>
 
       <div className="flex flex-col gap-5">
-        {/* Title */}
-        <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-            Título
-          </label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Título de la notificación"
-            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder-text-muted outline-none transition-colors focus:border-accent/40"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Title */}
+          <div className="md:col-span-2">
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+              Título
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Título de la notificación"
+              className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder-text-muted outline-none transition-colors focus:border-accent/40"
+            />
+          </div>
+
+          {/* Body */}
+          <div className="md:col-span-2">
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+              Mensaje
+            </label>
+            <textarea
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              rows={3}
+              placeholder="Cuerpo del mensaje..."
+              className="w-full resize-none rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder-text-muted outline-none transition-colors focus:border-accent/40"
+            />
+          </div>
+
+          {/* Scheduling Date */}
+          {isScheduled && (
+            <div className="md:col-span-2 animate-in fade-in slide-in-from-top-2 duration-300">
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+                Fecha y hora de envío
+              </label>
+              <input
+                type="datetime-local"
+                value={scheduledAt}
+                onChange={(e) => setScheduledAt(e.target.value)}
+                className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none focus:border-accent/40"
+              />
+              <p className="mt-2 text-[10px] text-warning font-medium">
+                * Nota: Requiere un proceso de cron configurado para procesar envíos futuros.
+              </p>
+            </div>
+          )}
         </div>
 
-        {/* Body */}
-        <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-            Mensaje
+        <div className="h-px bg-border my-2" />
+
+        <div className="flex items-center justify-between mb-2">
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Segmentación de audiencia</h4>
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input 
+              type="checkbox" 
+              checked={adminsOnly} 
+              onChange={e => setAdminsOnly(e.target.checked)}
+              className="w-4 h-4 rounded border-border text-accent focus:ring-accent bg-surface"
+            />
+            <span className="text-xs font-bold text-text-secondary group-hover:text-text transition-colors">Sólo Admins/Educadores Responsables</span>
           </label>
-          <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            rows={3}
-            placeholder="Cuerpo del mensaje..."
-            className="w-full resize-none rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder-text-muted outline-none transition-colors focus:border-accent/40"
-          />
         </div>
 
         {/* Roles */}
@@ -246,7 +327,7 @@ export default function AdminNotificationSendForm({ groups }: Props) {
         {/* Countries */}
         <div>
           <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-            Países (códigos separados por coma, vacío = todos)
+            Países (códigos ISO)
           </label>
           <input
             type="text"
@@ -257,24 +338,26 @@ export default function AdminNotificationSendForm({ groups }: Props) {
           />
         </div>
 
-        {/* Plans */}
         <div>
           <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-            Plan
+            Plan de suscripción
           </label>
           <div className="flex flex-wrap gap-2">
-            {(['free', 'premium'] as const).map((plan) => (
+            {([
+              { value: 'free', label: 'Free' },
+              { value: 'premium', label: 'Premium' },
+            ] as const).map((plan) => (
               <button
-                key={plan}
+                key={plan.value}
                 type="button"
-                onClick={() => setPlans(toggleItem(plans, plan))}
+                onClick={() => setPlans(toggleItem(plans, plan.value))}
                 className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-colors ${
-                  plans.includes(plan)
+                  plans.includes(plan.value)
                     ? 'border-accent/30 bg-accent/12 text-accent'
                     : 'border-border bg-surface text-text-secondary'
                 }`}
               >
-                {plan === 'free' ? 'Plan gratuito' : 'Plan premium'}
+                {plan.label}
               </button>
             ))}
           </div>
@@ -316,10 +399,35 @@ export default function AdminNotificationSendForm({ groups }: Props) {
           </div>
         )}
 
+        {/* Nucleos */}
+        {nucleos.length > 0 && (
+          <div>
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+              Núcleos específicos
+            </label>
+            <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-1">
+              {nucleos.map((nucleo) => (
+                <button
+                  key={nucleo.id}
+                  type="button"
+                  onClick={() => toggleNucleo(nucleo.id)}
+                  className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-colors ${
+                    selectedNucleoIds.includes(nucleo.id)
+                      ? 'border-accent/30 bg-accent/12 text-accent'
+                      : 'border-border bg-surface text-text-secondary'
+                  }`}
+                >
+                  {nucleo.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Individual users */}
         <div>
           <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-            Usuarios individuales
+            Usuarios específicos
           </label>
           <UserSearchCombobox
             selected={selectedUsers}
@@ -329,17 +437,24 @@ export default function AdminNotificationSendForm({ groups }: Props) {
         </div>
 
         {/* Estimate */}
-        {estimate !== null && (
-          <p className="text-xs text-text-muted">
+        {estimate !== null && !isScheduled && (
+          <p className="text-xs text-text-muted bg-surface/50 p-3 rounded-xl border border-border">
             Audiencia estimada:{' '}
-            <span className="font-semibold text-text">~{estimate} usuarios</span>
+            <span className="font-semibold text-text">~{estimate} dispositivos activos</span>
+          </p>
+        )}
+
+        {adminsOnly && selectedGroupIds.length === 0 && selectedNucleoIds.length === 0 && (
+          <p className="rounded-xl border border-warning/20 bg-warning/10 p-3 text-xs text-warning">
+            El modo de admins requiere seleccionar al menos un grupo o núcleo.
           </p>
         )}
 
         {/* Deep link */}
+        <div className="h-px bg-border my-2" />
         <div>
           <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-            Pantalla de destino
+            Pantalla de destino (Deep Link)
           </label>
           <select
             value={screen}
@@ -404,34 +519,57 @@ export default function AdminNotificationSendForm({ groups }: Props) {
         </div>
 
         {/* Send button */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 pt-4">
           <button
             type="button"
             onClick={handleSend}
             disabled={!canSend}
-            className="rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-[#081019] transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-xl bg-accent px-8 py-3.5 text-sm font-bold text-[#081019] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100 shadow-lg shadow-accent/20"
           >
-            {sending ? 'Enviando...' : 'Enviar notificación'}
+            {sending ? 'Procesando...' : isScheduled ? 'Programar Envío' : 'Enviar Ahora'}
           </button>
           {sending && (
-            <span className="text-xs text-text-muted">Buscando tokens FCM y enviando...</span>
+            <span className="text-xs text-text-muted animate-pulse">
+              {isScheduled ? 'Guardando programación...' : 'Buscando tokens FCM y enviando...'}
+            </span>
           )}
         </div>
 
         {result && (
           <div
-            className={`rounded-xl border px-4 py-3 text-sm ${
-              result.ok && (result.sent ?? 0) > 0
+            className={`rounded-xl border px-6 py-4 text-sm font-medium shadow-sm animate-in zoom-in-95 duration-200 ${
+              result.ok
                 ? 'border-accent/20 bg-accent/8 text-accent'
                 : 'border-danger/20 bg-danger/8 text-danger'
             }`}
           >
-            {result.ok
-              ? `Enviado a ${result.sent}/${result.targeted} dispositivos · ${result.failed} fallidos${(result.purged ?? 0) > 0 ? ` · ${result.purged} tokens vencidos eliminados` : ''}`
-              : result.error}
+            <div className="flex items-center gap-2">
+              {result.ok ? (
+                <>
+                  <span className="text-lg">✓</span>
+                  <span>
+                    {result.status === 'scheduled' 
+                      ? 'Notificación programada correctamente.' 
+                      : `Enviado a ${result.sent}/${result.targeted} dispositivos.`}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="text-lg">✕</span>
+                  <span>{result.error}</span>
+                </>
+              )}
+            </div>
+            
+            {result.ok && !isScheduled && (result.failed ?? 0) > 0 && (
+              <p className="mt-1 text-xs opacity-80 pl-6">
+                {result.failed} fallidos{(result.purged ?? 0) > 0 ? ` · ${result.purged} tokens vencidos eliminados` : ''}
+              </p>
+            )}
+
             {result.errors && result.errors.length > 0 && (
-              <ul className="mt-2 space-y-1 text-xs opacity-80">
-                {result.errors.map((e, i) => <li key={i}>· {e}</li>)}
+              <ul className="mt-3 space-y-1 text-xs opacity-80 pl-6 list-disc">
+                {result.errors.map((e, i) => <li key={i}>{e}</li>)}
               </ul>
             )}
           </div>

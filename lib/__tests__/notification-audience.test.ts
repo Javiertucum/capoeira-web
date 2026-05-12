@@ -42,6 +42,19 @@ describe('filterUserDocs', () => {
     expect(filterUserDocs(users, { groupIds: ['g1'] })).toHaveLength(1)
   })
 
+  it('filters by nucleoIds array membership', () => {
+    const users = [
+      makeUser({ nucleoIds: ['n1', 'n2'] }),
+      makeUser({ id: 'uid2', fcmToken: 'token2', nucleoIds: ['n3'] }),
+      makeUser({ id: 'uid3', fcmToken: 'token3', nucleoIds: [] }),
+    ]
+
+    const result = filterUserDocs(users, { nucleoIds: ['n2'] })
+
+    expect(result).toHaveLength(1)
+    expect(result[0].uid).toBe('uid1')
+  })
+
   it('includes ungrouped users when noGroup is true', () => {
     const users = [
       makeUser({ groupId: 'g1' }),
@@ -77,5 +90,21 @@ describe('filterUserDocs', () => {
     const users = [makeUser({})]
     const result = filterUserDocs(users, { userIds: ['uid1'] })
     expect(result).toHaveLength(1)
+  })
+
+  it('returns only resolved admins when adminsOnly is enabled', () => {
+    const users = [
+      makeUser({ id: 'student-in-group', groupId: 'g1' }),
+      makeUser({ id: 'group-admin', fcmToken: 'token2', groupId: 'g9', role: 'educator' }),
+    ]
+
+    const result = filterUserDocs(users, {
+      groupIds: ['g1'],
+      adminsOnly: true,
+      adminUids: ['group-admin'],
+    } as any)
+
+    expect(result).toHaveLength(1)
+    expect(result[0].uid).toBe('group-admin')
   })
 })

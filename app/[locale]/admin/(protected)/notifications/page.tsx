@@ -19,11 +19,21 @@ async function getGroups(): Promise<{ id: string; name: string }[]> {
   }))
 }
 
+async function getNucleos(): Promise<{ id: string; name: string; groupId: string }[]> {
+  const snap = await adminDb.collectionGroup('nucleos').get().catch(() => ({ docs: [] }))
+  return snap.docs.map((doc) => ({
+    id: doc.id,
+    name: typeof doc.data().name === 'string' ? doc.data().name : doc.id,
+    groupId: doc.ref.parent.parent?.id ?? '',
+  }))
+}
+
 export default async function NotificationsPage({ params }: Props) {
   const { locale } = await params
-  const [campaigns, groups] = await Promise.all([
+  const [campaigns, groups, nucleos] = await Promise.all([
     getAdminOperationJobs('adminNotificationCampaigns').catch(() => []),
     getGroups(),
+    getNucleos(),
   ])
 
   const active = campaigns.filter((c) => ['queued', 'scheduled', 'processing'].includes(c.status)).length
@@ -48,7 +58,7 @@ export default async function NotificationsPage({ params }: Props) {
             <AdminStatCard label="Fallidas" value={failed.toLocaleString(locale)} helper="Requieren revisión" tone={failed > 0 ? 'danger' : 'default'} />
           </div>
 
-          <AdminNotificationSendForm groups={groups} />
+          <AdminNotificationSendForm groups={groups} nucleos={nucleos} />
 
           <AdminSectionCard
             title="Historial de campañas"

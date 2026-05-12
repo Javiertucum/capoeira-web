@@ -1,16 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { AdminUser } from '@/lib/admin-queries'
+import type { AdminUser, AdminEntityOption, AdminGraduationLevelRow } from '@/lib/admin-queries'
+import EntitySearchInput from './EntitySearchInput'
 
 interface Props {
   user: AdminUser
   locale: string
+  entityOptions: AdminEntityOption[]
+  graduationLevels: AdminGraduationLevelRow[]
 }
 
-export default function UserEditForm({ user, locale }: Props) {
+export default function UserEditForm({ user, locale, entityOptions, graduationLevels }: Props) {
   const router = useRouter()
+  
+  const groupOptions = useMemo(
+    () => entityOptions.filter((o) => o.type === 'group'),
+    [entityOptions]
+  )
+
   const [form, setForm] = useState({
     name:       user.name,
     surname:    user.surname,
@@ -18,6 +27,7 @@ export default function UserEditForm({ user, locale }: Props) {
     email:      user.email ?? '',
     role:       user.role,
     groupId:    user.groupId ?? '',
+    graduationLevelId: user.graduationLevelId ?? '',
     bio:        user.bio ?? '',
     country:    user.country ?? '',
     disabled:   user.disabled,
@@ -29,6 +39,11 @@ export default function UserEditForm({ user, locale }: Props) {
     tiktok:     user.socialLinks?.tiktok ?? '',
     adminPanelAccess: user.adminPanelAccess ?? false,
   })
+  const availableGraduationLevels = useMemo(
+    () => graduationLevels.filter((level) => level.groupId === form.groupId),
+    [graduationLevels, form.groupId]
+  )
+  
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
@@ -51,6 +66,7 @@ export default function UserEditForm({ user, locale }: Props) {
         email:      form.email,
         role:       form.role,
         groupId:    form.groupId || null,
+        graduationLevelId: form.graduationLevelId || null,
         bio:        form.bio || null,
         country:    form.country || null,
         disabled:   form.disabled,
@@ -136,7 +152,7 @@ export default function UserEditForm({ user, locale }: Props) {
         </section>
 
         <section className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
-          <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-accent mb-6">Rol y Ubicación</h3>
+          <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-accent mb-6">Rol, Grupo y Graduación</h3>
           <div className="space-y-4">
             <div>
               <label className={labelClass}>Rol en la plataforma</label>
@@ -147,8 +163,36 @@ export default function UserEditForm({ user, locale }: Props) {
               </select>
             </div>
             <div>
-              <label className={labelClass}>ID de grupo (Organization)</label>
-              <input className={inputClass} value={form.groupId} onChange={e => set('groupId', e.target.value)} placeholder="vacio o groupId" />
+              <EntitySearchInput
+                label="Grupo / Organización"
+                value={form.groupId}
+                options={groupOptions}
+                placeholder="Busca un grupo para asignar..."
+                onChange={(val) => {
+                  set('groupId', val)
+                  // Reset graduation if group changes
+                  set('graduationLevelId', '')
+                }}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Graduación (Corda)</label>
+              <select 
+                className={inputClass} 
+                value={form.graduationLevelId} 
+                onChange={e => set('graduationLevelId', e.target.value)}
+                disabled={!form.groupId}
+              >
+                <option value="">Sin graduación / Personalizada</option>
+                {availableGraduationLevels.map(level => (
+                  <option key={level.id} value={level.id}>
+                    {level.name} ({level.category})
+                  </option>
+                ))}
+              </select>
+              {!form.groupId && (
+                <p className="mt-1 text-[10px] text-text-muted italic">Selecciona un grupo primero para ver sus niveles.</p>
+              )}
             </div>
             <div>
               <label className={labelClass}>País</label>

@@ -1343,7 +1343,7 @@ export async function getAdminOperationJobs(collectionName: 'adminNotificationCa
         createdBy: asString(data.createdBy),
         createdAt: toIsoString(data.createdAt),
         updatedAt: toIsoString(data.updatedAt),
-        metadata: asRecord(data.metadata) ?? {},
+        metadata: asRecord(data.metadata) ?? asRecord(data.metrics) ?? {},
       }
     })
     .sort((left, right) => toSortTimestamp(right.createdAt) - toSortTimestamp(left.createdAt))
