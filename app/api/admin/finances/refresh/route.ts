@@ -3,8 +3,6 @@ import { FieldValue } from 'firebase-admin/firestore'
 import { requireAdmin } from '@/lib/auth/verify-api-session'
 import { adminDb } from '@/lib/firebase-admin'
 import { fetchRevenueCatMrr } from '@/lib/finance-providers/revenuecat'
-import { fetchAdMobEarnings } from '@/lib/finance-providers/admob'
-import { fetchAdSenseEarnings } from '@/lib/finance-providers/adsense'
 import { fetchGCloudBillingCost } from '@/lib/finance-providers/gcloud-billing'
 
 function currentPeriod() {
@@ -18,8 +16,6 @@ export async function POST(request: NextRequest) {
 
   const results = await Promise.allSettled([
     fetchRevenueCatMrr(),
-    fetchAdMobEarnings(),
-    fetchAdSenseEarnings(),
     fetchGCloudBillingCost(),
   ])
 

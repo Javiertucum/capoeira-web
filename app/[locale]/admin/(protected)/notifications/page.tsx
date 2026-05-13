@@ -5,6 +5,7 @@ import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import AdminSectionCard from '@/components/admin/AdminSectionCard'
 import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
+import CampaignStatusActions from '@/components/admin/CampaignStatusActions'
 import Badge from '@/components/ui/Badge'
 import { getAdminOperationJobs } from '@/lib/admin-queries'
 import { adminDb } from '@/lib/firebase-admin'
@@ -74,10 +75,10 @@ export default async function NotificationsPage({ params }: Props) {
                 />
               </div>
             ) : (
-              <table className="w-full min-w-[900px] border-collapse">
+              <table className="w-full min-w-[1080px] border-collapse">
                 <thead>
                   <tr className="bg-surface/10">
-                    {['Título', 'Estado', 'Objetivo', 'Enviadas', 'Abiertas', 'Fallidas', 'Fecha'].map((heading) => (
+                    {['Título', 'Estado', 'Objetivo', 'Enviadas', 'Abiertas', 'Fallidas', 'Fecha', 'Acciones'].map((heading) => (
                       <th
                         key={heading}
                         className="border-b border-border px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.2em] text-text-muted"
@@ -95,6 +96,7 @@ export default async function NotificationsPage({ params }: Props) {
                       targeted?: number
                       opened?: number
                     } | undefined
+
                     return (
                       <tr key={campaign.id} className="transition-colors hover:bg-surface/30">
                         <td className="px-6 py-4">
@@ -113,6 +115,9 @@ export default async function NotificationsPage({ params }: Props) {
                         <td className="px-6 py-4 text-sm text-text-secondary">{metrics?.failed ?? '--'}</td>
                         <td className="px-6 py-4 text-xs text-text-muted">
                           {campaign.createdAt ? new Date(campaign.createdAt).toLocaleString(locale) : '--'}
+                        </td>
+                        <td className="px-6 py-4">
+                          <CampaignStatusActions campaignId={campaign.id} status={campaign.status} />
                         </td>
                       </tr>
                     )

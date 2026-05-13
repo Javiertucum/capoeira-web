@@ -7,6 +7,7 @@ import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import Badge from '@/components/ui/Badge'
 import { getAdminFinanceSnapshotRows } from '@/lib/admin-queries'
+import { getFinanceDashboardRows } from '@/lib/finance-dashboard'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -16,10 +17,12 @@ function money(value: number, currency: string, locale: string) {
 
 export default async function FinancesPage({ params }: Props) {
   const { locale } = await params
-  const rows = await getAdminFinanceSnapshotRows().catch((error) => {
+  const rawRows = await getAdminFinanceSnapshotRows().catch((error) => {
     console.error('[FinancesPage] failed to fetch finance snapshots', error)
     return []
   })
+
+  const rows = getFinanceDashboardRows(rawRows)
   const income = rows.filter((row) => row.kind === 'income').reduce((sum, row) => sum + row.amount, 0)
   const costs = rows.filter((row) => row.kind === 'cost').reduce((sum, row) => sum + row.amount, 0)
   const stale = rows.filter((row) => row.status === 'stale' || row.status === 'error').length
@@ -33,7 +36,7 @@ export default async function FinancesPage({ params }: Props) {
           <AdminPageHeader
             eyebrow="Resultado operativo"
             title="Finanzas"
-            description="La pagina lee adminFinanceSnapshots y adminFinanceManualCosts. Usa el botón de actualizar para obtener datos frescos de RevenueCat, AdMob, AdSense y Google Cloud."
+            description="La pagina lee adminFinanceSnapshots y adminFinanceManualCosts. Usa el boton de actualizar para obtener datos frescos de RevenueCat y Google Cloud."
           />
           <AdminFinanceRefreshButton />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -43,7 +46,7 @@ export default async function FinancesPage({ params }: Props) {
             <AdminStatCard label="Stale/error" value={stale.toLocaleString(locale)} helper="Proveedores que requieren refresh" tone={stale > 0 ? 'warning' : 'accent'} />
           </div>
           <AdminCreateJobForm kind="finance-cost" />
-          <AdminSectionCard title="Snapshots financieros" description="AdMob, AdSense, RevenueCat, Billing y costos manuales se consolidan aqui cuando existen datos." contentClassName="overflow-x-auto p-0">
+          <AdminSectionCard title="Snapshots financieros" description="RevenueCat, Billing y costos manuales se consolidan aqui cuando existen datos." contentClassName="overflow-x-auto p-0">
             {rows.length === 0 ? (
               <div className="p-6"><AdminEmptyState eyebrow="Finanzas" title="No hay snapshots financieros" description="Agrega un costo manual o conecta workers para poblar adminFinanceSnapshots." /></div>
             ) : (

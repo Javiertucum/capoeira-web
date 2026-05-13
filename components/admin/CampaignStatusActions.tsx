@@ -2,22 +2,19 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { getNotificationCampaignActionAvailability } from '@/lib/notification-campaign-actions'
 
 type Props = {
   campaignId: string
   status: string
 }
 
-const CANCELLABLE_STATUSES = new Set(['queued', 'scheduled', 'processing'])
-const EXPEDITE_STATUSES = new Set(['scheduled'])
-
 export default function CampaignStatusActions({ campaignId, status }: Props) {
   const router = useRouter()
   const [loadingAction, setLoadingAction] = useState<'cancel' | 'expedite' | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const canCancel = CANCELLABLE_STATUSES.has(status)
-  const canExpedite = EXPEDITE_STATUSES.has(status)
+  const { canCancel, canExpedite } = getNotificationCampaignActionAvailability(status)
 
   async function runAction(action: 'cancel' | 'expedite') {
     setLoadingAction(action)
