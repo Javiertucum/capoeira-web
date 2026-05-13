@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
   const segment: SegmentFilter = {
     roles: Array.isArray(body.roles) ? (body.roles as string[]) : [],
     countries: Array.isArray(body.countries) ? (body.countries as string[]) : [],
+    appVersions: Array.isArray(body.appVersions) ? (body.appVersions as string[]) : [],
     groupIds: Array.isArray(body.groupIds) ? (body.groupIds as string[]) : [],
     nucleoIds: Array.isArray(body.nucleoIds) ? (body.nucleoIds as string[]) : [],
     subscriptionPlans: Array.isArray(body.subscriptionPlans) ? (body.subscriptionPlans as string[]) : [],

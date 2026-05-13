@@ -1,6 +1,7 @@
 import { getAuth } from 'firebase-admin/auth'
 import { getApps } from 'firebase-admin/app'
 import { adminDb } from './firebase-admin'
+import { resolveAdminUserAppVersion } from './admin-user-version'
 
 type FirestoreRecord = Record<string, unknown>
 
@@ -171,6 +172,7 @@ export interface AdminUser {
   }
   setupComplete?: boolean
   adminPanelAccess?: boolean
+  appVersion?: string
   createdAt?: string | null
 }
 
@@ -732,8 +734,8 @@ export async function getAdminUsers(limit = 50): Promise<AdminUser[]> {
         publicData.isAdmin === true ||
         role === 'admin'
 
-      return {
-        uid: doc.id,
+        return {
+          uid: doc.id,
         email,
         disabled,
         name: asString(publicData.name) ?? asString(privateData.name) ?? '',
@@ -746,13 +748,14 @@ export async function getAdminUsers(limit = 50): Promise<AdminUser[]> {
           asString(publicData.graduationLevelId) ?? asString(privateData.graduationLevelId),
         bio: asString(publicData.bio) ?? asString(privateData.bio),
         country: asString(publicData.country) ?? asString(privateData.country),
-        avatarUrl: asString(publicData.avatarUrl) ?? asString(privateData.avatarUrl),
-        socialLinks: (publicData.socialLinks ?? privateData.socialLinks ?? {}) as AdminUser['socialLinks'],
-        setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
-        adminPanelAccess,
-        createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
-      }
-    })
+          avatarUrl: asString(publicData.avatarUrl) ?? asString(privateData.avatarUrl),
+          socialLinks: (publicData.socialLinks ?? privateData.socialLinks ?? {}) as AdminUser['socialLinks'],
+          setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
+          adminPanelAccess,
+          appVersion: resolveAdminUserAppVersion(publicData, privateData),
+          createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
+        }
+      })
   )
 }
 
@@ -787,8 +790,8 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
     publicData.isAdmin === true ||
     role === 'admin'
 
-  return {
-    uid,
+    return {
+      uid,
     email,
     disabled,
     name: asString(publicData.name) ?? asString(privateData.name) ?? '',
@@ -801,12 +804,34 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
       asString(publicData.graduationLevelId) ?? asString(privateData.graduationLevelId),
     bio: asString(publicData.bio) ?? asString(privateData.bio),
     country: asString(publicData.country) ?? asString(privateData.country),
-    avatarUrl: asString(publicData.avatarUrl) ?? asString(privateData.avatarUrl),
-    socialLinks: (publicData.socialLinks ?? privateData.socialLinks ?? {}) as AdminUser['socialLinks'],
-    setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
-    adminPanelAccess,
-    createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
+      avatarUrl: asString(publicData.avatarUrl) ?? asString(privateData.avatarUrl),
+      socialLinks: (publicData.socialLinks ?? privateData.socialLinks ?? {}) as AdminUser['socialLinks'],
+      setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
+      adminPanelAccess,
+      appVersion: resolveAdminUserAppVersion(publicData, privateData),
+      createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
+    }
   }
+
+export async function getAdminUserAppVersions(limit = 5000): Promise<string[]> {
+  const [publicSnap, privateSnap] = await Promise.all([
+    adminDb.collection('usersPublic').limit(limit).get().catch(() => ({ docs: [] })),
+    adminDb.collection('users').limit(limit).get().catch(() => ({ docs: [] })),
+  ])
+
+  const versions = new Set<string>()
+
+  for (const doc of publicSnap.docs) {
+    const version = asString((doc.data() as FirestoreRecord).appVersion)
+    if (version) versions.add(version)
+  }
+
+  for (const doc of privateSnap.docs) {
+    const version = asString((doc.data() as FirestoreRecord).appVersion)
+    if (version) versions.add(version)
+  }
+
+  return Array.from(versions).sort((left, right) => right.localeCompare(left, undefined, { numeric: true }))
 }
 
 export async function getAdminSubscriptions(limit = 250): Promise<{

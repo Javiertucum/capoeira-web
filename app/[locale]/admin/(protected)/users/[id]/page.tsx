@@ -57,6 +57,9 @@ export default async function UserEditPage({ params }: Props) {
             <p className="mt-1 text-sm text-text-muted">
               ID: <code className="text-[10px] bg-surface-muted px-1.5 py-0.5 rounded">{user.uid}</code>
               {user.email && <span className="ml-3 font-medium text-text-secondary">{user.email}</span>}
+              <span className="ml-3 font-medium text-text-secondary">
+                {user.appVersion ? `v${user.appVersion}` : 'VersiÃ³n no disponible'}
+              </span>
             </p>
             <div className="mt-3 flex items-center gap-3">
               {(() => {

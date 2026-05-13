@@ -33,6 +33,18 @@ describe('filterUserDocs', () => {
     expect(filterUserDocs(users, { countries: ['AR'] })).toHaveLength(1)
   })
 
+  it('filters by app version', () => {
+    const users = [
+      makeUser({ appVersion: '2.6.1' }),
+      makeUser({ id: 'uid2', fcmToken: 'token2', appVersion: '2.5.9' }),
+    ]
+
+    const result = filterUserDocs(users, { appVersions: ['2.6.1'] })
+
+    expect(result).toHaveLength(1)
+    expect(result[0].uid).toBe('uid1')
+  })
+
   it('filters by groupId', () => {
     const users = [
       makeUser({ groupId: 'g1' }),

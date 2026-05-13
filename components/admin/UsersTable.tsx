@@ -11,7 +11,7 @@ function normalizeText(value: string): string {
   return value
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
 }
 
 interface Props {
@@ -32,7 +32,7 @@ export default function UsersTable({ users, locale }: Props) {
       if (statusFilter === 'blocked' && !user.disabled) return false
       if (!normalizedQuery) return true
       const searchable = normalizeText(
-        [user.name, user.surname, user.nickname, user.email].filter(Boolean).join(' ')
+        [user.name, user.surname, user.nickname, user.email, user.appVersion].filter(Boolean).join(' ')
       )
       return searchable.includes(normalizedQuery)
     })
@@ -48,7 +48,7 @@ export default function UsersTable({ users, locale }: Props) {
           className="min-w-[220px] flex-1 rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm text-text outline-none transition-colors focus:border-accent/35"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar por nombre, apodo o email..."
+          placeholder="Buscar por nombre, apodo, email o version..."
         />
         <select
           className={selectClass}
@@ -79,7 +79,7 @@ export default function UsersTable({ users, locale }: Props) {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-surface/30">
-                {['Nombre', 'Email', 'Rol', 'País', 'Perfil', 'Estado', 'Acciones'].map((h) => (
+                {['Nombre', 'Email', 'Version', 'Rol', 'Pais', 'Perfil', 'Estado', 'Acciones'].map((h) => (
                   <th
                     key={h}
                     className="border-b border-border px-6 py-4 text-left text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted"
@@ -103,10 +103,13 @@ export default function UsersTable({ users, locale }: Props) {
                     ) : null}
                   </td>
                   <td className="px-6 py-4 text-xs font-medium text-text-secondary">
-                    {user.email ?? '—'}
+                    {user.email ?? 'â€”'}
+                  </td>
+                  <td className="px-6 py-4 text-xs font-medium text-text-secondary">
+                    {user.appVersion ? `v${user.appVersion}` : 'â€”'}
                   </td>
                   <td className="px-6 py-4 text-xs capitalize text-text-secondary">{user.role}</td>
-                  <td className="px-6 py-4 text-xs text-text-secondary">{user.country || '—'}</td>
+                  <td className="px-6 py-4 text-xs text-text-secondary">{user.country || 'â€”'}</td>
                   <td className="px-6 py-4">
                     {(() => {
                       const progress = computeOnboardingProgress(user)
@@ -140,7 +143,7 @@ export default function UsersTable({ users, locale }: Props) {
                       </Link>
                       <AdminDeleteButton
                         endpoint={`/api/admin/users/${user.uid}`}
-                        confirmMessage={`¿Eliminar permanentemente a ${user.name} ${user.surname}? Esta acción no se puede deshacer.`}
+                        confirmMessage={`Â¿Eliminar permanentemente a ${user.name} ${user.surname}? Esta acciÃ³n no se puede deshacer.`}
                         label="Eliminar"
                       />
                     </div>
@@ -150,7 +153,7 @@ export default function UsersTable({ users, locale }: Props) {
               {filtered.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={8}
                     className="px-6 py-10 text-center text-sm italic text-text-muted"
                   >
                     No hay usuarios que coincidan con los filtros.

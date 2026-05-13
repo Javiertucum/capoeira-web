@@ -7,7 +7,7 @@ import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import CampaignStatusActions from '@/components/admin/CampaignStatusActions'
 import Badge from '@/components/ui/Badge'
-import { getAdminOperationJobs } from '@/lib/admin-queries'
+import { getAdminOperationJobs, getAdminUserAppVersions } from '@/lib/admin-queries'
 import { adminDb } from '@/lib/firebase-admin'
 
 type Props = { params: Promise<{ locale: string }> }
@@ -31,10 +31,11 @@ async function getNucleos(): Promise<{ id: string; name: string; groupId: string
 
 export default async function NotificationsPage({ params }: Props) {
   const { locale } = await params
-  const [campaigns, groups, nucleos] = await Promise.all([
+  const [campaigns, groups, nucleos, appVersions] = await Promise.all([
     getAdminOperationJobs('adminNotificationCampaigns').catch(() => []),
     getGroups(),
     getNucleos(),
+    getAdminUserAppVersions(),
   ])
 
   const active = campaigns.filter((c) => ['queued', 'scheduled', 'processing'].includes(c.status)).length
@@ -59,7 +60,7 @@ export default async function NotificationsPage({ params }: Props) {
             <AdminStatCard label="Fallidas" value={failed.toLocaleString(locale)} helper="Requieren revisión" tone={failed > 0 ? 'danger' : 'default'} />
           </div>
 
-          <AdminNotificationSendForm groups={groups} nucleos={nucleos} />
+          <AdminNotificationSendForm groups={groups} nucleos={nucleos} appVersions={appVersions} />
 
           <AdminSectionCard
             title="Historial de campañas"

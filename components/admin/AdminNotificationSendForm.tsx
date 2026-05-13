@@ -37,9 +37,10 @@ type ScreenValue = typeof SCREEN_OPTIONS[number]['value']
 type Props = {
   groups: Group[]
   nucleos: Nucleo[]
+  appVersions: string[]
 }
 
-export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
+export default function AdminNotificationSendForm({ groups, nucleos, appVersions }: Props) {
   const router = useRouter()
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
@@ -47,6 +48,7 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
   // Audience
   const [roles, setRoles] = useState<string[]>([])
   const [countries, setCountries] = useState('')
+  const [selectedAppVersions, setSelectedAppVersions] = useState<string[]>([])
   const [plans, setPlans] = useState<string[]>([])
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([])
   const [selectedNucleoIds, setSelectedNucleoIds] = useState<string[]>([])
@@ -92,13 +94,14 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
   const buildSegment = useCallback(() => ({
     roles,
     countries: countries.split(',').map((c) => c.trim()).filter(Boolean),
+    appVersions: selectedAppVersions,
     subscriptionPlans: plans,
     groupIds: selectedGroupIds,
     nucleoIds: selectedNucleoIds,
     noGroup,
     adminsOnly,
     userIds: selectedUsers.map((u) => u.uid),
-  }), [roles, countries, plans, selectedGroupIds, selectedNucleoIds, noGroup, adminsOnly, selectedUsers])
+  }), [roles, countries, selectedAppVersions, plans, selectedGroupIds, selectedNucleoIds, noGroup, adminsOnly, selectedUsers])
 
   useEffect(() => {
     if (estimateDebounce.current) clearTimeout(estimateDebounce.current)
@@ -349,6 +352,30 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
             className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder-text-muted outline-none focus:border-accent/40"
           />
         </div>
+
+        {appVersions.length > 0 && (
+          <div>
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+              Versiones de app
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {appVersions.map((version) => (
+                <button
+                  key={version}
+                  type="button"
+                  onClick={() => setSelectedAppVersions(toggleItem(selectedAppVersions, version))}
+                  className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-colors ${
+                    selectedAppVersions.includes(version)
+                      ? 'border-accent/30 bg-accent/12 text-accent'
+                      : 'border-border bg-surface text-text-secondary'
+                  }`}
+                >
+                  v{version}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div>
           <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">

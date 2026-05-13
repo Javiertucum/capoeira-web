@@ -1,6 +1,7 @@
 export type SegmentFilter = {
   roles?: string[]
   countries?: string[]
+  appVersions?: string[]
   groupIds?: string[]
   nucleoIds?: string[]
   subscriptionPlans?: string[]
@@ -22,6 +23,7 @@ export type RawUserDoc = {
   fcmToken: unknown
   displayName: unknown
   email: unknown
+  appVersion?: unknown
   role: unknown
   country: unknown
   groupId: unknown
@@ -66,6 +68,11 @@ export function filterUserDocs(users: RawUserDoc[], segment: SegmentFilter): Tok
     if (segment.countries && segment.countries.length > 0) {
       const country = typeof data.country === 'string' ? data.country : null
       if (!country || !segment.countries.includes(country)) continue
+    }
+
+    if (segment.appVersions && segment.appVersions.length > 0) {
+      const appVersion = typeof data.appVersion === 'string' ? data.appVersion : null
+      if (!appVersion || !segment.appVersions.includes(appVersion)) continue
     }
 
     const hasGroupFilter = (segment.groupIds && segment.groupIds.length > 0) || segment.noGroup
