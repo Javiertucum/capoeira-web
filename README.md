@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# capoeira-web — Agenda Capoeiragem Web
 
-## Getting Started
+Landing page pública y panel de administración para la plataforma Agenda Capoeiragem.
 
-First, run the development server:
+## Qué hace
+
+| Sección | URL | Para quién |
+|---|---|---|
+| Landing page | `/` | Educadores y alumnos (discovery) |
+| Panel admin | `/[locale]/admin/` | Administradores de la plataforma |
+| API REST | `/api/admin/` | Uso interno del panel admin |
+
+## Stack
+
+| Tecnología | Versión | Uso |
+|---|---|---|
+| Next.js | 16.2.3 | Framework (App Router) |
+| React | 19.2.4 | UI |
+| TypeScript | 5 strict | Tipos |
+| Tailwind CSS | 4 | Estilos |
+| next-intl | 4.9.1 | i18n ES/PT/EN |
+| Firebase | 12 + Admin 13 | Auth, Firestore, Storage |
+| @react-google-maps/api | 2.20 | Mapas |
+| Vercel | — | Deploy |
+
+## Desarrollo local
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd capoeira-web
+npm install
+npm run dev       # http://localhost:3000
+npm run build     # Verificar que compila sin errores
+npm run start     # Servir build de producción
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables de entorno
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Crear `.env.local` en `capoeira-web/` con:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Firebase (cliente)
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
 
-## Learn More
+# Firebase Admin (server-side)
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PRIVATE_KEY=
 
-To learn more about Next.js, take a look at the following resources:
+# Google Maps
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Admin — UID del superadmin
+ADMIN_UID=
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estructura del proyecto
 
-## Deploy on Vercel
+```
+src/
+  app/
+    [locale]/              # Routing con idioma (es/pt/en)
+      page.tsx             # Landing page
+      admin/
+        login/             # Auth portal
+        (protected)/       # Rutas protegidas del panel admin
+          dashboard/
+          events/
+          finances/
+          graduations/
+          groups/
+          users/
+          notifications/
+          moderation/
+          bug-reports/
+    api/
+      admin/               # 30+ endpoints REST (server-side)
+  components/
+    admin/                 # Componentes del panel admin
+    ui/                    # Componentes reutilizables
+  i18n/                    # Config de next-intl
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Internacionalización
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3 idiomas: `es` (español), `pt` (portugués), `en` (inglés).  
+Los archivos de mensajes viven en `messages/es.json`, `messages/pt.json`, `messages/en.json`.  
+Las rutas tienen el locale como primer segmento: `/es/admin/dashboard`.
+
+## Deploy
+
+Vercel detecta automáticamente el push a `main`.
+
+```bash
+git push origin main
+```
+
+Para deploy manual o forzar rebuild:
+```bash
+vercel --prod
+```
+
+El proyecto está configurado en `.vercel/project.json`. No modificar sin coordinación.
+
+## Guía para AI
+
+Ver [CLAUDE.md](CLAUDE.md) para instrucciones detalladas de cómo trabajar en este proyecto.
+
+## Checklist antes de hacer deploy
+
+Ver [docs/RELEASE.md](../docs/RELEASE.md) — sección "Deploy Web".
