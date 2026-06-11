@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.capoeiraapp.mobile",
+      "sha256_cert_fingerprints": [
+        "81:5E:F7:D9:A3:5C:7D:FF:86:D9:5D:2C:1C:1D:29:54:70:AA:CD:AB:49:FA:81:AF:33:C5:91:FA:22:DA:29:ED"
+      ]
+    }
+  }
+]

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { getLocale } from 'next-intl/server'
 
 const NAV_PLATFORM = [
   { label: 'Funcionalidades', href: '#features' },
@@ -12,12 +13,15 @@ const NAV_COMMUNITY = [
   { label: 'Admin',           href: '/admin' },
 ]
 
-const NAV_LEGAL = [
-  { label: 'Privacidad',      href: '/es/privacy' },
-  { label: 'Términos',        href: '/es/terms' },
-]
+export default async function Footer() {
+  const locale = await getLocale()
+  const legalBase = `/${locale}`
 
-export default function Footer() {
+  const NAV_LEGAL = [
+    { label: 'Privacidad', href: `${legalBase}/privacy` },
+    { label: 'Términos', href: `${legalBase}/terms` },
+  ]
+
   return (
     <footer className="border-t border-border bg-bg">
       <div className="page-shell py-16 lg:py-20">
