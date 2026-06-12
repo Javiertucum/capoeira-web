@@ -89,7 +89,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <meta name="theme-color" content="#F4EFE6" />
+        <meta name="theme-color" content="#F7F3EB" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://maps.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />

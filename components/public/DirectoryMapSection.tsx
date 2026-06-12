@@ -192,7 +192,7 @@ export default function DirectoryMapSection({
   ]
 
   return (
-    <section id="directorio" className="border-t border-border bg-bg py-16 lg:py-24">
+    <section id="directorio" className="bg-bg py-16 lg:py-24">
       <div className="page-shell">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-2">

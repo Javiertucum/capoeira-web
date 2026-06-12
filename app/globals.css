@@ -2,32 +2,32 @@
 
 /* ─── Tailwind @theme — expone tokens como clases utilitarias ─── */
 @theme {
-  /* --- Community Sports Palette (Light) --- */
-  --color-bg:            #FFFFFF;
-  --color-card:          #F9FAFB;
-  --color-surface:       #F3F4F6;
-  --color-surface-muted: #E5E7EB;
-  --color-border:        #E5E7EB;
-  --color-text:          #111827;
-  --color-text-secondary:#4B5563;
-  --color-text-muted:    #9CA3AF;
+  /* --- Capoeiragem Warm Palette (Light) --- */
+  --color-bg:            #F7F3EB;
+  --color-card:          #FFFDF8;
+  --color-surface:       #F1E8D9;
+  --color-surface-muted: #FBF7EF;
+  --color-border:        #E7DECF;
+  --color-text:          #211C15;
+  --color-text-secondary:#4C463C;
+  --color-text-muted:    #7B7468;
 
-  /* --- Dark Ink Tokens --- */
-  --color-ink:           #111827;
-  --color-ink-2:         #1F2937;
-  --color-ink-3:         #374151;
-  --color-ink-4:         #4B5563;
+  /* --- Ink Tokens --- */
+  --color-ink:           #211C15;
+  --color-ink-2:         #4C463C;
+  --color-ink-3:         #7B7468;
+  --color-ink-4:         #A39C8E;
 
-  /* --- Accent: Vibrant Green (Brasil Energy) --- */
-  --color-accent:        #10B981;
-  --color-accent-ink:    #047857;
-  --color-accent-soft:   #D1FAE5;
+  /* --- Accent: Green --- */
+  --color-accent:        #2E7D32;
+  --color-accent-ink:    #1F5723;
+  --color-accent-soft:   #DCEBDD;
 
   /* --- States --- */
-  --color-success:       #059669;
-  --color-warning:       #D97706;
-  --color-danger:        #DC2626;
-  --color-gold:          #F59E0B;
+  --color-success:       #2E7D32;
+  --color-warning:       #B8860B;
+  --color-danger:        #C0392B;
+  --color-gold:          #C99A3A;
 
   /* --- Radii --- */
   --radius-xs:  8px;
@@ -45,32 +45,34 @@
 
 /* ─── CSS custom properties ─── */
 :root {
-  /* Light Theme (Default) */
-  --bg:              #FFFFFF;
-  --card:            #F9FAFB;
-  --surface:         #F3F4F6;
-  --surface-muted:   #E5E7EB;
-  --border:          #E5E7EB;
-  --text:            #111827;
-  --text-secondary:  #4B5563;
-  --text-muted:      #9CA3AF;
+  /* Light Theme (Default) — warm capoeiragem palette */
+  --bg:              #F7F3EB;
+  --card:            #FFFDF8;
+  --surface:         #F1E8D9;
+  --surface-muted:   #FBF7EF;
+  --border:          #E7DECF;
+  --text:            #211C15;
+  --text-secondary:  #4C463C;
+  --text-muted:      #7B7468;
 
-  /* Dark Tokens (Ink) */
-  --ink:             #111827;
-  --ink-2:           #1F2937;
-  --ink-3:           #374151;
-  --ink-4:           #4B5563;
+  /* Ink Tokens */
+  --ink:             #211C15;
+  --ink-2:           #4C463C;
+  --ink-3:           #7B7468;
+  --ink-4:           #A39C8E;
 
-  /* Accent - Vibrant Green */
-  --accent:          #10B981;
-  --accent-ink:      #047857;
-  --accent-soft:     #D1FAE5;
+  /* Accent - Green */
+  --accent:          #2E7D32;
+  --accent-ink:      #1F5723;
+  --accent-soft:     #DCEBDD;
+  --green:           #2E7D32;
+  --green-soft:      #DCEBDD;
 
   /* Others */
-  --gold:            #F59E0B;
-  --success:         #059669;
-  --warning:         #D97706;
-  --danger:          #DC2626;
+  --gold:            #C99A3A;
+  --success:         #2E7D32;
+  --warning:         #B8860B;
+  --danger:          #C0392B;
 
   /* Shadows - Organic and soft */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -123,7 +125,7 @@ h1 em, h2 em, h3 em {
 
 a { color: inherit; text-decoration: none; }
 
-::selection { background: rgba(16, 185, 129, 0.15); color: var(--ink); }
+::selection { background: rgba(46, 125, 50, 0.15); color: var(--ink); }
 
 /* ─── Layout shells ─── */
 .page-shell {
@@ -182,7 +184,7 @@ a { color: inherit; text-decoration: none; }
   height: 6px;
   border-radius: 999px;
   background: var(--accent);
-  box-shadow: 0 0 0 4px rgba(217, 84, 43, 0.12);
+  box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.12);
   display: inline-block;
   flex-shrink: 0;
 }

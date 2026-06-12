@@ -178,9 +178,9 @@ export default async function LandingPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-bg selection:bg-accent/20 overflow-x-hidden">
+      <DirectoryMapSection locale={locale} nucleos={nucleos} groups={groups} educators={educators} />
       <Hero copy={c} stats={stats} />
       <ValueProposition />
-      <DirectoryMapSection locale={locale} nucleos={nucleos} groups={groups} educators={educators} />
       <FeaturesShowcase copy={c} locale={locale} />
       <CallToAction copy={c} locale={locale} />
       <Footer />
