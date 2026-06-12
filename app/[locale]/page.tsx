@@ -3,8 +3,10 @@ import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescri
 import Hero from '@/components/public/Hero'
 import ValueProposition from '@/components/public/ValueProposition'
 import FeaturesShowcase from '@/components/public/FeaturesShowcase'
+import DirectoryMapSection, { type DirectoryEducator } from '@/components/public/DirectoryMapSection'
 import CallToAction from '@/components/public/CallToAction'
 import Footer from '@/components/public/Footer'
+import type { Group, MapNucleo } from '@/lib/types'
 
 type Props = Readonly<{ params: Promise<{ locale: string }> }>
 
@@ -145,16 +147,40 @@ export default async function LandingPage({ params }: Props) {
   const c = getCopy(locale)
 
   let stats = { educators: 0, nucleos: 0, countries: 0 }
+  let nucleos: MapNucleo[] = []
+  let groups: Group[] = []
+  let educators: DirectoryEducator[] = []
   try {
-    const { getStats } = await import('@/lib/queries')
-    const s = await getStats()
+    const { getStats, getAllNucleos, getAllGroups, getAllEducators, getGraduationLevelNamesByGroup } = await import('@/lib/queries')
+    const [s, allNucleos, allGroups, allEducators] = await Promise.all([
+      getStats(),
+      getAllNucleos(),
+      getAllGroups(),
+      getAllEducators(),
+    ])
     stats = { educators: s.educators, nucleos: s.nucleos, countries: s.countries }
+    nucleos = allNucleos
+    groups = allGroups
+
+    const groupNameById = new Map(allGroups.map((g) => [g.id, g.name]))
+    const gradNamesByGroup = await getGraduationLevelNamesByGroup(
+      allEducators.map((e) => e.groupId).filter((id): id is string => Boolean(id))
+    )
+    educators = allEducators.map((e) => ({
+      ...e,
+      groupName: e.groupId ? groupNameById.get(e.groupId) ?? null : null,
+      graduationName:
+        e.groupId && e.graduationLevelId
+          ? gradNamesByGroup.get(e.groupId)?.get(e.graduationLevelId) ?? null
+          : null,
+    }))
   } catch {}
 
   return (
     <main className="min-h-screen bg-bg selection:bg-accent/20 overflow-x-hidden">
       <Hero copy={c} stats={stats} />
       <ValueProposition />
+      <DirectoryMapSection locale={locale} nucleos={nucleos} groups={groups} educators={educators} />
       <FeaturesShowcase copy={c} locale={locale} />
       <CallToAction copy={c} locale={locale} />
       <Footer />

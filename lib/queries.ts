@@ -500,3 +500,20 @@ export async function getGraduationLevels(groupId: string): Promise<GraduationLe
     }
   })
 }
+
+/**
+ * Batch-resolves graduation level names for a set of groups, returning
+ * groupId -> levelId -> name. Used to label educators with their graduation.
+ */
+export async function getGraduationLevelNamesByGroup(
+  groupIds: string[]
+): Promise<Map<string, Map<string, string>>> {
+  const uniqueGroupIds = [...new Set(groupIds.filter(Boolean))]
+  const levelsByGroup = await Promise.all(uniqueGroupIds.map((id) => getGraduationLevels(id)))
+
+  const result = new Map<string, Map<string, string>>()
+  uniqueGroupIds.forEach((groupId, index) => {
+    result.set(groupId, new Map(levelsByGroup[index].map((level) => [level.id, level.name])))
+  })
+  return result
+}
