@@ -61,6 +61,7 @@ export default function Nav() {
   const faintTextColor = 'text-ink/30'
 
   const links = [
+    { href: isHomepage ? '#directorio' : `/${locale}/#directorio`, label: t('map'), key: 'map' },
     { href: isHomepage ? '#features' : `/${locale}/#features`, label: t('features'), key: 'features' },
     { href: isHomepage ? '#tutorials' : `/${locale}/#tutorials`, label: t('tutorials'), key: 'tutorials' },
     { href: `/${locale}/admin`, label: 'Admin', key: 'admin' },
