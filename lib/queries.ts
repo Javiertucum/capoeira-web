@@ -2,7 +2,6 @@ import 'server-only'
 
 import type { Group, GraduationLevel, MapNucleo, PublicUserProfile, StatsData } from './types'
 import { adminDb } from './firebase-admin'
-import { FieldPath } from 'firebase-admin/firestore'
 
 type FirestoreRecord = Record<string, unknown>
 type VisibilityOptions = { includeHidden?: boolean }
@@ -311,25 +310,10 @@ export async function getEducatorProfile(uid: string): Promise<PublicUserProfile
 }
 
 export async function getNucleosByEducator(uid: string, nucleoIds?: string[]): Promise<MapNucleo[]> {
-  const queries = [
-    adminDb.collectionGroup('nucleos').where('responsibleEducatorId', '==', uid).get(),
-    adminDb.collectionGroup('nucleos').where('coEducatorIds', 'array-contains', uid).get(),
-  ]
-
-  if (nucleoIds && nucleoIds.length > 0) {
-    // Firestore 'in' query supports up to 30 elements
-    const chunks = []
-    for (let i = 0; i < nucleoIds.length; i += 30) {
-      chunks.push(nucleoIds.slice(i, i + 30))
-    }
-    chunks.forEach(chunk => {
-      queries.push(adminDb.collectionGroup('nucleos').where(FieldPath.documentId(), 'in', chunk).get())
-    })
-  }
-
-  const snapshots = await Promise.all([...queries, adminDb.collection('groups').get()])
-  const groupsSnap = snapshots.pop() as FirebaseFirestore.QuerySnapshot
-  const snaps = snapshots as FirebaseFirestore.QuerySnapshot[]
+  const [nucleosSnap, groupsSnap] = await Promise.all([
+    adminDb.collectionGroup('nucleos').get(),
+    adminDb.collection('groups').get(),
+  ])
 
   const visibleGroupDocs = groupsSnap.docs.filter((doc) =>
     isPubliclyVisible(doc.data() as FirestoreRecord)
@@ -338,21 +322,23 @@ export async function getNucleosByEducator(uid: string, nucleoIds?: string[]): P
     visibleGroupDocs.map((doc) => [doc.id, asString(doc.data().name) ?? ''] as const)
   )
 
-  const seen = new Set<string>()
+  const nucleoIdSet = new Set(nucleoIds ?? [])
   const results: MapNucleo[] = []
 
-  snaps.forEach((snap) => {
-    snap.docs.forEach((doc) => {
-      if (seen.has(doc.id)) return
-      const data = doc.data() as FirestoreRecord
-      if (!isPubliclyVisible(data)) return
-      const parent = doc.ref.parent.parent
-      const groupId = parent?.id ?? ''
-      if (!groupNames.has(groupId)) return
-      seen.add(doc.id)
-      const groupName = groupNames.get(groupId) ?? ''
-      results.push(mapMapNucleo(doc.id, groupId, groupName, data))
-    })
+  nucleosSnap.docs.forEach((doc) => {
+    const data = doc.data() as FirestoreRecord
+    if (!isPubliclyVisible(data)) return
+    const parent = doc.ref.parent.parent
+    const groupId = parent?.id ?? ''
+    if (!groupNames.has(groupId)) return
+
+    const responsibleId = asNullableString(data.responsibleEducatorId)
+    const coEducatorIds = asStringArray(data.coEducatorIds) ?? []
+    const isMatch = responsibleId === uid || coEducatorIds.includes(uid) || nucleoIdSet.has(doc.id)
+    if (!isMatch) return
+
+    const groupName = groupNames.get(groupId) ?? ''
+    results.push(mapMapNucleo(doc.id, groupId, groupName, data))
   })
 
   return results
