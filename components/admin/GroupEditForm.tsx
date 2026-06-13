@@ -32,6 +32,8 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
   const [coAdminIds, setCoAdminIds] = useState<string[]>(group.coAdminIds ?? [])
   const [adminToAdd, setAdminToAdd] = useState('')
   const [coAdminToAdd, setCoAdminToAdd] = useState('')
+  const [memberToAdd, setMemberToAdd] = useState('')
+  const [addingMember, setAddingMember] = useState(false)
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
@@ -75,6 +77,36 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
       })
     } finally {
       setSaving(false)
+    }
+  }
+
+  async function handleAddMember() {
+    if (!memberToAdd) return
+    setAddingMember(true)
+    setMessage(null)
+    try {
+      const res = await fetch(`/api/admin/groups/${group.id}/members`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: memberToAdd }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(data.error || 'Error al agregar miembro')
+      setMessage({
+        type: 'ok',
+        text: data.notified
+          ? 'Usuario agregado al grupo y notificado correctamente'
+          : 'Usuario agregado al grupo (no se pudo enviar la notificacion push)',
+      })
+      setMemberToAdd('')
+      router.refresh()
+    } catch (err) {
+      setMessage({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Error al agregar miembro',
+      })
+    } finally {
+      setAddingMember(false)
     }
   }
 
@@ -239,6 +271,31 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
               placeholder="Madrid, Barcelona, Lisboa..."
             />
           </div>
+        </div>
+      </section>
+
+      <section className={sectionClass}>
+        <h3 className="text-sm font-semibold text-text">Agregar miembro al grupo</h3>
+        <p className="mt-1 text-xs text-text-muted">
+          Asigna un usuario a este grupo. Recibira una notificacion push avisandole.
+        </p>
+        <div className="mt-5">
+          <EntitySearchInput
+            label="Buscar usuario"
+            value={memberToAdd}
+            options={userOptions}
+            placeholder="Busca por nombre, apodo o correo"
+            emptyLabel="Selecciona un usuario para agregar."
+            onChange={setMemberToAdd}
+          />
+          <button
+            type="button"
+            disabled={!memberToAdd || addingMember}
+            onClick={handleAddMember}
+            className="mt-3 rounded-xl border border-accent/30 px-4 py-2 text-xs font-semibold text-accent transition-opacity disabled:opacity-40"
+          >
+            {addingMember ? 'Agregando...' : 'Agregar al grupo y notificar'}
+          </button>
         </div>
       </section>
 

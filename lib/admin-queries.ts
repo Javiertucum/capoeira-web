@@ -380,6 +380,8 @@ export interface AdminGraduationLevelRow {
   name: string
   order: number
   colors: string[]
+  tipColorLeft?: string | null
+  tipColorRight?: string | null
   category?: string | null
   isEducator?: boolean
   isSpecial?: boolean
@@ -1264,6 +1266,8 @@ export async function getAdminGraduationRows(): Promise<AdminGraduationLevelRow[
         name: asString(data.name) ?? doc.id,
         order: asNumber(data.order) ?? 0,
         colors,
+        tipColorLeft: asString(data.tipColorLeft),
+        tipColorRight: asString(data.tipColorRight),
         category: asString(data.category),
         isEducator: asBoolean(data.isEducator) ?? false,
         isSpecial: asBoolean(data.isSpecial) ?? false,
@@ -1439,6 +1443,8 @@ export async function getAdminGraduationLevelById(
     name: asString(data.name) ?? levelDoc.id,
     order: asNumber(data.order) ?? 0,
     colors,
+    tipColorLeft: asString(data.tipColorLeft),
+    tipColorRight: asString(data.tipColorRight),
     category: asString(data.category),
     isEducator: asBoolean(data.isEducator) ?? false,
     isSpecial: asBoolean(data.isSpecial) ?? false,
