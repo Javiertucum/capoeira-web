@@ -43,6 +43,30 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const adminAuth = getAuth(getApps()[0])
   const batch = adminDb.batch()
 
+  // If groupId is changing, keep group memberCount counters in sync
+  if ('groupId' in body) {
+    const newGroupId = typeof body.groupId === 'string' ? body.groupId : null
+    const userDoc = await adminDb.collection('users').doc(id).get()
+    const previousGroupId = (userDoc.data()?.groupId as string | undefined) ?? null
+
+    if (previousGroupId !== newGroupId) {
+      if (previousGroupId) {
+        batch.set(
+          adminDb.collection('groups').doc(previousGroupId),
+          { memberCount: FieldValue.increment(-1), updatedAt: FieldValue.serverTimestamp() },
+          { merge: true },
+        )
+      }
+      if (newGroupId) {
+        batch.set(
+          adminDb.collection('groups').doc(newGroupId),
+          { memberCount: FieldValue.increment(1), updatedAt: FieldValue.serverTimestamp() },
+          { merge: true },
+        )
+      }
+    }
+  }
+
   // Only update if documents exist (just in case)
   batch.update(adminDb.collection('users').doc(id), userUpdate)
   batch.update(adminDb.collection('usersPublic').doc(id), publicUpdate)
