@@ -145,6 +145,7 @@ function mapGroup(id: string, data: FirestoreRecord): Group {
     graduationSystemName: asNullableString(data.graduationSystemName),
     representedCountries: asStringArray(data.representedCountries),
     representedCities: asStringArray(data.representedCities),
+    educatorThresholdOrder: asNumber(data.educatorThresholdOrder),
     moderation: mapModerationState(data),
   }
 }

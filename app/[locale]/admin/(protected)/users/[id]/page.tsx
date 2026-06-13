@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getAdminUserById } from '@/lib/admin-queries'
+import { getAdminUserById, getAdminEntityOptions, getAdminGraduationRows } from '@/lib/admin-queries'
 import { computeOnboardingProgress } from '@/lib/user-utils'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import UserEditForm from '@/components/admin/UserEditForm'
@@ -15,8 +15,21 @@ export default async function UserEditPage({ params }: Props) {
   } catch (error) {
     console.error('[UserEditPage] failed to fetch user', error)
   }
-  
+
   if (!user) notFound()
+
+  const [entityOptions, graduationRows] = await Promise.all([
+    getAdminEntityOptions().catch(() => []),
+    getAdminGraduationRows().catch(() => []),
+  ])
+
+  const nucleoOptions = entityOptions.filter(
+    (o) => o.type === 'nucleo' && (!user!.groupId || o.groupId === user!.groupId)
+  )
+  const graduationOptions = graduationRows
+    .filter((g) => !user!.groupId || g.groupId === user!.groupId)
+    .sort((a, b) => a.order - b.order)
+  const userOptions = entityOptions.filter((o) => o.type === 'user' && o.id !== user!.uid)
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
@@ -69,7 +82,13 @@ export default async function UserEditPage({ params }: Props) {
           </div>
         </div>
 
-        <UserEditForm user={user} locale={locale} />
+        <UserEditForm
+          user={user}
+          locale={locale}
+          nucleoOptions={nucleoOptions}
+          graduationOptions={graduationOptions}
+          userOptions={userOptions}
+        />
       </div>
     </div>
   )

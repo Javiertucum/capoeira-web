@@ -48,6 +48,20 @@ export default function NucleoEditForm({ nucleo, locale, entityOptions }: Props)
   const [coEducatorIds, setCoEducatorIds] = useState<string[]>(nucleo.coEducatorIds ?? [])
   const [coEducatorToAdd, setCoEducatorToAdd] = useState('')
   const [schedules, setSchedules] = useState<Schedule[]>(nucleo.schedules ?? [])
+  const [billing, setBilling] = useState({
+    classesAreFree: nucleo.classesAreFree ?? false,
+    billingMode: nucleo.billingMode ?? 'monthly',
+    monthlyFee: nucleo.monthlyFee?.toString() ?? '',
+    classFee: nucleo.classFee?.toString() ?? '',
+    classesPerPackage: nucleo.classesPerPackage?.toString() ?? '',
+    currency: nucleo.currency ?? '',
+    paymentDueDay: nucleo.paymentDueDay?.toString() ?? '',
+    showFeeAmount: nucleo.showFeeAmount ?? true,
+  })
+
+  function setBillingField<K extends keyof typeof billing>(key: K, value: (typeof billing)[K]) {
+    setBilling((current) => ({ ...current, [key]: value }))
+  }
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
@@ -93,6 +107,14 @@ export default function NucleoEditForm({ nucleo, locale, entityOptions }: Props)
           responsibleEducatorId: responsibleEducatorId || null,
           coEducatorIds,
           schedules,
+          classesAreFree: billing.classesAreFree,
+          billingMode: billing.billingMode,
+          monthlyFee: billing.monthlyFee ? Number(billing.monthlyFee) : null,
+          classFee: billing.classFee ? Number(billing.classFee) : null,
+          classesPerPackage: billing.classesPerPackage ? Number(billing.classesPerPackage) : null,
+          currency: billing.currency || null,
+          paymentDueDay: billing.paymentDueDay ? Number(billing.paymentDueDay) : null,
+          showFeeAmount: billing.showFeeAmount,
         }),
       })
 
@@ -342,6 +364,102 @@ export default function NucleoEditForm({ nucleo, locale, entityOptions }: Props)
             </div>
           )}
         </div>
+      </section>
+
+      <section className={sectionClass}>
+        <h3 className="text-sm font-semibold text-text">Configuracion de pagos</h3>
+        <p className="mt-1 text-sm text-text-muted">
+          Controla como se cobran las clases de este nucleo y que ven los alumnos.
+        </p>
+
+        <label className="mt-5 flex items-center gap-3 cursor-pointer rounded-2xl border border-border bg-surface px-4 py-3">
+          <input
+            type="checkbox"
+            checked={billing.classesAreFree}
+            onChange={(event) => setBillingField('classesAreFree', event.target.checked)}
+            className="h-5 w-5 accent-accent rounded-lg"
+          />
+          <span className="text-sm font-semibold text-text">Las clases son gratuitas</span>
+        </label>
+
+        {!billing.classesAreFree && (
+          <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div>
+              <label className={labelClass}>Modalidad de cobro</label>
+              <select
+                className={inputClass}
+                value={billing.billingMode}
+                onChange={(event) => setBillingField('billingMode', event.target.value)}
+              >
+                <option value="monthly">Mensual</option>
+                <option value="classPack">Pack de clases</option>
+                <option value="perClass">Por clase</option>
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>
+                {billing.billingMode === 'classPack' ? 'Valor del pack' : 'Precio mensual'}
+              </label>
+              <input
+                className={inputClass}
+                value={billing.monthlyFee}
+                onChange={(event) => setBillingField('monthlyFee', event.target.value)}
+                inputMode="decimal"
+                placeholder="Ej: 30"
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Precio por clase suelta</label>
+              <input
+                className={inputClass}
+                value={billing.classFee}
+                onChange={(event) => setBillingField('classFee', event.target.value)}
+                inputMode="decimal"
+                placeholder="Ej: 8"
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Clases por pack</label>
+              <input
+                className={inputClass}
+                value={billing.classesPerPackage}
+                onChange={(event) => setBillingField('classesPerPackage', event.target.value)}
+                inputMode="numeric"
+                placeholder="Ej: 8"
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Moneda</label>
+              <input
+                className={inputClass}
+                value={billing.currency}
+                onChange={(event) => setBillingField('currency', event.target.value)}
+                placeholder="Ej: EUR"
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Dia limite de pago (1-31)</label>
+              <input
+                className={inputClass}
+                value={billing.paymentDueDay}
+                onChange={(event) => setBillingField('paymentDueDay', event.target.value)}
+                inputMode="numeric"
+                placeholder="Ej: 10"
+              />
+            </div>
+            <div className="flex items-center">
+              <label className="flex items-center gap-3 cursor-pointer rounded-2xl border border-border bg-surface px-4 py-3 w-full">
+                <input
+                  type="checkbox"
+                  checked={billing.showFeeAmount}
+                  onChange={(event) => setBillingField('showFeeAmount', event.target.checked)}
+                  className="h-5 w-5 accent-accent rounded-lg"
+                />
+                <span className="text-sm font-semibold text-text">Mostrar el precio a los alumnos</span>
+              </label>
+            </div>
+          </div>
+        )}
       </section>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

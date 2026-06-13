@@ -26,6 +26,7 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
     logoUrl: group.logoUrl || '',
     representedCountries: group.representedCountries?.join(', ') || '',
     representedCities: group.representedCities?.join(', ') || '',
+    educatorThresholdOrder: group.educatorThresholdOrder?.toString() || '',
   })
   const [adminUserIds, setAdminUserIds] = useState<string[]>(group.adminUserIds ?? [])
   const [coAdminIds, setCoAdminIds] = useState<string[]>(group.coAdminIds ?? [])
@@ -53,6 +54,9 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
           .split(',')
           .map((s) => s.trim())
           .filter(Boolean),
+        educatorThresholdOrder: form.educatorThresholdOrder
+          ? Number(form.educatorThresholdOrder)
+          : null,
         adminUserIds,
         coAdminIds,
       }
@@ -168,6 +172,19 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
               onChange={(e) => set('graduationSystemName', e.target.value)}
               placeholder="Ej: Cordas Abadá-Capoeira"
             />
+          </div>
+          <div>
+            <label className={labelClass}>Orden mínimo para ser educador</label>
+            <input
+              className={inputClass}
+              value={form.educatorThresholdOrder}
+              onChange={(e) => set('educatorThresholdOrder', e.target.value)}
+              inputMode="numeric"
+              placeholder="Ej: 5"
+            />
+            <p className="mt-2 text-xs text-text-muted">
+              A partir de qué orden de graduación un alumno se considera elegible para ser educador.
+            </p>
           </div>
           <div className="md:col-span-2">
             <label className={labelClass}>Descripción / Historia</label>

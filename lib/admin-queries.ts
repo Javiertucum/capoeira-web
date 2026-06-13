@@ -144,6 +144,14 @@ function mapAdminNucleo(
     responsibleEducatorId: asString(data.responsibleEducatorId),
     coEducatorIds: asStringArray(data.coEducatorIds),
     schedules: mapSchedules(data.schedules),
+    classesAreFree: asBoolean(data.classesAreFree) ?? false,
+    billingMode: asString(data.billingMode),
+    monthlyFee: asNumber(data.monthlyFee),
+    classFee: asNumber(data.classFee),
+    classesPerPackage: asNumber(data.classesPerPackage),
+    currency: asString(data.currency),
+    paymentDueDay: asNumber(data.paymentDueDay),
+    showFeeAmount: asBoolean(data.showFeeAmount) ?? true,
   }
 }
 
@@ -171,7 +179,10 @@ export interface AdminUser {
   }
   setupComplete?: boolean
   adminPanelAccess?: boolean
+  educatorEligible?: boolean
+  supervisorIds?: string[]
   createdAt?: string | null
+  lastSignInTime?: string | null
 }
 
 export interface AdminEvent {
@@ -243,6 +254,14 @@ export interface AdminNucleo {
     startTime: string
     endTime: string
   }>
+  classesAreFree?: boolean
+  billingMode?: string | null
+  monthlyFee?: number | null
+  classFee?: number | null
+  classesPerPackage?: number | null
+  currency?: string | null
+  paymentDueDay?: number | null
+  showFeeAmount?: boolean
 }
 
 export interface BugReport {
@@ -772,10 +791,14 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
 
   let email: string | undefined
   let disabled = false
+  let lastSignInTime: string | null = null
   try {
     const authUser = await adminAuth.getUser(uid)
     email = authUser.email
     disabled = authUser.disabled
+    lastSignInTime = authUser.metadata.lastSignInTime
+      ? new Date(authUser.metadata.lastSignInTime).toISOString()
+      : null
   } catch {}
 
   const roleValue = asString(publicData.role) ?? asString(privateData.role) ?? 'student'
@@ -805,7 +828,10 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
     socialLinks: (publicData.socialLinks ?? privateData.socialLinks ?? {}) as AdminUser['socialLinks'],
     setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
     adminPanelAccess,
+    educatorEligible: publicData.educatorEligible === true || privateData.educatorEligible === true,
+    supervisorIds: asStringArray(publicData.supervisorIds ?? privateData.supervisorIds),
     createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
+    lastSignInTime,
   }
 }
 

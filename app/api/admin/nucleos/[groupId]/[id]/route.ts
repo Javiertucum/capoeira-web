@@ -66,6 +66,14 @@ export async function PATCH(request: NextRequest, { params }: Params) {
           typeof body.responsibleEducatorId === 'string' ? body.responsibleEducatorId : null,
         coEducatorIds: parseStringArray(body.coEducatorIds),
         schedules: parseSchedules(body.schedules),
+        classesAreFree: typeof body.classesAreFree === 'boolean' ? body.classesAreFree : false,
+        billingMode: typeof body.billingMode === 'string' ? body.billingMode : null,
+        monthlyFee: parseNumber(body.monthlyFee),
+        classFee: parseNumber(body.classFee),
+        classesPerPackage: parseNumber(body.classesPerPackage),
+        currency: typeof body.currency === 'string' ? body.currency : null,
+        paymentDueDay: parseNumber(body.paymentDueDay),
+        showFeeAmount: typeof body.showFeeAmount === 'boolean' ? body.showFeeAmount : true,
         updatedAt: FieldValue.serverTimestamp(),
       })
 

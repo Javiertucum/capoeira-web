@@ -40,6 +40,7 @@ export interface Group {
   graduationSystemName?: string | null
   representedCountries?: string[]
   representedCities?: string[]
+  educatorThresholdOrder?: number | null
   moderation?: PublicModerationState
 }
 

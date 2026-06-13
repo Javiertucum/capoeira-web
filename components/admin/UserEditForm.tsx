@@ -2,14 +2,18 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { AdminUser } from '@/lib/admin-queries'
+import type { AdminUser, AdminEntityOption, AdminGraduationLevelRow } from '@/lib/admin-queries'
+import EntitySearchInput from '@/components/admin/EntitySearchInput'
 
 interface Props {
   user: AdminUser
   locale: string
+  nucleoOptions?: AdminEntityOption[]
+  graduationOptions?: AdminGraduationLevelRow[]
+  userOptions?: AdminEntityOption[]
 }
 
-export default function UserEditForm({ user, locale }: Props) {
+export default function UserEditForm({ user, locale, nucleoOptions = [], graduationOptions = [], userOptions = [] }: Props) {
   const router = useRouter()
   const [form, setForm] = useState({
     name:       user.name,
@@ -28,13 +32,23 @@ export default function UserEditForm({ user, locale }: Props) {
     youtube:    user.socialLinks?.youtube ?? '',
     tiktok:     user.socialLinks?.tiktok ?? '',
     adminPanelAccess: user.adminPanelAccess ?? false,
+    graduationLevelId: user.graduationLevelId ?? '',
+    setupComplete: user.setupComplete ?? false,
+    educatorEligible: user.educatorEligible ?? false,
   })
+  const [nucleoIds, setNucleoIds] = useState<string[]>(user.nucleoIds ?? [])
+  const [supervisorIds, setSupervisorIds] = useState<string[]>(user.supervisorIds ?? [])
+  const [supervisorToAdd, setSupervisorToAdd] = useState('')
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
 
   function set(key: string, value: unknown) {
     setForm(f => ({ ...f, [key]: value }))
+  }
+
+  function toggleNucleo(id: string) {
+    setNucleoIds((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]))
   }
 
   async function handleSave() {
@@ -55,6 +69,11 @@ export default function UserEditForm({ user, locale }: Props) {
         country:    form.country || null,
         disabled:   form.disabled,
         adminPanelAccess: form.adminPanelAccess,
+        graduationLevelId: form.graduationLevelId || null,
+        setupComplete: form.setupComplete,
+        educatorEligible: form.educatorEligible,
+        nucleoIds,
+        supervisorIds,
         socialLinks: {
           instagram: form.instagram || null,
           facebook:  form.facebook  || null,
@@ -159,6 +178,114 @@ export default function UserEditForm({ user, locale }: Props) {
       </div>
 
       <section className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
+        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-accent mb-6">Membresía y Graduación</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className={labelClass}>Graduación (corda)</label>
+            <select className={inputClass} value={form.graduationLevelId} onChange={e => set('graduationLevelId', e.target.value)}>
+              <option value="">Sin graduación asignada</option>
+              {graduationOptions.map((g) => (
+                <option key={g.id} value={g.id}>{g.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-3 justify-center">
+            <label className="flex items-center gap-3 cursor-pointer bg-surface/40 hover:bg-surface/60 border border-border rounded-xl px-4 py-3 transition-colors">
+              <input
+                type="checkbox"
+                checked={form.setupComplete}
+                onChange={e => set('setupComplete', e.target.checked)}
+                className="w-5 h-5 accent-accent rounded-lg"
+              />
+              <span className="text-sm font-semibold text-text">Onboarding completo</span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer bg-surface/40 hover:bg-surface/60 border border-border rounded-xl px-4 py-3 transition-colors">
+              <input
+                type="checkbox"
+                checked={form.educatorEligible}
+                onChange={e => set('educatorEligible', e.target.checked)}
+                className="w-5 h-5 accent-accent rounded-lg"
+              />
+              <span className="text-sm font-semibold text-text">Elegible para ser educador</span>
+            </label>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <label className={labelClass}>Núcleos a los que pertenece</label>
+          {nucleoOptions.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {nucleoOptions.map((n) => (
+                <label key={n.id} className="flex items-center gap-3 cursor-pointer bg-surface/40 hover:bg-surface/60 border border-border rounded-xl px-4 py-3 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={nucleoIds.includes(n.id)}
+                    onChange={() => toggleNucleo(n.id)}
+                    className="w-5 h-5 accent-accent rounded-lg"
+                  />
+                  <span className="text-sm font-semibold text-text truncate">{n.label}</span>
+                </label>
+              ))}
+            </div>
+          ) : (
+            <p className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text-muted">
+              Este usuario no tiene un grupo asignado o el grupo no tiene núcleos.
+            </p>
+          )}
+        </div>
+
+        <div className="mt-6">
+          <label className={labelClass}>Supervisores</label>
+          <p className="mb-3 text-xs text-text-muted">Usuarios que supervisan a este miembro (jerarquía educativa).</p>
+          <EntitySearchInput
+            label="Buscar usuario"
+            value={supervisorToAdd}
+            options={userOptions}
+            placeholder="Busca por nombre, apodo o correo"
+            emptyLabel="Selecciona un usuario para agregar."
+            onChange={setSupervisorToAdd}
+          />
+          <button
+            type="button"
+            disabled={!supervisorToAdd || supervisorIds.includes(supervisorToAdd)}
+            onClick={() => {
+              setSupervisorIds((ids) => [...ids, supervisorToAdd])
+              setSupervisorToAdd('')
+            }}
+            className="mt-3 rounded-xl border border-accent/30 px-4 py-2 text-xs font-semibold text-accent transition-opacity disabled:opacity-40"
+          >
+            Agregar supervisor
+          </button>
+          <div className="mt-4 space-y-2">
+            {supervisorIds.length > 0 ? (
+              supervisorIds.map((id) => {
+                const option = userOptions.find((o) => o.id === id)
+                return (
+                  <div key={id} className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-text">{option?.label || id}</p>
+                      <p className="truncate font-mono text-[10px] text-text-muted">{id}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setSupervisorIds((ids) => ids.filter((x) => x !== id))}
+                      className="text-xs font-semibold text-danger"
+                    >
+                      Quitar
+                    </button>
+                  </div>
+                )
+              })
+            ) : (
+              <p className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text-muted">
+                Sin supervisores asignados.
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
         <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-accent mb-6">Biografía</h3>
         <textarea 
           className={`${inputClass} min-h-[120px] resize-none`} 
@@ -177,6 +304,28 @@ export default function UserEditForm({ user, locale }: Props) {
               <input className={inputClass} value={(form as any)[plat]} onChange={e => set(plat, e.target.value)} placeholder={`URL o @usuario`} />
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
+        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-accent mb-6">Información de Cuenta</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div>
+            <p className={labelClass}>UID</p>
+            <p className="font-mono text-xs text-text-secondary break-all">{user.uid}</p>
+          </div>
+          <div>
+            <p className={labelClass}>Creado</p>
+            <p className="text-sm text-text-secondary">
+              {user.createdAt ? new Date(user.createdAt).toLocaleString('es-ES') : 'Desconocido'}
+            </p>
+          </div>
+          <div>
+            <p className={labelClass}>Último acceso</p>
+            <p className="text-sm text-text-secondary">
+              {user.lastSignInTime ? new Date(user.lastSignInTime).toLocaleString('es-ES') : 'Nunca'}
+            </p>
+          </div>
         </div>
       </section>
 
