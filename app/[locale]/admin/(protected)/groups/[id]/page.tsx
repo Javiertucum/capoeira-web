@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import GroupEditForm from '@/components/admin/GroupEditForm'
+import GroupMergeActions from '@/components/admin/GroupMergeActions'
 import Badge from '@/components/ui/Badge'
-import { getGroupWithNucleos } from '@/lib/queries'
+import { getAllGroups, getGroupWithNucleos } from '@/lib/queries'
 import { getAdminEntityOptions } from '@/lib/admin-queries'
 
 type Props = {
@@ -12,14 +13,16 @@ type Props = {
 
 export default async function GroupAdminPage({ params }: Props) {
   const { locale, id } = await params
-  const [data, entityOptions] = await Promise.all([
+  const [data, entityOptions, allGroups] = await Promise.all([
     getGroupWithNucleos(id, { includeHidden: true }).catch(() => null),
     getAdminEntityOptions().catch(() => []),
+    getAllGroups({ includeHidden: true }).catch(() => []),
   ])
 
   if (!data) notFound()
 
   const { group, nucleos } = data
+  const otherGroups = allGroups.filter((other) => other.id !== group.id).map((other) => ({ id: other.id, name: other.name }))
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -123,6 +126,8 @@ export default async function GroupAdminPage({ params }: Props) {
                 </div>
               </div>
             </section>
+
+            <GroupMergeActions locale={locale} groupId={group.id} groupName={group.name} otherGroups={otherGroups} />
           </aside>
         </div>
       </div>
