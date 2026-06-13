@@ -34,6 +34,7 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
   const [coAdminToAdd, setCoAdminToAdd] = useState('')
   const [memberToAdd, setMemberToAdd] = useState('')
   const [addingMember, setAddingMember] = useState(false)
+  const [recalculating, setRecalculating] = useState(false)
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
@@ -107,6 +108,30 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
       })
     } finally {
       setAddingMember(false)
+    }
+  }
+
+  async function handleRecalculateMembers() {
+    setRecalculating(true)
+    setMessage(null)
+    try {
+      const res = await fetch(`/api/admin/groups/${group.id}/recalculate-members`, {
+        method: 'POST',
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(data.error || 'Error al recalcular miembros')
+      setMessage({
+        type: 'ok',
+        text: `Contador de miembros actualizado: ${data.previousCount} -> ${data.memberCount}`,
+      })
+      router.refresh()
+    } catch (err) {
+      setMessage({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Error al recalcular miembros',
+      })
+    } finally {
+      setRecalculating(false)
     }
   }
 
@@ -295,6 +320,20 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
             className="mt-3 rounded-xl border border-accent/30 px-4 py-2 text-xs font-semibold text-accent transition-opacity disabled:opacity-40"
           >
             {addingMember ? 'Agregando...' : 'Agregar al grupo y notificar'}
+          </button>
+        </div>
+        <div className="mt-5 border-t border-border pt-5">
+          <p className="text-xs text-text-muted">
+            Contador actual de miembros: <span className="font-semibold text-text">{group.memberCount ?? 0}</span>.
+            Si no coincide con la cantidad real, recalculalo aqui.
+          </p>
+          <button
+            type="button"
+            disabled={recalculating}
+            onClick={handleRecalculateMembers}
+            className="mt-3 rounded-xl border border-border px-4 py-2 text-xs font-semibold text-text-secondary transition-opacity hover:border-accent/30 disabled:opacity-40"
+          >
+            {recalculating ? 'Recalculando...' : 'Recalcular contador de miembros'}
           </button>
         </div>
       </section>
