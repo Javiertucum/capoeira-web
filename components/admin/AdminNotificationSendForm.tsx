@@ -163,7 +163,16 @@ export default function AdminNotificationSendForm({ groups }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      const data = (await response.json()) as SendResult
+      let data: SendResult
+      try {
+        data = (await response.json()) as SendResult
+      } catch {
+        throw new Error(
+          response.ok
+            ? 'Respuesta invalida del servidor'
+            : `Error del servidor (HTTP ${response.status}). La notificacion puede haberse enviado igualmente.`
+        )
+      }
       setResult(data)
       if (data.ok) {
         setTitle('')

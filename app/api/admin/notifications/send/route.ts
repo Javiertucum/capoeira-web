@@ -9,6 +9,9 @@ import { resolveAudience, type SegmentFilter, type TokenEntry } from '@/lib/noti
 // FCM multicast supports up to 500 tokens per batch
 const FIREBASE_BATCH_SIZE = 500
 
+// Allow extra time for large audiences (Firestore + FCM round trips)
+export const maxDuration = 60
+
 export type DeepLink = {
   screen: string
   entityId?: string
@@ -192,10 +195,9 @@ export async function POST(request: NextRequest) {
     updatedAt: FieldValue.serverTimestamp(),
   })
 
-  // Write recipients subcollection (non-blocking on response)
+  // Write recipients subcollection and audit log (non-blocking on response)
   void writeRecipients(campaignId, entries, sentUids)
-
-  await writeAdminAuditLog({
+  void writeAdminAuditLog({
     actorUid: authResult.uid,
     action: 'notification.send',
     entity: { type: 'adminNotificationCampaign', id: campaignId, path: `adminNotificationCampaigns/${campaignId}` },
