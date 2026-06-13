@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+It powers the public web (agendacapoeiragem.com) for Agenda Capoeiragem, deployed on Vercel.
+
+## Ads configuration
+
+`public/ads.txt` declares the AdSense seller for the web. `public/app-ads.txt` declares the same
+seller (`pub-9553696180784394`) for AdMob on the Android mobile app (`com.capoeiraapp.mobile`):
+AdMob checks `/app-ads.txt` on the domain configured as the app's "Developer website" in Play
+Console, which is this site.
+
 ## Getting Started
 
 First, run the development server:
