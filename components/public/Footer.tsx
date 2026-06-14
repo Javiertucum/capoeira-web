@@ -1,23 +1,22 @@
 import Link from 'next/link'
 
-const NAV_PLATFORM = [
-  { label: 'Funcionalidades', href: '#features' },
-  { label: 'Tutoriales',      href: '#tutorials' },
-  { label: 'Directorio',      href: '#features' },
-  { label: 'Eventos',         href: '#features' },
-]
+export default function Footer({ locale = 'es' }: { locale?: string }) {
+  const NAV_PLATFORM = [
+    { label: 'Funcionalidades', href: '#features' },
+    { label: 'Directorio',      href: '#directorio' },
+    { label: 'Descargar App',   href: `/${locale}/app` },
+  ]
 
-const NAV_COMMUNITY = [
-  { label: 'Únete',           href: '#join' },
-  { label: 'Admin',           href: '/admin' },
-]
+  const NAV_COMMUNITY = [
+    { label: 'Descargar App',   href: `/${locale}/app` },
+    { label: 'Admin',           href: '/admin' },
+  ]
 
-const NAV_LEGAL = [
-  { label: 'Privacidad',      href: '/es/privacy' },
-  { label: 'Términos',        href: '/es/terms' },
-]
+  const NAV_LEGAL = [
+    { label: 'Privacidad',      href: `/${locale}/privacy` },
+    { label: 'Términos',        href: `/${locale}/terms` },
+  ]
 
-export default function Footer() {
   return (
     <footer className="border-t border-border bg-bg">
       <div className="page-shell py-16 lg:py-20">

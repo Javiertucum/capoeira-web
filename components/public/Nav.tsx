@@ -63,12 +63,12 @@ export default function Nav() {
   const links = [
     { href: isHomepage ? '#directorio' : `/${locale}/#directorio`, label: t('map'), key: 'map' },
     { href: isHomepage ? '#features' : `/${locale}/#features`, label: t('features'), key: 'features' },
-    { href: isHomepage ? '#tutorials' : `/${locale}/#tutorials`, label: t('tutorials'), key: 'tutorials' },
     { href: `/${locale}/admin`, label: 'Admin', key: 'admin' },
   ]
 
   function isActive(key: string) {
     if (key === 'admin') return pathname.includes('/admin')
+    if (key === 'app') return pathname.startsWith(`/${locale}/app`)
     return false
   }
 
@@ -124,8 +124,18 @@ export default function Nav() {
             </div>
           </div>
 
-          {/* Right: locale + hamburger */}
+          {/* Right: download CTA + locale + hamburger */}
           <div className="flex items-center gap-4">
+
+            {/* Download app — desktop CTA */}
+            <Link
+              href={`/${locale}/app`}
+              className={`hidden lg:inline-flex items-center rounded-full px-5 py-2.5 text-[13px] font-bold transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                isActive('app') ? 'bg-ink text-bg' : 'bg-accent text-white hover:opacity-90'
+              }`}
+            >
+              {t('downloadApp')}
+            </Link>
 
             {/* Locale switcher — desktop */}
             <div className={`hidden rounded-full border px-1 py-1 sm:flex border-ink/5 bg-ink/5`}>
@@ -188,6 +198,12 @@ export default function Nav() {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href={`/${locale}/app`}
+                className="flex items-center justify-between rounded-[16px] bg-accent px-4 py-3 text-sm font-bold text-white transition-opacity duration-150 ease-[var(--ease-out)] active:scale-[0.98]"
+              >
+                {t('downloadApp')}
+              </Link>
             </div>
             {/* Locale switcher mobile */}
             <div className="mt-4 flex rounded-full border border-line bg-surface-muted p-1">
