@@ -96,6 +96,7 @@
     "address": "Address",
     "educatorRole": "Educator",
     "graduatedAs": "Graduated: {level}",
-    "myNucleos": "My nucleos"
+    "myNucleos": "My nucleos",
+    "nucleosSection": "Nucleos"
   }
 }

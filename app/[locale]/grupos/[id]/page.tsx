@@ -12,8 +12,22 @@ import {
   buildBreadcrumbSchema,
 } from '@/lib/site'
 import { getGroupWithNucleos, getGroupEducators, getGraduationLevels, getGraduationLevelNamesByGroup } from '@/lib/queries'
+import { flagForCountry } from '@/lib/country-flags'
+import CordaVisual from '@/components/public/CordaVisual'
+import ProfileCard, { LocationPinIcon } from '@/components/public/ProfileCard'
+import Avatar from '@/components/public/Avatar'
 
 type Props = Readonly<{ params: Promise<{ locale: string; id: string }> }>
+
+const DAY_SHORT = {
+  es: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+  pt: ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sá'],
+  en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+} as const
+
+function getDayShort(locale: string) {
+  return DAY_SHORT[locale as keyof typeof DAY_SHORT] ?? DAY_SHORT.en
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, id } = await params
@@ -51,6 +65,7 @@ export default async function GroupProfilePage({ params }: Props) {
 
   const gradNamesByGroup = await getGraduationLevelNamesByGroup([id])
   const gradMap = gradNamesByGroup.get(id)
+  const dayShort = getDayShort(locale)
 
   const orgSchema = buildSportsOrganizationSchema({
     name: group.name,
@@ -76,39 +91,50 @@ export default async function GroupProfilePage({ params }: Props) {
           ← {t('back')}
         </Link>
 
-        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-          {group.logoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={group.logoUrl} alt={group.name} className="h-24 w-24 shrink-0 rounded-2xl border border-border object-cover" />
-          ) : (
-            <div className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl border border-border bg-surface text-2xl font-bold text-text-secondary">
-              {group.name?.[0]?.toUpperCase() ?? '?'}
+        {/* Profile card */}
+        <ProfileCard>
+          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+            {group.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={group.logoUrl} alt={group.name} className="h-24 w-24 shrink-0 rounded-2xl border border-border object-cover" />
+            ) : (
+              <div className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl border border-border bg-surface text-2xl font-bold text-text-secondary">
+                {group.name?.[0]?.toUpperCase() ?? '?'}
+              </div>
+            )}
+            <div>
+              <h1 className="font-black text-ink leading-[1.05] tracking-[-0.02em]" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>
+                {group.name}
+              </h1>
+              {group.graduationSystemName && <p className="mt-1 text-lg text-text-secondary">{group.graduationSystemName}</p>}
+              {group.representedCountries && group.representedCountries.length > 0 && (
+                <p className="mt-2 flex flex-wrap items-center gap-2 text-sm font-bold text-text-secondary">
+                  {group.representedCountries.map((country) => (
+                    <span key={country} className="inline-flex items-center gap-1">
+                      {flagForCountry(country) ?? ''} {country}
+                    </span>
+                  ))}
+                </p>
+              )}
             </div>
-          )}
-          <div>
-            <h1 className="font-black text-ink leading-[1.05] tracking-[-0.02em]" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>
-              {group.name}
-            </h1>
-            {group.graduationSystemName && <p className="mt-1 text-lg text-text-secondary">{group.graduationSystemName}</p>}
           </div>
-        </div>
 
-        {group.description && (
-          <p className="mt-8 max-w-[70ch] text-base leading-relaxed text-text-secondary">{group.description}</p>
-        )}
+          {group.description && (
+            <p className="mt-6 max-w-[70ch] text-base leading-relaxed text-text-secondary">{group.description}</p>
+          )}
 
-        {/* Stats */}
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          <InfoRow label={t('members')} value={String(group.memberCount ?? 0)} />
-          <InfoRow
-            label={t('representedCountries')}
-            value={group.representedCountries?.length ? group.representedCountries.join(', ') : t('unspecified')}
-          />
-          <InfoRow
-            label={t('representedCities')}
-            value={group.representedCities?.length ? group.representedCities.join(', ') : t('unspecified')}
-          />
-        </div>
+          {/* Stats */}
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm font-bold text-text-secondary">
+            <span className="rounded-full border border-border bg-surface px-4 py-2">
+              <span className="text-ink">{group.memberCount ?? 0}</span> {t('members').toLowerCase()}
+            </span>
+            {group.representedCities && group.representedCities.length > 0 && (
+              <span className="rounded-full border border-border bg-surface px-4 py-2">
+                {group.representedCities.join(' · ')}
+              </span>
+            )}
+          </div>
+        </ProfileCard>
 
         {/* Graduation system */}
         {graduationLevels.length > 0 && (
@@ -118,15 +144,9 @@ export default async function GroupProfilePage({ params }: Props) {
               {graduationLevels.map((level) => (
                 <span
                   key={level.id}
-                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-bold text-ink"
+                  className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-bold text-ink"
                 >
-                  {level.colors.length > 0 && (
-                    <span className="flex h-3 w-6 overflow-hidden rounded-full border border-border/50">
-                      {level.colors.map((color, i) => (
-                        <span key={i} style={{ backgroundColor: color, flex: 1 }} />
-                      ))}
-                    </span>
-                  )}
+                  <CordaVisual colors={level.colors} tipColorLeft={level.tipColorLeft} tipColorRight={level.tipColorRight} />
                   {level.name}
                 </span>
               ))}
@@ -143,13 +163,19 @@ export default async function GroupProfilePage({ params }: Props) {
                 <Link
                   key={educator.uid}
                   href={`/${locale}/educadores/${educator.uid}`}
-                  className="block rounded-2xl border border-border bg-card p-4 transition-colors duration-150 hover:border-accent"
+                  className="flex items-start gap-3 rounded-2xl border border-border bg-card p-4 transition-colors duration-150 hover:border-accent"
                 >
-                  <p className="font-bold text-ink">{educator.name} {educator.surname}</p>
-                  <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">
-                    {(educator.graduationLevelId && gradMap?.get(educator.graduationLevelId)) ?? t('unspecified')}
-                  </p>
-                  {educator.bio && <p className="mt-1 line-clamp-2 text-sm text-text-secondary">{educator.bio}</p>}
+                  <Avatar name={educator.name} surname={educator.surname} avatarUrl={educator.avatarUrl} size="sm" />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-bold text-ink">
+                      {educator.name} {educator.surname}
+                      {flagForCountry(educator.country) && <span className="ml-2">{flagForCountry(educator.country)}</span>}
+                    </p>
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">
+                      {(educator.graduationLevelId && gradMap?.get(educator.graduationLevelId)) ?? t('unspecified')}
+                    </p>
+                    {educator.bio && <p className="mt-1 line-clamp-2 text-sm text-text-secondary">{educator.bio}</p>}
+                  </div>
                 </Link>
               ))}
             </div>
@@ -158,20 +184,48 @@ export default async function GroupProfilePage({ params }: Props) {
 
         {/* Nucleos */}
         <div className="mt-10">
-          <p className="eyebrow acc mb-3">{t('viewNucleo')}s</p>
+          <p className="eyebrow acc mb-3">{t('nucleosSection')}</p>
           {nucleos.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              {nucleos.map((nucleo) => (
-                <Link
-                  key={nucleo.id}
-                  href={`/${locale}/nucleos/${nucleo.groupId}/${nucleo.id}`}
-                  className="block rounded-2xl border border-border bg-card p-4 transition-colors duration-150 hover:border-accent"
-                >
-                  <p className="font-bold text-ink">{nucleo.name}</p>
-                  <p className="mt-1 text-sm text-text-secondary">{[nucleo.city, nucleo.country].filter(Boolean).join(', ')}</p>
-                  {nucleo.address && <p className="mt-1 text-xs text-text-muted">{nucleo.address}</p>}
-                </Link>
-              ))}
+              {nucleos.map((nucleo) => {
+                const nucleoFlag = flagForCountry(nucleo.country)
+                const sortedSchedules = [...(nucleo.schedules ?? [])].sort(
+                  (a, b) => a.dayOfWeek - b.dayOfWeek || a.startTime.localeCompare(b.startTime)
+                )
+                return (
+                  <Link
+                    key={nucleo.id}
+                    href={`/${locale}/nucleos/${nucleo.groupId}/${nucleo.id}`}
+                    className="block rounded-2xl border border-border bg-card p-4 transition-colors duration-150 hover:border-accent"
+                  >
+                    <div className="flex items-start gap-2">
+                      <LocationPinIcon className="mt-0.5 shrink-0 text-accent" />
+                      <div className="min-w-0">
+                        <p className="font-bold text-ink">
+                          {nucleo.name}
+                          {nucleoFlag && <span className="ml-2">{nucleoFlag}</span>}
+                        </p>
+                        {nucleo.address && <p className="mt-1 text-sm text-text-secondary">{nucleo.address}</p>}
+                        <p className="mt-0.5 text-xs text-text-muted">
+                          {[nucleo.city, nucleo.country].filter(Boolean).join(', ')}
+                        </p>
+                      </div>
+                    </div>
+                    {sortedSchedules.length > 0 && (
+                      <div className="mt-3 space-y-1 border-t border-border pt-3">
+                        {sortedSchedules.map((s, i) => (
+                          <div key={i} className="flex items-center justify-between text-sm">
+                            <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs font-bold text-text-secondary">
+                              {dayShort[s.dayOfWeek] ?? s.dayOfWeek}
+                            </span>
+                            <span className="text-text-secondary">{s.startTime} - {s.endTime}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </Link>
+                )
+              })}
             </div>
           ) : (
             <p className="text-sm text-text-secondary">{t('noNucleos')}</p>
@@ -179,14 +233,5 @@ export default async function GroupProfilePage({ params }: Props) {
         </div>
       </div>
     </main>
-  )
-}
-
-function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-border bg-card p-4">
-      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-text-muted">{label}</p>
-      <p className="mt-1 text-base font-bold text-ink">{value}</p>
-    </div>
   )
 }

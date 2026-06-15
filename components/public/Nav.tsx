@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useEffectEvent, useState } from 'react'
 import { routing } from '@/i18n/routing'
+import ThemeToggle from './ThemeToggle'
 
 const LOCALES = routing.locales
 type Locale = (typeof routing.locales)[number]
@@ -157,6 +158,9 @@ export default function Nav() {
               ))}
             </div>
 
+            {/* Theme toggle */}
+            <ThemeToggle className="hidden sm:flex" />
+
             {/* Hamburger — mobile */}
             <button
               type="button"
@@ -207,20 +211,23 @@ export default function Nav() {
               </Link>
             </div>
             {/* Locale switcher mobile */}
-            <div className="mt-4 flex rounded-full border border-line bg-surface-muted p-1">
-              {LOCALES.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => switchLocale(item)}
-                  aria-pressed={item === locale}
-                  className={`mono flex-1 rounded-full py-2 text-[10px] uppercase tracking-[0.18em] transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-95 ${
-                    item === locale ? 'bg-ink text-bg' : 'text-ink-3 hover:text-ink'
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
+            <div className="mt-4 flex items-center gap-2">
+              <div className="flex flex-1 rounded-full border border-line bg-surface-muted p-1">
+                {LOCALES.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => switchLocale(item)}
+                    aria-pressed={item === locale}
+                    className={`mono flex-1 rounded-full py-2 text-[10px] uppercase tracking-[0.18em] transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-95 ${
+                      item === locale ? 'bg-ink text-bg' : 'text-ink-3 hover:text-ink'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+              <ThemeToggle />
             </div>
           </div>
         </>

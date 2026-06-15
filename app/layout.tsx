@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { routing } from '@/i18n/routing'
 import { SITE_NAME, SITE_URL, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
+import { THEME_INIT_SCRIPT } from '@/components/public/ThemeToggle'
 
 const bodyFont = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -90,6 +91,7 @@ export default async function RootLayout({
     >
       <head>
         <meta name="theme-color" content="#F7F3EB" />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://maps.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />

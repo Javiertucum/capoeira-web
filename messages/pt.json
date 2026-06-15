@@ -96,6 +96,7 @@
     "address": "Endereço",
     "educatorRole": "Educador",
     "graduatedAs": "Graduado {level}",
-    "myNucleos": "Meus núcleos"
+    "myNucleos": "Meus núcleos",
+    "nucleosSection": "Núcleos"
   }
 }

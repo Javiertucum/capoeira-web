@@ -43,6 +43,34 @@
   --shadow-glass: 0 4px 20px rgb(16 185 129 / 0.08);
 }
 
+/* ─── Dark theme — overrides @theme color tokens ─── */
+.dark {
+  --color-bg:            #10131A;
+  --color-card:          #181D26;
+  --color-surface:       #202633;
+  --color-surface-muted: #161B24;
+  --color-border:        #27303D;
+  --color-text:          #F3F1EA;
+  --color-text-secondary:#D2CCC0;
+  --color-text-muted:    #A69F93;
+
+  --color-ink:           #F3F1EA;
+  --color-ink-2:         #D2CCC0;
+  --color-ink-3:         #A69F93;
+  --color-ink-4:         #6B6459;
+
+  --color-accent:        #43A047;
+  --color-accent-ink:    #81C784;
+  --color-accent-soft:   #1F3A22;
+
+  --color-success:       #66BB6A;
+  --color-warning:       #F6AD55;
+  --color-danger:        #FC8181;
+
+  --shadow-soft:  0 1px 3px rgb(0 0 0 / 0.3), 0 4px 12px rgb(0 0 0 / 0.25);
+  --shadow-float: 0 8px 30px rgb(0 0 0 / 0.4), 0 2px 6px rgb(0 0 0 / 0.25);
+}
+
 /* ─── CSS custom properties ─── */
 :root {
   /* Light Theme (Default) — warm capoeiragem palette */
@@ -88,6 +116,33 @@
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+/* Dark theme — overrides plain CSS custom properties used by .card/.btn/etc */
+.dark {
+  --bg:              #10131A;
+  --card:            #181D26;
+  --surface:         #202633;
+  --surface-muted:   #161B24;
+  --border:          #27303D;
+  --text:            #F3F1EA;
+  --text-secondary:  #D2CCC0;
+  --text-muted:      #A69F93;
+
+  --ink:             #F3F1EA;
+  --ink-2:           #D2CCC0;
+  --ink-3:           #A69F93;
+  --ink-4:           #6B6459;
+
+  --accent:          #43A047;
+  --accent-ink:      #81C784;
+  --accent-soft:     #1F3A22;
+  --green:           #43A047;
+  --green-soft:      #1F3A22;
+
+  --success:         #66BB6A;
+  --warning:         #F6AD55;
+  --danger:          #FC8181;
+}
+
 
 /* ─── Base ─── */
 *, *::before, *::after { box-sizing: border-box; }
@@ -104,6 +159,7 @@ body {
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.01em;
   overflow-x: hidden;
+  transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out);
 }
 
 /* ─── Tipografía ─── */
