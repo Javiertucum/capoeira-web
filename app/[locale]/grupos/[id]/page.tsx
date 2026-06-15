@@ -74,15 +74,21 @@ export default async function GroupProfilePage({ params }: Props) {
   )
   const nucleosByEducator: Record<string, MapNucleo[]> = Object.fromEntries(nucleosByEducatorEntries)
 
-  const educatorItems: EducatorItem[] = educators.map((educator) => ({
-    uid: educator.uid,
-    name: educator.name,
-    surname: educator.surname,
-    avatarUrl: educator.avatarUrl,
-    bio: educator.bio,
-    country: educator.country,
-    graduationName: (educator.graduationLevelId && gradMap?.get(educator.graduationLevelId)) ?? null,
-  }))
+  const educatorItems: EducatorItem[] = educators
+    .filter((educator) =>
+      (nucleosByEducator[educator.uid] ?? []).some(
+        (n) => typeof n.latitude === 'number' && typeof n.longitude === 'number'
+      )
+    )
+    .map((educator) => ({
+      uid: educator.uid,
+      name: educator.name,
+      surname: educator.surname,
+      avatarUrl: educator.avatarUrl,
+      bio: educator.bio,
+      country: educator.country,
+      graduationName: (educator.graduationLevelId && gradMap?.get(educator.graduationLevelId)) ?? null,
+    }))
 
   const orgSchema = buildSportsOrganizationSchema({
     name: group.name,
@@ -160,7 +166,7 @@ export default async function GroupProfilePage({ params }: Props) {
               locale={locale}
               educators={educatorItems}
               nucleosByEducator={nucleosByEducator}
-              labels={{ title: t('educators'), viewProfile: t('viewProfile'), nucleosSection: t('nucleosSection') }}
+              labels={{ title: `${t('educators')} (${educatorItems.length})`, viewProfile: t('viewProfile'), nucleosSection: t('nucleosSection') }}
             />
 
             {/* Nucleos */}
