@@ -7,7 +7,7 @@ import MapView, { type MapMarker, type MapViewHandle, type MapPopup } from '@/co
 import Modal from '@/components/public/Modal'
 import { normalizeSocialLink } from '@/lib/social-links'
 import { haversineDistanceKm } from '@/lib/geo'
-import { flagForCountry } from '@/lib/country-flags'
+import CountryFlag from '@/components/public/CountryFlag'
 import { getDayShort } from '@/lib/day-short'
 import type { Group, MapNucleo, PublicUserProfile } from '@/lib/types'
 
@@ -378,12 +378,22 @@ export default function DirectorySplit({
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="font-bold text-ink">
-                        {nucleo.name}
-                        {flagForCountry(nucleo.country) && <span className="ml-2">{flagForCountry(nucleo.country)}</span>}
-                      </p>
-                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">{nucleo.groupName}</p>
+                    <div className="flex items-start gap-3">
+                      {nucleo.groupLogoUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={nucleo.groupLogoUrl} alt={nucleo.groupName} className="h-9 w-9 shrink-0 rounded-xl border border-border object-cover" />
+                      ) : (
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-border bg-surface text-xs font-bold text-text-secondary">
+                          {nucleo.groupName?.[0]?.toUpperCase() ?? '?'}
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-bold text-ink">
+                          {nucleo.name}
+                          <CountryFlag country={nucleo.country} className="ml-2" />
+                        </p>
+                        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">{nucleo.groupName}</p>
+                      </div>
                     </div>
                     {nucleo.schedules && nucleo.schedules.length > 0 && (
                       <span className="chip acc shrink-0 text-[10px]">{nucleo.schedules.length} {tProfile('schedules').toLowerCase()}</span>
@@ -490,7 +500,7 @@ export default function DirectorySplit({
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">
               {contactNucleo.groupName}
-              {flagForCountry(contactNucleo.country) && <span className="ml-2">{flagForCountry(contactNucleo.country)}</span>}
+              <CountryFlag country={contactNucleo.country} className="ml-2" />
             </p>
             {(contactNucleo.address || contactNucleo.city || contactNucleo.country) && (
               <p className="text-sm text-text-secondary">

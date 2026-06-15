@@ -161,12 +161,14 @@ function mapMapNucleo(
   id: string,
   groupId: string,
   groupName: string,
-  data: FirestoreRecord
+  data: FirestoreRecord,
+  groupLogoUrl?: string | null
 ): MapNucleo {
   return {
     id,
     groupId,
     groupName,
+    groupLogoUrl: groupLogoUrl ?? null,
     name: asString(data.name) ?? '',
     country: asNullableString(data.country),
     city: asNullableString(data.city),
@@ -231,6 +233,12 @@ export async function getAllNucleos(options: VisibilityOptions = {}): Promise<Ma
       return [doc.id, asString(data.name) ?? ''] as const
     })
   )
+  const groupLogos = new Map(
+    visibleGroupDocs.map((doc) => {
+      const data = doc.data() as FirestoreRecord
+      return [doc.id, asNullableString(data.logoUrl)] as const
+    })
+  )
 
   return nucleosSnap.docs
     .filter((doc) => options.includeHidden || isPubliclyVisible(doc.data() as FirestoreRecord))
@@ -239,7 +247,7 @@ export async function getAllNucleos(options: VisibilityOptions = {}): Promise<Ma
       const groupId = parent?.id ?? ''
       const groupName = groupNames.get(groupId)
       if (!options.includeHidden && groupName === undefined) return null
-      return mapMapNucleo(doc.id, groupId, groupName ?? '', doc.data() as FirestoreRecord)
+      return mapMapNucleo(doc.id, groupId, groupName ?? '', doc.data() as FirestoreRecord, groupLogos.get(groupId))
     })
     .filter((nucleo): nucleo is MapNucleo => nucleo !== null)
 }
@@ -322,6 +330,9 @@ export async function getNucleosByEducator(uid: string, nucleoIds?: string[]): P
   const groupNames = new Map(
     visibleGroupDocs.map((doc) => [doc.id, asString(doc.data().name) ?? ''] as const)
   )
+  const groupLogos = new Map(
+    visibleGroupDocs.map((doc) => [doc.id, asNullableString((doc.data() as FirestoreRecord).logoUrl)] as const)
+  )
 
   const nucleoIdSet = new Set(nucleoIds ?? [])
   const results: MapNucleo[] = []
@@ -339,7 +350,7 @@ export async function getNucleosByEducator(uid: string, nucleoIds?: string[]): P
     if (!isMatch) return
 
     const groupName = groupNames.get(groupId) ?? ''
-    results.push(mapMapNucleo(doc.id, groupId, groupName, data))
+    results.push(mapMapNucleo(doc.id, groupId, groupName, data, groupLogos.get(groupId)))
   })
 
   return results
@@ -369,7 +380,7 @@ export async function getGroupWithNucleos(
   const group = mapGroup(groupDoc.id, groupDoc.data() as FirestoreRecord)
   const nucleos = nucleosSnap.docs
     .filter((doc) => options.includeHidden || isPubliclyVisible(doc.data() as FirestoreRecord))
-    .map((doc) => mapMapNucleo(doc.id, groupId, group.name, doc.data() as FirestoreRecord))
+    .map((doc) => mapMapNucleo(doc.id, groupId, group.name, doc.data() as FirestoreRecord, group.logoUrl))
 
   return { group, nucleos }
 }
@@ -424,7 +435,8 @@ export async function getNucleoById(groupId: string, nucleoId: string): Promise<
   if (!isPubliclyVisible(nucleoDoc.data() as FirestoreRecord)) return null
   if (groupDoc.exists && !isPubliclyVisible(groupDoc.data() as FirestoreRecord)) return null
   const groupName = groupDoc.exists ? (asString((groupDoc.data() as FirestoreRecord).name) ?? '') : ''
-  return mapMapNucleo(nucleoDoc.id, groupId, groupName, nucleoDoc.data() as FirestoreRecord)
+  const groupLogoUrl = groupDoc.exists ? asNullableString((groupDoc.data() as FirestoreRecord).logoUrl) : null
+  return mapMapNucleo(nucleoDoc.id, groupId, groupName, nucleoDoc.data() as FirestoreRecord, groupLogoUrl)
 }
 
 export async function getNucleoMembers(nucleoId: string): Promise<PublicUserProfile[]> {

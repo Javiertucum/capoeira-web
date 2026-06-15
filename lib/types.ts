@@ -65,6 +65,7 @@ export interface Nucleo {
 
 export interface MapNucleo extends Nucleo {
   groupName: string
+  groupLogoUrl?: string | null
 }
 
 export interface GraduationLevel {

@@ -12,7 +12,7 @@ import {
   buildBreadcrumbSchema,
 } from '@/lib/site'
 import { getGroupWithNucleos, getGroupEducators, getGraduationLevels, getGraduationLevelNamesByGroup, getNucleosByEducator } from '@/lib/queries'
-import { flagForCountry } from '@/lib/country-flags'
+import CountryFlag from '@/components/public/CountryFlag'
 import ProfileCard, { LocationPinIcon } from '@/components/public/ProfileCard'
 import GraduationLevels from '@/components/public/GraduationLevels'
 import EducatorsGrid, { type EducatorItem } from '@/components/public/EducatorsGrid'
@@ -134,7 +134,7 @@ export default async function GroupProfilePage({ params }: Props) {
                 <p className="mt-2 flex flex-wrap items-center gap-2 text-sm font-bold text-text-secondary">
                   {group.representedCountries.map((country) => (
                     <span key={country} className="inline-flex items-center gap-1">
-                      {flagForCountry(country) ?? ''} {country}
+                      <CountryFlag country={country} /> {country}
                     </span>
                   ))}
                 </p>
@@ -175,7 +175,6 @@ export default async function GroupProfilePage({ params }: Props) {
               {nucleos.length > 0 ? (
                 <div className="grid gap-3 sm:grid-cols-2">
                   {nucleos.map((nucleo) => {
-                    const nucleoFlag = flagForCountry(nucleo.country)
                     const sortedSchedules = [...(nucleo.schedules ?? [])].sort(
                       (a, b) => a.dayOfWeek - b.dayOfWeek || a.startTime.localeCompare(b.startTime)
                     )
@@ -190,7 +189,7 @@ export default async function GroupProfilePage({ params }: Props) {
                           <div className="min-w-0">
                             <p className="font-bold text-ink">
                               {nucleo.name}
-                              {nucleoFlag && <span className="ml-2">{nucleoFlag}</span>}
+                              <CountryFlag country={nucleo.country} className="ml-2" />
                             </p>
                             {nucleo.address && <p className="mt-1 text-sm text-text-secondary">{nucleo.address}</p>}
                             {(nucleo.city || nucleo.country) && (

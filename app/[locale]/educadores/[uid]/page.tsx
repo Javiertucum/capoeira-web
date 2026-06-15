@@ -13,7 +13,8 @@ import {
 } from '@/lib/site'
 import { getEducatorProfile, getGroup, getGraduationLevel, getNucleosByEducator } from '@/lib/queries'
 import { normalizeSocialLink, getSocialDisplayLabel } from '@/lib/social-links'
-import { flagForCountry } from '@/lib/country-flags'
+import { isoForCountry } from '@/lib/country-flags'
+import CountryFlag from '@/components/public/CountryFlag'
 import CordaVisual from '@/components/public/CordaVisual'
 
 type Props = Readonly<{ params: Promise<{ locale: string; uid: string }> }>
@@ -67,7 +68,7 @@ export default async function EducatorProfilePage({ params }: Props) {
   ])
 
   const fullName = `${educator.name} ${educator.surname}`.trim()
-  const countryFlag = flagForCountry(educator.country)
+  const countryFlag = isoForCountry(educator.country)
   const dayShort = getDayShort(locale)
 
   const socialLinks = SOCIAL_PLATFORMS
@@ -118,7 +119,7 @@ export default async function EducatorProfilePage({ params }: Props) {
             <div>
               <h1 className="font-black text-ink leading-[1.05] tracking-[-0.02em]" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>
                 {fullName}
-                {countryFlag && <span className="ml-2 align-middle">{countryFlag}</span>}
+                {countryFlag && <CountryFlag country={educator.country} className="ml-2 align-middle" />}
               </h1>
               {educator.nickname && <p className="mt-1 text-lg text-text-secondary">&ldquo;{educator.nickname}&rdquo;</p>}
               {!countryFlag && educator.country && (
@@ -179,7 +180,6 @@ export default async function EducatorProfilePage({ params }: Props) {
             <p className="eyebrow acc mb-3">{t('myNucleos')} ({nucleos.length})</p>
             <div className="space-y-3">
               {nucleos.map((nucleo) => {
-                const nucleoFlag = flagForCountry(nucleo.country)
                 const sortedSchedules = [...(nucleo.schedules ?? [])].sort(
                   (a, b) => a.dayOfWeek - b.dayOfWeek || a.startTime.localeCompare(b.startTime)
                 )
@@ -197,7 +197,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                       <div className="min-w-0">
                         <p className="font-bold text-ink">
                           {nucleo.name}
-                          {nucleoFlag && <span className="ml-2">{nucleoFlag}</span>}
+                          <CountryFlag country={nucleo.country} className="ml-2" />
                         </p>
                         {nucleo.address && <p className="mt-1 text-sm text-text-secondary">{nucleo.address}</p>}
                         {(nucleo.city || nucleo.country) && (

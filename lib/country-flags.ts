@@ -45,12 +45,6 @@ const COUNTRY_TO_ISO: Record<string, string> = {
   mozambique: 'MZ',
 }
 
-function isoToFlagEmoji(iso: string): string {
-  return iso
-    .toUpperCase()
-    .replace(/./g, (char) => String.fromCodePoint(0x1f1e6 - 65 + char.charCodeAt(0)))
-}
-
 function normalize(value: string): string {
   return value
     .trim()
@@ -59,15 +53,19 @@ function normalize(value: string): string {
     .replace(/[̀-ͯ]/g, '')
 }
 
-export function flagForCountry(country?: string | null): string | null {
+export function isoForCountry(country?: string | null): string | null {
   if (!country) return null
   const normalized = normalize(country)
   if (!normalized) return null
 
   if (/^[a-z]{2}$/.test(normalized)) {
-    return isoToFlagEmoji(normalized)
+    return normalized.toUpperCase()
   }
 
-  const iso = COUNTRY_TO_ISO[normalized]
-  return iso ? isoToFlagEmoji(iso) : null
+  return COUNTRY_TO_ISO[normalized] ?? null
+}
+
+export function flagUrlForCountry(country?: string | null): string | null {
+  const iso = isoForCountry(country)
+  return iso ? `https://flagcdn.com/24x18/${iso.toLowerCase()}.png` : null
 }

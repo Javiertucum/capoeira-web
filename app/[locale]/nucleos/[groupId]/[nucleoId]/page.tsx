@@ -11,8 +11,8 @@ import {
   buildLocalBusinessSchema,
   buildBreadcrumbSchema,
 } from '@/lib/site'
-import { getNucleoById, getGroup, getEducatorProfile, getNucleoMembers } from '@/lib/queries'
-import { flagForCountry } from '@/lib/country-flags'
+import { getNucleoById, getGroup, getEducatorProfile } from '@/lib/queries'
+import CountryFlag from '@/components/public/CountryFlag'
 import ProfileCard, { LocationPinIcon } from '@/components/public/ProfileCard'
 import Avatar from '@/components/public/Avatar'
 
@@ -56,16 +56,14 @@ export default async function NucleoProfilePage({ params }: Props) {
   const nucleo = await getNucleoById(groupId, nucleoId)
   if (!nucleo) notFound()
 
-  const [group, responsibleEducator, coEducators, members] = await Promise.all([
+  const [group, responsibleEducator, coEducators] = await Promise.all([
     getGroup(groupId),
     nucleo.responsibleEducatorId ? getEducatorProfile(nucleo.responsibleEducatorId) : Promise.resolve(null),
     Promise.all((nucleo.coEducatorIds ?? []).map((uid) => getEducatorProfile(uid))),
-    getNucleoMembers(nucleoId),
   ])
 
   const dayShort = getDayShort(locale)
   const sortedSchedules = [...(nucleo.schedules ?? [])].sort((a, b) => a.dayOfWeek - b.dayOfWeek || a.startTime.localeCompare(b.startTime))
-  const nucleoFlag = flagForCountry(nucleo.country)
 
   const localBusinessSchema = buildLocalBusinessSchema({
     name: nucleo.name,
@@ -105,7 +103,7 @@ export default async function NucleoProfilePage({ params }: Props) {
             <div>
               <h1 className="font-black text-ink leading-[1.05] tracking-[-0.02em]" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>
                 {nucleo.name}
-                {nucleoFlag && <span className="ml-2 align-middle">{nucleoFlag}</span>}
+                <CountryFlag country={nucleo.country} className="ml-2 align-middle" />
               </h1>
               {group && (
                 <Link
@@ -127,13 +125,9 @@ export default async function NucleoProfilePage({ params }: Props) {
           </div>
 
           {nucleo.address && <p className="mt-6 text-base text-text-secondary">{nucleo.address}</p>}
-          <p className="mt-1 text-sm text-text-muted">{[nucleo.city, nucleo.country].filter(Boolean).join(', ') || t('unspecified')}</p>
-
-          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm font-bold text-text-secondary">
-            <span className="rounded-full border border-border bg-surface px-4 py-2">
-              <span className="text-ink">{members.length}</span> {t('members').toLowerCase()}
-            </span>
-          </div>
+          {(nucleo.city || nucleo.country) && (
+            <p className="mt-1 text-sm text-text-muted">{[nucleo.city, nucleo.country].filter(Boolean).join(', ')}</p>
+          )}
         </ProfileCard>
 
         {/* Schedules */}
@@ -165,7 +159,7 @@ export default async function NucleoProfilePage({ params }: Props) {
               <div className="min-w-0 flex-1">
                 <p className="font-bold text-ink">
                   {responsibleEducator.name} {responsibleEducator.surname}
-                  {flagForCountry(responsibleEducator.country) && <span className="ml-2">{flagForCountry(responsibleEducator.country)}</span>}
+                  <CountryFlag country={responsibleEducator.country} className="ml-2" />
                 </p>
                 {responsibleEducator.bio && <p className="mt-1 line-clamp-2 text-sm text-text-secondary">{responsibleEducator.bio}</p>}
               </div>
@@ -187,7 +181,7 @@ export default async function NucleoProfilePage({ params }: Props) {
                   <Avatar name={educator.name} surname={educator.surname} avatarUrl={educator.avatarUrl} size="sm" />
                   <p className="font-bold text-ink">
                     {educator.name} {educator.surname}
-                    {flagForCountry(educator.country) && <span className="ml-2">{flagForCountry(educator.country)}</span>}
+                    <CountryFlag country={educator.country} className="ml-2" />
                   </p>
                 </Link>
               ))}

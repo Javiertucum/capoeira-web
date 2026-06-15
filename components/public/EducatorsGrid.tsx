@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Avatar from '@/components/public/Avatar'
 import Modal from '@/components/public/Modal'
-import { flagForCountry } from '@/lib/country-flags'
+import CountryFlag from '@/components/public/CountryFlag'
 import type { MapNucleo } from '@/lib/types'
 
 export type EducatorItem = {
@@ -49,7 +49,7 @@ export default function EducatorsGrid({
             <div className="min-w-0 flex-1">
               <p className="font-bold text-ink">
                 {educator.name} {educator.surname}
-                {flagForCountry(educator.country) && <span className="ml-2">{flagForCountry(educator.country)}</span>}
+                <CountryFlag country={educator.country} className="ml-2" />
               </p>
               {educator.graduationName && (
                 <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">{educator.graduationName}</p>
@@ -77,7 +77,7 @@ export default function EducatorsGrid({
                   >
                     <p className="font-bold text-ink">
                       {nucleo.name}
-                      {flagForCountry(nucleo.country) && <span className="ml-2">{flagForCountry(nucleo.country)}</span>}
+                      <CountryFlag country={nucleo.country} className="ml-2" />
                     </p>
                     {(nucleo.city || nucleo.country) && (
                       <p className="text-xs text-text-muted">{[nucleo.city, nucleo.country].filter(Boolean).join(', ')}</p>
