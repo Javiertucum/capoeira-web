@@ -86,7 +86,7 @@ function ContactLinks({ socialLinks }: { socialLinks?: PublicUserProfile['social
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="grid h-7 w-7 place-items-center rounded-full border border-border bg-white text-[#4C463C] transition-colors duration-150 hover:border-accent hover:text-accent-ink"
+          className="grid h-7 w-7 place-items-center rounded-full border border-border bg-white text-[#4C463C]! transition-colors duration-150 hover:border-accent hover:text-accent-ink"
           aria-label={l.platform}
         >
           <SocialIcon platform={l.platform} />
