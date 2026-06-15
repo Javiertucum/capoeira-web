@@ -27,14 +27,24 @@ function isDarkMode() {
   return document.documentElement.classList.contains('dark')
 }
 
+const PIN_SVG = `
+  <svg viewBox="0 0 24 32" width="30" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 8 12 20 12 20s12-12 12-20C24 5.373 18.627 0 12 0Z" fill="var(--accent)" stroke="white" stroke-width="1.5"/>
+    <circle cx="12" cy="12" r="4.5" fill="white"/>
+  </svg>
+`
+
 function createMarkerElement(variant: MapMarker['variant']) {
-  const el = document.createElement('div')
+  const wrapper = document.createElement('div')
+  const inner = document.createElement('div')
   if (variant === 'user') {
-    el.className = 'h-4 w-4 rounded-full border-2 border-white bg-accent shadow-[0_0_0_4px_color-mix(in_oklch,var(--accent)_25%,transparent)]'
+    inner.className = 'h-4 w-4 rounded-full border-2 border-white bg-accent shadow-[0_0_0_4px_color-mix(in_oklch,var(--accent)_25%,transparent)]'
   } else {
-    el.className = 'h-5 w-5 cursor-pointer rounded-full border-2 border-white bg-ink shadow-md transition-transform duration-150 hover:scale-110'
+    inner.className = 'flex h-10 w-[30px] cursor-pointer items-start justify-center drop-shadow-md transition-transform duration-150 origin-bottom'
+    inner.innerHTML = PIN_SVG
   }
-  return el
+  wrapper.appendChild(inner)
+  return wrapper
 }
 
 const MapView = forwardRef<MapViewHandle, {
@@ -112,7 +122,7 @@ const MapView = forwardRef<MapViewHandle, {
       let marker = markersRef.current.get(m.id)
       if (!marker) {
         const el = createMarkerElement(m.variant)
-        marker = new maplibregl.Marker({ element: el })
+        marker = new maplibregl.Marker({ element: el, anchor: m.variant === 'user' ? 'center' : 'bottom' })
           .setLngLat([m.lng, m.lat])
           .addTo(map)
         if (m.variant !== 'user') {
@@ -125,7 +135,8 @@ const MapView = forwardRef<MapViewHandle, {
 
       const el = marker.getElement()
       el.style.zIndex = selectedId === m.id ? '10' : '1'
-      el.style.outline = selectedId === m.id ? '2px solid var(--accent)' : ''
+      const inner = el.firstElementChild as HTMLElement | null
+      if (inner) inner.style.transform = selectedId === m.id ? 'scale(1.2)' : ''
     }
   }, [markers, selectedId])
 
@@ -152,6 +163,7 @@ const MapView = forwardRef<MapViewHandle, {
       .setLngLat(marker.getLngLat())
       .setHTML(popup.html)
       .addTo(map)
+
 
     p.on('close', () => onPopupCloseRef.current?.())
     popupRef.current = p
