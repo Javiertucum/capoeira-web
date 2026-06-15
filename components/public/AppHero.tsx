@@ -52,7 +52,7 @@ export default function AppHero({ copy }: { copy: any }) {
                 href={PLAY_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex h-14 items-center gap-3 rounded-2xl bg-ink px-8 text-sm font-bold text-white shadow-[0_4px_24px_-4px_rgba(0,0,0,0.25)] transition-[transform,box-shadow] duration-200 ease-[var(--ease-out)] hover:-translate-y-[2px] active:scale-[0.97] active:translate-y-0"
+                className="group inline-flex h-14 items-center gap-3 rounded-2xl bg-[#211C15] px-8 text-sm font-bold text-white shadow-[0_4px_24px_-4px_rgba(0,0,0,0.25)] transition-[transform,box-shadow] duration-200 ease-[var(--ease-out)] hover:-translate-y-[2px] active:scale-[0.97] active:translate-y-0"
               >
                 <PlayBadgeIcon />
                 {copy.appHeroPlayButton}

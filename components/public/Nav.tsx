@@ -99,7 +99,7 @@ export default function Nav() {
                 Capoeira platform
               </span>
               <span
-                className={`block text-[16px] sm:text-[18px] truncate text-[#10131A]`}
+                className={`block text-[16px] sm:text-[18px] truncate text-ink`}
                 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}
               >
                 Agenda Capoeiragem
@@ -114,9 +114,10 @@ export default function Nav() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  style={isActive(link.key) ? { color: 'var(--color-bg)' } : undefined}
                   className={`rounded-full px-[18px] py-2 text-[14px] font-bold transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     isActive(link.key)
-                      ? 'bg-ink text-bg'
+                      ? 'bg-ink'
                       : 'text-ink/60 hover:text-ink hover:bg-white/10'
                   }`}
                 >
@@ -132,8 +133,9 @@ export default function Nav() {
             {/* Download app — desktop CTA */}
             <Link
               href={`/${locale}/app`}
+              style={isActive('app') ? { color: 'var(--color-bg)' } : undefined}
               className={`hidden lg:inline-flex items-center rounded-full px-5 py-2.5 text-[13px] font-bold transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                isActive('app') ? 'bg-ink text-bg' : 'bg-accent text-white hover:opacity-90'
+                isActive('app') ? 'bg-ink' : 'bg-accent text-white hover:opacity-90'
               }`}
             >
               {t('downloadApp')}
