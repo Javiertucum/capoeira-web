@@ -41,14 +41,25 @@ export default async function LandingPage({ params }: Props) {
     const gradNamesByGroup = await getGraduationLevelNamesByGroup(
       allEducators.map((e) => e.groupId).filter((id): id is string => Boolean(id))
     )
-    educators = allEducators.map((e) => ({
-      ...e,
-      groupName: e.groupId ? groupNameById.get(e.groupId) ?? null : null,
-      graduationName:
-        e.groupId && e.graduationLevelId
-          ? gradNamesByGroup.get(e.groupId)?.get(e.graduationLevelId) ?? null
-          : null,
-    }))
+
+    const educatorUidsWithMappedNucleo = new Set<string>()
+    for (const n of allNucleos) {
+      if (typeof n.latitude === 'number' && typeof n.longitude === 'number') {
+        if (n.responsibleEducatorId) educatorUidsWithMappedNucleo.add(n.responsibleEducatorId)
+        for (const uid of n.coEducatorIds ?? []) educatorUidsWithMappedNucleo.add(uid)
+      }
+    }
+
+    educators = allEducators
+      .filter((e) => educatorUidsWithMappedNucleo.has(e.uid))
+      .map((e) => ({
+        ...e,
+        groupName: e.groupId ? groupNameById.get(e.groupId) ?? null : null,
+        graduationName:
+          e.groupId && e.graduationLevelId
+            ? gradNamesByGroup.get(e.groupId)?.get(e.graduationLevelId) ?? null
+            : null,
+      }))
   } catch {}
 
   return (
