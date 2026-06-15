@@ -100,6 +100,13 @@
     "educatorRole": "Educador",
     "graduatedAs": "Graduado {level}",
     "myNucleos": "Meus núcleos",
-    "nucleosSection": "Núcleos"
+    "nucleosSection": "Núcleos",
+    "graduationCategoryInfantil": "Infantil",
+    "graduationCategoryJuvenil": "Juvenil",
+    "graduationCategoryEstagiario": "Estagiários",
+    "graduationCategoryAdult": "Adulto",
+    "graduationCategoryGeneral": "Geral",
+    "nucleosMap": "Localização dos núcleos",
+    "close": "Fechar"
   }
 }

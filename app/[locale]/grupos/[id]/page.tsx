@@ -11,11 +11,13 @@ import {
   buildSportsOrganizationSchema,
   buildBreadcrumbSchema,
 } from '@/lib/site'
-import { getGroupWithNucleos, getGroupEducators, getGraduationLevels, getGraduationLevelNamesByGroup } from '@/lib/queries'
+import { getGroupWithNucleos, getGroupEducators, getGraduationLevels, getGraduationLevelNamesByGroup, getNucleosByEducator } from '@/lib/queries'
 import { flagForCountry } from '@/lib/country-flags'
-import CordaVisual from '@/components/public/CordaVisual'
 import ProfileCard, { LocationPinIcon } from '@/components/public/ProfileCard'
-import Avatar from '@/components/public/Avatar'
+import GraduationLevels from '@/components/public/GraduationLevels'
+import EducatorsGrid, { type EducatorItem } from '@/components/public/EducatorsGrid'
+import NucleosMiniMap from '@/components/public/NucleosMiniMap'
+import type { MapNucleo } from '@/lib/types'
 
 type Props = Readonly<{ params: Promise<{ locale: string; id: string }> }>
 
@@ -66,6 +68,21 @@ export default async function GroupProfilePage({ params }: Props) {
   const gradNamesByGroup = await getGraduationLevelNamesByGroup([id])
   const gradMap = gradNamesByGroup.get(id)
   const dayShort = getDayShort(locale)
+
+  const nucleosByEducatorEntries = await Promise.all(
+    educators.map(async (educator) => [educator.uid, await getNucleosByEducator(educator.uid, educator.nucleoIds)] as const)
+  )
+  const nucleosByEducator: Record<string, MapNucleo[]> = Object.fromEntries(nucleosByEducatorEntries)
+
+  const educatorItems: EducatorItem[] = educators.map((educator) => ({
+    uid: educator.uid,
+    name: educator.name,
+    surname: educator.surname,
+    avatarUrl: educator.avatarUrl,
+    bio: educator.bio,
+    country: educator.country,
+    graduationName: (educator.graduationLevelId && gradMap?.get(educator.graduationLevelId)) ?? null,
+  }))
 
   const orgSchema = buildSportsOrganizationSchema({
     name: group.name,
@@ -136,100 +153,89 @@ export default async function GroupProfilePage({ params }: Props) {
           </div>
         </ProfileCard>
 
-        {/* Graduation system */}
-        {graduationLevels.length > 0 && (
-          <div className="mt-10">
-            <p className="eyebrow acc mb-3">{t('graduationSystem')}</p>
-            <div className="flex flex-wrap gap-2">
-              {graduationLevels.map((level) => (
-                <span
-                  key={level.id}
-                  className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-bold text-ink"
-                >
-                  <CordaVisual colors={level.colors} tipColorLeft={level.tipColorLeft} tipColorRight={level.tipColorRight} />
-                  {level.name}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
+        <div className="lg:flex lg:items-start lg:gap-8">
+          <div className="lg:min-w-0 lg:flex-1">
+            {/* Educators */}
+            <EducatorsGrid
+              locale={locale}
+              educators={educatorItems}
+              nucleosByEducator={nucleosByEducator}
+              labels={{ title: t('educators'), viewProfile: t('viewProfile'), nucleosSection: t('nucleosSection') }}
+            />
 
-        {/* Educators */}
-        {educators.length > 0 && (
-          <div className="mt-10">
-            <p className="eyebrow acc mb-3">{t('educators')}</p>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {educators.map((educator) => (
-                <Link
-                  key={educator.uid}
-                  href={`/${locale}/educadores/${educator.uid}`}
-                  className="flex items-start gap-3 rounded-2xl border border-border bg-card p-4 transition-colors duration-150 hover:border-accent"
-                >
-                  <Avatar name={educator.name} surname={educator.surname} avatarUrl={educator.avatarUrl} size="sm" />
-                  <div className="min-w-0 flex-1">
-                    <p className="font-bold text-ink">
-                      {educator.name} {educator.surname}
-                      {flagForCountry(educator.country) && <span className="ml-2">{flagForCountry(educator.country)}</span>}
-                    </p>
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">
-                      {(educator.graduationLevelId && gradMap?.get(educator.graduationLevelId)) ?? t('unspecified')}
-                    </p>
-                    {educator.bio && <p className="mt-1 line-clamp-2 text-sm text-text-secondary">{educator.bio}</p>}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Nucleos */}
-        <div className="mt-10">
-          <p className="eyebrow acc mb-3">{t('nucleosSection')}</p>
-          {nucleos.length > 0 ? (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {nucleos.map((nucleo) => {
-                const nucleoFlag = flagForCountry(nucleo.country)
-                const sortedSchedules = [...(nucleo.schedules ?? [])].sort(
-                  (a, b) => a.dayOfWeek - b.dayOfWeek || a.startTime.localeCompare(b.startTime)
-                )
-                return (
-                  <Link
-                    key={nucleo.id}
-                    href={`/${locale}/nucleos/${nucleo.groupId}/${nucleo.id}`}
-                    className="block rounded-2xl border border-border bg-card p-4 transition-colors duration-150 hover:border-accent"
-                  >
-                    <div className="flex items-start gap-2">
-                      <LocationPinIcon className="mt-0.5 shrink-0 text-accent" />
-                      <div className="min-w-0">
-                        <p className="font-bold text-ink">
-                          {nucleo.name}
-                          {nucleoFlag && <span className="ml-2">{nucleoFlag}</span>}
-                        </p>
-                        {nucleo.address && <p className="mt-1 text-sm text-text-secondary">{nucleo.address}</p>}
-                        <p className="mt-0.5 text-xs text-text-muted">
-                          {[nucleo.city, nucleo.country].filter(Boolean).join(', ')}
-                        </p>
-                      </div>
-                    </div>
-                    {sortedSchedules.length > 0 && (
-                      <div className="mt-3 space-y-1 border-t border-border pt-3">
-                        {sortedSchedules.map((s, i) => (
-                          <div key={i} className="flex items-center justify-between text-sm">
-                            <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs font-bold text-text-secondary">
-                              {dayShort[s.dayOfWeek] ?? s.dayOfWeek}
-                            </span>
-                            <span className="text-text-secondary">{s.startTime} - {s.endTime}</span>
+            {/* Nucleos */}
+            <div className="mt-10">
+              <p className="eyebrow acc mb-3">{t('nucleosSection')}</p>
+              {nucleos.length > 0 ? (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {nucleos.map((nucleo) => {
+                    const nucleoFlag = flagForCountry(nucleo.country)
+                    const sortedSchedules = [...(nucleo.schedules ?? [])].sort(
+                      (a, b) => a.dayOfWeek - b.dayOfWeek || a.startTime.localeCompare(b.startTime)
+                    )
+                    return (
+                      <Link
+                        key={nucleo.id}
+                        href={`/${locale}/nucleos/${nucleo.groupId}/${nucleo.id}`}
+                        className="block rounded-2xl border border-border bg-card p-4 transition-colors duration-150 hover:border-accent"
+                      >
+                        <div className="flex items-start gap-2">
+                          <LocationPinIcon className="mt-0.5 shrink-0 text-accent" />
+                          <div className="min-w-0">
+                            <p className="font-bold text-ink">
+                              {nucleo.name}
+                              {nucleoFlag && <span className="ml-2">{nucleoFlag}</span>}
+                            </p>
+                            {nucleo.address && <p className="mt-1 text-sm text-text-secondary">{nucleo.address}</p>}
+                            {(nucleo.city || nucleo.country) && (
+                              <p className="mt-0.5 text-xs text-text-muted">
+                                {[nucleo.city, nucleo.country].filter(Boolean).join(', ')}
+                              </p>
+                            )}
                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </Link>
-                )
-              })}
+                        </div>
+                        {sortedSchedules.length > 0 && (
+                          <div className="mt-3 space-y-1 border-t border-border pt-3">
+                            {sortedSchedules.map((s, i) => (
+                              <div key={i} className="flex items-center justify-between text-sm">
+                                <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs font-bold text-text-secondary">
+                                  {dayShort[s.dayOfWeek] ?? s.dayOfWeek}
+                                </span>
+                                <span className="text-text-secondary">{s.startTime} - {s.endTime}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </Link>
+                    )
+                  })}
+                </div>
+              ) : (
+                <p className="text-sm text-text-secondary">{t('noNucleos')}</p>
+              )}
+              {nucleos.some((n) => typeof n.latitude === 'number' && typeof n.longitude === 'number') && (
+                <>
+                  <p className="eyebrow acc mb-3 mt-6">{t('nucleosMap')}</p>
+                  <NucleosMiniMap nucleos={nucleos} locale={locale} seeContactLabel={t('viewProfile')} />
+                </>
+              )}
             </div>
-          ) : (
-            <p className="text-sm text-text-secondary">{t('noNucleos')}</p>
-          )}
+          </div>
+
+          {/* Graduation system */}
+          <div className="lg:w-[280px] lg:shrink-0">
+            <GraduationLevels
+              levels={graduationLevels}
+              labels={{
+                title: t('graduationSystem'),
+                infantil: t('graduationCategoryInfantil'),
+                juvenil: t('graduationCategoryJuvenil'),
+                estagiario: t('graduationCategoryEstagiario'),
+                adult: t('graduationCategoryAdult'),
+                general: t('graduationCategoryGeneral'),
+              }}
+            />
+          </div>
         </div>
       </div>
     </main>

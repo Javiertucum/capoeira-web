@@ -200,9 +200,11 @@ export default async function EducatorProfilePage({ params }: Props) {
                           {nucleoFlag && <span className="ml-2">{nucleoFlag}</span>}
                         </p>
                         {nucleo.address && <p className="mt-1 text-sm text-text-secondary">{nucleo.address}</p>}
-                        <p className="mt-0.5 text-xs text-text-muted">
-                          {[nucleo.city, nucleo.country].filter(Boolean).join(', ')}
-                        </p>
+                        {(nucleo.city || nucleo.country) && (
+                          <p className="mt-0.5 text-xs text-text-muted">
+                            {[nucleo.city, nucleo.country].filter(Boolean).join(', ')}
+                          </p>
+                        )}
                       </div>
                     </div>
                     {sortedSchedules.length > 0 && (

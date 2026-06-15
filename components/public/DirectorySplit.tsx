@@ -4,8 +4,11 @@ import { useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import MapView, { type MapMarker, type MapViewHandle, type MapPopup } from '@/components/public/map/MapView'
+import Modal from '@/components/public/Modal'
 import { normalizeSocialLink } from '@/lib/social-links'
 import { haversineDistanceKm } from '@/lib/geo'
+import { flagForCountry } from '@/lib/country-flags'
+import { getDayShort } from '@/lib/day-short'
 import type { Group, MapNucleo, PublicUserProfile } from '@/lib/types'
 
 export type DirectoryEducator = PublicUserProfile & {
@@ -135,7 +138,9 @@ export default function DirectorySplit({
   const [selectedNucleoId, setSelectedNucleoId] = useState<string | null>(null)
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
   const [locationStatus, setLocationStatus] = useState<'idle' | 'locating' | 'denied'>('idle')
+  const [contactNucleo, setContactNucleo] = useState<MapNucleo | null>(null)
   const mapRef = useRef<MapViewHandle>(null)
+  const dayShort = getDayShort(locale)
 
   const normalizedQuery = query.trim().toLowerCase()
 
@@ -360,35 +365,47 @@ export default function DirectorySplit({
           {tab === 'nucleos' &&
             (filteredNucleos.length > 0 ? (
               filteredNucleos.map((nucleo) => (
-                <button
+                <div
                   key={nucleo.id}
-                  type="button"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setSelectedNucleoId(nucleo.id)}
-                  className={`block w-full rounded-2xl border bg-card p-4 text-left transition-colors duration-150 ease-[var(--ease-out)] hover:border-accent ${
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') setSelectedNucleoId(nucleo.id)
+                  }}
+                  className={`block w-full cursor-pointer rounded-2xl border bg-card p-4 text-left transition-colors duration-150 ease-[var(--ease-out)] hover:border-accent ${
                     selectedNucleoId === nucleo.id ? 'border-accent shadow-[0_0_0_1px_var(--accent)]' : 'border-border'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="font-bold text-ink">{nucleo.name}</p>
+                      <p className="font-bold text-ink">
+                        {nucleo.name}
+                        {flagForCountry(nucleo.country) && <span className="ml-2">{flagForCountry(nucleo.country)}</span>}
+                      </p>
                       <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">{nucleo.groupName}</p>
                     </div>
                     {nucleo.schedules && nucleo.schedules.length > 0 && (
                       <span className="chip acc shrink-0 text-[10px]">{nucleo.schedules.length} {tProfile('schedules').toLowerCase()}</span>
                     )}
                   </div>
-                  <p className="mt-2 text-sm text-text-secondary">
-                    {[nucleo.city, nucleo.country].filter(Boolean).join(', ') || tProfile('unspecified')}
-                  </p>
+                  {(nucleo.city || nucleo.country) && (
+                    <p className="mt-2 text-sm text-text-secondary">
+                      {[nucleo.city, nucleo.country].filter(Boolean).join(', ')}
+                    </p>
+                  )}
                   {nucleo.address && <p className="mt-1 text-xs text-text-muted">{nucleo.address}</p>}
-                  <Link
-                    href={`/${locale}/nucleos/${nucleo.groupId}/${nucleo.id}`}
-                    onClick={(e) => e.stopPropagation()}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setContactNucleo(nucleo)
+                    }}
                     className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-accent-ink hover:underline"
                   >
                     {t('seeContact')}
-                  </Link>
-                </button>
+                  </button>
+                </div>
               ))
             ) : (
               <EmptyState t={t} onClear={() => setQuery('')} hasQuery={Boolean(query)} />
@@ -448,9 +465,11 @@ export default function DirectorySplit({
                         {educator.name} {educator.surname}
                         {educator.nickname && <span className="text-text-muted"> · {educator.nickname}</span>}
                       </p>
-                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">
-                        {[educator.graduationName, educator.groupName].filter(Boolean).join(' · ') || tProfile('unspecified')}
-                      </p>
+                      {(educator.graduationName || educator.groupName) && (
+                        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">
+                          {[educator.graduationName, educator.groupName].filter(Boolean).join(' · ')}
+                        </p>
+                      )}
                       {educator.bio && <p className="mt-1 line-clamp-2 text-sm text-text-secondary">{educator.bio}</p>}
                       <div className="mt-2 flex items-center justify-between gap-2">
                         <ContactLinks socialLinks={educator.socialLinks} />
@@ -465,6 +484,42 @@ export default function DirectorySplit({
             ))}
         </div>
       </div>
+
+      {contactNucleo && (
+        <Modal open={!!contactNucleo} onClose={() => setContactNucleo(null)} title={contactNucleo.name}>
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">
+              {contactNucleo.groupName}
+              {flagForCountry(contactNucleo.country) && <span className="ml-2">{flagForCountry(contactNucleo.country)}</span>}
+            </p>
+            {(contactNucleo.address || contactNucleo.city || contactNucleo.country) && (
+              <p className="text-sm text-text-secondary">
+                {[contactNucleo.address, contactNucleo.city, contactNucleo.country].filter(Boolean).join(', ')}
+              </p>
+            )}
+            {contactNucleo.schedules && contactNucleo.schedules.length > 0 && (
+              <div className="grid gap-2 sm:grid-cols-2">
+                {[...contactNucleo.schedules]
+                  .sort((a, b) => a.dayOfWeek - b.dayOfWeek || a.startTime.localeCompare(b.startTime))
+                  .map((s, i) => (
+                    <div key={i} className="flex items-center justify-between rounded-2xl border border-border bg-surface px-3 py-2">
+                      <span className="rounded-full bg-card px-2.5 py-0.5 text-xs font-bold text-text-secondary">
+                        {dayShort[s.dayOfWeek] ?? s.dayOfWeek}
+                      </span>
+                      <span className="text-sm text-text-secondary">{s.startTime} – {s.endTime}</span>
+                    </div>
+                  ))}
+              </div>
+            )}
+            <Link
+              href={`/${locale}/nucleos/${contactNucleo.groupId}/${contactNucleo.id}`}
+              className="inline-flex items-center gap-1 text-sm font-bold text-accent-ink hover:underline"
+            >
+              {tProfile('viewProfile')} →
+            </Link>
+          </div>
+        </Modal>
+      )}
     </section>
   )
 }
