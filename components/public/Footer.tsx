@@ -4,6 +4,7 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
   const NAV_PLATFORM = [
     { label: 'Funcionalidades', href: '#features' },
     { label: 'Directorio',      href: '#directorio' },
+    { label: 'Tutoriales',      href: `/${locale}/tutoriales` },
     { label: 'Descargar App',   href: `/${locale}/app` },
   ]
 
