@@ -1,10 +1,11 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { GoogleMap, MarkerF, InfoWindowF, useJsApiLoader } from '@react-google-maps/api'
+import MapView, { type MapMarker, type MapViewHandle, type MapPopup } from '@/components/public/map/MapView'
 import { normalizeSocialLink } from '@/lib/social-links'
+import { haversineDistanceKm } from '@/lib/geo'
 import type { Group, MapNucleo, PublicUserProfile } from '@/lib/types'
 
 export type DirectoryEducator = PublicUserProfile & {
@@ -14,8 +15,7 @@ export type DirectoryEducator = PublicUserProfile & {
 
 type Tab = 'nucleos' | 'groups' | 'educators'
 
-const MAP_CONTAINER_STYLE = { width: '100%', height: '100%' }
-const DEFAULT_CENTER = { lat: 10, lng: -20 }
+const DEFAULT_CENTER: [number, number] = [-20, 10]
 
 const SOCIAL_PLATFORMS = ['instagram', 'facebook', 'whatsapp', 'youtube', 'tiktok', 'website'] as const
 
@@ -120,7 +120,7 @@ export default function DirectorySplit({
   educators,
 }: {
   locale: string
-  stats: { educators: number; nucleos: number; countries: number }
+  stats: { educators: number; nucleos: number; groups: number; countries: number }
   nucleos: MapNucleo[]
   groups: Group[]
   educators: DirectoryEducator[]
@@ -133,11 +133,9 @@ export default function DirectorySplit({
   const [tab, setTab] = useState<Tab>('nucleos')
   const [query, setQuery] = useState('')
   const [selectedNucleoId, setSelectedNucleoId] = useState<string | null>(null)
-
-  const { isLoaded } = useJsApiLoader({
-    id: 'agenda-capoeiragem-directory-map',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '',
-  })
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+  const [locationStatus, setLocationStatus] = useState<'idle' | 'locating' | 'denied'>('idle')
+  const mapRef = useRef<MapViewHandle>(null)
 
   const normalizedQuery = query.trim().toLowerCase()
 
@@ -146,11 +144,20 @@ export default function DirectorySplit({
     return values.some((v) => v?.toLowerCase().includes(normalizedQuery))
   }
 
-  const filteredNucleos = useMemo(
-    () => nucleos.filter((n) => matches(n.name, n.city, n.country, n.groupName)),
+  const filteredNucleos = useMemo(() => {
+    const result = nucleos.filter((n) => matches(n.name, n.city, n.country, n.groupName))
+    if (!userLocation) return result
+    return [...result].sort((a, b) => {
+      const da = typeof a.latitude === 'number' && typeof a.longitude === 'number'
+        ? haversineDistanceKm({ lat: userLocation[1], lng: userLocation[0] }, { lat: a.latitude, lng: a.longitude })
+        : Infinity
+      const db = typeof b.latitude === 'number' && typeof b.longitude === 'number'
+        ? haversineDistanceKm({ lat: userLocation[1], lng: userLocation[0] }, { lat: b.latitude, lng: b.longitude })
+        : Infinity
+      return da - db
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [nucleos, normalizedQuery]
-  )
+  }, [nucleos, normalizedQuery, userLocation])
 
   const filteredGroups = useMemo(
     () =>
@@ -175,16 +182,68 @@ export default function DirectorySplit({
     [filteredNucleos]
   )
 
-  const center = useMemo(() => {
+  const center = useMemo((): [number, number] => {
     if (mappableNucleos.length === 0) return DEFAULT_CENTER
     const sum = mappableNucleos.reduce(
       (acc, n) => ({ lat: acc.lat + (n.latitude ?? 0), lng: acc.lng + (n.longitude ?? 0) }),
       { lat: 0, lng: 0 }
     )
-    return { lat: sum.lat / mappableNucleos.length, lng: sum.lng / mappableNucleos.length }
+    return [sum.lng / mappableNucleos.length, sum.lat / mappableNucleos.length]
   }, [mappableNucleos])
 
   const selectedNucleo = mappableNucleos.find((n) => n.id === selectedNucleoId) ?? null
+
+  const mapCenter: [number, number] = selectedNucleo
+    ? [selectedNucleo.longitude as number, selectedNucleo.latitude as number]
+    : userLocation ?? center
+  const mapZoom = selectedNucleo ? 12 : userLocation ? 10 : mappableNucleos.length > 0 ? 2 : 1
+
+  const mapMarkers: MapMarker[] = useMemo(() => {
+    const items: MapMarker[] = mappableNucleos.map((n) => ({
+      id: n.id,
+      lng: n.longitude as number,
+      lat: n.latitude as number,
+      variant: 'nucleo',
+    }))
+    if (userLocation) {
+      items.push({ id: '__user__', lng: userLocation[0], lat: userLocation[1], variant: 'user' })
+    }
+    return items
+  }, [mappableNucleos, userLocation])
+
+  const mapPopup: MapPopup | null = useMemo(() => {
+    if (!selectedNucleo) return null
+    return {
+      id: selectedNucleo.id,
+      html: `
+        <div style="min-width:180px;font-size:0.875rem">
+          <p style="font-weight:700;color:var(--color-ink)">${selectedNucleo.name}</p>
+          <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--color-accent-ink)">${selectedNucleo.groupName}</p>
+          <p style="margin-top:4px;font-size:0.75rem;color:var(--color-text-secondary)">${[selectedNucleo.city, selectedNucleo.country].filter(Boolean).join(', ')}</p>
+          <a href="/${locale}/nucleos/${selectedNucleo.groupId}/${selectedNucleo.id}" style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;color:var(--color-accent-ink)">${t('seeContact')}</a>
+        </div>
+      `,
+    }
+  }, [selectedNucleo, locale, t])
+
+  function handleNearMe() {
+    if (!('geolocation' in navigator)) {
+      setLocationStatus('denied')
+      return
+    }
+    setLocationStatus('locating')
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const next: [number, number] = [pos.coords.longitude, pos.coords.latitude]
+        setUserLocation(next)
+        setSelectedNucleoId(null)
+        setLocationStatus('idle')
+        mapRef.current?.flyTo({ center: next, zoom: 10 })
+      },
+      () => setLocationStatus('denied'),
+      { enableHighAccuracy: true, timeout: 10000 }
+    )
+  }
 
   const resultCount = tab === 'nucleos' ? filteredNucleos.length : tab === 'groups' ? filteredGroups.length : filteredEducators.length
 
@@ -209,6 +268,8 @@ export default function DirectorySplit({
             </h1>
             <div className="flex items-center gap-3 text-xs font-bold text-text-secondary">
               <span><span className="text-ink">{stats.nucleos}</span> {tStats('nucleos').toLowerCase()}</span>
+              <span className="text-border">·</span>
+              <span><span className="text-ink">{stats.groups}</span> {tStats('groups').toLowerCase()}</span>
               <span className="text-border">·</span>
               <span><span className="text-ink">{stats.educators}</span> {tStats('educators').toLowerCase()}</span>
               <span className="text-border">·</span>
@@ -253,61 +314,49 @@ export default function DirectorySplit({
               )}
             </div>
 
+            <button
+              type="button"
+              onClick={handleNearMe}
+              disabled={locationStatus === 'locating'}
+              className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-4 text-sm font-bold text-ink transition-colors duration-150 ease-[var(--ease-out)] hover:border-accent disabled:opacity-60"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+              </svg>
+              {locationStatus === 'locating' ? t('locating') : t('nearMe')}
+            </button>
+
             <span className="mono shrink-0 text-[11px] uppercase tracking-[0.14em] text-text-muted">
               {t('results', { count: resultCount })}
             </span>
           </div>
+
+          {locationStatus === 'denied' && (
+            <p className="text-xs font-medium text-red-500">{t('locationDenied')}</p>
+          )}
         </div>
       </div>
 
       {/* Body: map + list */}
       <div className="flex flex-1 flex-col lg:flex-row lg:overflow-hidden">
         {/* Map */}
-        <div className="order-1 h-[45vh] shrink-0 lg:order-2 lg:h-auto lg:flex-1">
-          {isLoaded ? (
-            <GoogleMap
-              mapContainerStyle={MAP_CONTAINER_STYLE}
-              center={selectedNucleo ? { lat: selectedNucleo.latitude as number, lng: selectedNucleo.longitude as number } : center}
-              zoom={selectedNucleo ? 12 : mappableNucleos.length > 0 ? 2 : 1}
-              options={{ streetViewControl: false, mapTypeControl: false, fullscreenControl: false }}
-            >
-              {mappableNucleos.map((nucleo) => (
-                <MarkerF
-                  key={nucleo.id}
-                  position={{ lat: nucleo.latitude as number, lng: nucleo.longitude as number }}
-                  onClick={() => setSelectedNucleoId(nucleo.id)}
-                />
-              ))}
-              {selectedNucleo && (
-                <InfoWindowF
-                  position={{ lat: selectedNucleo.latitude as number, lng: selectedNucleo.longitude as number }}
-                  onCloseClick={() => setSelectedNucleoId(null)}
-                >
-                  <div className="min-w-[180px] text-sm">
-                    <p className="font-bold text-ink">{selectedNucleo.name}</p>
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-ink">{selectedNucleo.groupName}</p>
-                    <p className="mt-1 text-xs text-text-secondary">
-                      {[selectedNucleo.city, selectedNucleo.country].filter(Boolean).join(', ')}
-                    </p>
-                    <Link
-                      href={`/${locale}/nucleos/${selectedNucleo.groupId}/${selectedNucleo.id}`}
-                      className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-accent-ink hover:underline"
-                    >
-                      {t('seeContact')}
-                    </Link>
-                  </div>
-                </InfoWindowF>
-              )}
-            </GoogleMap>
-          ) : (
-            <div className="grid h-full w-full place-items-center bg-surface text-sm text-text-muted">
-              {t('title')}…
-            </div>
-          )}
+        <div className="order-1 h-[45vh] shrink-0 lg:order-2 lg:h-auto lg:w-[50%]">
+          <MapView
+            ref={mapRef}
+            className="h-full w-full"
+            center={mapCenter}
+            zoom={mapZoom}
+            markers={mapMarkers}
+            selectedId={selectedNucleoId}
+            onMarkerClick={setSelectedNucleoId}
+            popup={mapPopup}
+            onPopupClose={() => setSelectedNucleoId(null)}
+          />
         </div>
 
         {/* List */}
-        <div className="order-2 space-y-3 p-4 sm:p-5 lg:order-1 lg:w-[400px] lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-border">
+        <div className="order-2 space-y-3 p-4 sm:p-5 lg:order-1 lg:w-[50%] lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-border">
           {tab === 'nucleos' &&
             (filteredNucleos.length > 0 ? (
               filteredNucleos.map((nucleo) => (

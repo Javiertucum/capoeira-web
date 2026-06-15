@@ -43,6 +43,9 @@
   "map": {
     "title": "Map view",
     "results": "{count} results",
+    "nearMe": "Near me",
+    "locating": "Locating…",
+    "locationDenied": "Couldn't access your location",
     "filterNucleos": "Nucleos",
     "filterGroups": "Groups",
     "filterEducators": "Educators",

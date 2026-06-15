@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function LandingPage({ params }: Props) {
   const { locale } = await params
 
-  let stats = { educators: 0, nucleos: 0, countries: 0 }
+  let stats = { educators: 0, nucleos: 0, groups: 0, countries: 0 }
   let nucleos: MapNucleo[] = []
   let groups: Group[] = []
   let educators: DirectoryEducator[] = []
@@ -33,7 +33,7 @@ export default async function LandingPage({ params }: Props) {
       getAllGroups(),
       getAllEducators(),
     ])
-    stats = { educators: s.educators, nucleos: s.nucleos, countries: s.countries }
+    stats = { educators: s.educators, nucleos: s.nucleos, groups: s.groups, countries: s.countries }
     nucleos = allNucleos
     groups = allGroups
 
