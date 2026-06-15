@@ -19,6 +19,33 @@ function cleanHandle(value: string) {
   return value.trim().replace(/^@+/, '').replace(/^\/+|\/+$/g, '')
 }
 
+export function getSocialDisplayLabel(
+  platform: SocialPlatform,
+  value: string | null | undefined
+): string | null {
+  if (!value) return null
+  const trimmed = value.trim()
+  if (!trimmed) return null
+
+  if (platform === 'whatsapp') {
+    const digits = trimmed.replace(/\D/g, '')
+    return digits ? `+${digits}` : null
+  }
+
+  if (hasProtocol(trimmed) || looksLikeDomain(trimmed)) {
+    return trimmed.replace(/^https?:\/\//i, '').replace(/\/+$/, '')
+  }
+
+  const cleaned = cleanHandle(trimmed)
+  if (!cleaned) return null
+
+  if (platform === 'instagram' || platform === 'tiktok') {
+    return `@${cleaned}`
+  }
+
+  return cleaned
+}
+
 export function normalizeSocialLink(
   platform: SocialPlatform,
   value: string | null | undefined

@@ -348,17 +348,10 @@ export async function getNucleosByEducator(uid: string, nucleoIds?: string[]): P
 export async function getGraduationLevel(
   groupId: string,
   levelId: string
-): Promise<string | null> {
+): Promise<GraduationLevel | null> {
   if (!groupId || !levelId) return null
-  const doc = await adminDb
-    .collection('groups')
-    .doc(groupId)
-    .collection('graduationLevels')
-    .doc(levelId)
-    .get()
-  
-  if (!doc.exists) return null
-  return asString(doc.data()?.name) ?? null
+  const levels = await getGraduationLevels(groupId)
+  return levels.find((level) => level.id === levelId) ?? null
 }
 
 export async function getGroupWithNucleos(

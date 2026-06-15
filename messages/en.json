@@ -93,6 +93,9 @@
     "schedules": "Schedules",
     "noMembers": "No registered members.",
     "viewNucleo": "View nucleo",
-    "address": "Address"
+    "address": "Address",
+    "educatorRole": "Educator",
+    "graduatedAs": "Graduated: {level}",
+    "myNucleos": "My nucleos"
   }
 }

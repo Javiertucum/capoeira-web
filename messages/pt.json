@@ -93,6 +93,9 @@
     "schedules": "Horários",
     "noMembers": "Sem membros registrados.",
     "viewNucleo": "Ver núcleo",
-    "address": "Endereço"
+    "address": "Endereço",
+    "educatorRole": "Educador",
+    "graduatedAs": "Graduado {level}",
+    "myNucleos": "Meus núcleos"
   }
 }
