@@ -260,7 +260,7 @@ export default function DirectorySplit({
   ]
 
   return (
-    <section id="directorio" className="scroll-mt-[72px] bg-bg pt-[72px] lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
+    <section id="directorio" className="scroll-mt-[72px] bg-bg lg:flex lg:h-[calc(100vh-72px)] lg:flex-col lg:overflow-hidden">
       {/* Top bar */}
       <div className="shrink-0 border-b border-border px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
