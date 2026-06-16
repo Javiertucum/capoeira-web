@@ -1,4 +1,5 @@
-import FeatureMockup, { type FeatureMockupType } from '@/components/public/FeatureMockup'
+import ScreenshotFrame from '@/components/public/ScreenshotFrame'
+import { type FeatureMockupType } from '@/components/public/FeatureMockup'
 
 type SpotlightItem = { tag: string; title: string; desc: string; mockup: FeatureMockupType }
 
@@ -30,7 +31,7 @@ function SpotlightRow({ item, flip }: { item: SpotlightItem; flip?: boolean }) {
         </p>
       </div>
       <div className="hidden shrink-0 lg:block">
-        <FeatureMockup type={item.mockup} size="default" />
+        <ScreenshotFrame src={`/mockups/${item.mockup}.png`} alt={item.title} size="default" />
       </div>
     </div>
   )

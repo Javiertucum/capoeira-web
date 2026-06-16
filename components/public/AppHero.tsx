@@ -1,4 +1,4 @@
-import FeatureMockup from '@/components/public/FeatureMockup'
+import ScreenshotFrame from '@/components/public/ScreenshotFrame'
 
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.capoeiraapp.mobile'
 
@@ -97,7 +97,7 @@ export default function AppHero({ copy, stats }: { copy: any; stats?: Stats }) {
               className="pointer-events-none absolute inset-x-0 bottom-0 top-1/4 rounded-full bg-accent/18 blur-[80px]"
             />
             <div className="floating-rot relative" style={{ '--rot': '2deg' } as React.CSSProperties}>
-              <FeatureMockup type="home" size="lg" />
+              <ScreenshotFrame src="/mockups/home.png" alt="Agenda Capoeiragem app home screen" size="lg" />
             </div>
           </div>
 
