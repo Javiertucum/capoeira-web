@@ -138,6 +138,7 @@ export default function DirectorySplit({
   const [selectedNucleoId, setSelectedNucleoId] = useState<string | null>(null)
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
   const [locationStatus, setLocationStatus] = useState<'idle' | 'locating' | 'denied'>('idle')
+  const [tabMenuOpen, setTabMenuOpen] = useState(false)
   const [contactNucleo, setContactNucleo] = useState<MapNucleo | null>(null)
   const mapRef = useRef<MapViewHandle>(null)
   const dayShort = getDayShort(locale)
@@ -284,15 +285,77 @@ export default function DirectorySplit({
 
           {/* Tabs + search */}
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-            {/* Row 1 on mobile: tabs pill + near-me icon */}
+            {/* Row 1: tab selector + near-me */}
             <div className="flex items-center gap-2">
-              <div className="inline-flex items-center gap-1 rounded-full border border-border bg-surface p-1">
+
+              {/* Mobile: hamburger dropdown */}
+              <div className="relative sm:hidden">
+                <button
+                  type="button"
+                  aria-haspopup="listbox"
+                  aria-expanded={tabMenuOpen}
+                  onClick={() => setTabMenuOpen((p) => !p)}
+                  className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-surface px-4 text-sm font-bold text-ink transition-colors duration-150 ease-[var(--ease-out)] active:scale-[0.97]"
+                >
+                  <span className="flex h-4 w-4 shrink-0 flex-col justify-between py-[3px]" aria-hidden="true">
+                    <span className="block h-px w-full bg-current" />
+                    <span className="block h-px w-3 bg-current" />
+                    <span className="block h-px w-full bg-current" />
+                  </span>
+                  {tabs.find((t) => t.key === tab)?.label}
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"
+                    className={`shrink-0 transition-transform duration-150 ${tabMenuOpen ? 'rotate-180' : ''}`}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+
+                {tabMenuOpen && (
+                  <>
+                    <button
+                      type="button"
+                      aria-label="Cerrar menú"
+                      onClick={() => setTabMenuOpen(false)}
+                      className="fixed inset-0 z-10"
+                      tabIndex={-1}
+                    />
+                    <ul
+                      role="listbox"
+                      className="absolute left-0 top-full z-20 mt-1.5 min-w-[160px] overflow-hidden rounded-2xl border border-border bg-card shadow-float"
+                    >
+                      {tabs.map((item) => (
+                        <li key={item.key} role="option" aria-selected={tab === item.key}>
+                          <button
+                            type="button"
+                            onClick={() => { setTab(item.key); setTabMenuOpen(false) }}
+                            className={`flex w-full items-center gap-3 px-4 py-3 text-sm font-bold transition-colors duration-100 ease-[var(--ease-out)] ${
+                              tab === item.key
+                                ? 'bg-ink text-bg'
+                                : 'text-text-secondary hover:bg-surface-muted hover:text-ink'
+                            }`}
+                          >
+                            {tab === item.key && (
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            )}
+                            <span className={tab === item.key ? '' : 'pl-[20px]'}>{item.label}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+
+              {/* Desktop: pill tabs */}
+              <div className="hidden sm:inline-flex items-center gap-1 rounded-full border border-border bg-surface p-1">
                 {tabs.map((item) => (
                   <button
                     key={item.key}
                     type="button"
                     onClick={() => setTab(item.key)}
-                    className={`rounded-full px-3 py-1.5 text-sm font-bold transition-colors duration-150 ease-[var(--ease-out)] sm:px-4 ${
+                    className={`rounded-full px-4 py-1.5 text-sm font-bold transition-colors duration-150 ease-[var(--ease-out)] ${
                       tab === item.key ? 'bg-ink text-bg' : 'text-text-secondary hover:text-ink'
                     }`}
                   >
