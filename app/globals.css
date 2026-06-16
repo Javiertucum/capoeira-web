@@ -10,7 +10,7 @@
   --color-border:        #E7DECF;
   --color-text:          #211C15;
   --color-text-secondary:#4C463C;
-  --color-text-muted:    #7B7468;
+  --color-text-muted:    #6A635A;
 
   /* --- Ink Tokens --- */
   --color-ink:           #211C15;
@@ -81,7 +81,7 @@
   --border:          #E7DECF;
   --text:            #211C15;
   --text-secondary:  #4C463C;
-  --text-muted:      #7B7468;
+  --text-muted:      #6A635A;
 
   /* Ink Tokens */
   --ink:             #211C15;
@@ -524,6 +524,14 @@ a { color: inherit; text-decoration: none; }
   }
   .marquee-track   { transform: translateX(0); }
   .marquee-track-r { transform: translateX(0); }
+
+  .emil-enter,
+  .emil-enter-stagger,
+  .emil-slide-up {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* ─── MapLibre popup — theme-aware (default maplibre-gl.css hardcodes white) ─── */

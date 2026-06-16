@@ -190,8 +190,13 @@ export default function Nav() {
             onClick={() => setMenuOpen(false)}
             className="fixed inset-0 z-40 bg-ink/20 lg:hidden"
           />
-          <div className="fixed inset-x-4 top-[84px] z-50 rounded-[22px] border border-line bg-bg p-5 lg:hidden"
-            style={{ boxShadow: 'var(--shadow-lg)' }}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navegación principal"
+            className="fixed inset-x-4 top-[84px] z-50 rounded-[22px] border border-line bg-bg p-5 lg:hidden"
+            style={{ boxShadow: 'var(--shadow-lg)' }}
+          >
             <p className="eyebrow acc mb-4">Navegación</p>
             <div className="flex flex-col gap-2">
               {links.map((link) => (

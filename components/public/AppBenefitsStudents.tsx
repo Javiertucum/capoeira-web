@@ -1,9 +1,11 @@
-type SpotlightItem = { tag: string; title: string; desc: string; mockup: string }
+import FeatureMockup, { type FeatureMockupType } from '@/components/public/FeatureMockup'
+
+type SpotlightItem = { tag: string; title: string; desc: string; mockup: FeatureMockupType }
 type MiniItem = { t: string; d: string }
 
 function SpotlightRow({ item }: { item: SpotlightItem }) {
   return (
-    <div className="border-b border-border py-16">
+    <div className="border-b border-border py-16 grid lg:grid-cols-[1fr_320px] lg:gap-16 items-center">
       <div className="space-y-5 max-w-[54ch]">
         <span
           className="inline-block rounded-full px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.18em]"
@@ -20,6 +22,9 @@ function SpotlightRow({ item }: { item: SpotlightItem }) {
         <p className="text-base leading-relaxed text-text-secondary lg:text-[1.05rem]">
           {item.desc}
         </p>
+      </div>
+      <div className="hidden lg:block">
+        <FeatureMockup type={item.mockup} size="default" />
       </div>
     </div>
   )
@@ -43,6 +48,7 @@ export default function AppBenefitsStudents({ copy }: { copy: any }) {
       <div className="page-shell">
         <div className="flex items-center gap-4 border-b border-border py-16">
           <span
+            aria-hidden="true"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-[11px] font-bold tracking-widest"
             style={{ background: 'var(--ink)', color: 'var(--bg)' }}
           >

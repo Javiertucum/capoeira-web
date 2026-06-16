@@ -19,7 +19,6 @@ export type FeatureMockupSize = 'default' | 'lg'
 
 interface FeatureMockupProps {
   type: FeatureMockupType
-  interactive?: boolean
   size?: FeatureMockupSize
 }
 

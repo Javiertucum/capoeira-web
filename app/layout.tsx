@@ -93,7 +93,8 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <meta name="theme-color" content="#F7F3EB" />
+        <meta name="theme-color" content="#F7F3EB" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#10131A" media="(prefers-color-scheme: dark)" />
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://maps.googleapis.com" />

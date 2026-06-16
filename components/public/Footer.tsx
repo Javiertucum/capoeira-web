@@ -8,8 +8,7 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
   ]
 
   const NAV_COMMUNITY = [
-    { label: 'Descargar App',   href: `/${locale}/app` },
-    { label: 'Admin',           href: '/admin' },
+    { label: 'Admin',           href: `/${locale}/admin` },
   ]
 
   const NAV_LEGAL = [

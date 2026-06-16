@@ -21,7 +21,7 @@ export default function Hero({ copy, stats }: { copy: any; stats: any }) {
           <div className="space-y-8 lg:space-y-10">
 
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-3 rounded-full border border-border bg-white px-4 py-2 shadow-sm emil-enter">
+            <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 shadow-sm emil-enter">
               <span className="h-2 w-2 shrink-0 rounded-full bg-accent animate-pulse" />
               <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-text-secondary">
                 {copy.eyebrow}
@@ -29,26 +29,14 @@ export default function Hero({ copy, stats }: { copy: any; stats: any }) {
             </div>
 
             {/* Headline — massive, tight, left-aligned */}
-            <div className="space-y-1 emil-enter-stagger emil-stagger-1">
-              <h1
-                className="font-black text-ink leading-[0.92] tracking-[-0.04em]"
-                style={{ fontSize: 'clamp(54px, 8vw, 100px)' }}
-              >
-                {copy.heroLine1}
-              </h1>
-              <h1
-                className="font-black leading-[0.92] tracking-[-0.04em]"
-                style={{ fontSize: 'clamp(54px, 8vw, 100px)', color: 'var(--accent)' }}
-              >
-                {copy.heroEm}
-              </h1>
-              <h1
-                className="font-black text-ink leading-[0.92] tracking-[-0.04em]"
-                style={{ fontSize: 'clamp(54px, 8vw, 100px)' }}
-              >
-                {copy.heroLine2} {copy.heroLine3}
-              </h1>
-            </div>
+            <h1
+              className="font-black text-ink leading-[0.92] tracking-[-0.04em] emil-enter-stagger emil-stagger-1"
+              style={{ fontSize: 'clamp(54px, 8vw, 100px)' }}
+            >
+              <span className="block">{copy.heroLine1}</span>
+              <span className="block" style={{ color: 'var(--accent)' }}>{copy.heroEm}</span>
+              <span className="block">{copy.heroLine2} {copy.heroLine3}</span>
+            </h1>
 
             {/* Body */}
             <p className="max-w-[46ch] text-base text-text-secondary leading-relaxed lg:text-lg emil-enter-stagger emil-stagger-2">
