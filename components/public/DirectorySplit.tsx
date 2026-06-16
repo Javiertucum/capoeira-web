@@ -133,7 +133,7 @@ export default function DirectorySplit({
   const tStats = useTranslations('stats')
   const tProfile = useTranslations('profile')
 
-  const [tab, setTab] = useState<Tab>('nucleos')
+  const [tab, setTab] = useState<Tab>('groups')
   const [query, setQuery] = useState('')
   const [selectedNucleoId, setSelectedNucleoId] = useState<string | null>(null)
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
@@ -253,8 +253,8 @@ export default function DirectorySplit({
   const resultCount = tab === 'nucleos' ? filteredNucleos.length : tab === 'groups' ? filteredGroups.length : filteredEducators.length
 
   const tabs: Array<{ key: Tab; label: string }> = [
-    { key: 'nucleos', label: t('filterNucleos') },
     { key: 'groups', label: t('filterGroups') },
+    { key: 'nucleos', label: t('filterNucleos') },
     { key: 'educators', label: t('filterEducators') },
   ]
 
