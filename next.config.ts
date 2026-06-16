@@ -17,7 +17,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://*.googleapis.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://firebasestorage.googleapis.com https://lh3.googleusercontent.com https://i.ibb.co https://*.tile.openstreetmap.org https://*.basemaps.cartocdn.com https://*.googleapis.com",
-      "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com",
+      "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.cartocdn.com https://*.basemaps.cartocdn.com https://fonts.openmaptiles.org",
       "font-src 'self' data:",
       "frame-src 'self' https://www.google.com",
       "worker-src 'self' blob:",
