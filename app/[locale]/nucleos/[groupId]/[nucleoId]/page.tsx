@@ -31,8 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const path = `/nucleos/${groupId}/${nucleoId}`
   const sub = [nucleo.city, nucleo.country].filter(Boolean).join(', ')
   const description = `Clases de capoeira — ${nucleo.name}${sub ? ' en ' + sub : ''}${nucleo.address ? '. ' + nucleo.address : ''}.`
+  const geoTitle = sub ? `Capoeira en ${sub}` : nucleo.name
   return {
-    title: nucleo.name,
+    title: geoTitle,
     description,
     keywords: [
       nucleo.name, 'clases de capoeira', 'entrenamiento capoeira',

@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 import { getLanguageAlternateUrls, getLocalizedUrl } from '@/lib/site'
-import { getAllGroups, getAllEducators, getAllNucleos } from '@/lib/queries'
+import { getAllGroups, getAllEducators, getAllNucleos, getAllLocationSlugs } from '@/lib/queries'
 
 const LOCALES = ['es', 'pt', 'en']
 
@@ -15,10 +15,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   )
 
-  const [groups, educators, nucleos] = await Promise.all([
+  const [groups, educators, nucleos, locationSlugs] = await Promise.all([
     getAllGroups().catch(() => []),
     getAllEducators().catch(() => []),
     getAllNucleos().catch(() => []),
+    getAllLocationSlugs().catch(() => []),
   ])
 
   const groupRoutes = groups.flatMap((group) =>
@@ -51,5 +52,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   )
 
-  return [...staticRoutes, ...groupRoutes, ...educatorRoutes, ...nucleoRoutes]
+  const locationRoutes = locationSlugs.flatMap(({ countrySlug, citySlug }) => {
+    const path = citySlug ? `/capoeira/${countrySlug}/${citySlug}` : `/capoeira/${countrySlug}`
+    return LOCALES.map((locale) => ({
+      url: getLocalizedUrl(locale, path),
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: citySlug ? 1.0 : 0.9,
+      alternates: { languages: getLanguageAlternateUrls(path) },
+    }))
+  })
+
+  return [...staticRoutes, ...locationRoutes, ...groupRoutes, ...educatorRoutes, ...nucleoRoutes]
 }

@@ -509,3 +509,76 @@ export async function getGraduationLevelNamesByGroup(
   })
   return result
 }
+
+export type CityEntry = { name: string; slug: string; count: number }
+
+export async function getNucleosByCountry(countrySlug: string): Promise<{
+  countryName: string
+  nucleos: MapNucleo[]
+  cities: CityEntry[]
+} | null> {
+  const { slugify } = await import('./slugify')
+  const all = await getAllNucleos()
+  const matching = all.filter((n) => n.country && slugify(n.country) === countrySlug)
+  if (matching.length === 0) return null
+
+  const countryName = matching[0].country ?? ''
+
+  const cityMap = new Map<string, CityEntry>()
+  for (const n of matching) {
+    if (!n.city) continue
+    const citySlug = slugify(n.city)
+    const existing = cityMap.get(citySlug)
+    if (existing) existing.count++
+    else cityMap.set(citySlug, { name: n.city, slug: citySlug, count: 1 })
+  }
+
+  const cities = Array.from(cityMap.values()).sort((a, b) => b.count - a.count)
+  return { countryName, nucleos: matching, cities }
+}
+
+export async function getNucleosByCity(countrySlug: string, citySlug: string): Promise<{
+  countryName: string
+  cityName: string
+  nucleos: MapNucleo[]
+} | null> {
+  const { slugify } = await import('./slugify')
+  const all = await getAllNucleos()
+  const matching = all.filter(
+    (n) => n.country && slugify(n.country) === countrySlug && n.city && slugify(n.city) === citySlug
+  )
+  if (matching.length === 0) return null
+
+  return {
+    countryName: matching[0].country ?? '',
+    cityName: matching[0].city ?? '',
+    nucleos: matching,
+  }
+}
+
+export async function getAllLocationSlugs(): Promise<Array<{ countrySlug: string; citySlug: string | null }>> {
+  const { slugify } = await import('./slugify')
+  const all = await getAllNucleos().catch(() => [])
+  const seen = new Set<string>()
+  const result: Array<{ countrySlug: string; citySlug: string | null }> = []
+
+  for (const n of all) {
+    if (!n.country) continue
+    const countrySlug = slugify(n.country)
+    const countryKey = countrySlug
+    if (!seen.has(countryKey)) {
+      seen.add(countryKey)
+      result.push({ countrySlug, citySlug: null })
+    }
+    if (n.city) {
+      const citySlug = slugify(n.city)
+      const cityKey = `${countrySlug}/${citySlug}`
+      if (!seen.has(cityKey)) {
+        seen.add(cityKey)
+        result.push({ countrySlug, citySlug })
+      }
+    }
+  }
+
+  return result
+}
