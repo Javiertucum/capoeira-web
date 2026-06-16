@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { useEffect, useEffectEvent, useState } from 'react'
+import { useEffect, useEffectEvent, useRef, useState } from 'react'
 import { routing } from '@/i18n/routing'
 import ThemeToggle from './ThemeToggle'
 
@@ -27,6 +27,8 @@ export default function Nav() {
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const drawerRef = useRef<HTMLDivElement>(null)
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
 
   const syncScrollState = useEffectEvent(() => {
     setScrolled(window.scrollY > 8)
@@ -39,6 +41,36 @@ export default function Nav() {
   }, [syncScrollState])
 
   useEffect(() => { setMenuOpen(false) }, [pathname])
+
+  useEffect(() => {
+    if (!menuOpen) {
+      hamburgerRef.current?.focus()
+      return
+    }
+    const drawer = drawerRef.current
+    if (!drawer) return
+    const focusable = drawer.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )
+    focusable[0]?.focus()
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') { setMenuOpen(false); return }
+      if (e.key !== 'Tab') return
+      const items = Array.from(focusable)
+      if (items.length === 0) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus() }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [menuOpen])
 
   function switchLocale(nextLocale: Locale) {
     const nextPathname = getLocalizedPathname(pathname, nextLocale)
@@ -165,9 +197,11 @@ export default function Nav() {
 
             {/* Hamburger — mobile */}
             <button
+              ref={hamburgerRef}
               type="button"
               aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={menuOpen}
+              aria-controls="mobile-nav-drawer"
               onClick={() => setMenuOpen((p) => !p)}
               className={`grid h-11 w-11 place-items-center rounded-full border border-ink/10 bg-white/50 text-ink backdrop-blur-md transition-colors duration-200 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden active:scale-95`}
             >
@@ -191,6 +225,8 @@ export default function Nav() {
             className="fixed inset-0 z-40 bg-ink/20 lg:hidden"
           />
           <div
+            ref={drawerRef}
+            id="mobile-nav-drawer"
             role="dialog"
             aria-modal="true"
             aria-label="Navegación principal"

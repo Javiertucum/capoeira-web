@@ -48,7 +48,7 @@ export default async function AdminGroupsPage({ params }: Props) {
                     <td className="px-6 py-4">
                       {group.logoUrl ? (
                          <div className="h-10 w-10 rounded-lg border border-border bg-white overflow-hidden p-1">
-                            <img src={group.logoUrl} className="h-full w-full object-contain" alt="logo" />
+                            <img src={group.logoUrl} className="h-full w-full object-contain" alt="logo" loading="lazy" decoding="async" />
                          </div>
                       ) : (
                         <div className="h-10 w-10 rounded-lg border border-border bg-surface-muted flex items-center justify-center text-xs font-bold text-text-muted">

@@ -7,6 +7,7 @@ import MapView, { type MapMarker, type MapViewHandle, type MapPopup } from '@/co
 import Modal from '@/components/public/Modal'
 import { normalizeSocialLink } from '@/lib/social-links'
 import { haversineDistanceKm } from '@/lib/geo'
+import { SocialIcon } from '@/components/ui/SocialIcon'
 import CountryFlag from '@/components/public/CountryFlag'
 import { getDayShort } from '@/lib/day-short'
 import type { Group, MapNucleo, PublicUserProfile } from '@/lib/types'
@@ -22,52 +23,6 @@ const DEFAULT_CENTER: [number, number] = [-20, 10]
 
 const SOCIAL_PLATFORMS = ['instagram', 'facebook', 'whatsapp', 'youtube', 'tiktok', 'website'] as const
 
-function SocialIcon({ platform }: { platform: typeof SOCIAL_PLATFORMS[number] }) {
-  switch (platform) {
-    case 'instagram':
-      return (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" />
-          <circle cx="12" cy="12" r="4" />
-          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-        </svg>
-      )
-    case 'facebook':
-      return (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-        </svg>
-      )
-    case 'whatsapp':
-      return (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 11.5a8.38 8.38 0 0 1-9 8.4 8.5 8.5 0 0 1-4-1L3 21l1.3-3.9a8.38 8.38 0 0 1-1.2-4.5 8.5 8.5 0 1 1 17.9-1.1z" />
-        </svg>
-      )
-    case 'youtube':
-      return (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="2" y="5" width="20" height="14" rx="3" />
-          <path d="M10 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none" />
-        </svg>
-      )
-    case 'tiktok':
-      return (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M14 2v12.5a3.5 3.5 0 1 1-3.5-3.5" />
-          <path d="M14 2a5 5 0 0 0 5 5" />
-        </svg>
-      )
-    case 'website':
-    default:
-      return (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z" />
-        </svg>
-      )
-  }
-}
 
 function ContactLinks({ socialLinks }: { socialLinks?: PublicUserProfile['socialLinks'] }) {
   if (!socialLinks) return null
@@ -89,7 +44,7 @@ function ContactLinks({ socialLinks }: { socialLinks?: PublicUserProfile['social
           className="grid h-7 w-7 place-items-center rounded-full border border-border bg-white text-[#4C463C]! transition-colors duration-150 hover:border-accent hover:text-accent-ink"
           aria-label={l.platform}
         >
-          <SocialIcon platform={l.platform} />
+          <SocialIcon platform={l.platform} size={14} className="" />
         </a>
       ))}
     </div>
@@ -105,6 +60,8 @@ function Avatar({ name, surname, avatarUrl }: { name: string; surname: string; a
         src={avatarUrl}
         alt={`${name} ${surname}`}
         className="h-11 w-11 shrink-0 rounded-full border border-border object-cover"
+        loading="lazy"
+        decoding="async"
       />
     )
   }
@@ -451,7 +408,7 @@ export default function DirectorySplit({
                     <div className="flex items-start gap-3">
                       {nucleo.groupLogoUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={nucleo.groupLogoUrl} alt={nucleo.groupName} className="h-9 w-9 shrink-0 rounded-xl border border-border object-cover" />
+                        <img src={nucleo.groupLogoUrl} alt={nucleo.groupName} className="h-9 w-9 shrink-0 rounded-xl border border-border object-cover" loading="lazy" decoding="async" />
                       ) : (
                         <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-border bg-surface text-xs font-bold text-text-secondary">
                           {nucleo.groupName?.[0]?.toUpperCase() ?? '?'}
@@ -502,7 +459,7 @@ export default function DirectorySplit({
                   <div className="flex items-start gap-3">
                     {group.logoUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={group.logoUrl} alt={group.name} className="h-11 w-11 shrink-0 rounded-2xl border border-border object-cover" />
+                      <img src={group.logoUrl} alt={group.name} className="h-11 w-11 shrink-0 rounded-2xl border border-border object-cover" loading="lazy" decoding="async" />
                     ) : (
                       <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-border bg-surface text-sm font-bold text-text-secondary">
                         {group.name?.[0]?.toUpperCase() ?? '?'}

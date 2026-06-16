@@ -20,6 +20,8 @@ export default function Avatar({
         src={avatarUrl}
         alt={`${name} ${surname}`}
         className={`${dimension} shrink-0 rounded-full border border-border object-cover`}
+        loading="lazy"
+        decoding="async"
       />
     )
   }

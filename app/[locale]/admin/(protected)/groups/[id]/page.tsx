@@ -43,7 +43,7 @@ export default async function GroupAdminPage({ params }: Props) {
           <div className="flex items-center gap-4">
             <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-card p-3">
               {group.logoUrl ? (
-                <img src={group.logoUrl} className="h-full w-full object-contain" alt={group.name} />
+                <img src={group.logoUrl} className="h-full w-full object-contain" alt={group.name} loading="lazy" decoding="async" />
               ) : (
                 <span className="text-2xl font-semibold text-text-muted">{group.name[0]}</span>
               )}

@@ -260,7 +260,7 @@ export default function GroupEditForm({ group, locale, entityOptions }: Props) {
         <div className="mt-5 flex items-end gap-4">
           <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border border-border bg-white p-2">
             {form.logoUrl ? (
-              <img src={form.logoUrl} className="h-full w-full object-contain" alt="preview" />
+              <img src={form.logoUrl} className="h-full w-full object-contain" alt="preview" loading="lazy" decoding="async" />
             ) : null}
           </div>
           <div className="flex-1">

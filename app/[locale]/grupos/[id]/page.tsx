@@ -18,18 +18,12 @@ import GraduationLevels from '@/components/public/GraduationLevels'
 import EducatorsGrid, { type EducatorItem } from '@/components/public/EducatorsGrid'
 import NucleosMiniMap from '@/components/public/NucleosMiniMap'
 import type { MapNucleo } from '@/lib/types'
+import { getDayShort } from '@/lib/day-short'
+
+export const revalidate = 60
 
 type Props = Readonly<{ params: Promise<{ locale: string; id: string }> }>
 
-const DAY_SHORT = {
-  es: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-  pt: ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sá'],
-  en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-} as const
-
-function getDayShort(locale: string) {
-  return DAY_SHORT[locale as keyof typeof DAY_SHORT] ?? DAY_SHORT.en
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, id } = await params
@@ -119,7 +113,7 @@ export default async function GroupProfilePage({ params }: Props) {
           <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
             {group.logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={group.logoUrl} alt={group.name} className="h-24 w-24 shrink-0 rounded-2xl border border-border object-cover" />
+              <img src={group.logoUrl} alt={group.name} loading="lazy" decoding="async" className="h-24 w-24 shrink-0 rounded-2xl border border-border object-cover" />
             ) : (
               <div className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl border border-border bg-surface text-2xl font-bold text-text-secondary">
                 {group.name?.[0]?.toUpperCase() ?? '?'}

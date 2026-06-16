@@ -15,18 +15,12 @@ import { getNucleoById, getGroup, getEducatorProfile } from '@/lib/queries'
 import CountryFlag from '@/components/public/CountryFlag'
 import ProfileCard, { LocationPinIcon } from '@/components/public/ProfileCard'
 import Avatar from '@/components/public/Avatar'
+import { getDayShort } from '@/lib/day-short'
+
+export const revalidate = 60
 
 type Props = Readonly<{ params: Promise<{ locale: string; groupId: string; nucleoId: string }> }>
 
-const DAY_SHORT = {
-  es: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-  pt: ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sá'],
-  en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-} as const
-
-function getDayShort(locale: string) {
-  return DAY_SHORT[locale as keyof typeof DAY_SHORT] ?? DAY_SHORT.en
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, groupId, nucleoId } = await params
@@ -112,7 +106,7 @@ export default async function NucleoProfilePage({ params }: Props) {
                 >
                   {group.logoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={group.logoUrl} alt={group.name} className="h-6 w-6 shrink-0 rounded-full border border-border object-cover" />
+                    <img src={group.logoUrl} alt={group.name} loading="lazy" decoding="async" className="h-6 w-6 shrink-0 rounded-full border border-border object-cover" />
                   ) : (
                     <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-border bg-card text-xs font-bold text-text-secondary">
                       {group.name?.[0]?.toUpperCase() ?? '?'}

@@ -4,6 +4,8 @@ import DirectorySplit, { type DirectoryEducator } from '@/components/public/Dire
 import Footer from '@/components/public/Footer'
 import type { Group, MapNucleo } from '@/lib/types'
 
+export const revalidate = 60
+
 type Props = Readonly<{ params: Promise<{ locale: string }> }>
 
 const SITE_TITLE = 'Agenda Capoeiragem'

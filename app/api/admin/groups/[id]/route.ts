@@ -12,9 +12,19 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const { id } = await params
   const body = await request.json()
 
+  const allowedFields = [
+    'name', 'description', 'country', 'city', 'logoUrl', 'websiteUrl',
+    'instagramUrl', 'facebookUrl', 'youtubeUrl', 'whatsappUrl', 'tiktokUrl',
+    'graduationSystemName', 'educatorThresholdOrder', 'style', 'visible',
+    'adminUserIds', 'coAdminIds',
+  ]
+  const sanitizedBody = Object.fromEntries(
+    Object.entries(body).filter(([key]) => allowedFields.includes(key))
+  )
+
   try {
     await adminDb.collection('groups').doc(id).update({
-      ...body,
+      ...sanitizedBody,
       updatedAt: FieldValue.serverTimestamp(),
     })
     return NextResponse.json({ ok: true })
