@@ -1,5 +1,3 @@
-import ScreenshotFrame from '@/components/public/ScreenshotFrame'
-
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.capoeiraapp.mobile'
 
 function PlayBadgeIcon() {
@@ -29,46 +27,32 @@ export default function AppDownloadCTA({ copy }: { copy: any }) {
         className="pointer-events-none absolute -left-64 -top-64 h-[600px] w-[600px] rounded-full bg-accent/10 blur-[120px]"
       />
 
-      <div className="page-shell relative z-10 py-16 lg:py-32">
-        <div className="grid items-center gap-16 lg:grid-cols-[1fr_420px] lg:gap-24">
+      <div className="page-shell relative z-10 py-16 lg:py-24">
+        <div className="max-w-[52ch] space-y-8">
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-accent">
+            Agenda Capoeiragem
+          </p>
 
-          <div className="space-y-8">
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-accent">
-              Agenda Capoeiragem
-            </p>
+          <h2
+            className="font-black leading-[0.95] tracking-[-0.04em] text-white"
+            style={{ fontSize: 'clamp(30px, 8vw, 68px)' }}
+          >
+            {copy.appCtaTitle}
+          </h2>
 
-            <h2
-              className="font-black leading-[0.95] tracking-[-0.04em] text-white"
-              style={{ fontSize: 'clamp(30px, 8vw, 68px)' }}
-            >
-              {copy.appCtaTitle}
-            </h2>
+          <p className="text-base leading-relaxed text-white/55 lg:text-lg">
+            {copy.appCtaBody}
+          </p>
 
-            <p className="max-w-[40ch] text-base leading-relaxed text-white/55 lg:text-lg">
-              {copy.appCtaBody}
-            </p>
-
-            <a
-              href={PLAY_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex h-14 items-center gap-3 rounded-2xl bg-accent px-8 text-sm font-bold text-white shadow-[0_4px_24px_-4px_oklch(0.56_0.19_158/0.38)] transition-[transform,box-shadow] duration-200 ease-[var(--ease-out)] hover:-translate-y-[2px] hover:shadow-[0_8px_32px_-4px_oklch(0.56_0.19_158/0.48)] active:scale-[0.97] active:translate-y-0"
-            >
-              <PlayBadgeIcon />
-              {copy.appCtaButton}
-            </a>
-          </div>
-
-          <div className="relative mx-auto hidden lg:block">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 scale-90 rounded-full bg-accent/15 blur-3xl"
-            />
-            <div className="floating-rot relative" style={{ '--rot': '-2deg' } as React.CSSProperties}>
-              <ScreenshotFrame src="/mockups/event.png" alt="Agenda Capoeiragem events screen" size="lg" />
-            </div>
-          </div>
-
+          <a
+            href={PLAY_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex h-14 items-center gap-3 rounded-2xl bg-accent px-8 text-sm font-bold text-white shadow-[0_4px_24px_-4px_oklch(0.56_0.19_158/0.38)] transition-[transform,box-shadow] duration-200 ease-[var(--ease-out)] hover:-translate-y-[2px] hover:shadow-[0_8px_32px_-4px_oklch(0.56_0.19_158/0.48)] active:scale-[0.97] active:translate-y-0"
+          >
+            <PlayBadgeIcon />
+            {copy.appCtaButton}
+          </a>
         </div>
       </div>
     </section>

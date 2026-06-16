@@ -4,17 +4,10 @@ import { type FeatureMockupType } from '@/components/public/FeatureMockup'
 type SpotlightItem = { tag: string; title: string; desc: string; mockup: FeatureMockupType }
 type MiniItem = { t: string; d: string }
 
-function SpotlightRow({ item, flip }: { item: SpotlightItem; flip?: boolean }) {
+function SpotlightRow({ item }: { item: SpotlightItem }) {
   return (
-    <div
-      className={[
-        'border-b border-border py-10 lg:py-16',
-        'flex flex-col items-center gap-8',
-        'lg:flex-row lg:gap-16',
-        flip ? 'lg:flex-row-reverse' : '',
-      ].join(' ')}
-    >
-      <div className="w-full space-y-5 lg:flex-1 lg:max-w-[54ch]">
+    <div className="border-b border-border py-10 lg:py-14 flex flex-col items-center gap-8 lg:flex-row lg:gap-16">
+      <div className="w-full space-y-4 lg:flex-1 lg:max-w-[50ch]">
         <span
           className="inline-block rounded-full px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.18em]"
           style={{ background: 'var(--ink)', color: 'var(--bg)' }}
@@ -23,11 +16,11 @@ function SpotlightRow({ item, flip }: { item: SpotlightItem; flip?: boolean }) {
         </span>
         <h3
           className="font-black text-ink leading-[0.96] tracking-[-0.035em]"
-          style={{ fontSize: 'clamp(26px, 3vw, 40px)' }}
+          style={{ fontSize: 'clamp(24px, 2.6vw, 36px)' }}
         >
           {item.title}
         </h3>
-        <p className="text-base leading-relaxed text-text-secondary lg:text-[1.05rem]">
+        <p className="text-base leading-relaxed text-text-secondary">
           {item.desc}
         </p>
       </div>
@@ -38,11 +31,13 @@ function SpotlightRow({ item, flip }: { item: SpotlightItem; flip?: boolean }) {
   )
 }
 
-function MiniFeatureCard({ item }: { item: MiniItem }) {
+function MiniFeatureCard({ item }: { item: MiniItem | SpotlightItem }) {
+  const title = 't' in item ? item.t : item.tag
+  const desc = 'd' in item ? item.d : item.desc
   return (
-    <div className="rounded-[20px] border border-border bg-bg p-6 transition-colors duration-150 hover:border-accent/30">
-      <h4 className="font-bold text-ink">{item.t}</h4>
-      <p className="mt-2 text-sm leading-relaxed text-text-secondary">{item.d}</p>
+    <div className="rounded-2xl border border-border p-5 transition-colors duration-150 hover:border-accent/30">
+      <h4 className="font-bold text-ink">{title}</h4>
+      <p className="mt-2 text-sm leading-relaxed text-text-secondary">{desc}</p>
     </div>
   )
 }
@@ -50,6 +45,10 @@ function MiniFeatureCard({ item }: { item: MiniItem }) {
 export default function AppBenefitsStudents({ copy }: { copy: any }) {
   const spotlights: SpotlightItem[] = copy.studentsSpotlights ?? []
   const extras: MiniItem[] = copy.studentsExtras ?? []
+
+  // Show the last spotlight (event) with phone; demote the rest to mini-cards
+  const featured = spotlights.slice(-1)
+  const demoted = spotlights.slice(0, -1)
 
   return (
     <section className="bg-bg">
@@ -69,14 +68,17 @@ export default function AppBenefitsStudents({ copy }: { copy: any }) {
           <div className="hidden flex-1 border-t border-border sm:block" />
         </div>
 
-        {spotlights.map((item, i) => (
-          <SpotlightRow key={item.tag} item={item} flip={i % 2 !== 0} />
+        {featured.map((item) => (
+          <SpotlightRow key={item.tag} item={item} />
         ))}
 
-        {extras.length > 0 && (
-          <div className="py-10 lg:py-16">
-            <p className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-text-muted">{copy.studentsExtrasLabel}</p>
-            <div className="grid gap-4 sm:grid-cols-2">
+        {(demoted.length > 0 || extras.length > 0) && (
+          <div className="py-10 lg:py-12">
+            <p className="mb-5 text-xs font-black uppercase tracking-[0.2em] text-text-muted">{copy.studentsExtrasLabel}</p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {demoted.map((item) => (
+                <MiniFeatureCard key={item.tag} item={item} />
+              ))}
               {extras.map((item) => (
                 <MiniFeatureCard key={item.t} item={item} />
               ))}
