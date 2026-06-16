@@ -13,7 +13,7 @@ function PlayBadgeIcon() {
 
 export default function AppDownloadCTA({ copy }: { copy: any }) {
   return (
-    <section className="relative overflow-hidden bg-ink">
+    <section className="relative overflow-hidden" style={{ background: '#0f1318' }}>
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.025]"
