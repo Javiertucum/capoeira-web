@@ -24,7 +24,7 @@ function SpotlightRow({ item }: { item: SpotlightItem }) {
           {item.desc}
         </p>
       </div>
-      <div className="hidden shrink-0 lg:block">
+      <div className="flex shrink-0 justify-center">
         <ScreenshotFrame src={`/mockups/${item.mockup}.png`} alt={item.title} size="default" />
       </div>
     </div>

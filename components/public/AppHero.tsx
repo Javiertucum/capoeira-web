@@ -90,13 +90,22 @@ export default function AppHero({ copy, stats }: { copy: any; stats?: Stats }) {
             )}
           </div>
 
-          {/* Phone mockup — bottom-aligned with section */}
+          {/* Phone mockup — layered depth (ATOKS-inspired) */}
           <div className="relative flex justify-center self-end lg:justify-end emil-enter-stagger emil-stagger-4">
             <div
               aria-hidden
               className="pointer-events-none absolute inset-x-0 bottom-0 top-1/4 rounded-full bg-accent/18 blur-[80px]"
             />
-            <div className="floating-rot relative" style={{ '--rot': '2deg' } as React.CSSProperties}>
+            {/* Secondary phone — behind and offset left */}
+            <div
+              className="absolute -left-6 bottom-6 hidden opacity-70 lg:block"
+              style={{ transform: 'rotate(-4deg) scale(0.85)', transformOrigin: 'bottom center', filter: 'blur(0.5px)' }}
+              aria-hidden
+            >
+              <ScreenshotFrame src="/mockups/kpi.png" alt="" size="lg" />
+            </div>
+            {/* Primary phone */}
+            <div className="floating-rot relative z-10" style={{ '--rot': '2deg' } as React.CSSProperties}>
               <ScreenshotFrame src="/mockups/home.png" alt="Agenda Capoeiragem app home screen" size="lg" />
             </div>
           </div>

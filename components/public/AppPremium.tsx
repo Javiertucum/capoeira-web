@@ -11,6 +11,7 @@ function CheckIcon({ muted }: { muted?: boolean }) {
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
       className="mt-0.5 shrink-0"
     >
       <polyline points="20 6 9 17 4 12" />
@@ -35,7 +36,7 @@ export default function AppPremium({ copy }: { copy: any }) {
 
   return (
     <section className="bg-bg border-t border-border">
-      <div className="page-shell py-16 lg:py-32">
+      <div className="page-shell py-16 lg:py-24">
         {/* Header */}
         <div className="mb-10 lg:mb-14 max-w-[54ch]">
           <p className="mb-3 text-[10px] font-black uppercase tracking-[0.22em] text-accent-ink">
@@ -118,6 +119,7 @@ export default function AppPremium({ copy }: { copy: any }) {
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      aria-hidden="true"
                       className="mt-0.5 shrink-0"
                     >
                       <polyline points="20 6 9 17 4 12" />

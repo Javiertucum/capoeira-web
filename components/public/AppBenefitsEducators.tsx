@@ -32,7 +32,7 @@ function SpotlightRow({ item, flip }: { item: SpotlightItem; flip?: boolean }) {
           {item.desc}
         </p>
       </div>
-      <div className="hidden shrink-0 lg:block">
+      <div className="flex shrink-0 justify-center">
         <ScreenshotFrame src={`/mockups/${item.mockup}.png`} alt={item.title} size="default" />
       </div>
     </div>
@@ -90,7 +90,7 @@ export default function AppBenefitsEducators({ copy }: { copy: any }) {
         )}
 
         <div className="flex items-center justify-between py-8 border-b border-border">
-          <p className="text-sm text-text-secondary">{copy.educatorsIntro}</p>
+          <p className="text-sm text-text-secondary">{copy.educatorsCtaBody ?? copy.educatorsIntro}</p>
           <a
             href={PLAY_STORE_URL}
             target="_blank"

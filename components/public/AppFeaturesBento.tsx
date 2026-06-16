@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { FeatureMockupType } from '@/components/public/FeatureMockup'
 
 type SpotlightItem = { tag: string; title: string; desc: string; mockup: FeatureMockupType }
@@ -71,7 +72,7 @@ function BentoTile({ item, index }: { item: SpotlightItem; index: number }) {
     <div
       className={[
         SPANS[index] ?? 'col-span-2 sm:col-span-1 lg:col-span-2',
-        'rounded-[20px] border p-6 lg:p-7',
+        'relative overflow-hidden rounded-[20px] border p-6 lg:p-7',
         featured ? 'border-accent/15 bg-accent/5' : 'border-border bg-card',
       ].join(' ')}
     >
@@ -84,7 +85,7 @@ function BentoTile({ item, index }: { item: SpotlightItem; index: number }) {
         <FeatureIcon type={item.mockup} />
       </div>
 
-      <p className="mb-2 text-[9px] font-black uppercase tracking-[0.18em] text-text-muted">
+      <p className="mb-2 text-[11px] font-black uppercase tracking-[0.18em] text-text-muted">
         {item.tag}
       </p>
 
@@ -95,9 +96,27 @@ function BentoTile({ item, index }: { item: SpotlightItem; index: number }) {
         {item.title}
       </h3>
 
-      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-text-secondary">
+      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-text-secondary lg:max-w-[50%]">
         {item.desc}
       </p>
+
+      {/* ATOKS-style: thumbnail screenshot clipped to the right on wide featured tiles */}
+      {featured && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute bottom-0 right-0 hidden w-[38%] overflow-hidden rounded-br-[20px] lg:block"
+          style={{ height: '130%' }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent z-10" />
+          <Image
+            src={`/mockups/${item.mockup}.png`}
+            alt=""
+            fill
+            className="object-cover object-top opacity-80"
+            sizes="200px"
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -110,7 +129,7 @@ export default function AppFeaturesBento({ copy }: { copy: any }) {
   return (
     <section className="border-t border-border bg-bg">
       <div className="page-shell py-14 lg:py-20">
-        <p className="mb-8 text-[10px] font-black uppercase tracking-[0.22em] text-text-muted lg:mb-10">
+        <p className="mb-8 text-[11px] font-black uppercase tracking-[0.22em] text-text-muted lg:mb-10">
           {copy.featuresBentoLabel}
         </p>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-6 lg:gap-4">
