@@ -1,11 +1,16 @@
 import type { Metadata } from 'next'
 import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
+import { getStats } from '@/lib/queries'
 import AppHero from '@/components/public/AppHero'
+import AppFeaturesBento from '@/components/public/AppFeaturesBento'
 import AppBenefitsEducators from '@/components/public/AppBenefitsEducators'
 import AppBenefitsStudents from '@/components/public/AppBenefitsStudents'
 import AppPremium from '@/components/public/AppPremium'
+import AppTestimonials from '@/components/public/AppTestimonials'
 import AppDownloadCTA from '@/components/public/AppDownloadCTA'
 import Footer from '@/components/public/Footer'
+
+export const revalidate = 3600
 
 type Props = Readonly<{ params: Promise<{ locale: string }> }>
 
@@ -18,6 +23,13 @@ const COPY = {
     appHeroSubtitle: 'Asistencia, graduaciones, finanzas, eventos y el mapa global de núcleos. Todo en un solo lugar, para educadores y alumnos.',
     appHeroPlayButton: 'Descargar en Google Play',
     appHeroIosNote: 'iOS próximamente',
+    // Stats labels
+    statGroups: 'Grupos',
+    statNucleos: 'Núcleos',
+    statEducators: 'Educadores',
+    statCountries: 'Países',
+    // Bento
+    featuresBentoLabel: 'Qué incluye la app',
     // Educators
     educatorsTitle: 'Para educadores y organizadores',
     educatorsIntro: 'Todo lo necesario para gestionar tu núcleo, desde el celular.',
@@ -109,6 +121,11 @@ const COPY = {
     appHeroSubtitle: 'Presença, graduações, finanças, eventos e o mapa global de núcleos. Tudo em um só lugar, para educadores e alunos.',
     appHeroPlayButton: 'Baixar na Google Play',
     appHeroIosNote: 'iOS em breve',
+    statGroups: 'Grupos',
+    statNucleos: 'Núcleos',
+    statEducators: 'Educadores',
+    statCountries: 'Países',
+    featuresBentoLabel: 'O que inclui o app',
     educatorsTitle: 'Para educadores e organizadores',
     educatorsIntro: 'Tudo o que você precisa para gerenciar seu núcleo, direto do celular.',
     educatorsSpotlights: [
@@ -196,6 +213,11 @@ const COPY = {
     appHeroSubtitle: 'Attendance, graduations, finances, events and the global map of schools. All in one place, for educators and students.',
     appHeroPlayButton: 'Get it on Google Play',
     appHeroIosNote: 'iOS coming soon',
+    statGroups: 'Groups',
+    statNucleos: 'Schools',
+    statEducators: 'Educators',
+    statCountries: 'Countries',
+    featuresBentoLabel: 'What the app includes',
     educatorsTitle: 'For educators and organizers',
     educatorsIntro: 'Everything you need to run your school, right from your phone.',
     educatorsSpotlights: [
@@ -296,13 +318,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AppLandingPage({ params }: Props) {
   const { locale } = await params
   const c = getCopy(locale)
+  const stats = await getStats().catch(() => null)
 
   return (
     <main className="min-h-screen bg-bg selection:bg-accent/20 overflow-x-hidden">
-      <AppHero copy={c} />
+      <AppHero copy={c} stats={stats ?? undefined} />
+      <AppFeaturesBento copy={c} />
       <AppBenefitsEducators copy={c} />
       <AppBenefitsStudents copy={c} />
       <AppPremium copy={c} />
+      <AppTestimonials locale={locale} />
       <AppDownloadCTA copy={c} />
       <Footer locale={locale} />
     </main>

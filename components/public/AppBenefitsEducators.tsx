@@ -2,10 +2,17 @@ import FeatureMockup, { type FeatureMockupType } from '@/components/public/Featu
 
 type SpotlightItem = { tag: string; title: string; desc: string; mockup: FeatureMockupType }
 
-function SpotlightRow({ item }: { item: SpotlightItem }) {
+function SpotlightRow({ item, flip }: { item: SpotlightItem; flip?: boolean }) {
   return (
-    <div className="border-b border-border py-10 lg:py-16 grid lg:grid-cols-[1fr_320px] lg:gap-16 items-center">
-      <div className="space-y-5 max-w-[54ch]">
+    <div
+      className={[
+        'border-b border-border py-10 lg:py-16',
+        'flex flex-col items-center gap-8',
+        'lg:flex-row lg:gap-16',
+        flip ? 'lg:flex-row-reverse' : '',
+      ].join(' ')}
+    >
+      <div className="w-full space-y-5 lg:flex-1 lg:max-w-[54ch]">
         <span
           className="inline-block rounded-full px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.18em]"
           style={{ background: 'var(--accent)', color: 'var(--bg)' }}
@@ -22,7 +29,7 @@ function SpotlightRow({ item }: { item: SpotlightItem }) {
           {item.desc}
         </p>
       </div>
-      <div className="hidden lg:block">
+      <div className="hidden shrink-0 lg:block">
         <FeatureMockup type={item.mockup} size="default" />
       </div>
     </div>
@@ -50,8 +57,8 @@ export default function AppBenefitsEducators({ copy }: { copy: any }) {
           <div className="hidden flex-1 border-t border-border sm:block" />
         </div>
 
-        {spotlights.map((item) => (
-          <SpotlightRow key={item.tag} item={item} />
+        {spotlights.map((item, i) => (
+          <SpotlightRow key={item.tag} item={item} flip={i % 2 !== 0} />
         ))}
       </div>
     </section>

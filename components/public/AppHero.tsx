@@ -13,37 +13,49 @@ function PlayBadgeIcon() {
   )
 }
 
-export default function AppHero({ copy }: { copy: any }) {
+type Stats = { groups: number; nucleos: number; educators: number; countries: number }
+
+export default function AppHero({ copy, stats }: { copy: any; stats?: Stats }) {
+  const statItems = stats
+    ? [
+        { value: stats.groups, label: copy.statGroups },
+        { value: stats.nucleos, label: copy.statNucleos },
+        { value: stats.educators, label: copy.statEducators },
+        { value: stats.countries, label: copy.statCountries },
+      ]
+    : []
+
   return (
     <section className="relative overflow-hidden bg-bg">
+      {/* Subtle dot grid on right side behind phone */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-32 top-1/2 -translate-y-1/2"
-      >
-        <div className="h-[640px] w-[640px] rounded-full border border-accent/8" />
-        <div className="absolute inset-[80px] rounded-full border border-accent/10" />
-        <div className="absolute inset-[160px] rounded-full border border-accent/14" />
-      </div>
+        className="pointer-events-none absolute right-0 top-0 h-full w-[55%] text-text-muted opacity-[0.04]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+        }}
+      />
 
       <div className="page-shell relative z-10 py-16 lg:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1fr] lg:gap-10">
+        <div className="grid items-end gap-12 lg:grid-cols-[1fr_400px] lg:gap-10">
 
-          <div className="space-y-8 lg:space-y-10">
-            <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 shadow-sm emil-enter">
-              <span className="h-2 w-2 shrink-0 rounded-full bg-accent animate-pulse" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-text-secondary">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-3 rounded-full border border-accent/20 bg-accent/8 px-4 py-2 emil-enter">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent-ink">
                 {copy.appHeroEyebrow}
               </span>
             </div>
 
             <h1
-              className="max-w-[16ch] font-black text-ink leading-[0.96] tracking-[-0.04em] emil-enter-stagger emil-stagger-1"
+              className="max-w-[14ch] font-black text-ink leading-[0.96] tracking-[-0.04em] emil-enter-stagger emil-stagger-1"
               style={{ fontSize: 'clamp(34px, 9vw, 84px)' }}
             >
               {copy.appHeroTitle}
             </h1>
 
-            <p className="max-w-[48ch] text-base text-text-secondary leading-relaxed lg:text-lg emil-enter-stagger emil-stagger-2">
+            <p className="max-w-[46ch] text-base text-text-secondary leading-relaxed lg:text-lg emil-enter-stagger emil-stagger-2">
               {copy.appHeroSubtitle}
             </p>
 
@@ -61,12 +73,28 @@ export default function AppHero({ copy }: { copy: any }) {
                 {copy.appHeroIosNote}
               </span>
             </div>
+
+            {/* Stats strip */}
+            {statItems.length > 0 && (
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-border pt-6 emil-enter-stagger emil-stagger-4">
+                {statItems.map(({ value, label }, i) => (
+                  <div key={label} className="flex items-center gap-6">
+                    <div>
+                      <p className="text-2xl font-black text-ink tabular-nums">{value}</p>
+                      <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-text-muted">{label}</p>
+                    </div>
+                    {i < statItems.length - 1 && <div className="hidden h-7 w-px bg-border sm:block" />}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          <div className="relative flex justify-center lg:justify-end emil-enter-stagger emil-stagger-4">
+          {/* Phone mockup — bottom-aligned with section */}
+          <div className="relative flex justify-center self-end lg:justify-end emil-enter-stagger emil-stagger-4">
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 scale-90 rounded-full bg-accent/15 blur-3xl"
+              className="pointer-events-none absolute inset-x-0 bottom-0 top-1/4 rounded-full bg-accent/18 blur-[80px]"
             />
             <div className="floating-rot relative" style={{ '--rot': '2deg' } as React.CSSProperties}>
               <FeatureMockup type="home" size="lg" />
