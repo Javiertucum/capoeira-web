@@ -63,7 +63,7 @@ export default function AppPremium({ copy }: { copy: any }) {
             <ul className="space-y-3.5">
               {freeItems.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <CheckIcon muted />
+                  <CheckIcon />
                   <span className="text-sm leading-snug text-text-secondary">{item}</span>
                 </li>
               ))}
@@ -79,15 +79,15 @@ export default function AppPremium({ copy }: { copy: any }) {
             </a>
           </div>
 
-          {/* Pro card */}
+          {/* Pro card — always dark regardless of theme */}
           <div
             className="relative overflow-hidden rounded-[24px] p-8"
-            style={{ background: 'var(--ink)', color: 'var(--bg)' }}
+            style={{ background: '#0f1318' }}
           >
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full blur-3xl"
-              style={{ background: 'var(--accent)', opacity: 0.15 }}
+              style={{ background: 'var(--accent)', opacity: 0.2 }}
             />
             <div className="relative">
               <div className="mb-6 flex items-start justify-between gap-4">
@@ -95,12 +95,12 @@ export default function AppPremium({ copy }: { copy: any }) {
                   <p className="text-xs font-black uppercase tracking-[0.16em]" style={{ color: 'var(--accent)' }}>
                     {copy.premiumProLabel}
                   </p>
-                  <p className="mt-1 text-3xl font-black" style={{ color: 'var(--bg)' }}>{copy.premiumProPrice}</p>
-                  <p className="mt-1 text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{copy.premiumProPeriod}</p>
+                  <p className="mt-1 text-3xl font-black text-white">{copy.premiumProPrice}</p>
+                  <p className="mt-1 text-xs text-white/50">{copy.premiumProPeriod}</p>
                 </div>
                 <span
                   className="shrink-0 rounded-full px-3 py-1 text-[9px] font-black uppercase tracking-widest"
-                  style={{ background: 'var(--accent)', color: 'var(--bg)' }}
+                  style={{ background: 'var(--accent)', color: '#fff' }}
                 >
                   Pro
                 </span>
@@ -122,7 +122,7 @@ export default function AppPremium({ copy }: { copy: any }) {
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    <span className="text-sm leading-snug" style={{ color: 'rgba(255,255,255,0.75)' }}>{item}</span>
+                    <span className="text-sm leading-snug text-white/85">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -131,8 +131,8 @@ export default function AppPremium({ copy }: { copy: any }) {
                 href={PLAY_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 flex h-12 w-full items-center justify-center gap-2.5 rounded-2xl text-sm font-bold transition-[transform,opacity] duration-150 hover:-translate-y-[1px] hover:opacity-90 active:translate-y-0 active:opacity-100"
-                style={{ background: 'var(--accent)', color: 'var(--bg)' }}
+                className="mt-8 flex h-12 w-full items-center justify-center gap-2.5 rounded-2xl text-sm font-bold text-white transition-[transform,opacity] duration-150 hover:-translate-y-[1px] hover:opacity-90 active:translate-y-0 active:opacity-100"
+                style={{ background: 'var(--accent)' }}
               >
                 <PlayBadgeIcon />
                 {copy.premiumProCta}

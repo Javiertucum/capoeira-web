@@ -25,15 +25,19 @@ function SpotlightRow({ item, flip }: { item: SpotlightItem; flip: boolean }) {
   )
 
   const mockup = (
-    <div className="hidden lg:flex lg:justify-center">
+    <div className="hidden lg:flex lg:justify-center lg:items-center">
       <div className="floating">
-        <FeatureMockup type={item.mockup} />
+        <FeatureMockup type={item.mockup} size="lg" />
       </div>
     </div>
   )
 
   return (
-    <div className="grid items-center gap-10 border-b border-border py-20 lg:grid-cols-2 lg:gap-20">
+    <div
+      className={`grid items-center gap-10 border-b border-border py-20 lg:gap-16 ${
+        flip ? 'lg:grid-cols-[360px_1fr]' : 'lg:grid-cols-[1fr_360px]'
+      }`}
+    >
       {flip ? (
         <>
           {mockup}
