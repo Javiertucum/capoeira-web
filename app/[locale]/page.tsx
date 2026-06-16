@@ -62,7 +62,10 @@ export default async function LandingPage({ params }: Props) {
             ? gradNamesByGroup.get(e.groupId)?.get(e.graduationLevelId) ?? null
             : null,
       }))
-  } catch {}
+  } catch (error) {
+    console.error('[LandingPage] Failed to load directory data:', error)
+    // Return with empty arrays - partial render is better than crashing
+  }
 
   return (
     <main className="min-h-screen bg-bg selection:bg-accent/20 overflow-x-hidden">

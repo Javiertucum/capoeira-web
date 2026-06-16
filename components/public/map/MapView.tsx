@@ -76,21 +76,28 @@ const MapView = forwardRef<MapViewHandle, {
   useEffect(() => {
     if (!containerRef.current) return
 
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: isDarkMode() ? DARK_STYLE : LIGHT_STYLE,
-      center,
-      zoom,
-      attributionControl: { compact: true },
-    })
-    mapRef.current = map
+    try {
+      const map = new maplibregl.Map({
+        container: containerRef.current,
+        style: isDarkMode() ? DARK_STYLE : LIGHT_STYLE,
+        center,
+        zoom,
+        attributionControl: { compact: true },
+      })
+      mapRef.current = map
+    } catch (error) {
+      console.error('[MapView] Failed to initialize map:', error)
+      return
+    }
 
     const observer = new MutationObserver(() => {
-      map.setStyle(isDarkMode() ? DARK_STYLE : LIGHT_STYLE)
+      if (mapRef.current) {
+        mapRef.current.setStyle(isDarkMode() ? DARK_STYLE : LIGHT_STYLE)
+      }
     })
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
 
-    const resizeObserver = new ResizeObserver(() => map.resize())
+    const resizeObserver = new ResizeObserver(() => mapRef.current?.resize())
     resizeObserver.observe(containerRef.current)
 
     return () => {
@@ -99,7 +106,7 @@ const MapView = forwardRef<MapViewHandle, {
       markersRef.current.forEach((marker) => marker.remove())
       markersRef.current.clear()
       popupRef.current?.remove()
-      map.remove()
+      mapRef.current?.remove()
       mapRef.current = null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
