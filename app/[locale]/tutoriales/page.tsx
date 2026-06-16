@@ -92,6 +92,11 @@ const SECTIONS_ES: Section[] = [
     mockup: 'educator',
     steps: [
       {
+        t: '¿Qué es un grupo y qué es un núcleo?',
+        d: 'Un **grupo** es la organización de capoeira (el "grupo" o escuela en sentido amplio, ej: Abadá Capoeira, Cordão de Ouro). Un **núcleo** es el lugar físico concreto donde se entrena dentro de ese grupo — puede haber varios núcleos en distintas ciudades o países. Tú perteneces a un grupo y entrenas en un núcleo. Los educadores crean núcleos dentro de su grupo.',
+        note: 'Cuando la app habla de "tu núcleo" se refiere al lugar específico donde entrenas. Cuando habla de "tu grupo" se refiere a la organización completa.',
+      },
+      {
         t: 'Explora los grupos',
         d: 'La pestaña "Grupos" muestra todos los grupos públicos registrados en la plataforma. Usa el buscador ("Buscar grupo...") para filtrar por nombre, y los menús desplegables de "País de presencia" y "Estilo de capoeira" para acotar la búsqueda.',
       },
@@ -664,7 +669,7 @@ const SECTIONS_PT: Section[] = [
       },
       {
         t: 'Vincule seu grupo',
-        d: 'Na tela inicial você verá o cartão "Sem grupo atribuído" com o botão "Buscar grupos". Procure seu grupo e envie uma solicitação, ou peça ao seu educador o código do grupo para se vincular diretamente.',
+        d: 'Na tela inicial você verá o cartão "Sem grupo atribuído" com o botão "Buscar grupos". Procure seu grupo no diretório e envie uma solicitação de entrada. Você também pode pedir ao seu educador para te adicionar diretamente pelo painel do núcleo.',
         warn: 'Sem um grupo vinculado, você não conseguirá ver os eventos nem o histórico de graduações da sua comunidade. As funções de presença e pagamentos também não estarão disponíveis.',
       },
     ],
@@ -707,6 +712,11 @@ const SECTIONS_PT: Section[] = [
     intro: 'Como descobrir grupos, entrar em um e explorar a hierarquia da sua comunidade.',
     mockup: 'educator',
     steps: [
+      {
+        t: 'O que é um grupo e o que é um núcleo?',
+        d: 'Um **grupo** é a organização de capoeira (a "escola" no sentido amplo, ex: Abadá Capoeira, Cordão de Ouro). Um **núcleo** é o local físico específico onde se treina dentro desse grupo — pode haver vários núcleos em cidades ou países diferentes. Você pertence a um grupo e treina em um núcleo. Os educadores criam núcleos dentro do seu grupo.',
+        note: 'Quando o app fala "seu núcleo" se refere ao local específico onde você treina. Quando fala "seu grupo" se refere à organização completa.',
+      },
       {
         t: 'Explore os grupos',
         d: 'A aba "Grupos" mostra todos os grupos públicos registrados na plataforma. Use a barra de busca ("Buscar grupo...") para filtrar por nome, e os menus de "País de presença" e "Estilo de capoeira" para refinar.',
@@ -886,11 +896,12 @@ const SECTIONS_PT: Section[] = [
       },
       {
         t: 'Nome e descrição',
-        d: 'Insira o nome oficial do seu grupo (obrigatório) e uma descrição (opcional, mas recomendada). O nome aparecerá no diretório global, nos perfis dos membros e em todos os eventos que você organizar.',
+        d: 'Insira o nome oficial do seu grupo e uma descrição. Ambos são obrigatórios. O nome aparecerá no diretório global, nos perfis dos membros e em todos os eventos que você organizar.',
       },
       {
-        t: 'Estilo e cidade (opcional)',
-        d: 'Selecione o estilo de capoeira que você pratica (Angola, Regional, Contemporânea ou outro) e a cidade principal do grupo. Esses dados permitem que praticantes filtrem por estilo no diretório.',
+        t: 'Estilo de capoeira (obrigatório)',
+        d: 'No campo "Estilo de capoeira *" escreva o estilo que você pratica (ex: Mista, Benguela, Angola, Regional). É um campo de texto livre e obrigatório. Esse texto serve como nome do seu sistema de graduação e influencia como as cordas são chamadas no grupo.',
+        tip: 'O campo "Cidade" é opcional — você pode preenchê-lo agora ou depois em "Editar grupo".',
       },
       {
         t: 'Logo do grupo (opcional)',
@@ -902,8 +913,8 @@ const SECTIONS_PT: Section[] = [
       },
       {
         t: 'Convidar membros',
-        d: 'Após criar o grupo, compartilhe o nome com seus alunos para que possam buscá-lo e solicitar entrada, ou copie o código de convite para enviar um link direto. Os alunos também podem se vincular durante o onboarding.',
-        tip: 'Alunos que já têm conta podem solicitar entrada buscando seu grupo na aba "Grupos" do diretório.',
+        d: 'Após criar o grupo, compartilhe o nome com seus alunos. Eles buscam na aba "Grupos" → diretório e solicitam entrada. Você também pode adicioná-los diretamente pelo painel do seu núcleo ou eles se vinculam durante o próprio onboarding.',
+        tip: 'Não há código de convite: o fluxo padrão é os alunos te buscarem no diretório ou você os adicionar pelo painel do núcleo.',
       },
     ],
   },
@@ -1035,7 +1046,7 @@ const SECTIONS_PT: Section[] = [
     steps: [
       {
         t: 'Ver as solicitações pendentes',
-        d: 'No painel administrativo do núcleo → aba "Solicitações" você verá todas as solicitações de entrada pendentes. Cada cartão mostra o nome do solicitante, sua foto, a data e a mensagem enviada (se usou a solicitação guiada).',
+        d: 'Vá ao perfil do seu núcleo → botão "Gerenciar" → aba "Solicitações". Você verá todas as solicitações de entrada pendentes. Cada cartão mostra o nome do solicitante, sua foto, a data e a mensagem enviada (se usou a solicitação guiada).',
       },
       {
         t: 'Aprovar uma solicitação',
@@ -1101,11 +1112,11 @@ const SECTIONS_PT: Section[] = [
       },
       {
         t: 'Marcar presentes e ausentes',
-        d: 'Toque no nome de cada aluno para alternar entre presente (indicador verde) e ausente. Use também os botões "Todos presentes" ou "Todos ausentes" para marcar todos de uma vez e depois ajustar individualmente.',
+        d: 'Toque no nome de cada aluno para alternar entre presente (✓ verde) e ausente. A lista mostra primeiro os alunos da turma selecionada e depois o restante do núcleo, para não misturar grupos.',
       },
       {
         t: 'Salvar a aula',
-        d: 'Toque "Salvar aula" para registrar a sessão. O registro é salvo na nuvem imediatamente e fica disponível no histórico. O porcentual de presença de cada aluno é atualizado automaticamente.',
+        d: 'Toque "Salvar aula". O app mostra um diálogo de confirmação com o total de presentes e ausentes. Toque "Confirmar" para registrar a sessão na nuvem. O porcentual de presença de cada aluno é atualizado automaticamente.',
       },
       {
         t: 'Revisar sessões anteriores',
@@ -1260,7 +1271,7 @@ const SECTIONS_EN: Section[] = [
       },
       {
         t: 'Link your group',
-        d: 'On the home screen you will see the card "No group assigned" with a "Find groups" button. Search for your group and send a join request, or ask your educator for the group code to link directly.',
+        d: 'On the home screen you will see the card "No group assigned" with a "Find groups" button. Search for your group in the directory and send a join request. You can also ask your educator to add you directly from their school admin panel.',
         warn: 'Without a linked group you cannot see your community\'s events or graduation history. Attendance and payment features will also be unavailable.',
       },
     ],
@@ -1303,6 +1314,11 @@ const SECTIONS_EN: Section[] = [
     intro: 'How to discover groups, join one, and explore your community\'s hierarchy.',
     mockup: 'educator',
     steps: [
+      {
+        t: 'What is a group and what is a school (núcleo)?',
+        d: 'A **group** is the capoeira organization as a whole (e.g. Abadá Capoeira, Cordão de Ouro). A **school** (núcleo) is a specific physical training location within that group — one group can have many schools in different cities or countries. You belong to a group and train at a school. Educators create schools inside their group.',
+        note: 'When the app says "your school" it means the specific place where you train. When it says "your group" it means the whole organization.',
+      },
       {
         t: 'Browse groups',
         d: 'The "Groups" tab shows all public groups on the platform. Use the search bar ("Search group...") to filter by name, and the "Country of presence" and "Capoeira style" dropdowns to narrow the search.',
@@ -1482,11 +1498,12 @@ const SECTIONS_EN: Section[] = [
       },
       {
         t: 'Name and description',
-        d: 'Enter your group\'s official name (required) and a description (optional but recommended). The name will appear in the global directory, on member profiles, and on all events you organize.',
+        d: 'Enter your group\'s official name and a description. Both are required. The name will appear in the global directory, on member profiles, and on all events you organize.',
       },
       {
-        t: 'Style and city (optional)',
-        d: 'Select the capoeira style you practice (Angola, Regional, Contemporary, or other) and the group\'s main city. These fields allow practitioners to filter by style in the directory.',
+        t: 'Capoeira style (required)',
+        d: 'In the "Capoeira style *" field, type the style you practice (e.g. Mixed, Benguela, Angola, Regional). It is a free-text field and it is required. This text is used as the name of your graduation system and shapes how your belts are labeled.',
+        tip: 'The "City" field is optional — you can fill it in now or later from "Edit group".',
       },
       {
         t: 'Group logo (optional)',
@@ -1498,8 +1515,8 @@ const SECTIONS_EN: Section[] = [
       },
       {
         t: 'Invite members',
-        d: 'After creating the group, share the name with your students so they can search for it and request to join, or copy the invite code to send a direct link. Students can also link during onboarding.',
-        tip: 'Students who already have an account can request to join by searching for your group in the "Groups" tab of the directory.',
+        d: 'After creating the group, share its name with your students. They search for it in the "Groups" tab → directory and request to join. You can also add them directly from your school admin panel, or they can link during their own onboarding.',
+        tip: 'There is no invite code: the standard flow is students finding you in the directory, or you adding them from the school panel.',
       },
     ],
   },
@@ -1631,7 +1648,7 @@ const SECTIONS_EN: Section[] = [
     steps: [
       {
         t: 'View pending requests',
-        d: 'In the school admin panel → "Requests" tab you will see all pending join requests. Each card shows the applicant\'s name, photo, date, and the message they sent (if they used the guided request).',
+        d: 'Go to your school profile → "Manage" button → "Requests" tab. You will see all pending join requests. Each card shows the applicant\'s name, photo, date, and the message they sent (if they used the guided request).',
       },
       {
         t: 'Approve a request',
@@ -1697,11 +1714,11 @@ const SECTIONS_EN: Section[] = [
       },
       {
         t: 'Mark present and absent',
-        d: 'Tap each student\'s name to toggle between present (green indicator) and absent. Use the "All present" or "All absent" buttons to mark everyone at once, then adjust individually.',
+        d: 'Tap each student\'s name to toggle between present (✓ green) and absent. The list shows the selected class group\'s students first, then the rest of the school, so groups don\'t mix.',
       },
       {
         t: 'Save the class',
-        d: 'Tap "Save class" to record the session. The record is saved to the cloud immediately and appears in the history. Each student\'s attendance percentage is updated automatically.',
+        d: 'Tap "Save class". The app shows a confirmation dialog with the present and absent counts. Tap "Confirm" to record the session to the cloud. Each student\'s attendance percentage updates automatically.',
       },
       {
         t: 'Review previous sessions',
