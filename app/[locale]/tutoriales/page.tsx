@@ -165,11 +165,181 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Notificaciones pendientes',
-        d: 'En la pestaña "Notificaciones" del perfil verás todas las solicitudes que requieren tu respuesta: invitaciones de grupo, solicitudes para unirse a tu núcleo o cambios de educador asignado. El badge rojo en la tab "Perfil" indica cuántas tienes sin revisar.',
+        d: 'En la pestaña "Notificaciones" del perfil verás cinco tipos de solicitudes: "Solicitud de ingreso al grupo" (alguien quiere unirse a tu grupo), "Solicitud de educador" (petición de relación educador-alumno), "Solicitud al núcleo" (alguien quiere unirse a tu núcleo), "Solicitud de transferencia de núcleo" (transferencia de administración pendiente) y "Solicitud de colaboración" (invitación para co-organizar un evento). El badge rojo en la pestaña "Perfil" indica cuántas tienes sin revisar.',
       },
       {
         t: 'Reportar un problema',
         d: 'Ve a "Perfil" → "Configuración" → "Reportar un problema". Tu reporte llega directamente al equipo de desarrollo con información técnica de tu dispositivo adjunta automáticamente.',
+      },
+    ],
+  },
+  {
+    id: 'premium',
+    title: 'Plan Premium',
+    category: 'General',
+    intro: 'Qué incluye el plan gratuito, qué desbloquea Premium y cómo suscribirse.',
+    steps: [
+      {
+        t: 'Límites del plan gratuito',
+        d: 'Con una cuenta gratuita los educadores pueden crear hasta 10 eventos al mes y los alumnos pueden confirmar asistencia a 1 roda por mes. Las funciones de núcleo, asistencia y pagos están disponibles sin límite en ambos roles.',
+        note: 'Los alumnos con plan gratuito ven anuncios dentro de la app.',
+      },
+      {
+        t: 'Qué incluye Premium',
+        d: 'Premium desbloquea eventos ilimitados para educadores, hasta 5 rodas por mes para alumnos, soporte prioritario y la app sin anuncios.',
+        tip: 'El plan anual aparece marcado con la etiqueta "MEJOR OFERTA" y es significativamente más económico que pagar mes a mes.',
+      },
+      {
+        t: 'Cómo suscribirse',
+        d: 'Ve a "Perfil" → "Suscripción" o toca el banner Premium que aparece al alcanzar un límite. Elige el plan mensual o anual y confirma el pago con tu cuenta de Google Play o App Store.',
+        note: 'Los pagos se procesan de forma segura a través de Google Play / App Store. Agenda Capoeiragem no almacena datos de tarjetas.',
+      },
+      {
+        t: 'Restaurar compras',
+        d: 'Si cambias de dispositivo o reinstalás la app, ve a "Perfil" → "Suscripción" → "Restaurar compras" para recuperar tu plan activo sin pagar nuevamente.',
+        tip: 'Usa la misma cuenta de Google o Apple que usaste para comprar el plan.',
+      },
+    ],
+  },
+  {
+    id: 'unirte-a-un-nucleo',
+    title: 'Unirte a un núcleo',
+    category: 'Practicantes',
+    intro: 'Cómo encontrar un núcleo cercano, enviar una solicitud y qué ocurre después.',
+    steps: [
+      {
+        t: 'Busca un núcleo en el mapa',
+        d: 'Ve a la pestaña "Grupos" y usa el mapa interactivo para explorar los núcleos cerca de ti. Toca cualquier marcador para ver el nombre, grupo, horarios y la opción de ver el perfil completo.',
+      },
+      {
+        t: 'Solicita ingresar con "Solicitar ingreso guiado"',
+        d: 'Desde el perfil del núcleo, toca "Solicitar ingreso guiado". Puedes incluir un mensaje para presentarte al educador. Tu solicitud aparecerá en la sección "Solicitudes" del panel del núcleo.',
+        tip: 'Si ya entrenas con un educador de Agenda Capoeiragem, pídele que te agregue directamente desde su panel para saltar el proceso de solicitud.',
+      },
+      {
+        t: 'Espera la aprobación',
+        d: 'Tu solicitud queda como "Pendiente" hasta que el educador la apruebe o rechace. Recibirás una notificación en "Perfil → Notificaciones" cuando haya una respuesta.',
+        warn: 'Solo el educador puede aprobar solicitudes. Si no recibes respuesta en varios días, puedes intentar contactar al educador por otro medio.',
+      },
+      {
+        t: 'Accede a tus clases y seguimiento',
+        d: 'Una vez aprobado, el núcleo aparece en "Perfil" → pestaña "Gestión". Desde ahí verás tu historial de asistencia mes a mes y el estado de tus pagos si el núcleo gestiona mensualidades.',
+      },
+    ],
+  },
+  {
+    id: 'tu-historial',
+    title: 'Tu historial personal',
+    category: 'Practicantes',
+    intro: 'Cómo ver tu asistencia mensual, tus graduaciones y los eventos en que participaste.',
+    steps: [
+      {
+        t: 'Asistencia del mes',
+        d: 'Ve a "Perfil" → pestaña "Gestión" → tu núcleo. Verás tu porcentaje de asistencia del mes actual y la lista de clases con el indicador de si estuviste presente o ausente.',
+      },
+      {
+        t: 'Historial de graduaciones',
+        d: 'Desde tu perfil, toca tu corda actual para desplegar el historial completo con fecha de cada cambio de nivel. El registro es permanente y visible públicamente en tu perfil.',
+      },
+      {
+        t: 'Estado de pagos',
+        d: 'Si tu núcleo gestiona pagos, en la pestaña "Gestión" verás el estado de tu pago del mes: "Pendiente", "Pagado" o "Vencido". Solo el educador puede registrar tus pagos.',
+        note: 'El estado de pago solo es visible para ti y tu educador. No es información pública.',
+      },
+      {
+        t: 'Eventos confirmados',
+        d: 'En la pestaña "Resumen" de tu perfil verás los próximos eventos a los que confirmaste "Voy". Puedes ver el detalle de cada uno tocando su nombre directamente desde el perfil.',
+      },
+    ],
+  },
+  {
+    id: 'crear-grupo',
+    title: 'Crear tu grupo',
+    category: 'Educadores',
+    intro: 'Cómo registrar tu grupo de capoeira en la plataforma y configurar su información.',
+    steps: [
+      {
+        t: 'Acceder al formulario de creación',
+        d: 'Toca el botón flotante "+" en la pantalla de Inicio y elige "Crear grupo". También puedes ir a la pestaña "Grupos" y tocar el botón "Crear grupo" en la esquina superior.',
+        note: 'Solo los usuarios con rol de Educador pueden crear grupos. Verifica tu rol en "Perfil → Configuración".',
+      },
+      {
+        t: 'Nombre y descripción',
+        d: 'Ingresa el nombre oficial de tu grupo (obligatorio) y una descripción (opcional pero recomendada). El nombre aparecerá en el directorio global, en los perfiles de los miembros y en todos los eventos que organices.',
+      },
+      {
+        t: 'Estilo y ciudad (opcional)',
+        d: 'Selecciona el estilo de capoeira que practicas (Angola, Regional, Contemporánea u otro) y la ciudad principal del grupo. Estos datos permiten que practicantes filtren por estilo en el directorio.',
+      },
+      {
+        t: 'Logo del grupo (opcional)',
+        d: 'Sube el logo de tu grupo desde tu galería. Aparecerá en el perfil del grupo, en los núcleos y en la tarjeta del grupo que ven tus alumnos en la pantalla de Inicio.',
+      },
+      {
+        t: 'Crear el grupo',
+        d: 'Toca "Crear". Si el nombre no está duplicado, el grupo queda creado de inmediato. La app te preguntará si quieres configurar el sistema de graduación de inmediato — puedes hacerlo ahora o más tarde.',
+      },
+      {
+        t: 'Invitar miembros',
+        d: 'Una vez creado el grupo, comparte el nombre con tus alumnos para que puedan buscarlo y solicitar ingreso, o copia el código de invitación para enviar un enlace directo. Los alumnos también pueden vincularse durante el onboarding.',
+        tip: 'Los alumnos que ya tienen cuenta pueden solicitar ingreso buscando tu grupo en la pestaña "Grupos" del directorio.',
+      },
+    ],
+  },
+  {
+    id: 'administrar-grupo',
+    title: 'Administrar tu grupo',
+    category: 'Educadores',
+    intro: 'Cómo gestionar miembros, roles de administrador y la información del grupo.',
+    steps: [
+      {
+        t: 'Panel de administración del grupo',
+        d: 'Ve al perfil de tu grupo y toca el botón de administración (visible solo para administradores y co-administradores). Accederás a las opciones de gestión de miembros, roles y configuración.',
+        note: 'Como creador del grupo, eres el administrador principal. Solo tú puedes transferir la administración completa a otra persona.',
+      },
+      {
+        t: 'Aprobar o rechazar solicitudes de ingreso',
+        d: 'En "Solicitudes" del panel del grupo verás las solicitudes pendientes con el nombre del solicitante y su mensaje si usó la solicitud guiada. Toca "Aprobar" o "Rechazar" para responder cada una.',
+      },
+      {
+        t: 'Asignar roles: admin y co-admin',
+        d: 'Desde el perfil de un miembro en el panel del grupo, puedes asignarle el rol de "Co-administrador" (acceso al panel) o promoverlo a "Administrador". Puedes también usar la opción "Dejar admin" para retirar el rol.',
+        warn: '"Transferir administración" pasa el control total del grupo a otro usuario. Esta acción es irreversible: perderás el rol de administrador principal.',
+      },
+      {
+        t: 'Editar la información del grupo',
+        d: 'Ve al perfil del grupo → ícono de editar. Puedes cambiar el nombre, descripción, logo, estilo de capoeira y ciudad. Los cambios se aplican de inmediato y se reflejan en el directorio público.',
+      },
+      {
+        t: 'Remover un miembro',
+        d: 'Desde la lista de miembros del panel, toca el nombre de un miembro y elige "Remover del grupo". El miembro pierde acceso a los contenidos del grupo pero conserva su historial de graduaciones.',
+        warn: 'Remover un miembro es reversible: puede volver a solicitar ingreso al grupo.',
+      },
+    ],
+  },
+  {
+    id: 'supervision-educativa',
+    title: 'Supervisión educativa',
+    category: 'Educadores',
+    intro: 'Cómo asignar un educador supervisor para los alumnos de tu núcleo y cómo funciona la jerarquía.',
+    steps: [
+      {
+        t: 'Qué es la supervisión educativa',
+        d: 'La supervisión educativa es la relación jerárquica entre educadores de un mismo grupo. Un educador más experimentado puede supervisar el progreso de los alumnos de otro educador, especialmente cuando están en distintas ciudades o países.',
+        note: 'La pantalla de supervisión se llama "SUPERVISION EDUCATIVA" dentro del panel del núcleo.',
+      },
+      {
+        t: 'Supervisión automática (mismo núcleo)',
+        d: 'Si el supervisor y los alumnos comparten el mismo núcleo, la supervisión es automática. La app mostrará el badge "Comparte núcleo" en el perfil del alumno dentro del panel del supervisor.',
+      },
+      {
+        t: 'Supervisión manual (fuera del núcleo)',
+        d: 'Si el supervisor está en un núcleo diferente, puedes asignarlo manualmente. En la pantalla de supervisión, toca "Seleccionar educador supervisor" y busca al educador por nombre. Los alumnos supervisados aparecerán con el badge "Fuera de tu núcleo".',
+        tip: 'Solo los educadores del mismo grupo pueden asignarse como supervisores. No es posible supervisar alumnos de grupos distintos.',
+      },
+      {
+        t: 'Ver el árbol de supervisión',
+        d: 'El árbol de supervisión es visible en la pestaña "Jerarquía" del perfil del grupo. Muestra las relaciones entre educadores y qué alumnos están bajo la supervisión de cada uno — el árbol de "mestre a aprendiz" de tu grupo.',
       },
     ],
   },
@@ -202,6 +372,62 @@ const SECTIONS_ES: Section[] = [
       {
         t: 'Editar o desactivar el núcleo',
         d: 'Para editar el nombre, dirección u horarios, ve al perfil del núcleo → ícono de editar. Si dejas de entrenar en ese lugar, puedes desactivarlo desde "Editar" para que no aparezca en el directorio sin perder el historial.',
+      },
+    ],
+  },
+  {
+    id: 'co-educadores',
+    title: 'Co-educadores',
+    category: 'Educadores',
+    intro: 'Cómo agregar co-educadores a tu núcleo y gestionar sus permisos.',
+    steps: [
+      {
+        t: 'Qué es un co-educador',
+        d: 'Un co-educador es un educador del mismo grupo que ayuda a gestionar tu núcleo. Tiene acceso al panel administrativo: puede registrar clases, marcar asistencia y registrar pagos, pero no puede cambiar la configuración del núcleo ni transferir la administración.',
+      },
+      {
+        t: 'Agregar un co-educador',
+        d: 'Ve al perfil de tu núcleo → sección "Co-educadores" → toca "Agregar co-educador". Busca al educador por nombre (debe ser miembro del mismo grupo con rol de Educador). Toca su nombre y confirma.',
+        note: 'Solo pueden ser co-educadores los usuarios con rol de Educador dentro del mismo grupo.',
+      },
+      {
+        t: 'Quitar un co-educador',
+        d: 'En la sección "Co-educadores" del perfil del núcleo, toca el nombre del co-educador y elige "Quitar co-educador". La acción es inmediata y el educador pierde acceso al panel del núcleo.',
+        warn: 'Quitar un co-educador no borra ningún dato. Todo el historial de clases y pagos registrado por él permanece en el sistema.',
+      },
+      {
+        t: 'Salir del rol de co-educador',
+        d: 'Si eres co-educador de un núcleo y ya no quieres serlo, ve al perfil del núcleo → sección "Co-educadores" → "Salir del rol de co-educador". También puedes hacerlo desde "Perfil → Gestión → [nombre del núcleo]" → "Salir del rol".',
+      },
+      {
+        t: 'Transferir la administración del núcleo',
+        d: 'Para pasar el control total del núcleo a otro educador, ve al perfil del núcleo → "Transferir administración". El receptor debe ser co-educador activo del núcleo.',
+        warn: '"Transferir administración" es irreversible: pasas el control total a la otra persona. El nuevo administrador podrá cambiar todos los ajustes del núcleo.',
+      },
+    ],
+  },
+  {
+    id: 'solicitudes-nucleo',
+    title: 'Solicitudes al núcleo',
+    category: 'Educadores',
+    intro: 'Cómo gestionar las solicitudes de ingreso al núcleo desde el panel administrativo.',
+    steps: [
+      {
+        t: 'Ver las solicitudes pendientes',
+        d: 'En el panel administrativo del núcleo → pestaña "Solicitudes" verás todas las solicitudes de ingreso pendientes. Cada tarjeta muestra el nombre del solicitante, su foto, la fecha y el mensaje que envió (si usó la solicitud guiada).',
+      },
+      {
+        t: 'Aprobar una solicitud',
+        d: 'Toca "Aprobar" en la tarjeta del solicitante. El alumno recibirá una notificación de que fue aceptado y comenzará a aparecer en tu lista de alumnos. Puedes asignarlo a una turma de inmediato desde la pestaña "Alumnos".',
+      },
+      {
+        t: 'Rechazar una solicitud',
+        d: 'Toca "Rechazar" en la tarjeta del solicitante. El alumno recibirá una notificación indicando que su solicitud no fue aprobada.',
+        tip: 'Si rechazas a alguien por error, el alumno puede volver a enviar una solicitud.',
+      },
+      {
+        t: 'Historial de solicitudes procesadas',
+        d: 'Debajo de las solicitudes pendientes encontrarás el historial de solicitudes ya procesadas: aprobadas (badge "Aceptada") y rechazadas (badge "Rechazada"). Las solicitudes procesadas permanecen en el historial y no se pueden eliminar.',
       },
     ],
   },
@@ -535,11 +761,181 @@ const SECTIONS_PT: Section[] = [
       },
       {
         t: 'Notificações pendentes',
-        d: 'Na aba "Notificações" do perfil você verá todas as solicitações que precisam da sua resposta. O badge vermelho na aba "Perfil" indica quantas você tem sem revisar.',
+        d: 'Na aba "Notificações" do perfil você verá cinco tipos de solicitações: "Solicitação de entrada no grupo" (alguém quer entrar no seu grupo), "Solicitação de educador" (pedido de relação educador-aluno), "Solicitação ao núcleo" (alguém quer entrar no seu núcleo), "Solicitação de transferência de núcleo" (transferência de administração pendente) e "Solicitação de colaboração" (convite para co-organizar um evento). O badge vermelho na aba "Perfil" indica quantas você tem sem revisar.',
       },
       {
         t: 'Reportar um problema',
         d: 'Vá em "Perfil" → "Configurações" → "Reportar um problema". Seu relato vai diretamente à equipe de desenvolvimento com informações técnicas do seu dispositivo anexadas automaticamente.',
+      },
+    ],
+  },
+  {
+    id: 'premium',
+    title: 'Plano Premium',
+    category: 'Geral',
+    intro: 'O que inclui o plano gratuito, o que o Premium desbloqueia e como assinar.',
+    steps: [
+      {
+        t: 'Limites do plano gratuito',
+        d: 'Com uma conta gratuita, educadores podem criar até 10 eventos por mês e alunos podem confirmar presença em 1 roda por mês. As funções de núcleo, presença e pagamentos estão disponíveis sem limite em ambos os papéis.',
+        note: 'Alunos com plano gratuito veem anúncios dentro do app.',
+      },
+      {
+        t: 'O que inclui o Premium',
+        d: 'O Premium desbloqueia eventos ilimitados para educadores, até 5 rodas por mês para alunos, suporte prioritário e o app sem anúncios.',
+        tip: 'O plano anual aparece marcado com a etiqueta "MELHOR OFERTA" e é significativamente mais econômico do que pagar mês a mês.',
+      },
+      {
+        t: 'Como assinar',
+        d: 'Vá em "Perfil" → "Assinatura" ou toque no banner Premium que aparece ao atingir um limite. Escolha o plano mensal ou anual e confirme o pagamento com sua conta do Google Play ou App Store.',
+        note: 'Os pagamentos são processados com segurança pelo Google Play / App Store. O Agenda Capoeiragem não armazena dados de cartão.',
+      },
+      {
+        t: 'Restaurar compras',
+        d: 'Se trocar de dispositivo ou reinstalar o app, vá em "Perfil" → "Assinatura" → "Restaurar compras" para recuperar seu plano ativo sem pagar novamente.',
+        tip: 'Use a mesma conta do Google ou Apple que usou para comprar o plano.',
+      },
+    ],
+  },
+  {
+    id: 'entrar-num-nucleo',
+    title: 'Entrar em um núcleo',
+    category: 'Praticantes',
+    intro: 'Como encontrar um núcleo perto de você, enviar uma solicitação e o que acontece depois.',
+    steps: [
+      {
+        t: 'Busque um núcleo no mapa',
+        d: 'Vá à aba "Grupos" e use o mapa interativo para explorar os núcleos perto de você. Toque em qualquer marcador para ver o nome, grupo, horários e a opção de ver o perfil completo.',
+      },
+      {
+        t: 'Solicite entrar com "Solicitar entrada guiada"',
+        d: 'No perfil do núcleo, toque "Solicitar entrada guiada". Você pode incluir uma mensagem para se apresentar ao educador. Sua solicitação aparecerá na seção "Solicitações" do painel do núcleo.',
+        tip: 'Se já treina com um educador do Agenda Capoeiragem, peça para ele te adicionar diretamente pelo painel para pular o processo de solicitação.',
+      },
+      {
+        t: 'Aguarde a aprovação',
+        d: 'Sua solicitação fica como "Pendente" até o educador aprovar ou rejeitar. Você receberá uma notificação em "Perfil → Notificações" quando houver uma resposta.',
+        warn: 'Só o educador pode aprovar solicitações. Se não receber resposta em alguns dias, tente contatar o educador por outro meio.',
+      },
+      {
+        t: 'Acesse suas aulas e acompanhamento',
+        d: 'Após a aprovação, o núcleo aparece em "Perfil" → aba "Gestão". Lá você verá seu histórico de presença mês a mês e o status dos seus pagamentos se o núcleo gerencia mensalidades.',
+      },
+    ],
+  },
+  {
+    id: 'seu-historico',
+    title: 'Seu histórico pessoal',
+    category: 'Praticantes',
+    intro: 'Como ver sua presença mensal, suas graduações e os eventos em que você participou.',
+    steps: [
+      {
+        t: 'Presença do mês',
+        d: 'Vá em "Perfil" → aba "Gestão" → seu núcleo. Você verá seu porcentual de presença do mês atual e a lista de aulas com indicador de presença ou ausência.',
+      },
+      {
+        t: 'Histórico de graduações',
+        d: 'No seu perfil, toque na sua corda atual para ver o histórico completo com a data de cada mudança de nível. O registro é permanente e visível publicamente no seu perfil.',
+      },
+      {
+        t: 'Status de pagamentos',
+        d: 'Se o seu núcleo gerencia pagamentos, na aba "Gestão" você verá o status do seu pagamento do mês: "Pendente", "Pago" ou "Vencido". Só o educador pode registrar seus pagamentos.',
+        note: 'O status de pagamento é visível apenas para você e seu educador. Não é informação pública.',
+      },
+      {
+        t: 'Eventos confirmados',
+        d: 'Na aba "Resumo" do seu perfil você verá os próximos eventos nos quais confirmou "Vou". Pode ver o detalhe de cada um tocando o nome diretamente do perfil.',
+      },
+    ],
+  },
+  {
+    id: 'criar-grupo',
+    title: 'Criar seu grupo',
+    category: 'Educadores',
+    intro: 'Como registrar seu grupo de capoeira na plataforma e configurar suas informações.',
+    steps: [
+      {
+        t: 'Acessar o formulário de criação',
+        d: 'Toque no botão flutuante "+" na tela de Início → "Criar grupo". Você também pode ir à aba "Grupos" e tocar o botão "Criar grupo" no canto superior.',
+        note: 'Apenas usuários com o papel de Educador podem criar grupos. Verifique seu papel em "Perfil → Configurações".',
+      },
+      {
+        t: 'Nome e descrição',
+        d: 'Insira o nome oficial do seu grupo (obrigatório) e uma descrição (opcional, mas recomendada). O nome aparecerá no diretório global, nos perfis dos membros e em todos os eventos que você organizar.',
+      },
+      {
+        t: 'Estilo e cidade (opcional)',
+        d: 'Selecione o estilo de capoeira que você pratica (Angola, Regional, Contemporânea ou outro) e a cidade principal do grupo. Esses dados permitem que praticantes filtrem por estilo no diretório.',
+      },
+      {
+        t: 'Logo do grupo (opcional)',
+        d: 'Envie o logo do seu grupo da galeria. Aparecerá no perfil do grupo, nos núcleos e no cartão do grupo que seus alunos veem na tela de Início.',
+      },
+      {
+        t: 'Criar o grupo',
+        d: 'Toque "Criar". Se o nome não estiver duplicado, o grupo é criado imediatamente. O app perguntará se você quer configurar o sistema de graduação agora ou depois.',
+      },
+      {
+        t: 'Convidar membros',
+        d: 'Após criar o grupo, compartilhe o nome com seus alunos para que possam buscá-lo e solicitar entrada, ou copie o código de convite para enviar um link direto. Os alunos também podem se vincular durante o onboarding.',
+        tip: 'Alunos que já têm conta podem solicitar entrada buscando seu grupo na aba "Grupos" do diretório.',
+      },
+    ],
+  },
+  {
+    id: 'administrar-grupo',
+    title: 'Administrar seu grupo',
+    category: 'Educadores',
+    intro: 'Como gerenciar membros, papéis de administrador e as informações do grupo.',
+    steps: [
+      {
+        t: 'Painel de administração do grupo',
+        d: 'Vá ao perfil do seu grupo e toque o botão de administração (visível apenas para administradores e co-administradores). Você acessará as opções de gerenciamento de membros, papéis e configuração.',
+        note: 'Como criador do grupo, você é o administrador principal. Apenas você pode transferir a administração completa para outra pessoa.',
+      },
+      {
+        t: 'Aprovar ou rejeitar solicitações de entrada',
+        d: 'Em "Solicitações" do painel do grupo você verá as solicitações pendentes com o nome do solicitante e sua mensagem se usou a solicitação guiada. Toque "Aprovar" ou "Rejeitar" para responder cada uma.',
+      },
+      {
+        t: 'Atribuir papéis: admin e co-admin',
+        d: 'No perfil de um membro no painel do grupo, você pode atribuir o papel de "Co-administrador" (acesso ao painel) ou promovê-lo a "Administrador". Você também pode usar a opção "Deixar admin" para remover o papel.',
+        warn: '"Transferir administração" passa o controle total do grupo para outro usuário. Essa ação é irreversível: você perderá o papel de administrador principal.',
+      },
+      {
+        t: 'Editar as informações do grupo',
+        d: 'Vá ao perfil do grupo → ícone de editar. Você pode mudar nome, descrição, logo, estilo de capoeira e cidade. As mudanças se aplicam imediatamente e refletem no diretório público.',
+      },
+      {
+        t: 'Remover um membro',
+        d: 'Na lista de membros do painel, toque no nome de um membro e escolha "Remover do grupo". O membro perde acesso aos conteúdos do grupo, mas mantém seu histórico de graduações.',
+        warn: 'Remover um membro é reversível: ele pode solicitar entrada no grupo novamente.',
+      },
+    ],
+  },
+  {
+    id: 'supervisao-educativa',
+    title: 'Supervisão educativa',
+    category: 'Educadores',
+    intro: 'Como atribuir um educador supervisor para os alunos do seu núcleo e como funciona a hierarquia.',
+    steps: [
+      {
+        t: 'O que é a supervisão educativa',
+        d: 'A supervisão educativa é a relação hierárquica entre educadores de um mesmo grupo. Um educador mais experiente pode supervisionar o progresso dos alunos de outro educador, especialmente útil quando estão em cidades ou países diferentes.',
+        note: 'A tela de supervisão se chama "SUPERVISÃO EDUCATIVA" dentro do painel do núcleo.',
+      },
+      {
+        t: 'Supervisão automática (mesmo núcleo)',
+        d: 'Se o supervisor e os alunos compartilham o mesmo núcleo, a supervisão é automática. O app mostrará o badge "Compartilha núcleo" no perfil do aluno dentro do painel do supervisor.',
+      },
+      {
+        t: 'Supervisão manual (fora do núcleo)',
+        d: 'Se o supervisor está em um núcleo diferente, você pode atribuí-lo manualmente. Na tela de supervisão, toque "Selecionar educador supervisor" e busque o educador pelo nome. Os alunos supervisionados aparecerão com o badge "Fora do seu núcleo".',
+        tip: 'Apenas educadores do mesmo grupo podem ser atribuídos como supervisores. Não é possível supervisionar alunos de grupos diferentes.',
+      },
+      {
+        t: 'Ver a árvore de supervisão',
+        d: 'A árvore de supervisão é visível na aba "Hierarquia" do perfil do grupo. Ela mostra as relações entre educadores e quais alunos estão sob supervisão de cada um — a árvore de "mestre a aprendiz" do seu grupo.',
       },
     ],
   },
@@ -572,6 +968,62 @@ const SECTIONS_PT: Section[] = [
       {
         t: 'Editar ou desativar o núcleo',
         d: 'Para editar nome, endereço ou horários, vá ao perfil do núcleo → ícone de editar. Se parar de treinar naquele local, pode desativar o núcleo para que não apareça no diretório sem perder o histórico.',
+      },
+    ],
+  },
+  {
+    id: 'co-educadores',
+    title: 'Co-educadores',
+    category: 'Educadores',
+    intro: 'Como adicionar co-educadores ao seu núcleo e gerenciar suas permissões.',
+    steps: [
+      {
+        t: 'O que é um co-educador',
+        d: 'Um co-educador é um educador do mesmo grupo que ajuda a gerenciar seu núcleo. Tem acesso ao painel administrativo: pode registrar aulas, marcar presença e registrar pagamentos, mas não pode alterar a configuração do núcleo nem transferir a administração.',
+      },
+      {
+        t: 'Adicionar um co-educador',
+        d: 'Vá ao perfil do seu núcleo → seção "Co-educadores" → toque "Agregar co-educador". Busque o educador pelo nome (deve ser membro do mesmo grupo com papel de Educador). Toque no nome e confirme.',
+        note: 'Apenas usuários com papel de Educador dentro do mesmo grupo podem ser co-educadores.',
+      },
+      {
+        t: 'Remover um co-educador',
+        d: 'Na seção "Co-educadores" do perfil do núcleo, toque no nome do co-educador e escolha "Quitar co-educador". A ação é imediata e o educador perde acesso ao painel do núcleo.',
+        warn: 'Remover um co-educador não apaga nenhum dado. Todo o histórico de aulas e pagamentos registrado por ele permanece no sistema.',
+      },
+      {
+        t: 'Sair do papel de co-educador',
+        d: 'Se você é co-educador de um núcleo e não quer mais ser, vá ao perfil do núcleo → seção "Co-educadores" → "Salir del rol de co-educador". Você também pode fazer isso em "Perfil → Gestão → [nome do núcleo]" → "Salir del rol".',
+      },
+      {
+        t: 'Transferir a administração do núcleo',
+        d: 'Para passar o controle total do núcleo a outro educador, vá ao perfil do núcleo → "Transferir administração". O receptor deve ser co-educador ativo do núcleo.',
+        warn: '"Transferir administração" é irreversível: você passa o controle total para a outra pessoa. O novo administrador poderá alterar todas as configurações do núcleo.',
+      },
+    ],
+  },
+  {
+    id: 'solicitacoes-nucleo',
+    title: 'Solicitações ao núcleo',
+    category: 'Educadores',
+    intro: 'Como gerenciar as solicitações de entrada no núcleo pelo painel administrativo.',
+    steps: [
+      {
+        t: 'Ver as solicitações pendentes',
+        d: 'No painel administrativo do núcleo → aba "Solicitações" você verá todas as solicitações de entrada pendentes. Cada cartão mostra o nome do solicitante, sua foto, a data e a mensagem enviada (se usou a solicitação guiada).',
+      },
+      {
+        t: 'Aprovar uma solicitação',
+        d: 'Toque "Aprovar" no cartão do solicitante. O aluno receberá uma notificação de que foi aceito e começará a aparecer na sua lista de alunos. Você pode atribuí-lo a uma turma imediatamente na aba "Alunos".',
+      },
+      {
+        t: 'Rejeitar uma solicitação',
+        d: 'Toque "Rejeitar" no cartão do solicitante. O aluno receberá uma notificação indicando que sua solicitação não foi aprovada.',
+        tip: 'Se rejeitar alguém por engano, o aluno pode enviar uma nova solicitação.',
+      },
+      {
+        t: 'Histórico de solicitações processadas',
+        d: 'Abaixo das solicitações pendentes você encontrará o histórico de solicitações já processadas: aprovadas (badge "Aceita") e rejeitadas (badge "Rejeitada"). As solicitações processadas ficam no histórico e não podem ser excluídas.',
       },
     ],
   },
@@ -905,11 +1357,181 @@ const SECTIONS_EN: Section[] = [
       },
       {
         t: 'Pending notifications',
-        d: 'In the "Notifications" tab of your profile you will see all requests that need your response. The red badge on the "Profile" tab shows how many you have unread.',
+        d: 'In the "Notifications" tab of your profile you will see five types of requests: "Group join request" (someone wants to join your group), "Educator request" (educator-student relationship request), "School join request" (someone wants to join your school), "School transfer request" (pending administration transfer), and "Collaboration request" (invitation to co-organize an event). The red badge on the "Profile" tab shows how many you have unread.',
       },
       {
         t: 'Report a problem',
         d: 'Go to "Profile" → "Settings" → "Report a problem". Your report goes directly to the development team with technical device information attached automatically.',
+      },
+    ],
+  },
+  {
+    id: 'premium',
+    title: 'Premium plan',
+    category: 'General',
+    intro: 'What the free plan includes, what Premium unlocks, and how to subscribe.',
+    steps: [
+      {
+        t: 'Free plan limits',
+        d: 'With a free account, educators can create up to 10 events per month and students can confirm attendance at 1 roda per month. School management, attendance, and payment features are available without limit for both roles.',
+        note: 'Students on the free plan see ads inside the app.',
+      },
+      {
+        t: 'What Premium includes',
+        d: 'Premium unlocks unlimited events for educators, up to 5 rodas per month for students, priority support, and an ad-free experience.',
+        tip: 'The annual plan is marked with the "BEST VALUE" badge and is significantly cheaper than paying month to month.',
+      },
+      {
+        t: 'How to subscribe',
+        d: 'Go to "Profile" → "Subscription" or tap the Premium banner that appears when you reach a limit. Choose the monthly or annual plan and confirm the payment with your Google Play or App Store account.',
+        note: 'Payments are processed securely through Google Play / App Store. Agenda Capoeiragem does not store card data.',
+      },
+      {
+        t: 'Restore purchases',
+        d: 'If you change devices or reinstall the app, go to "Profile" → "Subscription" → "Restore purchases" to recover your active plan without paying again.',
+        tip: 'Use the same Google or Apple account you used to purchase the plan.',
+      },
+    ],
+  },
+  {
+    id: 'join-a-school',
+    title: 'Joining a school',
+    category: 'Practitioners',
+    intro: 'How to find a nearby school, send a request, and what happens next.',
+    steps: [
+      {
+        t: 'Find a school on the map',
+        d: 'Go to the "Groups" tab and use the interactive map to explore schools near you. Tap any marker to see the name, group, schedules, and the option to view the full profile.',
+      },
+      {
+        t: 'Request to join with "Guided join request"',
+        d: 'From the school profile, tap "Guided join request". You can include a message to introduce yourself to the educator. Your request will appear in the "Requests" section of the school panel.',
+        tip: 'If you already train with an educator who uses Agenda Capoeiragem, ask them to add you directly from their panel to skip the request process.',
+      },
+      {
+        t: 'Wait for approval',
+        d: 'Your request stays as "Pending" until the educator approves or rejects it. You will receive a notification in "Profile → Notifications" when there is a response.',
+        warn: 'Only the educator can approve requests. If you do not receive a response within a few days, try contacting the educator through another channel.',
+      },
+      {
+        t: 'Access your classes and tracking',
+        d: 'Once approved, the school appears in "Profile" → "Management" tab. There you will see your month-by-month attendance history and your payment status if the school manages fees.',
+      },
+    ],
+  },
+  {
+    id: 'your-history',
+    title: 'Your personal history',
+    category: 'Practitioners',
+    intro: 'How to view your monthly attendance, your graduations, and the events you attended.',
+    steps: [
+      {
+        t: "This month's attendance",
+        d: 'Go to "Profile" → "Management" tab → your school. You will see your attendance percentage for the current month and the list of classes with a present or absent indicator for each.',
+      },
+      {
+        t: 'Graduation history',
+        d: 'From your profile, tap your current belt to expand the full history with the date of each level change. The record is permanent and publicly visible on your profile.',
+      },
+      {
+        t: 'Payment status',
+        d: 'If your school manages payments, in the "Management" tab you will see your payment status for the month: "Pending", "Paid", or "Overdue". Only the educator can record your payments.',
+        note: 'Your payment status is visible only to you and your educator. It is not public information.',
+      },
+      {
+        t: 'Confirmed events',
+        d: 'In the "Summary" tab of your profile you will see upcoming events you confirmed "Going" to. You can view the detail of each one by tapping the event name directly from your profile.',
+      },
+    ],
+  },
+  {
+    id: 'create-group',
+    title: 'Creating your group',
+    category: 'Educators',
+    intro: 'How to register your capoeira group on the platform and configure its information.',
+    steps: [
+      {
+        t: 'Access the creation form',
+        d: 'Tap the floating "+" button on the Home screen → "Create group". You can also go to the "Groups" tab and tap "Create group" in the top corner.',
+        note: 'Only users with the Educator role can create groups. Check your role in "Profile → Settings".',
+      },
+      {
+        t: 'Name and description',
+        d: 'Enter your group\'s official name (required) and a description (optional but recommended). The name will appear in the global directory, on member profiles, and on all events you organize.',
+      },
+      {
+        t: 'Style and city (optional)',
+        d: 'Select the capoeira style you practice (Angola, Regional, Contemporary, or other) and the group\'s main city. These fields allow practitioners to filter by style in the directory.',
+      },
+      {
+        t: 'Group logo (optional)',
+        d: 'Upload your group logo from your gallery. It will appear on the group profile, in schools, and on the group card that your students see on the Home screen.',
+      },
+      {
+        t: 'Create the group',
+        d: 'Tap "Create". If the name is not a duplicate, the group is created immediately. The app will ask if you want to set up the graduation system now or later.',
+      },
+      {
+        t: 'Invite members',
+        d: 'After creating the group, share the name with your students so they can search for it and request to join, or copy the invite code to send a direct link. Students can also link during onboarding.',
+        tip: 'Students who already have an account can request to join by searching for your group in the "Groups" tab of the directory.',
+      },
+    ],
+  },
+  {
+    id: 'manage-group',
+    title: 'Managing your group',
+    category: 'Educators',
+    intro: 'How to manage members, admin roles, and group information.',
+    steps: [
+      {
+        t: 'Group administration panel',
+        d: 'Go to your group profile and tap the administration button (visible only to admins and co-admins). You will access options for managing members, roles, and group configuration.',
+        note: 'As the group creator, you are the main admin. Only you can transfer full administration to another person.',
+      },
+      {
+        t: 'Approve or reject join requests',
+        d: 'In "Requests" on the group panel you will see pending requests with the applicant\'s name and their message if they used the guided request. Tap "Approve" or "Reject" to respond to each one.',
+      },
+      {
+        t: 'Assign roles: admin and co-admin',
+        d: 'From a member\'s profile in the group panel, you can assign them the "Co-admin" role (panel access) or promote them to "Admin". You can also use the "Leave admin" option to remove the role.',
+        warn: '"Transfer administration" passes full group control to another user. This action is irreversible: you will lose the main admin role.',
+      },
+      {
+        t: 'Edit group information',
+        d: 'Go to the group profile → edit icon. You can change the name, description, logo, capoeira style, and city. Changes apply immediately and are reflected in the public directory.',
+      },
+      {
+        t: 'Remove a member',
+        d: 'From the member list in the panel, tap a member\'s name and choose "Remove from group". The member loses access to group content but retains their graduation history.',
+        warn: 'Removing a member is reversible: they can request to join the group again.',
+      },
+    ],
+  },
+  {
+    id: 'educational-supervision',
+    title: 'Educational supervision',
+    category: 'Educators',
+    intro: 'How to assign a supervising educator for your school\'s students and how the hierarchy works.',
+    steps: [
+      {
+        t: 'What educational supervision is',
+        d: 'Educational supervision is the hierarchical relationship between educators in the same group. A more experienced educator can oversee the progress of another educator\'s students, especially useful when they are in different cities or countries.',
+        note: 'The supervision screen is called "EDUCATIONAL SUPERVISION" inside the school panel.',
+      },
+      {
+        t: 'Automatic supervision (same school)',
+        d: 'If the supervisor and students share the same school, supervision is automatic. The app will show the "Same school" badge on the student\'s profile inside the supervisor\'s panel.',
+      },
+      {
+        t: 'Manual supervision (outside the school)',
+        d: 'If the supervisor is in a different school, you can assign them manually. On the supervision screen, tap "Select supervising educator" and search by name. Supervised students will show the "Outside your school" badge.',
+        tip: 'Only educators from the same group can be assigned as supervisors. It is not possible to supervise students from different groups.',
+      },
+      {
+        t: 'View the supervision tree',
+        d: 'The supervision tree is visible in the "Hierarchy" tab of the group profile. It shows the relationships between educators and which students are under each one\'s supervision — the "mestre to apprentice" tree of your group.',
       },
     ],
   },
@@ -942,6 +1564,62 @@ const SECTIONS_EN: Section[] = [
       {
         t: 'Edit or deactivate',
         d: 'To edit the name, address, or schedules, go to the school profile → edit icon. If you stop training at that location, you can deactivate the school so it doesn\'t appear in the directory without losing the history.',
+      },
+    ],
+  },
+  {
+    id: 'co-educators',
+    title: 'Co-educators',
+    category: 'Educators',
+    intro: 'How to add co-educators to your school and manage their permissions.',
+    steps: [
+      {
+        t: 'What a co-educator is',
+        d: 'A co-educator is an educator from the same group who helps manage your school. They have access to the admin panel: they can record classes, mark attendance, and register payments, but cannot change school configuration or transfer administration.',
+      },
+      {
+        t: 'Add a co-educator',
+        d: 'Go to your school profile → "Co-educators" section → tap "Add co-educator". Search for the educator by name (they must be a member of the same group with the Educator role). Tap their name and confirm.',
+        note: 'Only users with the Educator role within the same group can be co-educators.',
+      },
+      {
+        t: 'Remove a co-educator',
+        d: 'In the "Co-educators" section of the school profile, tap the co-educator\'s name and choose "Remove co-educator". The action is immediate and the educator loses access to the school panel.',
+        warn: 'Removing a co-educator does not delete any data. All class and payment history they recorded remains in the system.',
+      },
+      {
+        t: 'Leave the co-educator role',
+        d: 'If you are a co-educator at a school and no longer want to be, go to the school profile → "Co-educators" section → "Leave co-educator role". You can also do this from "Profile → Management → [school name]" → "Leave role".',
+      },
+      {
+        t: 'Transfer school administration',
+        d: 'To hand full school control to another educator, go to the school profile → "Transfer administration". The recipient must be an active co-educator of the school.',
+        warn: '"Transfer administration" is irreversible: you pass full control to the other person. The new admin will be able to change all school settings.',
+      },
+    ],
+  },
+  {
+    id: 'school-requests',
+    title: 'School join requests',
+    category: 'Educators',
+    intro: 'How to manage join requests to your school from the admin panel.',
+    steps: [
+      {
+        t: 'View pending requests',
+        d: 'In the school admin panel → "Requests" tab you will see all pending join requests. Each card shows the applicant\'s name, photo, date, and the message they sent (if they used the guided request).',
+      },
+      {
+        t: 'Approve a request',
+        d: 'Tap "Approve" on the applicant\'s card. The student will receive a notification that they were accepted and will start appearing in your student list. You can assign them to a class group immediately from the "Students" tab.',
+      },
+      {
+        t: 'Reject a request',
+        d: 'Tap "Reject" on the applicant\'s card. The student will receive a notification that their request was not approved.',
+        tip: 'If you reject someone by mistake, the student can send a new request.',
+      },
+      {
+        t: 'Processed requests history',
+        d: 'Below the pending requests you will find the history of already-processed requests: approved (badge "Accepted") and rejected (badge "Rejected"). Processed requests remain in the history and cannot be deleted.',
       },
     ],
   },
