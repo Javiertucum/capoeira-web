@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 
-type Section = { id: string; title: string }
+export type NavSection = { id: string; title: string; category: string }
 
-export default function TutorialsNav({ sections }: { sections: Section[] }) {
+export default function TutorialsNav({ sections }: { sections: NavSection[] }) {
   const [activeId, setActiveId] = useState(sections[0]?.id)
 
   useEffect(() => {
@@ -14,38 +14,76 @@ export default function TutorialsNav({ sections }: { sections: Section[] }) {
           if (entry.isIntersecting) setActiveId(entry.target.id)
         }
       },
-      { rootMargin: '-40% 0px -55% 0px' }
+      { rootMargin: '-20% 0px -70% 0px' }
     )
-
-    for (const section of sections) {
-      const el = document.getElementById(section.id)
+    for (const s of sections) {
+      const el = document.getElementById(s.id)
       if (el) observer.observe(el)
     }
-
     return () => observer.disconnect()
   }, [sections])
 
-  const moduleNumber = (i: number) => String(i + 1).padStart(2, '0')
+  const categories: string[] = []
+  const grouped: Record<string, NavSection[]> = {}
+  for (const s of sections) {
+    if (!grouped[s.category]) {
+      grouped[s.category] = []
+      categories.push(s.category)
+    }
+    grouped[s.category].push(s)
+  }
 
   return (
-    <nav className="lg:sticky lg:top-28">
-      <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-2 lg:overflow-visible lg:pb-0">
-        {sections.map((section, i) => (
+    <nav aria-label="Tutorial navigation">
+      {/* Mobile: horizontal scroll */}
+      <div className="flex gap-2 overflow-x-auto pb-4 lg:hidden">
+        {sections.map((s) => (
           <a
-            key={section.id}
-            href={`#${section.id}`}
-            className={`flex shrink-0 items-center gap-3 rounded-full border px-5 py-3 text-sm font-bold transition-colors duration-150 ease-[var(--ease-out)] lg:rounded-2xl ${
-              activeId === section.id
+            key={s.id}
+            href={`#${s.id}`}
+            className={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition-colors duration-150 ${
+              activeId === s.id
                 ? 'border-accent bg-accent/10 text-accent'
-                : 'border-border bg-white text-text-secondary hover:border-accent/30 hover:text-ink'
+                : 'border-border bg-card text-text-secondary'
             }`}
           >
-            <span className="font-mono text-[11px] font-bold tracking-[0.14em] opacity-60">
-              {moduleNumber(i)}
-            </span>
-            {section.title}
+            {s.title}
           </a>
         ))}
+      </div>
+
+      {/* Desktop: grouped docs tree */}
+      <div className="hidden lg:block lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+        <div className="space-y-5 pr-2">
+          {categories.map((cat) => (
+            <div key={cat}>
+              <p className="mb-1.5 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-text-muted">
+                {cat}
+              </p>
+              <div className="space-y-0.5">
+                {grouped[cat].map((s) => {
+                  const active = activeId === s.id
+                  return (
+                    <a
+                      key={s.id}
+                      href={`#${s.id}`}
+                      className={`relative flex items-center rounded-lg px-3 py-[7px] text-sm transition-all duration-100 ${
+                        active
+                          ? 'bg-accent/10 font-semibold text-accent'
+                          : 'font-medium text-text-secondary hover:bg-surface hover:text-ink'
+                      }`}
+                    >
+                      {active && (
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-0.5 rounded-full bg-accent" aria-hidden />
+                      )}
+                      {s.title}
+                    </a>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </nav>
   )
