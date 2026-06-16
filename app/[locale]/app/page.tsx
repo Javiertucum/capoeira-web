@@ -3,6 +3,7 @@ import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescri
 import AppHero from '@/components/public/AppHero'
 import AppBenefitsEducators from '@/components/public/AppBenefitsEducators'
 import AppBenefitsStudents from '@/components/public/AppBenefitsStudents'
+import AppPremium from '@/components/public/AppPremium'
 import AppDownloadCTA from '@/components/public/AppDownloadCTA'
 import Footer from '@/components/public/Footer'
 
@@ -11,33 +12,92 @@ type Props = Readonly<{ params: Promise<{ locale: string }> }>
 const COPY = {
   es: {
     title: 'Descarga la App — Agenda Capoeiragem',
+    // Hero
     appHeroEyebrow: 'Disponible en Google Play',
     appHeroTitle: 'Lleva tu comunidad de capoeira en el bolsillo',
-    appHeroSubtitle: 'La app oficial de Agenda Capoeiragem conecta a educadores y alumnos: asistencia, graduaciones, finanzas, eventos y el mapa global de núcleos, todo en un solo lugar.',
+    appHeroSubtitle: 'Asistencia, graduaciones, finanzas, eventos y el mapa global de núcleos. Todo en un solo lugar, para educadores y alumnos.',
     appHeroPlayButton: 'Descargar en Google Play',
     appHeroIosNote: 'iOS próximamente',
+    // Educators
     educatorsTitle: 'Para educadores y organizadores',
     educatorsIntro: 'Todo lo necesario para gestionar tu núcleo, desde el celular.',
-    educatorsItems: [
-      { t: 'Dashboard KPI', d: 'Visualiza alumnos activos, retención mensual y la salud financiera de tu núcleo en tiempo real.' },
-      { t: 'Control de asistencia', d: 'Pasa lista por horario en cada sesión y mantén el registro sincronizado en la nube.' },
-      { t: 'Sistema de graduación', d: 'Configura la jerarquía de cordas de tu grupo y define a partir de qué nivel un alumno es educador.' },
-      { t: 'Tesorería multi-moneda', d: 'Administra mensualidades, packs de clases y pagos pendientes en CLP, USD, EUR y más.' },
-      { t: 'Reportes exportables', d: 'Genera reportes de asistencia y finanzas en PDF y CSV con un toque.' },
-      { t: 'Gestión de eventos', d: 'Crea batizados y rodas, fija su ubicación en el mapa, sube pósters y asigna co-organizadores.' },
-      { t: 'Directorio de alumnos', d: 'Historial completo de graduaciones, progreso y contacto de cada miembro.' },
-      { t: 'Turmas y horarios', d: 'Agrupa a tus alumnos por horario y vincula cada turma a su modalidad de pago.' },
+    educatorsSpotlights: [
+      {
+        tag: 'Asistencia',
+        title: 'Pasa lista en segundos',
+        desc: 'Selecciona el horario, marca cada alumno como presente o ausente con un toque y guarda con confirmación. El historial queda sincronizado en la nube en tiempo real.',
+        mockup: 'attendance',
+      },
+      {
+        tag: 'Dashboard KPI',
+        title: 'La salud de tu núcleo, de un vistazo',
+        desc: 'Alumnos activos, tasa de retención, asistencia promedio e ingresos del mes. Métricas que importan, sin hoja de cálculo ni configuraciones complicadas.',
+        mockup: 'kpi',
+      },
+      {
+        tag: 'Graduaciones',
+        title: 'Tu jerarquía, a tu medida',
+        desc: 'Configura las cordas de tu grupo con categorías infantil, juvenil y adulto. Define qué nivel convierte a un alumno en educador. Compatible con cualquier estilo: Angola, Regional, Contemporánea y sistemas mixtos.',
+        mockup: 'graduation',
+      },
+      {
+        tag: 'Finanzas',
+        title: 'Tesorería sin hoja de cálculo',
+        desc: 'Administra mensualidades, packs de clases y pagos pendientes. Multi-moneda (CLP, USD, EUR y más). Exporta reportes de asistencia y finanzas en PDF y CSV con un toque.',
+        mockup: 'finances',
+      },
     ],
-    educatorsMapCta: '¿Quieres que tu núcleo aparezca en el mapa global?',
-    educatorsMapCtaLink: 'Descarga la app y regístralo',
+    // Students
     studentsTitle: 'Para alumnos y viajeros',
-    studentsIntro: 'Encuentra tu comunidad estés donde estés.',
-    studentsItems: [
-      { t: 'Directorio y mapa global', d: 'Busca núcleos, grupos y educadores por ciudad o país en un mapa interactivo.' },
-      { t: 'Calendario de eventos', d: 'Descubre rodas, talleres y batizados cercanos, confirma tu interés y agéndalos.' },
-      { t: 'Perfil comunitario', d: 'Lleva tu historial: tu corda, tu grupo y tu red de núcleos donde entrenas.' },
-      { t: 'Notificaciones', d: 'Recibe avisos de tus educadores y novedades de tu comunidad al instante.' },
+    studentsIntro: 'Encuentra tu comunidad y mantente conectado, estés donde estés.',
+    studentsSpotlights: [
+      {
+        tag: 'Mapa global',
+        title: 'Encuentra capoeira donde vayas',
+        desc: 'Mapa interactivo con núcleos, grupos y educadores de todo el mundo. Filtra por ciudad, país o estilo de capoeira. Imprescindible para capoeiristas en movimiento.',
+        mockup: 'map',
+      },
+      {
+        tag: 'Eventos',
+        title: 'Tu calendario de batizados y rodas',
+        desc: 'Descubre batizados, rodas y talleres en tu red y alrededor del mundo. Confirma asistencia, marca interés y recibe recordatorios automáticos de tu educador.',
+        mockup: 'event',
+      },
     ],
+    studentsExtrasLabel: 'Y también incluye',
+    studentsExtras: [
+      { t: 'Perfil comunitario', d: 'Tu corda, tu grupo, tu red de núcleos y tu historial de graduaciones en un solo lugar.' },
+      { t: 'Notificaciones', d: 'Avisos de tus educadores y novedades de tu comunidad al instante, sin perderte nada.' },
+    ],
+    // Premium
+    premiumEyebrow: 'Planes',
+    premiumTitle: 'Empieza gratis, crece sin límites',
+    premiumBody: 'La app es completamente gratuita. El plan Pro desbloquea eventos ilimitados para educadores, más actividad para alumnos y elimina los anuncios.',
+    premiumFreeLabel: 'Gratuito',
+    premiumFreePrice: '$0',
+    premiumFreeCta: 'Descargar gratis',
+    premiumFreeItems: [
+      'Mapa y directorio global de núcleos y grupos',
+      'Perfil comunitario con corda e historial',
+      'Hasta 10 eventos por mes (educador)',
+      'Registro de 1 roda por mes (alumno)',
+      'Control de asistencia y finanzas',
+      'Sistema de graduación completo',
+    ],
+    premiumProLabel: 'Pro',
+    premiumProPrice: '$2 USD',
+    premiumProPeriod: 'por mes · también disponible plan anual',
+    premiumProCta: 'Comenzar con Pro',
+    premiumProItems: [
+      'Todo lo del plan gratuito',
+      'Eventos ilimitados para educadores',
+      'Registro de hasta 5 rodas por mes (alumno)',
+      'Sin anuncios en toda la app',
+      'Exportación PDF y CSV de reportes',
+      'Soporte prioritario',
+      'Apoyas el desarrollo de la plataforma',
+    ],
+    // Final CTA
     appCtaTitle: 'Empieza hoy',
     appCtaBody: 'Disponible gratis en Google Play. Configura tu perfil en minutos y conéctate con tu comunidad.',
     appCtaButton: 'Descargar en Google Play',
@@ -46,30 +106,84 @@ const COPY = {
     title: 'Baixe o App — Agenda Capoeiragem',
     appHeroEyebrow: 'Disponível na Google Play',
     appHeroTitle: 'Leve sua comunidade de capoeira no bolso',
-    appHeroSubtitle: 'O app oficial do Agenda Capoeiragem conecta educadores e alunos: presença, graduações, finanças, eventos e o mapa global de núcleos, tudo em um só lugar.',
+    appHeroSubtitle: 'Presença, graduações, finanças, eventos e o mapa global de núcleos. Tudo em um só lugar, para educadores e alunos.',
     appHeroPlayButton: 'Baixar na Google Play',
     appHeroIosNote: 'iOS em breve',
     educatorsTitle: 'Para educadores e organizadores',
     educatorsIntro: 'Tudo o que você precisa para gerenciar seu núcleo, direto do celular.',
-    educatorsItems: [
-      { t: 'Painel KPI', d: 'Visualize alunos ativos, retenção mensal e a saúde financeira do seu núcleo em tempo real.' },
-      { t: 'Controle de presença', d: 'Faça a chamada por horário em cada sessão e mantenha o registro sincronizado na nuvem.' },
-      { t: 'Sistema de graduação', d: 'Configure a hierarquia de cordas do seu grupo e defina a partir de qual nível um aluno é educador.' },
-      { t: 'Tesouraria multi-moeda', d: 'Administre mensalidades, pacotes de aulas e pagamentos pendentes em CLP, USD, EUR e mais.' },
-      { t: 'Relatórios exportáveis', d: 'Gere relatórios de presença e finanças em PDF e CSV com um toque.' },
-      { t: 'Gestão de eventos', d: 'Crie batizados e rodas, marque a localização no mapa, envie pôsteres e atribua co-organizadores.' },
-      { t: 'Diretório de alunos', d: 'Histórico completo de graduações, progresso e contato de cada membro.' },
-      { t: 'Turmas e horários', d: 'Agrupe seus alunos por horário e vincule cada turma à sua modalidade de pagamento.' },
+    educatorsSpotlights: [
+      {
+        tag: 'Presença',
+        title: 'Faça a chamada em segundos',
+        desc: 'Selecione o horário, marque cada aluno como presente ou ausente com um toque e salve com confirmação. O histórico fica sincronizado na nuvem em tempo real.',
+        mockup: 'attendance',
+      },
+      {
+        tag: 'Painel KPI',
+        title: 'A saúde do seu núcleo, de relance',
+        desc: 'Alunos ativos, taxa de retenção, presença média e receita do mês. Métricas que importam, sem planilha nem configurações complicadas.',
+        mockup: 'kpi',
+      },
+      {
+        tag: 'Graduações',
+        title: 'Sua hierarquia, do seu jeito',
+        desc: 'Configure as cordas do seu grupo com categorias infantil, juvenil e adulto. Defina qual nível torna um aluno em educador. Compatível com Angola, Regional, Contemporânea e sistemas mistos.',
+        mockup: 'graduation',
+      },
+      {
+        tag: 'Finanças',
+        title: 'Tesouraria sem planilha',
+        desc: 'Gerencie mensalidades, pacotes de aulas e pagamentos pendentes. Multi-moeda (CLP, USD, EUR e mais). Exporte relatórios de presença e finanças em PDF e CSV com um toque.',
+        mockup: 'finances',
+      },
     ],
-    educatorsMapCta: 'Quer que seu núcleo apareça no mapa global?',
-    educatorsMapCtaLink: 'Baixe o app e cadastre-o',
     studentsTitle: 'Para alunos e viajantes',
-    studentsIntro: 'Encontre sua comunidade onde estiver.',
-    studentsItems: [
-      { t: 'Diretório e mapa global', d: 'Busque núcleos, grupos e educadores por cidade ou país em um mapa interativo.' },
-      { t: 'Calendário de eventos', d: 'Descubra rodas, oficinas e batizados próximos, confirme seu interesse e agende-os.' },
-      { t: 'Perfil comunitário', d: 'Leve seu histórico: sua corda, seu grupo e sua rede de núcleos onde treina.' },
-      { t: 'Notificações', d: 'Receba avisos dos seus educadores e novidades da sua comunidade instantaneamente.' },
+    studentsIntro: 'Encontre sua comunidade e permaneça conectado, onde quer que esteja.',
+    studentsSpotlights: [
+      {
+        tag: 'Mapa global',
+        title: 'Encontre capoeira onde for',
+        desc: 'Mapa interativo com núcleos, grupos e educadores do mundo todo. Filtre por cidade, país ou estilo de capoeira. Indispensável para capoeiristas em movimento.',
+        mockup: 'map',
+      },
+      {
+        tag: 'Eventos',
+        title: 'Seu calendário de batizados e rodas',
+        desc: 'Descubra batizados, rodas e oficinas na sua rede e ao redor do mundo. Confirme presença, marque interesse e receba lembretes automáticos do seu educador.',
+        mockup: 'event',
+      },
+    ],
+    studentsExtrasLabel: 'E também inclui',
+    studentsExtras: [
+      { t: 'Perfil comunitário', d: 'Sua corda, seu grupo, sua rede de núcleos e seu histórico de graduações em um só lugar.' },
+      { t: 'Notificações', d: 'Avisos dos seus educadores e novidades da sua comunidade instantaneamente, sem perder nada.' },
+    ],
+    premiumEyebrow: 'Planos',
+    premiumTitle: 'Comece grátis, cresça sem limites',
+    premiumBody: 'O app é completamente gratuito. O plano Pro desbloqueia eventos ilimitados para educadores, mais atividade para alunos e elimina os anúncios.',
+    premiumFreeLabel: 'Gratuito',
+    premiumFreePrice: '$0',
+    premiumFreeCta: 'Baixar grátis',
+    premiumFreeItems: [
+      'Mapa e diretório global de núcleos e grupos',
+      'Perfil comunitário com corda e histórico',
+      'Até 10 eventos por mês (educador)',
+      'Registro de 1 roda por mês (aluno)',
+      'Controle de presença e finanças',
+      'Sistema de graduação completo',
+    ],
+    premiumProLabel: 'Pro',
+    premiumProPrice: '$2 USD',
+    premiumProPeriod: 'por mês · plano anual também disponível',
+    premiumProCta: 'Começar com Pro',
+    premiumProItems: [
+      'Tudo do plano gratuito',
+      'Eventos ilimitados para educadores',
+      'Registro de até 5 rodas por mês (aluno)',
+      'Sem anúncios em todo o app',
+      'Exportação PDF e CSV de relatórios',
+      'Suporte prioritário',
+      'Você apoia o desenvolvimento da plataforma',
     ],
     appCtaTitle: 'Comece hoje',
     appCtaBody: 'Disponível gratuitamente na Google Play. Configure seu perfil em minutos e conecte-se com sua comunidade.',
@@ -79,30 +193,84 @@ const COPY = {
     title: 'Download the App — Agenda Capoeiragem',
     appHeroEyebrow: 'Available on Google Play',
     appHeroTitle: 'Carry your capoeira community in your pocket',
-    appHeroSubtitle: 'The official Agenda Capoeiragem app connects educators and students: attendance, graduations, finances, events and the global map of schools, all in one place.',
+    appHeroSubtitle: 'Attendance, graduations, finances, events and the global map of schools. All in one place, for educators and students.',
     appHeroPlayButton: 'Get it on Google Play',
     appHeroIosNote: 'iOS coming soon',
     educatorsTitle: 'For educators and organizers',
-    educatorsIntro: 'Everything you need to run your school, from your phone.',
-    educatorsItems: [
-      { t: 'KPI Dashboard', d: "Track active students, monthly retention and your school's financial health in real time." },
-      { t: 'Attendance tracking', d: 'Take attendance per time slot for each session and keep records synced in the cloud.' },
-      { t: 'Graduation system', d: "Configure your group's belt hierarchy and set the level at which a student becomes an educator." },
-      { t: 'Multi-currency treasury', d: 'Manage monthly fees, class packs and pending payments in CLP, USD, EUR and more.' },
-      { t: 'Exportable reports', d: 'Generate attendance and financial reports in PDF and CSV with one tap.' },
-      { t: 'Event management', d: 'Create batizados and rodas, pin their location on the map, upload posters and assign co-organizers.' },
-      { t: 'Student directory', d: 'Full history of graduations, progress and contact info for every member.' },
-      { t: 'Classes and schedules', d: 'Group your students by schedule and link each class to its payment plan.' },
+    educatorsIntro: 'Everything you need to run your school, right from your phone.',
+    educatorsSpotlights: [
+      {
+        tag: 'Attendance',
+        title: 'Take attendance in seconds',
+        desc: 'Select the time slot, tap each student to mark them present or absent, and save with a confirmation dialog. The full history syncs to the cloud in real time.',
+        mockup: 'attendance',
+      },
+      {
+        tag: 'KPI Dashboard',
+        title: "Your school's health, at a glance",
+        desc: 'Active students, retention rate, average attendance and monthly revenue. Metrics that matter — no spreadsheet, no complicated setup.',
+        mockup: 'kpi',
+      },
+      {
+        tag: 'Graduations',
+        title: 'Your hierarchy, your way',
+        desc: "Configure your group's belts with children, youth, and adult categories. Set which level makes a student an educator. Compatible with Angola, Regional, Contemporary and mixed systems.",
+        mockup: 'graduation',
+      },
+      {
+        tag: 'Finances',
+        title: 'Treasury without the spreadsheet',
+        desc: 'Manage monthly fees, class packs and pending payments. Multi-currency (CLP, USD, EUR and more). Export attendance and financial reports as PDF and CSV with one tap.',
+        mockup: 'finances',
+      },
     ],
-    educatorsMapCta: 'Want your school to appear on the global map?',
-    educatorsMapCtaLink: 'Download the app and register it',
     studentsTitle: 'For students and travelers',
-    studentsIntro: 'Find your community wherever you are.',
-    studentsItems: [
-      { t: 'Global directory & map', d: 'Search for schools, groups and educators by city or country on an interactive map.' },
-      { t: 'Event calendar', d: 'Discover nearby rodas, workshops and batizados, confirm your interest and add them to your calendar.' },
-      { t: 'Community profile', d: 'Carry your history: your belt, your group and the network of schools where you train.' },
-      { t: 'Notifications', d: 'Get instant updates from your educators and news from your community.' },
+    studentsIntro: 'Find your community and stay connected, wherever you are.',
+    studentsSpotlights: [
+      {
+        tag: 'Global map',
+        title: 'Find capoeira wherever you go',
+        desc: 'Interactive map with schools, groups and educators from around the world. Filter by city, country or capoeira style. A must-have for capoeiristas on the move.',
+        mockup: 'map',
+      },
+      {
+        tag: 'Events',
+        title: 'Your batizado and roda calendar',
+        desc: 'Discover batizados, rodas and workshops in your network and around the world. Confirm attendance, mark interest and get automatic reminders from your educator.',
+        mockup: 'event',
+      },
+    ],
+    studentsExtrasLabel: 'Also included',
+    studentsExtras: [
+      { t: 'Community profile', d: 'Your belt, your group, your network of schools and your graduation history, all in one place.' },
+      { t: 'Notifications', d: "Instant updates from your educators and news from your community — never miss a thing." },
+    ],
+    premiumEyebrow: 'Plans',
+    premiumTitle: 'Start free, grow without limits',
+    premiumBody: 'The app is completely free to download. The Pro plan unlocks unlimited events for educators, more activity for students, and removes all ads.',
+    premiumFreeLabel: 'Free',
+    premiumFreePrice: '$0',
+    premiumFreeCta: 'Download free',
+    premiumFreeItems: [
+      'Global map and directory of schools and groups',
+      'Community profile with belt and history',
+      'Up to 10 events per month (educator)',
+      'Log 1 roda per month (student)',
+      'Attendance and financial tracking',
+      'Full graduation system',
+    ],
+    premiumProLabel: 'Pro',
+    premiumProPrice: '$2 USD',
+    premiumProPeriod: 'per month · annual plan also available',
+    premiumProCta: 'Start with Pro',
+    premiumProItems: [
+      'Everything in the free plan',
+      'Unlimited events for educators',
+      'Log up to 5 rodas per month (student)',
+      'No ads anywhere in the app',
+      'PDF and CSV report exports',
+      'Priority support',
+      'You support the development of the platform',
     ],
     appCtaTitle: 'Get started today',
     appCtaBody: 'Free on Google Play. Set up your profile in minutes and connect with your community.',
@@ -132,8 +300,9 @@ export default async function AppLandingPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-bg selection:bg-accent/20 overflow-x-hidden">
       <AppHero copy={c} />
-      <AppBenefitsEducators copy={c} locale={locale} />
+      <AppBenefitsEducators copy={c} />
       <AppBenefitsStudents copy={c} />
+      <AppPremium copy={c} />
       <AppDownloadCTA copy={c} />
       <Footer locale={locale} />
     </main>
