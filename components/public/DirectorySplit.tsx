@@ -230,13 +230,13 @@ export default function DirectorySplit({
               {tHero('eyebrow')}
             </h1>
             <div className="flex items-center gap-3 text-xs font-bold text-text-secondary">
-              <span><span className="text-ink">{stats.nucleos}</span> {tStats('nucleos').toLowerCase()}</span>
-              <span className="text-border">·</span>
               <span><span className="text-ink">{stats.groups}</span> {tStats('groups').toLowerCase()}</span>
+              <span className="text-border">·</span>
+              <span><span className="text-ink">{stats.nucleos}</span> {tStats('nucleos').toLowerCase()}</span>
               <span className="text-border">·</span>
               <span><span className="text-ink">{stats.educators}</span> {tStats('educators').toLowerCase()}</span>
               <span className="text-border">·</span>
-              <span><span className="text-ink">{stats.countries}</span> {tStats('countries').toLowerCase()}</span>
+              <span><span className="text-ink">{new Set(nucleos.map((n) => n.country).filter(Boolean)).size}</span> {tStats('countries').toLowerCase()}</span>
             </div>
           </div>
 
