@@ -373,10 +373,10 @@ export default function DirectorySplit({
       {/* Body: map + list */}
       <div className="flex flex-1 flex-col lg:flex-row lg:overflow-hidden">
         {/* Map */}
-        <div className="order-1 h-[45vh] shrink-0 lg:order-2 lg:h-auto lg:w-[50%]">
+        <div className="order-1 flex shrink-0 flex-col lg:order-2 lg:w-[50%]">
           <MapView
             ref={mapRef}
-            className="h-full w-full"
+            className="h-[45vh] w-full lg:flex-1"
             center={mapCenter}
             zoom={mapZoom}
             markers={mapMarkers}
@@ -385,6 +385,15 @@ export default function DirectorySplit({
             popup={mapPopup}
             onPopupClose={() => setSelectedNucleoId(null)}
           />
+          <div className="flex items-center justify-between gap-3 border-t border-border bg-surface px-4 py-2.5 sm:px-5">
+            <p className="text-xs text-text-secondary">{t('mapCtaText')}</p>
+            <Link
+              href={`/${locale}/app`}
+              className="shrink-0 rounded-full bg-accent px-3 py-1.5 text-xs font-bold text-white transition-opacity duration-150 hover:opacity-90"
+            >
+              {t('mapCtaLink')}
+            </Link>
+          </div>
         </div>
 
         {/* List */}

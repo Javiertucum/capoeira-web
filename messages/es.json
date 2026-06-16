@@ -53,7 +53,9 @@
     "seeContact": "Ver contacto ->",
     "emptyTitle": "Sin resultados para esta búsqueda",
     "emptyBody": "Prueba con otra ciudad, grupo o país para ampliar la exploración.",
-    "clearSearch": "Limpiar búsqueda"
+    "clearSearch": "Limpiar búsqueda",
+    "mapCtaText": "¿Quieres que tu grupo o academia aparezca aquí?",
+    "mapCtaLink": "Descarga la app"
   },
   "educators": {
     "featured": "Educadores destacados",
