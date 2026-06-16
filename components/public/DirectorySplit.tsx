@@ -283,58 +283,65 @@ export default function DirectorySplit({
           </div>
 
           {/* Tabs + search */}
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <div className="inline-flex items-center gap-1 rounded-full border border-border bg-surface p-1">
-              {tabs.map((item) => (
-                <button
-                  key={item.key}
-                  type="button"
-                  onClick={() => setTab(item.key)}
-                  className={`rounded-full px-4 py-1.5 text-sm font-bold transition-colors duration-150 ease-[var(--ease-out)] ${
-                    tab === item.key ? 'bg-ink text-bg' : 'text-text-secondary hover:text-ink'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+            {/* Row 1 on mobile: tabs pill + near-me icon */}
+            <div className="flex items-center gap-2">
+              <div className="inline-flex items-center gap-1 rounded-full border border-border bg-surface p-1">
+                {tabs.map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => setTab(item.key)}
+                    className={`rounded-full px-3 py-1.5 text-sm font-bold transition-colors duration-150 ease-[var(--ease-out)] sm:px-4 ${
+                      tab === item.key ? 'bg-ink text-bg' : 'text-text-secondary hover:text-ink'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleNearMe}
+                disabled={locationStatus === 'locating'}
+                aria-label={locationStatus === 'locating' ? t('locating') : t('nearMe')}
+                className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-bold text-ink transition-colors duration-150 ease-[var(--ease-out)] hover:border-accent disabled:opacity-60 sm:px-4"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+                </svg>
+                <span className="hidden sm:inline">{locationStatus === 'locating' ? t('locating') : t('nearMe')}</span>
+              </button>
             </div>
 
-            <div className="relative w-full sm:w-[260px]">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t('searchPlaceholder')}
-                className="h-10 w-full rounded-full border border-border bg-card px-4 pr-9 text-sm text-ink placeholder:text-text-muted focus:border-accent focus:outline-none"
-              />
-              {query && (
-                <button
-                  type="button"
-                  onClick={() => setQuery('')}
-                  aria-label={t('clearSearch')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-ink"
-                >
-                  ×
-                </button>
-              )}
+            {/* Row 2 on mobile: search + results count */}
+            <div className="flex items-center gap-2 sm:contents">
+              <div className="relative flex-1 sm:w-[260px] sm:flex-none">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={t('searchPlaceholder')}
+                  className="h-10 w-full rounded-full border border-border bg-card px-4 pr-9 text-sm text-ink placeholder:text-text-muted focus:border-accent focus:outline-none"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => setQuery('')}
+                    aria-label={t('clearSearch')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-ink"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+
+              <span className="mono shrink-0 text-[11px] uppercase tracking-[0.14em] text-text-muted">
+                {t('results', { count: resultCount })}
+              </span>
             </div>
-
-            <button
-              type="button"
-              onClick={handleNearMe}
-              disabled={locationStatus === 'locating'}
-              className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-4 text-sm font-bold text-ink transition-colors duration-150 ease-[var(--ease-out)] hover:border-accent disabled:opacity-60"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
-              </svg>
-              {locationStatus === 'locating' ? t('locating') : t('nearMe')}
-            </button>
-
-            <span className="mono shrink-0 text-[11px] uppercase tracking-[0.14em] text-text-muted">
-              {t('results', { count: resultCount })}
-            </span>
           </div>
 
           {locationStatus === 'denied' && (

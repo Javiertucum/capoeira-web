@@ -4,7 +4,7 @@ type SpotlightItem = { tag: string; title: string; desc: string; mockup: Feature
 
 function SpotlightRow({ item }: { item: SpotlightItem }) {
   return (
-    <div className="border-b border-border py-16 grid lg:grid-cols-[1fr_320px] lg:gap-16 items-center">
+    <div className="border-b border-border py-10 lg:py-16 grid lg:grid-cols-[1fr_320px] lg:gap-16 items-center">
       <div className="space-y-5 max-w-[54ch]">
         <span
           className="inline-block rounded-full px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.18em]"
@@ -35,7 +35,7 @@ export default function AppBenefitsEducators({ copy }: { copy: any }) {
   return (
     <section className="bg-bg">
       <div className="page-shell">
-        <div className="flex items-center gap-4 border-b border-border py-16">
+        <div className="flex items-center gap-4 border-b border-border py-10 lg:py-16">
           <span
             aria-hidden="true"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-[11px] font-bold tracking-widest"

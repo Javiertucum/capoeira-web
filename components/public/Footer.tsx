@@ -88,7 +88,7 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
         </div>
 
         {/* ── Bottom bar ── */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
+        <div className="mt-10 lg:mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-[11px] font-medium text-text-muted">
             © 2026 Agenda Capoeiragem. Todos los derechos reservados.
           </p>

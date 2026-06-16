@@ -31,7 +31,7 @@ export default function Hero({ copy, stats }: { copy: any; stats: any }) {
             {/* Headline — massive, tight, left-aligned */}
             <h1
               className="font-black text-ink leading-[0.92] tracking-[-0.04em] emil-enter-stagger emil-stagger-1"
-              style={{ fontSize: 'clamp(54px, 8vw, 100px)' }}
+              style={{ fontSize: 'clamp(38px, 10vw, 100px)' }}
             >
               <span className="block">{copy.heroLine1}</span>
               <span className="block" style={{ color: 'var(--accent)' }}>{copy.heroEm}</span>

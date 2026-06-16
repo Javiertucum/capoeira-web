@@ -29,7 +29,7 @@ export default function AppHero({ copy }: { copy: any }) {
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_1fr] lg:gap-10">
 
           <div className="space-y-8 lg:space-y-10">
-            <div className="inline-flex items-center gap-3 rounded-full border border-border bg-white px-4 py-2 shadow-sm emil-enter">
+            <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 shadow-sm emil-enter">
               <span className="h-2 w-2 shrink-0 rounded-full bg-accent animate-pulse" />
               <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-text-secondary">
                 {copy.appHeroEyebrow}
@@ -38,7 +38,7 @@ export default function AppHero({ copy }: { copy: any }) {
 
             <h1
               className="max-w-[16ch] font-black text-ink leading-[0.96] tracking-[-0.04em] emil-enter-stagger emil-stagger-1"
-              style={{ fontSize: 'clamp(44px, 6.5vw, 84px)' }}
+              style={{ fontSize: 'clamp(34px, 9vw, 84px)' }}
             >
               {copy.appHeroTitle}
             </h1>

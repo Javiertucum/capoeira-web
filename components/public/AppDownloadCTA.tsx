@@ -29,7 +29,7 @@ export default function AppDownloadCTA({ copy }: { copy: any }) {
         className="pointer-events-none absolute -left-64 -top-64 h-[600px] w-[600px] rounded-full bg-accent/10 blur-[120px]"
       />
 
-      <div className="page-shell relative z-10 py-24 lg:py-32">
+      <div className="page-shell relative z-10 py-16 lg:py-32">
         <div className="grid items-center gap-16 lg:grid-cols-[1fr_420px] lg:gap-24">
 
           <div className="space-y-8">
@@ -39,7 +39,7 @@ export default function AppDownloadCTA({ copy }: { copy: any }) {
 
             <h2
               className="font-black leading-[0.95] tracking-[-0.04em] text-white"
-              style={{ fontSize: 'clamp(38px, 6vw, 68px)' }}
+              style={{ fontSize: 'clamp(30px, 8vw, 68px)' }}
             >
               {copy.appCtaTitle}
             </h2>

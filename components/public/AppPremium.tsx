@@ -35,9 +35,9 @@ export default function AppPremium({ copy }: { copy: any }) {
 
   return (
     <section className="bg-bg border-t border-border">
-      <div className="page-shell py-24 lg:py-32">
+      <div className="page-shell py-16 lg:py-32">
         {/* Header */}
-        <div className="mb-14 max-w-[54ch]">
+        <div className="mb-10 lg:mb-14 max-w-[54ch]">
           <p className="mb-3 text-[10px] font-black uppercase tracking-[0.22em] text-accent-ink">
             {copy.premiumEyebrow}
           </p>
