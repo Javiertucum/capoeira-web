@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getOgImageUrl, getSiteDescription, buildItemListSchema } from '@/lib/site'
 import DirectorySplit, { type DirectoryEducator } from '@/components/public/DirectorySplit'
 import Footer from '@/components/public/Footer'
 import type { Group, MapNucleo } from '@/lib/types'
@@ -8,15 +8,34 @@ export const revalidate = 60
 
 type Props = Readonly<{ params: Promise<{ locale: string }> }>
 
-const SITE_TITLE = 'Agenda Capoeiragem'
+const HOME_TITLES: Record<string, string> = {
+  es: 'Directorio Global de Capoeira',
+  pt: 'Diretório Global de Capoeira',
+  en: 'Global Capoeira Directory',
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
+  const title = HOME_TITLES[locale] ?? HOME_TITLES.es
+  const description = getSiteDescription(locale)
   return {
-    title: SITE_TITLE,
-    description: getSiteDescription(locale),
-    alternates: { canonical: getLocalizedPath(locale, ''), languages: getLanguageAlternates('') },
-    openGraph: { title: formatPageTitle(SITE_TITLE), description: getSiteDescription(locale), url: getLocalizedPath(locale, ''), type: 'website' },
+    title,
+    description,
+    keywords: [
+      'capoeira', 'clases de capoeira', 'grupos de capoeira', 'directorio capoeira',
+      'dónde aprender capoeira', 'mestre capoeira', 'capoeira classes near me',
+      'find capoeira group', 'capoeira training', 'capoeira instructor',
+      'capoeira escola', 'capoeira angola', 'capoeira regional', 'maculelê',
+      'berimbau', 'jogo da capoeira', 'capoeira mundial',
+    ],
+    alternates: { canonical: getLocalizedUrl(locale, ''), languages: getLanguageAlternateUrls('') },
+    openGraph: {
+      title: formatPageTitle(title),
+      description,
+      url: getLocalizedUrl(locale, ''),
+      type: 'website',
+      images: [{ url: getOgImageUrl({ title, sub: 'Agenda Capoeiragem', type: 'default' }), width: 1200, height: 630, alt: title }],
+    },
   }
 }
 
@@ -67,8 +86,19 @@ export default async function LandingPage({ params }: Props) {
     // Return with empty arrays - partial render is better than crashing
   }
 
+  const itemListSchema = groups.length > 0
+    ? buildItemListSchema(groups.map((g) => ({
+        name: g.name,
+        url: getLocalizedUrl(locale, `/grupos/${g.id}`),
+        description: g.description ?? undefined,
+      })))
+    : null
+
   return (
     <main className="min-h-screen bg-bg selection:bg-accent/20 overflow-x-hidden">
+      {itemListSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      )}
       <DirectorySplit locale={locale} stats={stats} nucleos={nucleos} groups={groups} educators={educators} />
       <Footer locale={locale} />
     </main>

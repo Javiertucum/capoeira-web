@@ -5,6 +5,7 @@ import { getTranslations } from 'next-intl/server'
 import {
   formatPageTitle,
   getLanguageAlternates,
+  getLanguageAlternateUrls,
   getLocalizedPath,
   getOgImageUrl,
   getLocalizedUrl,
@@ -29,16 +30,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const path = `/nucleos/${groupId}/${nucleoId}`
   const sub = [nucleo.city, nucleo.country].filter(Boolean).join(', ')
+  const description = `Clases de capoeira — ${nucleo.name}${sub ? ' en ' + sub : ''}${nucleo.address ? '. ' + nucleo.address : ''}.`
   return {
     title: nucleo.name,
-    description: nucleo.address ?? sub,
-    alternates: { canonical: getLocalizedPath(locale, path), languages: getLanguageAlternates(path) },
+    description,
+    keywords: [
+      nucleo.name, 'clases de capoeira', 'entrenamiento capoeira',
+      ...(nucleo.city ? [`capoeira ${nucleo.city}`] : []),
+      ...(nucleo.country ? [`capoeira ${nucleo.country}`] : []),
+      nucleo.groupName ? `capoeira ${nucleo.groupName}` : '',
+      'núcleo capoeira',
+    ].filter(Boolean),
+    alternates: { canonical: getLocalizedUrl(locale, path), languages: getLanguageAlternateUrls(path) },
     openGraph: {
       title: formatPageTitle(nucleo.name),
-      description: nucleo.address ?? sub,
-      url: getLocalizedPath(locale, path),
+      description,
+      url: getLocalizedUrl(locale, path),
       type: 'website',
-      images: [getOgImageUrl({ title: nucleo.name, sub: nucleo.groupName, type: 'nucleo' })],
+      images: [{ url: getOgImageUrl({ title: nucleo.name, sub: nucleo.groupName, type: 'nucleo' }), width: 1200, height: 630, alt: nucleo.name }],
     },
   }
 }

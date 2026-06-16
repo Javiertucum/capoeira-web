@@ -100,6 +100,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://maps.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://i.ibb.co" />
+        <link rel="alternate" type="text/plain" title="LLMs.txt" href="/llms.txt" />
       </head>
       <body className="min-h-full antialiased">
         {children}

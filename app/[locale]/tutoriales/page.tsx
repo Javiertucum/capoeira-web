@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getSiteDescription } from '@/lib/site'
 import TutorialsHero from '@/components/public/TutorialsHero'
 import TutorialsNav, { type NavSection } from '@/components/public/TutorialsNav'
 import TutorialSectionBlock, { type StepItem } from '@/components/public/TutorialSectionBlock'
@@ -1880,14 +1880,20 @@ function getCopy(locale: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const copy = getCopy(locale)
+  const description = getSiteDescription(locale)
   return {
     title: copy.title,
-    description: getSiteDescription(locale),
-    alternates: { canonical: getLocalizedPath(locale, 'tutoriales'), languages: getLanguageAlternates('tutoriales') },
+    description,
+    keywords: [
+      'cómo usar capoeira app', 'tutorial capoeira', 'guía capoeira', 'app capoeira',
+      'gestión grupo capoeira', 'agenda capoeiragem tutorial', 'clases capoeira app',
+      'how to use capoeira app', 'capoeira training management',
+    ],
+    alternates: { canonical: getLocalizedUrl(locale, '/tutoriales'), languages: getLanguageAlternateUrls('/tutoriales') },
     openGraph: {
       title: formatPageTitle(copy.title),
-      description: getSiteDescription(locale),
-      url: getLocalizedPath(locale, 'tutoriales'),
+      description,
+      url: getLocalizedUrl(locale, '/tutoriales'),
       type: 'website',
     },
   }
@@ -1903,8 +1909,38 @@ export default async function TutorialsPage({ params }: Props) {
     category: s.category,
   }))
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: c.sections.map((s) => ({
+      '@type': 'Question',
+      name: s.title,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: [s.intro, ...s.steps.map((step) => `${step.t}: ${step.d}`)].join(' '),
+      },
+    })),
+  }
+
+  const howToSchemas = c.sections.map((s) => ({
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: s.title,
+    description: s.intro,
+    step: s.steps.map((step, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: step.t,
+      text: step.d,
+    })),
+  }))
+
   return (
     <main className="min-h-screen bg-bg">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      {howToSchemas.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
       <TutorialsHero copy={c} />
 
       <div className="page-shell pb-24 lg:pb-32">

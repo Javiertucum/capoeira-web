@@ -5,6 +5,7 @@ import { getTranslations } from 'next-intl/server'
 import {
   formatPageTitle,
   getLanguageAlternates,
+  getLanguageAlternateUrls,
   getLocalizedPath,
   getOgImageUrl,
   buildPersonSchema,
@@ -32,16 +33,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const fullName = `${educator.name} ${educator.surname}`.trim()
   const path = `/educadores/${uid}`
+  const description = educator.bio ?? `Educador de capoeira${educator.country ? ' en ' + educator.country : ''}${educator.nickname ? ' — ' + educator.nickname : ''}.`
   return {
     title: fullName,
-    description: educator.bio ?? undefined,
-    alternates: { canonical: getLocalizedPath(locale, path), languages: getLanguageAlternates(path) },
+    description,
+    keywords: [
+      fullName, 'educador capoeira', 'mestre capoeira', 'professor capoeira',
+      ...(educator.country ? [`capoeira ${educator.country}`] : []),
+      ...(educator.nickname ? [educator.nickname] : []),
+    ],
+    alternates: { canonical: getLocalizedUrl(locale, path), languages: getLanguageAlternateUrls(path) },
     openGraph: {
       title: formatPageTitle(fullName),
-      description: educator.bio ?? undefined,
-      url: getLocalizedPath(locale, path),
+      description,
+      url: getLocalizedUrl(locale, path),
       type: 'profile',
-      images: [getOgImageUrl({ title: fullName, sub: educator.nickname ?? undefined, type: 'educator' })],
+      images: [{ url: getOgImageUrl({ title: fullName, sub: educator.nickname ?? undefined, type: 'educator' }), width: 1200, height: 630, alt: fullName }],
     },
   }
 }
@@ -80,6 +87,8 @@ export default async function EducatorProfilePage({ params }: Props) {
     url: getLocalizedUrl(locale, `/educadores/${uid}`),
     image: educator.avatarUrl,
     description: educator.bio,
+    jobTitle: graduationLevel ? graduationLevel.name : undefined,
+    worksFor: group ? { name: group.name, url: getLocalizedUrl(locale, `/grupos/${group.id}`) } : null,
     sameAs: socialLinks.map((l) => l.href),
   })
 

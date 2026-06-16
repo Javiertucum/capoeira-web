@@ -113,6 +113,7 @@ export function buildPersonSchema(params: {
   description?: string | null
   jobTitle?: string
   sameAs?: string[]
+  worksFor?: { name: string; url: string } | null
 }) {
   return {
     '@context': 'https://schema.org',
@@ -123,7 +124,25 @@ export function buildPersonSchema(params: {
     ...(params.description ? { description: params.description } : {}),
     jobTitle: params.jobTitle ?? 'Capoeira Educator',
     knowsAbout: 'Capoeira',
+    ...(params.worksFor ? { worksFor: { '@type': 'SportsOrganization', name: params.worksFor.name, url: params.worksFor.url, sport: 'Capoeira' } } : {}),
     ...(params.sameAs && params.sameAs.length > 0 ? { sameAs: params.sameAs } : {}),
+  }
+}
+
+export function buildItemListSchema(items: Array<{ name: string; url: string; description?: string }>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Directorio Global de Capoeira',
+    description: 'Lista de grupos de capoeira registrados en Agenda Capoeiragem',
+    numberOfItems: items.length,
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      url: item.url,
+      ...(item.description ? { description: item.description } : {}),
+    })),
   }
 }
 

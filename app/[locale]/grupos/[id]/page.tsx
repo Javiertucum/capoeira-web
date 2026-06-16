@@ -5,6 +5,7 @@ import { getTranslations } from 'next-intl/server'
 import {
   formatPageTitle,
   getLanguageAlternates,
+  getLanguageAlternateUrls,
   getLocalizedPath,
   getOgImageUrl,
   getLocalizedUrl,
@@ -32,16 +33,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { group } = result
 
   const path = `/grupos/${id}`
+  const description = group.description ?? `Grupo de capoeira ${group.name}${group.representedCities?.length ? ' en ' + group.representedCities.join(', ') : ''}.`
   return {
     title: group.name,
-    description: group.description ?? undefined,
-    alternates: { canonical: getLocalizedPath(locale, path), languages: getLanguageAlternates(path) },
+    description,
+    keywords: [
+      group.name, 'grupo de capoeira', 'capoeira',
+      ...(group.representedCities ?? []).map((c) => `capoeira ${c}`),
+      ...(group.representedCountries ?? []).map((c) => `capoeira ${c}`),
+      group.graduationSystemName ?? '',
+    ].filter(Boolean),
+    alternates: { canonical: getLocalizedUrl(locale, path), languages: getLanguageAlternateUrls(path) },
     openGraph: {
       title: formatPageTitle(group.name),
-      description: group.description ?? undefined,
-      url: getLocalizedPath(locale, path),
+      description,
+      url: getLocalizedUrl(locale, path),
       type: 'website',
-      images: [getOgImageUrl({ title: group.name, sub: group.graduationSystemName ?? undefined, type: 'group' })],
+      images: [{ url: getOgImageUrl({ title: group.name, sub: group.graduationSystemName ?? undefined, type: 'group' }), width: 1200, height: 630, alt: group.name }],
     },
   }
 }
