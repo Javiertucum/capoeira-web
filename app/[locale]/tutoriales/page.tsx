@@ -43,8 +43,13 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Vincula tu grupo',
-        d: 'En la pantalla de inicio verás la tarjeta "Sin grupo asignado" con el botón "Buscar grupos". Desde ahí puedes buscar tu grupo y enviar una solicitud de ingreso, o pídele a tu educador que te comparta el código del grupo para vincularte directamente.',
+        d: 'En la pantalla de inicio verás la tarjeta "Sin grupo asignado" con el botón "Buscar grupos". Desde ahí puedes buscar tu grupo en el directorio y enviar una solicitud de ingreso. También puedes pedirle a tu educador que te agregue directamente desde el panel de su núcleo.',
         warn: 'Sin un grupo vinculado, no podrás ver los eventos ni el historial de graduaciones de tu comunidad. Las funciones de asistencia y pagos tampoco estarán disponibles.',
+      },
+      {
+        t: '¿Olvidaste tu contraseña?',
+        d: 'En la pantalla de inicio de sesión, toca "¿Olvidaste tu contraseña?". Ingresa tu correo y toca "Enviar enlace de restablecimiento". Recibirás un correo con el enlace — tócalo para crear una nueva contraseña. Luego regresa a la app y toca "Volver al inicio de sesión".',
+        note: 'Si el correo no llega en unos minutos, revisa la carpeta de spam. El enlace expira en 24 horas.',
       },
     ],
   },
@@ -152,7 +157,7 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Editar tu perfil',
-        d: 'Toca el ícono de editar (lápiz) sobre tu foto de perfil o tu nombre para abrir el formulario de edición. Puedes cambiar tu foto, nombre, apellido y apodo. Guarda los cambios tocando el botón "Guardar".',
+        d: 'Toca el ícono de editar (lápiz) sobre tu foto de perfil o tu nombre para abrir el formulario de edición. Puedes cambiar tu foto, nombre, apellido, apodo, una breve bio y tu país. También puedes agregar tu fecha de nacimiento y links a tus redes sociales (Instagram, Facebook, WhatsApp, YouTube, TikTok y sitio web). Guarda los cambios tocando "Guardar".',
         tip: 'Las fotos se suben directamente desde tu cámara o galería. Una imagen cuadrada se ve mejor en el círculo de perfil.',
       },
       {
@@ -265,11 +270,12 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Nombre y descripción',
-        d: 'Ingresa el nombre oficial de tu grupo (obligatorio) y una descripción (opcional pero recomendada). El nombre aparecerá en el directorio global, en los perfiles de los miembros y en todos los eventos que organices.',
+        d: 'Ingresa el nombre oficial de tu grupo y una descripción. Ambos son obligatorios. El nombre aparecerá en el directorio global, en los perfiles de los miembros y en todos los eventos que organices.',
       },
       {
-        t: 'Estilo y ciudad (opcional)',
-        d: 'Selecciona el estilo de capoeira que practicas (Angola, Regional, Contemporánea u otro) y la ciudad principal del grupo. Estos datos permiten que practicantes filtren por estilo en el directorio.',
+        t: 'Estilo de capoeira (obligatorio)',
+        d: 'En el campo "Estilo de capoeira *" escribe el estilo que practicas (ej: Mixta, Benguela, Angola, Regional). Es un campo de texto libre y obligatorio. Este texto sirve como nombre de tu sistema de graduación, por eso influye en cómo se llaman las cuerdas de tu grupo.',
+        tip: 'El campo "Ciudad" es opcional — puedes completarlo ahora o más tarde desde "Editar grupo".',
       },
       {
         t: 'Logo del grupo (opcional)',
@@ -281,8 +287,8 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Invitar miembros',
-        d: 'Una vez creado el grupo, comparte el nombre con tus alumnos para que puedan buscarlo y solicitar ingreso, o copia el código de invitación para enviar un enlace directo. Los alumnos también pueden vincularse durante el onboarding.',
-        tip: 'Los alumnos que ya tienen cuenta pueden solicitar ingreso buscando tu grupo en la pestaña "Grupos" del directorio.',
+        d: 'Una vez creado el grupo, comparte el nombre del grupo con tus alumnos. Ellos lo buscan en la pestaña "Grupos" → directorio, y solicitan ingreso. También puedes agregarlos directamente desde el panel de tu núcleo (sin que ellos soliciten nada) o vincularse durante su propio onboarding.',
+        tip: 'No hay código de invitación: el flujo estándar es que los alumnos te busquen en el directorio o que tú los agregues desde el panel del núcleo.',
       },
     ],
   },
@@ -373,6 +379,11 @@ const SECTIONS_ES: Section[] = [
         t: 'Editar o desactivar el núcleo',
         d: 'Para editar el nombre, dirección u horarios, ve al perfil del núcleo → ícono de editar. Si dejas de entrenar en ese lugar, puedes desactivarlo desde "Editar" para que no aparezca en el directorio sin perder el historial.',
       },
+      {
+        t: 'Configurar el sistema de cobros',
+        d: 'Dentro de "Editar núcleo" encontrarás la sección de cobros. Activa el toggle "Clases gratuitas" si no cobras mensualidad — esto oculta completamente la pestaña de Pagos del panel. Si cobras, ingresa el precio mensual, la moneda y el día del mes en que vence el pago (ej: día 10). Estos datos se usan para calcular automáticamente los estados "Pendiente", "Vencido" y "Pagado" en la lista de pagos.',
+        tip: 'Si tienes alumnos con tarifas distintas por horario, puedes crear turmas con sus propias opciones de cobro. Cada turma puede tener un precio diferente al del núcleo principal.',
+      },
     ],
   },
   {
@@ -414,7 +425,7 @@ const SECTIONS_ES: Section[] = [
     steps: [
       {
         t: 'Ver las solicitudes pendientes',
-        d: 'En el panel administrativo del núcleo → pestaña "Solicitudes" verás todas las solicitudes de ingreso pendientes. Cada tarjeta muestra el nombre del solicitante, su foto, la fecha y el mensaje que envió (si usó la solicitud guiada).',
+        d: 'Ve al perfil de tu núcleo → botón "Gestionar" → pestaña "Solicitudes". Verás todas las solicitudes de ingreso pendientes. Cada tarjeta muestra el nombre del solicitante, su foto, la fecha y el mensaje que envió (si usó la solicitud guiada).',
       },
       {
         t: 'Aprobar una solicitud',
@@ -480,11 +491,11 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Marcar presentes y ausentes',
-        d: 'Toca el nombre de cada alumno para alternar entre presente (indicador verde) y ausente. También puedes usar los botones "Todos presentes" o "Todos ausentes" para marcar a todos de una vez y luego ajustar individualmente.',
+        d: 'Toca el nombre de cada alumno para alternar entre presente (✓ verde) y ausente. La lista muestra primero los alumnos de la turma seleccionada y luego el resto del núcleo, para que no mezcles asistentes de distintos grupos.',
       },
       {
         t: 'Guardar la clase',
-        d: 'Toca "Guardar clase" para registrar la sesión. El registro se guarda en la nube de inmediato y queda disponible en el historial. El porcentaje de asistencia de cada alumno se actualiza automáticamente.',
+        d: 'Toca "Guardar clase". La app muestra un diálogo de confirmación con el conteo de presentes y ausentes. Toca "Confirmar" para registrar la sesión en la nube. El porcentaje de asistencia de cada alumno se actualiza automáticamente.',
       },
       {
         t: 'Revisar sesiones anteriores',
@@ -501,8 +512,8 @@ const SECTIONS_ES: Section[] = [
     steps: [
       {
         t: 'La pestaña "Pagos"',
-        d: 'En el panel administrativo del núcleo, ve a la pestaña "Pagos". Cada alumno aparece con su estado de pago del mes: "Pendiente", "Pagado", "Pagado (tarde)", "Vencido" o "Gratis". Los estados se calculan automáticamente por fecha.',
-        warn: 'Si el mes ya comenzó y un alumno no tiene pago registrado, su estado cambia automáticamente a "Pendiente" y luego a "Vencido" a partir del día que hayas configurado como fecha límite.',
+        d: 'En el panel administrativo del núcleo, ve a la pestaña "Pagos". Cada alumno aparece con su estado de pago del mes: "Pendiente", "Pagado", "Pagado (tarde)", "Vencido" o "Gratis". Los estados se calculan automáticamente en base al día de vencimiento que configuraste al editar el núcleo.',
+        warn: 'La pestaña "Pagos" solo aparece si el núcleo tiene "Clases gratuitas" desactivado. Si la ves en blanco o no aparece, verifica la configuración de cobros del núcleo.',
       },
       {
         t: 'Registrar el pago de un alumno',
@@ -580,8 +591,22 @@ const SECTIONS_ES: Section[] = [
         d: 'Ingresa la dirección del evento. La app abrirá el selector de mapa donde puedes mover el marcador para ubicar exactamente el lugar. Los asistentes verán la ubicación y podrán abrir la navegación directamente desde el evento.',
       },
       {
-        t: 'Gestiona co-organizadores y asistentes',
-        d: 'Una vez creado el evento, puedes agregar co-organizadores desde el menú de edición → "Colaboradores". Los co-organizadores pueden editar el evento y ver la lista completa de quiénes marcaron "Voy" o "Me interesa".',
+        t: 'Precio y métodos de pago (opcional)',
+        d: 'Si el evento tiene costo, ingresa el precio y la moneda. Luego agrega los métodos de pago aceptados: transferencia bancaria, efectivo, Mercado Pago, PayPal u otro. Cada método tiene campos para instrucciones o enlace de pago. Si el evento es gratuito, deja el precio en 0.',
+      },
+      {
+        t: 'Cronograma / Agenda del evento (opcional)',
+        d: 'En la sección "Agenda", toca "Agregar bloque" para crear el cronograma del evento. Cada bloque tiene: título de la actividad, hora de inicio y hora de fin (opcionales), descripción y lugar (presencial con dirección, o enlace online). Los bloques se ordenan cronológicamente de forma automática.',
+        tip: 'Cuando agregas al menos un bloque con lugar, la ubicación general del evento desaparece del formulario — se deriva automáticamente de los bloques del cronograma. Ideal para batizados con múltiples actividades en distintos lugares.',
+      },
+      {
+        t: 'Editar un evento ya creado',
+        d: 'Ve al detalle del evento → toca el ícono de editar (disponible para el organizador y co-organizadores). Podrás cambiar todos los datos: título, categoría, fecha, descripción, póster, precio, métodos de pago, ubicación y cronograma. Los cambios se ven de inmediato para todos.',
+        warn: 'Los usuarios que ya confirmaron "Voy" no reciben notificación automática cuando cambias la fecha o la ubicación. Si haces un cambio importante, comunícalo por otro canal.',
+      },
+      {
+        t: 'Gestiona co-organizadores',
+        d: 'Desde el menú de edición del evento toca "Colaboradores". Busca al co-organizador por nombre (debe tener cuenta en la app) y envía la invitación. El receptor verá la solicitud en "Perfil → Notificaciones". Al aceptar, tendrá acceso para editar el evento y ver la lista de asistentes.',
       },
     ],
   },
