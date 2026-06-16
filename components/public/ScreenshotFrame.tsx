@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import FeatureMockup, { type FeatureMockupSize, type FeatureMockupType } from '@/components/public/FeatureMockup'
 
-const MAX_W: Record<FeatureMockupSize, string> = {
-  default: '300px',
-  lg: '360px',
+const SIZES: Record<FeatureMockupSize, { width: number; radius: number; border: number; islandW: number; islandH: number }> = {
+  default: { width: 230, radius: 40, border: 5, islandW: 74, islandH: 20 },
+  lg:      { width: 280, radius: 48, border: 6, islandW: 90, islandH: 24 },
 }
 
 type Props =
@@ -15,38 +15,40 @@ export default function ScreenshotFrame({ src, alt, type, size = 'default' }: Pr
     return <FeatureMockup type={type!} size={size} />
   }
 
+  const s = SIZES[size]
+
   return (
-    <div className="relative mx-auto" style={{ width: MAX_W[size] }}>
+    <div className="relative mx-auto" style={{ width: s.width }}>
       {/* Ambient glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-4 rounded-full opacity-30 blur-3xl"
-        style={{ background: 'rgba(16,185,129,0.35)' }}
+        className="pointer-events-none absolute inset-2 rounded-full opacity-25 blur-2xl"
+        style={{ background: 'rgba(16,185,129,0.4)' }}
       />
 
-      {/* Phone shell — fixed width, aspect-ratio drives height */}
+      {/* Phone shell */}
       <div
         className="relative mx-auto overflow-hidden"
         style={{
-          width: MAX_W[size],
+          width: s.width,
           aspectRatio: '9/19',
           background: '#0A0C10',
-          borderRadius: 52,
-          border: '7px solid #1a1e26',
-          boxShadow: '0 32px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04)',
+          borderRadius: s.radius,
+          border: `${s.border}px solid #1a1e26`,
+          boxShadow: '0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04)',
         }}
       >
         {/* Dynamic Island */}
         <div
           aria-hidden
-          className="absolute left-1/2 top-2 z-30"
+          className="absolute left-1/2 top-1.5 z-30"
           style={{
             transform: 'translateX(-50%)',
-            width: 96,
-            height: 26,
+            width: s.islandW,
+            height: s.islandH,
             background: '#0A0C10',
-            borderRadius: 13,
-            border: '1.5px solid #1a1e26',
+            borderRadius: s.islandH / 2,
+            border: '1px solid #1a1e26',
           }}
         />
 
@@ -57,7 +59,7 @@ export default function ScreenshotFrame({ src, alt, type, size = 'default' }: Pr
             alt={alt!}
             fill
             className="object-cover object-top"
-            sizes={MAX_W[size]}
+            sizes={`${s.width}px`}
             priority={size === 'lg'}
           />
         </div>
