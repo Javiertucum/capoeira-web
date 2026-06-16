@@ -16,7 +16,7 @@ export default function ScreenshotFrame({ src, alt, type, size = 'default' }: Pr
   }
 
   return (
-    <div className="relative mx-auto" style={{ maxWidth: MAX_W[size], width: '100%' }}>
+    <div className="relative mx-auto" style={{ width: MAX_W[size] }}>
       {/* Ambient glow */}
       <div
         aria-hidden
@@ -24,10 +24,12 @@ export default function ScreenshotFrame({ src, alt, type, size = 'default' }: Pr
         style={{ background: 'rgba(16,185,129,0.35)' }}
       />
 
-      {/* Phone shell */}
+      {/* Phone shell — fixed width, aspect-ratio drives height */}
       <div
-        className="relative mx-auto aspect-[9/19] w-full overflow-hidden"
+        className="relative mx-auto overflow-hidden"
         style={{
+          width: MAX_W[size],
+          aspectRatio: '9/19',
           background: '#0A0C10',
           borderRadius: 52,
           border: '7px solid #1a1e26',
