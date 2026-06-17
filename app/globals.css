@@ -22,6 +22,8 @@
   --color-accent:        #2E7D32;
   --color-accent-ink:    #1F5723;
   --color-accent-soft:   #DCEBDD;
+  /* Fixed shade for solid buttons with white text — passes WCAG AA (4.5:1) in both themes */
+  --color-accent-solid:  #2E7D32;
 
   /* --- States --- */
   --color-success:       #2E7D32;
@@ -62,6 +64,7 @@
   --color-accent:        #43A047;
   --color-accent-ink:    #81C784;
   --color-accent-soft:   #1F3A22;
+  --color-accent-solid:  #2E7D32;
 
   --color-success:       #66BB6A;
   --color-warning:       #F6AD55;
@@ -93,6 +96,7 @@
   --accent:          #2E7D32;
   --accent-ink:      #1F5723;
   --accent-soft:     #DCEBDD;
+  --accent-solid:    #2E7D32;
   --green:           #2E7D32;
   --green-soft:      #DCEBDD;
 
@@ -135,6 +139,7 @@
   --accent:          #43A047;
   --accent-ink:      #81C784;
   --accent-soft:     #1F3A22;
+  --accent-solid:    #2E7D32;
   --green:           #43A047;
   --green-soft:      #1F3A22;
 
@@ -286,7 +291,7 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-primary { background: var(--ink); color: var(--bg); }
 .btn-primary:hover { background: var(--accent); }
-.btn-accent  { background: var(--accent); color: #fff; }
+.btn-accent  { background: var(--accent-solid); color: #fff; }
 .btn-accent:hover { opacity: 0.9; }
 .btn-ghost   { background: transparent; color: var(--ink); border-color: var(--border); }
 .btn-ghost:hover { border-color: var(--ink); }

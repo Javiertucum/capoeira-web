@@ -129,7 +129,7 @@ export default function Nav() {
               priority
             />
             <span className="flex flex-col justify-center min-w-0 whitespace-nowrap overflow-hidden">
-              <span className={`eyebrow block truncate opacity-40`} style={{ fontSize: 9, letterSpacing: '0.2em' }}>
+              <span className={`eyebrow block truncate`} style={{ fontSize: 9, letterSpacing: '0.2em', color: 'var(--text-secondary)', opacity: 0.8 }}>
                 Capoeira platform
               </span>
               <span
@@ -169,7 +169,7 @@ export default function Nav() {
               href={`/${locale}/app`}
               style={isActive('app') ? { color: 'var(--color-bg)' } : undefined}
               className={`hidden lg:inline-flex items-center rounded-full px-5 py-2.5 text-[13px] font-bold transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                isActive('app') ? 'bg-ink' : 'bg-accent text-white hover:opacity-90'
+                isActive('app') ? 'bg-ink' : 'bg-accent-solid text-white hover:opacity-90'
               }`}
             >
               {t('downloadApp')}
@@ -250,7 +250,7 @@ export default function Nav() {
               ))}
               <Link
                 href={`/${locale}/app`}
-                className="flex items-center justify-between rounded-[16px] bg-accent px-4 py-3 text-sm font-bold text-white transition-opacity duration-150 ease-[var(--ease-out)] active:scale-[0.98]"
+                className="flex items-center justify-between rounded-[16px] bg-accent-solid px-4 py-3 text-sm font-bold text-white transition-opacity duration-150 ease-[var(--ease-out)] active:scale-[0.98]"
               >
                 {t('downloadApp')}
               </Link>
