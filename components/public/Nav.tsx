@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useEffectEvent, useRef, useState } from 'react'
@@ -119,13 +120,14 @@ export default function Nav() {
             href={`/${locale}`}
             className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent flex-shrink-0 group"
           >
-            {/* Monograma a·c */}
-            <span
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-[18px] leading-none bg-ink text-bg transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-[1.05]`}
-              style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
-            >
-              a<span style={{ color: 'var(--accent)' }}>·</span>c
-            </span>
+            <Image
+              src="/images/logo.png"
+              alt="Agenda Capoeiragem"
+              width={40}
+              height={40}
+              className="shrink-0 rounded-2xl transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-[1.05]"
+              priority
+            />
             <span className="flex flex-col justify-center min-w-0 whitespace-nowrap overflow-hidden">
               <span className={`eyebrow block truncate opacity-40`} style={{ fontSize: 9, letterSpacing: '0.2em' }}>
                 Capoeira platform
