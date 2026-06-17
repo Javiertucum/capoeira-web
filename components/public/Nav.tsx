@@ -205,7 +205,7 @@ export default function Nav() {
               aria-expanded={menuOpen}
               aria-controls="mobile-nav-drawer"
               onClick={() => setMenuOpen((p) => !p)}
-              className={`grid h-11 w-11 place-items-center rounded-full border border-ink/10 bg-white/50 text-ink backdrop-blur-md transition-colors duration-200 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden active:scale-95`}
+              className={`grid h-11 w-11 place-items-center rounded-full border border-ink/10 bg-white/50 text-ink backdrop-blur-md transition-[background-color,border-color,color] duration-200 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden active:scale-95`}
             >
               <span className="relative block h-4 w-5">
                 <span className={`absolute left-0 top-0.5 h-px w-5 transition-transform duration-200 ease-[var(--ease-out)] ${menuOpen ? 'translate-y-[6px] rotate-45' : ''} bg-current`} />

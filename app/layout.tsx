@@ -99,8 +99,8 @@ export default async function RootLayout({
       <head>
         <meta name="theme-color" content="#F7F3EB" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#10131A" media="(prefers-color-scheme: dark)" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://maps.googleapis.com" />
+        <link rel="dns-prefetch" href="https://basemaps.cartocdn.com" />
+        <link rel="dns-prefetch" href="https://tiles.basemaps.cartocdn.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://i.ibb.co" />
         <link rel="alternate" type="text/plain" title="LLMs.txt" href="/llms.txt" />

@@ -396,7 +396,7 @@ export default function DirectorySplit({
             <p className="text-xs text-text-secondary">{t('mapCtaText')}</p>
             <Link
               href={`/${locale}/app`}
-              className="shrink-0 rounded-full bg-accent px-3 py-1.5 text-xs font-bold text-white transition-opacity duration-150 hover:opacity-90"
+              className="shrink-0 rounded-full bg-accent-solid px-3 py-1.5 text-xs font-bold text-white transition-opacity duration-150 hover:opacity-90"
             >
               {t('mapCtaLink')}
             </Link>

@@ -47,7 +47,7 @@ export default function Hero({ copy, stats }: { copy: any; stats: any }) {
             <div className="flex flex-wrap items-center gap-6 pt-2 emil-enter-stagger emil-stagger-3">
               <Link
                 href="#join"
-                className="group inline-flex h-14 items-center gap-3 rounded-2xl bg-accent px-8 text-sm font-bold text-white shadow-[0_4px_24px_-4px_oklch(0.56_0.19_158/0.38)] transition-[transform,box-shadow] duration-200 ease-[var(--ease-out)] hover:-translate-y-[2px] hover:shadow-[0_8px_32px_-4px_oklch(0.56_0.19_158/0.48)] active:scale-[0.97] active:translate-y-0"
+                className="group inline-flex h-14 items-center gap-3 rounded-2xl bg-accent-solid px-8 text-sm font-bold text-white shadow-[0_4px_24px_-4px_oklch(0.56_0.19_158/0.38)] transition-[transform,box-shadow] duration-200 ease-[var(--ease-out)] hover:-translate-y-[2px] hover:shadow-[0_8px_32px_-4px_oklch(0.56_0.19_158/0.48)] active:scale-[0.97] active:translate-y-0"
               >
                 {copy.ctaHero}
                 <svg

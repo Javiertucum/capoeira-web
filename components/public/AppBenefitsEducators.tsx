@@ -95,7 +95,7 @@ export default function AppBenefitsEducators({ copy }: { copy: any }) {
             href={PLAY_STORE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-8 shrink-0 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-5 text-[13px] font-bold text-white shadow-[0_4px_16px_-4px_oklch(0.56_0.19_158/0.4)] transition-[transform,box-shadow] hover:-translate-y-px hover:shadow-[0_6px_20px_-4px_oklch(0.56_0.19_158/0.5)]"
+            className="ml-8 shrink-0 inline-flex h-10 items-center gap-2 rounded-xl bg-accent-solid px-5 text-[13px] font-bold text-white shadow-[0_4px_16px_-4px_oklch(0.56_0.19_158/0.4)] transition-[transform,box-shadow] hover:-translate-y-px hover:shadow-[0_6px_20px_-4px_oklch(0.56_0.19_158/0.5)]"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 3.6v16.8c0 .5.3.9.7 1.1l10.8-9.5L3.7 2.5c-.4.2-.7.6-.7 1.1z" fill="currentColor" opacity="0.6"/><path d="M14.5 12l3.6-3.2L4.4 2.6 14.5 12z" fill="currentColor"/><path d="M14.5 12L4.4 21.4l13.7-6.2-3.6-3.2z" fill="currentColor" opacity="0.8"/><path d="M18.1 8.8L15.4 12l2.7 3.2 3.7-2c.7-.4.7-1.6 0-2L18.1 8.8z" fill="currentColor" opacity="0.65"/></svg>
             {copy.educatorsCtaLabel ?? 'Descargar gratis'}
