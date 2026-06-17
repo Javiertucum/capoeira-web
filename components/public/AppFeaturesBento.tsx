@@ -96,7 +96,7 @@ function BentoTile({ item, index }: { item: SpotlightItem; index: number }) {
         {item.title}
       </h3>
 
-      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-text-secondary lg:max-w-[50%]">
+      <p className="mt-2 text-sm leading-relaxed text-text-secondary lg:max-w-[50%]">
         {item.desc}
       </p>
 
