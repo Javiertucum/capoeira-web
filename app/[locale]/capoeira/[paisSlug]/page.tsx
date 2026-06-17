@@ -66,6 +66,21 @@ const COPY = {
     scheduleUnit: (n: number) => `${n} class${n === 1 ? '' : 'es'}/week`,
     seeAll: (city: string) => `Capoeira in ${city}`,
   },
+  fr: {
+    title: (c: string) => `Capoeira en ${c}`,
+    description: (c: string, n: number) =>
+      `Annuaire de la capoeira en ${c}. Trouvez ${n} ${n === 1 ? 'lieu' : 'lieux'} où pratiquer la capoeira — groupes, noyaux et éducateurs avec horaires et adresse.`,
+    keywords: (c: string, cities: string[]) => [
+      `capoeira en ${c}`, `cours de capoeira en ${c}`, `capoeira ${c}`,
+      `groupes capoeira ${c}`, `où pratiquer la capoeira ${c}`,
+      ...cities.flatMap((city) => [`capoeira en ${city}`, `cours capoeira ${city}`]),
+    ],
+    cities: 'Villes',
+    nucleos: 'Lieux pour s\'entraîner',
+    back: '← Annuaire mondial',
+    scheduleUnit: (n: number) => `${n} cours/semaine`,
+    seeAll: (city: string) => `Voir la capoeira à ${city}`,
+  },
 } as const
 
 type Locale = keyof typeof COPY
@@ -73,7 +88,7 @@ const getCopy = (locale: string) => COPY[locale as Locale] ?? COPY.es
 
 export async function generateStaticParams() {
   const nucleos = await getAllNucleos().catch(() => [])
-  const locales = ['es', 'pt', 'en']
+  const locales = ['es', 'pt', 'en', 'fr']
   const countrySlugs = [...new Set(
     nucleos.map((n) => n.country).filter((c): c is string => Boolean(c)).map(slugify)
   )]

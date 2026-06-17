@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "map": "Carte",
+    "groups": "Groupes",
+    "educators": "Éducateurs",
+    "events": "Événements",
+    "comingSoon": "Bientôt disponible",
+    "appPreview": "Aperçu de l'app",
+    "features": "Fonctionnalités",
+    "tutorials": "Tutoriels",
+    "downloadApp": "Télécharger l'app"
+  },
+  "hero": {
+    "eyebrow": "Annuaire mondial de la capoeira",
+    "title": "Trouvez votre",
+    "titleAccent": "Roda",
+    "subtitle": "Noyaux, groupes et éducateurs du monde entier. Rencontrez la communauté. Commencez à vous entraîner.",
+    "searchPlaceholder": "Ville, pays ou région...",
+    "searchButton": "Rechercher"
+  },
+  "stats": {
+    "nucleos": "Noyaux",
+    "groups": "Groupes",
+    "educators": "Éducateurs",
+    "countries": "Pays"
+  },
+  "categories": {
+    "title": "Explorer par catégorie",
+    "explore": "Explorer",
+    "nucleos": {
+      "name": "Noyaux",
+      "desc": "Lieux d'entraînement avec horaires, éducateurs et contact direct."
+    },
+    "groups": {
+      "name": "Groupes",
+      "desc": "Organisations avec une histoire, un système de graduation et une communauté établie."
+    },
+    "educators": {
+      "name": "Éducateurs",
+      "desc": "Profils de professeurs avec réseaux sociaux et contact direct."
+    }
+  },
+  "map": {
+    "title": "Vue carte",
+    "results": "{count} résultats",
+    "nearMe": "Près de moi",
+    "locating": "Localisation…",
+    "locationDenied": "Impossible d'accéder à votre position",
+    "filterNucleos": "Noyaux",
+    "filterGroups": "Groupes",
+    "filterEducators": "Éducateurs",
+    "searchPlaceholder": "Ville, pays ou région...",
+    "seeContact": "Voir le contact ->",
+    "emptyTitle": "Aucun résultat pour cette recherche",
+    "emptyBody": "Essayez une autre ville, un autre groupe ou un autre pays pour élargir votre recherche.",
+    "clearSearch": "Effacer la recherche",
+    "mapCtaText": "Vous voulez que votre groupe ou académie apparaisse ici ?",
+    "mapCtaLink": "Télécharger l'app"
+  },
+  "educators": {
+    "featured": "Éducateurs à la une",
+    "empty": "Les profils à la une apparaîtront ici une fois les données de l'annuaire public connectées."
+  },
+  "cta": {
+    "title": "Vous êtes éducateur ou vous avez un groupe ?",
+    "subtitle": "Téléchargez l'app et ajoutez votre noyau à l'annuaire mondial de la capoeira.",
+    "download": "Télécharger l'app",
+    "learnMore": "Explorer la carte mondiale"
+  },
+  "footer": {
+    "credits": "Données de la communauté Agenda Capoeiragem",
+    "privacy": "Confidentialité",
+    "terms": "Conditions"
+  },
+  "profile": {
+    "role": "Rôle",
+    "location": "Lieu",
+    "group": "Groupe",
+    "graduation": "Graduation",
+    "bio": "Biographie",
+    "nucleos": "Enseigne à",
+    "contact": "Contact",
+    "unspecified": "Non spécifié",
+    "back": "Retour à l'annuaire",
+    "representedCountries": "Pays représentés",
+    "representedCities": "Villes représentées",
+    "admin": "Instructeur en chef",
+    "viewProfile": "Voir le profil",
+    "stats": "Statistiques du groupe",
+    "noNucleos": "Aucun lieu d'entraînement actif trouvé pour ce groupe.",
+    "website": "Site web",
+    "educators": "Éducateurs",
+    "graduationSystem": "Système de graduation",
+    "responsibleEducator": "Éducateur responsable",
+    "coEducators": "Co-éducateurs",
+    "members": "Membres",
+    "schedules": "Horaires",
+    "noMembers": "Aucun membre enregistré.",
+    "viewNucleo": "Voir le noyau",
+    "address": "Adresse",
+    "educatorRole": "Éducateur",
+    "graduatedAs": "Graduation : {level}",
+    "myNucleos": "Mes noyaux",
+    "nucleosSection": "Noyaux",
+    "graduationCategoryInfantil": "Enfants",
+    "graduationCategoryJuvenil": "Jeunes",
+    "graduationCategoryEstagiario": "Instructeurs stagiaires",
+    "graduationCategoryAdult": "Adultes",
+    "graduationCategoryGeneral": "Général",
+    "nucleosMap": "Emplacement des noyaux",
+    "close": "Fermer"
+  }
+}

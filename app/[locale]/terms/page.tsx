@@ -28,6 +28,13 @@ const COPY = {
       'We are drafting a public version of these terms for the web directory. For now, the published experience remains focused on exploring profiles, groups, and nucleos shared by the community.',
     back: 'Back to home',
   },
+  fr: {
+    title: 'Conditions',
+    heading: 'Conditions du site en préparation',
+    body:
+      'Nous rédigeons une version publique de ces conditions pour l\'annuaire web. En attendant, l\'expérience publiée reste centrée sur l\'exploration des profils, groupes et noyaux partagés par la communauté.',
+    back: 'Retour à l\'accueil',
+  },
 } as const
 
 function getCopy(locale: string) {

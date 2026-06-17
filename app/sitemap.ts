@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getLanguageAlternateUrls, getLocalizedUrl } from '@/lib/site'
 import { getAllGroups, getAllEducators, getAllNucleos, getAllLocationSlugs } from '@/lib/queries'
 
-const LOCALES = ['es', 'pt', 'en']
+const LOCALES = ['es', 'pt', 'en', 'fr']
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = ['', '/privacy', '/terms', '/tutoriales'].flatMap((path) =>

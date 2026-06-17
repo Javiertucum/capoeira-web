@@ -28,6 +28,13 @@ const COPY = {
       'We are preparing a complete public version of this page. For now, the web directory shows information shared by the community, and this section will be updated before the final launch.',
     back: 'Back to home',
   },
+  fr: {
+    title: 'Confidentialité',
+    heading: 'Politique de confidentialité en préparation',
+    body:
+      'Nous préparons une version publique et complète de cette page. Pour l\'instant, l\'annuaire web affiche les informations partagées par la communauté, et cette section sera mise à jour avant le lancement définitif.',
+    back: 'Retour à l\'accueil',
+  },
 } as const
 
 function getCopy(locale: string) {

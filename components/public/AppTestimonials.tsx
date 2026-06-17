@@ -68,6 +68,29 @@ const COPY = {
       },
     ],
   },
+  fr: {
+    label: 'La communauté l\'utilise',
+    items: [
+      {
+        quote: 'Avant, je faisais l\'appel sur papier. Maintenant ça me prend 30 secondes depuis mon téléphone et mes élèves voient leur historique à l\'instant.',
+        name: 'Grilo Mané',
+        role: 'Éducateur · Santiago, Chili',
+        initials: 'GM',
+      },
+      {
+        quote: 'J\'ai voyagé six mois et j\'ai trouvé de la capoeira dans chaque ville grâce à la carte. Pour un capoeirista en déplacement, il n\'y a pas mieux.',
+        name: 'Mariposa',
+        role: 'Pratiquante · Buenos Aires',
+        initials: 'MA',
+      },
+      {
+        quote: 'Le système de graduation a pris 20 minutes à configurer. Compatible avec l\'Angola, le Regional et les systèmes mixtes sans aucun problème.',
+        name: 'Gavião',
+        role: 'Contramestre · São Paulo',
+        initials: 'GA',
+      },
+    ],
+  },
 } as const
 
 function StarIcon() {

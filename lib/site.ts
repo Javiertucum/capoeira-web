@@ -9,6 +9,7 @@ export const SITE_DESCRIPTIONS = {
   es: 'Directorio global de capoeira: encuentra grupos, núcleos y educadores en todo el mundo. Descubre dónde entrenar, conoce a los maestros y conecta con la comunidad.',
   pt: 'Diretório global de capoeira: encontre grupos, núcleos e educadores em todo o mundo. Descubra onde treinar, conheça os mestres e conecte-se com a comunidade.',
   en: 'Global capoeira directory: find capoeira groups, training locations (nucleos), and educators worldwide. Discover where to train, meet the masters, and connect with the community.',
+  fr: 'Annuaire mondial de la capoeira : trouvez des groupes, des noyaux et des éducateurs partout dans le monde. Découvrez où vous entraîner, rencontrez les maîtres et connectez-vous à la communauté.',
 } as const
 
 export const DEFAULT_LOCALE = 'es'
@@ -32,6 +33,7 @@ export function getLanguageAlternates(path = '') {
     es: getLocalizedPath('es', path),
     pt: getLocalizedPath('pt', path),
     en: getLocalizedPath('en', path),
+    fr: getLocalizedPath('fr', path),
   }
 }
 
@@ -40,6 +42,7 @@ export function getLanguageAlternateUrls(path = '') {
     es: getLocalizedUrl('es', path),
     pt: getLocalizedUrl('pt', path),
     en: getLocalizedUrl('en', path),
+    fr: getLocalizedUrl('fr', path),
   }
 }
 

@@ -29,7 +29,7 @@ const SECTIONS_ES: Section[] = [
     steps: [
       {
         t: 'Instala la app o úsala como app web',
-        d: 'Descárgala desde Google Play en Android, o ábrela en tu navegador en agendacapoeiragem.com y agrégala a tu pantalla de inicio para usarla como app web (PWA). En ambos casos funciona igual.',
+        d: 'Descárgala desde Google Play en Android, o ábrela en tu navegador en agendacapoeiragem.com y agrégala a tu pantalla de inicio. En ambos casos funciona igual.',
         note: 'La versión nativa para iPhone está en desarrollo. Mientras tanto, usa Safari en iOS → "Agregar a pantalla de inicio".',
       },
       {
@@ -1847,6 +1847,608 @@ const SECTIONS_EN: Section[] = [
   },
 ]
 
+// ─── French ──────────────────────────────────────────────────────────────────
+
+const SECTIONS_FR: Section[] = [
+  {
+    id: 'getting-started',
+    title: `Premiers pas`,
+    category: `Général`,
+    intro: `Comment créer votre compte, compléter votre profil et rejoindre votre communauté.`,
+    mockup: 'home',
+    steps: [
+      {
+        t: `Installez l'app ou utilisez-la comme application web`,
+        d: `Téléchargez-la sur Google Play sur Android, ou ouvrez agendacapoeiragem.com dans votre navigateur et ajoutez-la à votre écran d'accueil comme application web (PWA). Les deux options fonctionnent de la même manière.`,
+        note: `La version native pour iPhone est en développement. En attendant, utilisez Safari sur iOS → « Sur l'écran d'accueil ».`,
+      },
+      {
+        t: `Créez votre compte`,
+        d: `À l'ouverture de l'app, vous verrez l'écran « Créer un compte — Rejoignez la communauté de la capoeira ». Renseignez votre prénom, votre nom, un surnom facultatif et votre e-mail. Vous pouvez aussi vous inscrire avec Google.`,
+        tip: `Avant de continuer, l'app demandera votre rôle : « Pratiquant » ou « Éducateur ». Choisissez « Éducateur » si vous enseignez déjà la capoeira — cela débloque les outils de gestion dès le départ.`,
+      },
+      {
+        t: `Complétez l'onboarding`,
+        d: `Après l'inscription, l'écran d'onboarding vous guide pour ajouter une photo de profil et trouver votre groupe ou votre noyau. Vous pouvez sauter cette étape et la faire plus tard, mais vous relier dès le départ active toutes les fonctionnalités communautaires.`,
+      },
+      {
+        t: `Reliez votre groupe`,
+        d: `Sur l'écran d'accueil, vous verrez la carte « Aucun groupe assigné » avec un bouton « Trouver des groupes ». Cherchez votre groupe dans l'annuaire et envoyez une demande d'adhésion. Vous pouvez aussi demander à votre éducateur de vous ajouter directement depuis son panneau d'administration.`,
+        warn: `Sans groupe relié, vous ne pouvez pas voir les événements de votre communauté ni l'historique des graduations. Les fonctions de présence et de paiement seront également indisponibles.`,
+      },
+    ],
+  },
+  {
+    id: 'home-and-discovery',
+    title: `Accueil et découverte`,
+    category: `Général`,
+    intro: `Comment naviguer sur l'écran principal et trouver rapidement ce dont vous avez besoin.`,
+    mockup: 'home',
+    steps: [
+      {
+        t: `L'écran d'accueil`,
+        d: `L'onglet « Accueil » affiche un message de bienvenue personnalisé avec votre nom, la carte de votre groupe et la section « Événements à venir » avec les événements de votre communauté dans l'ordre chronologique. Un badge rouge sur l'onglet « Profil » indique des notifications en attente.`,
+        tip: `Tirez vers le bas pour rafraîchir le fil à tout moment.`,
+      },
+      {
+        t: `Filtrez les événements à venir`,
+        d: `Dans la section « Événements à venir », vous trouverez des puces de filtre : « Cette semaine » et « Ce mois-ci ». Touchez-les pour affiner l'affichage.`,
+      },
+      {
+        t: `Recherche globale`,
+        d: `Touchez la barre de recherche sur l'écran d'accueil pour ouvrir la recherche globale. Tapez n'importe quel terme et vous verrez les résultats organisés en quatre sections : Événements, Groupes, Noyaux et Utilisateurs.`,
+      },
+      {
+        t: `Le bouton « + » (Éducateurs)`,
+        d: `Si vous êtes éducateur, vous verrez un bouton flottant « + » sur l'écran d'accueil. Touchez-le pour ouvrir un menu avec trois options : « Nouvel événement », « Créer un groupe » et « Créer un noyau ».`,
+        note: `Le bouton « + » n'apparaît que si votre compte a le rôle Éducateur. Vérifiez votre rôle dans Profil → Réglages.`,
+      },
+      {
+        t: `Carte mondiale des noyaux`,
+        d: `Dans l'onglet « Groupes », vous trouverez une carte interactive avec tous les noyaux enregistrés dans le monde. Touchez un marqueur pour voir le nom du noyau, son groupe et ses horaires. Utile pour trouver un endroit où s'entraîner en voyage.`,
+      },
+    ],
+  },
+  {
+    id: 'groups-and-community',
+    title: `Groupes et communauté`,
+    category: `Général`,
+    intro: `Comment découvrir des groupes, en rejoindre un et explorer la hiérarchie de votre communauté.`,
+    mockup: 'educator',
+    steps: [
+      {
+        t: `Qu'est-ce qu'un groupe et qu'est-ce qu'un noyau ?`,
+        d: `Un **groupe** est l'organisation de capoeira dans son ensemble (par ex. Abadá Capoeira, Cordão de Ouro). Un **noyau** est un lieu d'entraînement physique précis au sein de ce groupe — un groupe peut avoir de nombreux noyaux dans différentes villes ou pays. Vous appartenez à un groupe et vous vous entraînez dans un noyau. Les éducateurs créent des noyaux à l'intérieur de leur groupe.`,
+        note: `Quand l'app dit « votre noyau », elle désigne le lieu précis où vous vous entraînez. Quand elle dit « votre groupe », elle désigne toute l'organisation.`,
+      },
+      {
+        t: `Parcourir les groupes`,
+        d: `L'onglet « Groupes » affiche tous les groupes publics de la plateforme. Utilisez la barre de recherche (« Rechercher un groupe... ») pour filtrer par nom, et les menus « Pays de présence » et « Style de capoeira » pour affiner la recherche.`,
+      },
+      {
+        t: `Le profil d'un groupe`,
+        d: `Touchez un groupe pour voir son profil complet organisé en onglets : « Résumé » (description et statistiques), « Événements » (événements à venir du groupe), « Hiérarchie » (arbre des éducateurs), « Noyaux » (liste des noyaux actifs) et « Graduations » (système de cordes).`,
+      },
+      {
+        t: `Demander à rejoindre un groupe`,
+        d: `Depuis le profil du groupe, touchez « Demander à rejoindre le groupe ». Votre demande affichera le badge « Demande en attente » jusqu'à ce que l'administrateur l'approuve. Vous recevrez une notification dans « Profil → Notifications » une fois acceptée.`,
+        tip: `Si vous voulez dire à l'administrateur qui vous êtes, utilisez la « Demande guidée ». Elle vous permet d'envoyer un message avec votre demande.`,
+      },
+      {
+        t: `Voir la hiérarchie du groupe`,
+        d: `Dans l'onglet « Hiérarchie » du profil du groupe, vous trouverez l'arbre complet des éducateurs. Vous pouvez rechercher par nom dans la hiérarchie. Touchez un éducateur pour voir son profil public.`,
+      },
+      {
+        t: `Voir le profil d'un membre`,
+        d: `Touchez le nom d'un éducateur ou d'un membre pour voir son profil : nom, surnom, groupe, corde actuelle et noyaux où il enseigne ou s'entraîne. L'historique de graduations est aussi visible publiquement.`,
+      },
+    ],
+  },
+  {
+    id: 'events',
+    title: `Événements`,
+    category: `Général`,
+    intro: `Comment découvrir, filtrer et confirmer votre intérêt pour les batizados, rodas et plus encore.`,
+    mockup: 'event',
+    steps: [
+      {
+        t: `Explorer le calendrier des événements`,
+        d: `L'onglet « Événements » affiche un calendrier interactif en haut et la liste des événements en dessous. Touchez une date pour voir les événements de ce jour. Vous pouvez basculer entre la vue calendrier et la vue liste avec le bouton dans le coin.`,
+      },
+      {
+        t: `Filtrer par catégorie et plus`,
+        d: `Touchez « Filtres » pour ouvrir les options avancées : Catégorie (batizado, roda, roda ouverte, troca de corda, cours, classe, atelier, séminaire, festival, rencontre, intensif, entraînement), Prix (gratuit ou payant), Format (en présentiel ou en ligne), Dates, Groupe et Lieu.`,
+        tip: `Vous pouvez combiner plusieurs filtres à la fois. Un indicateur « Filtres actifs » apparaît à côté du bouton lorsque des filtres sont appliqués.`,
+      },
+      {
+        t: `Détail de l'événement`,
+        d: `Touchez un événement pour voir la description complète, la date et l'heure, l'emplacement sur la carte, le type d'événement, les organisateurs et l'affiche s'il y en a une. Vous verrez aussi combien de personnes y vont (« J'y vais ») et combien ont marqué leur intérêt (« Intéressé »).`,
+      },
+      {
+        t: `Confirmer « J'y vais » ou « Intéressé »`,
+        d: `Depuis le détail de l'événement, touchez « Intéressé » pour l'enregistrer dans votre liste, ou « J'y vais » pour confirmer votre présence. Les organisateurs peuvent voir le total des deux.`,
+        tip: `Les événements que vous avez marqués « J'y vais » apparaissent en surbrillance sur votre écran d'accueil dans la section « Événements à venir ».`,
+      },
+      {
+        t: `Partager un événement`,
+        d: `Utilisez le bouton de partage dans le détail de l'événement pour l'envoyer via WhatsApp, Instagram ou d'autres apps. Le nom de l'événement, la date et un lien direct sont partagés.`,
+      },
+    ],
+  },
+  {
+    id: 'your-profile',
+    title: `Votre profil`,
+    category: `Général`,
+    intro: `Comment gérer votre identité, vos notifications et accéder aux réglages.`,
+    steps: [
+      {
+        t: `Les trois onglets du profil`,
+        d: `L'onglet « Profil » comporte trois sections internes : « Résumé » (vos événements à venir et votre bio), « Notifications » (demandes en attente de groupe, noyau ou éducateur) et « Gestion » (si éducateur, accès à vos noyaux ; si élève, les noyaux où vous vous entraînez).`,
+      },
+      {
+        t: `Modifier votre profil`,
+        d: `Touchez l'icône de modification (crayon) sur votre photo de profil ou votre nom pour ouvrir le formulaire d'édition. Vous pouvez changer votre photo, votre prénom, votre nom et votre surnom. Enregistrez en touchant « Enregistrer ».`,
+        tip: `Les photos sont importées depuis votre appareil photo ou votre galerie. Une image carrée rend le mieux dans la photo de profil circulaire.`,
+      },
+      {
+        t: `Votre corde et vos graduations`,
+        d: `Votre corde actuelle apparaît avec sa couleur et son nom sous votre nom dans le profil. Si vous avez plus d'une graduation enregistrée, touchez votre corde pour voir l'historique complet avec la date de chaque changement de niveau.`,
+      },
+      {
+        t: `Réglages : langue et thème`,
+        d: `Depuis « Profil », touchez « Réglages ». Vous pouvez y changer la langue (français, anglais, espagnol, portugais) dans la section « Langue », et le thème visuel (clair ou sombre) dans « Mode de l'app ». Les changements s'appliquent immédiatement.`,
+      },
+      {
+        t: `Notifications en attente`,
+        d: `Dans l'onglet « Notifications » de votre profil, vous verrez cinq types de demandes : « Demande d'adhésion au groupe » (quelqu'un veut rejoindre votre groupe), « Demande d'éducateur » (demande de relation éducateur-élève), « Demande d'adhésion au noyau » (quelqu'un veut rejoindre votre noyau), « Demande de transfert de noyau » (transfert d'administration en attente) et « Demande de collaboration » (invitation à co-organiser un événement). Le badge rouge sur l'onglet « Profil » indique combien vous en avez de non lues.`,
+      },
+      {
+        t: `Signaler un problème`,
+        d: `Allez dans « Profil » → « Réglages » → « Signaler un problème ». Votre signalement est envoyé directement à l'équipe de développement avec les informations techniques de l'appareil jointes automatiquement.`,
+      },
+    ],
+  },
+  {
+    id: 'premium',
+    title: `Forfait Premium`,
+    category: `Général`,
+    intro: `Ce qu'inclut le forfait gratuit, ce que débloque Premium et comment s'abonner.`,
+    steps: [
+      {
+        t: `Limites du forfait gratuit`,
+        d: `Avec un compte gratuit, les éducateurs peuvent créer jusqu'à 10 événements par mois et les élèves peuvent confirmer leur présence à 1 roda par mois. La gestion du noyau, la présence et les paiements sont disponibles sans limite pour les deux rôles.`,
+        note: `Les élèves au forfait gratuit voient des publicités dans l'app.`,
+      },
+      {
+        t: `Ce qu'inclut Premium`,
+        d: `Premium débloque des événements illimités pour les éducateurs, jusqu'à 5 rodas par mois pour les élèves, un support prioritaire et une expérience sans publicité.`,
+        tip: `Le forfait annuel est marqué du badge « MEILLEUR PRIX » et est nettement moins cher que de payer mois après mois.`,
+      },
+      {
+        t: `Comment s'abonner`,
+        d: `Allez dans « Profil » → « Abonnement » ou touchez la bannière Premium qui apparaît lorsque vous atteignez une limite. Choisissez le forfait mensuel ou annuel et confirmez le paiement avec votre compte Google Play ou App Store.`,
+        note: `Les paiements sont traités de façon sécurisée via Google Play / App Store. Agenda Capoeiragem ne stocke pas les données de carte.`,
+      },
+      {
+        t: `Restaurer les achats`,
+        d: `Si vous changez d'appareil ou réinstallez l'app, allez dans « Profil » → « Abonnement » → « Restaurer les achats » pour récupérer votre forfait actif sans payer à nouveau.`,
+        tip: `Utilisez le même compte Google ou Apple que celui utilisé pour acheter le forfait.`,
+      },
+    ],
+  },
+  {
+    id: 'join-a-school',
+    title: `Rejoindre un noyau`,
+    category: `Pratiquants`,
+    intro: `Comment trouver un noyau à proximité, envoyer une demande et ce qui se passe ensuite.`,
+    steps: [
+      {
+        t: `Trouver un noyau sur la carte`,
+        d: `Allez dans l'onglet « Groupes » et utilisez la carte interactive pour explorer les noyaux près de chez vous. Touchez un marqueur pour voir le nom, le groupe, les horaires et l'option de voir le profil complet.`,
+      },
+      {
+        t: `Demander à rejoindre avec la « Demande guidée »`,
+        d: `Depuis le profil du noyau, touchez « Demande d'adhésion guidée ». Vous pouvez inclure un message pour vous présenter à l'éducateur. Votre demande apparaîtra dans la section « Demandes » du panneau du noyau.`,
+        tip: `Si vous vous entraînez déjà avec un éducateur qui utilise Agenda Capoeiragem, demandez-lui de vous ajouter directement depuis son panneau pour sauter le processus de demande.`,
+      },
+      {
+        t: `Attendre l'approbation`,
+        d: `Votre demande reste « En attente » jusqu'à ce que l'éducateur l'approuve ou la rejette. Vous recevrez une notification dans « Profil → Notifications » lorsqu'il y aura une réponse.`,
+        warn: `Seul l'éducateur peut approuver les demandes. Si vous ne recevez pas de réponse au bout de quelques jours, essayez de contacter l'éducateur par un autre canal.`,
+      },
+      {
+        t: `Accéder à vos cours et à votre suivi`,
+        d: `Une fois approuvé, le noyau apparaît dans « Profil » → onglet « Gestion ». Vous y verrez votre historique de présence mois par mois et votre statut de paiement si le noyau gère les cotisations.`,
+      },
+    ],
+  },
+  {
+    id: 'your-history',
+    title: `Votre historique personnel`,
+    category: `Pratiquants`,
+    intro: `Comment consulter votre présence mensuelle, vos graduations et les événements auxquels vous avez assisté.`,
+    steps: [
+      {
+        t: `Présence de ce mois`,
+        d: `Allez dans « Profil » → onglet « Gestion » → votre noyau. Vous verrez votre pourcentage de présence pour le mois en cours et la liste des cours avec un indicateur présent ou absent pour chacun.`,
+      },
+      {
+        t: `Historique de graduations`,
+        d: `Depuis votre profil, touchez votre corde actuelle pour déployer l'historique complet avec la date de chaque changement de niveau. L'enregistrement est permanent et visible publiquement sur votre profil.`,
+      },
+      {
+        t: `Statut de paiement`,
+        d: `Si votre noyau gère les paiements, dans l'onglet « Gestion » vous verrez votre statut de paiement du mois : « En attente », « Payé » ou « En retard ». Seul l'éducateur peut enregistrer vos paiements.`,
+        note: `Votre statut de paiement n'est visible que par vous et votre éducateur. Ce n'est pas une information publique.`,
+      },
+      {
+        t: `Événements confirmés`,
+        d: `Dans l'onglet « Résumé » de votre profil, vous verrez les événements à venir auxquels vous avez confirmé « J'y vais ». Vous pouvez voir le détail de chacun en touchant le nom de l'événement directement depuis votre profil.`,
+      },
+    ],
+  },
+  {
+    id: 'create-group',
+    title: `Créer votre groupe`,
+    category: `Éducateurs`,
+    intro: `Comment enregistrer votre groupe de capoeira sur la plateforme et configurer ses informations.`,
+    steps: [
+      {
+        t: `Accéder au formulaire de création`,
+        d: `Touchez le bouton flottant « + » sur l'écran d'accueil → « Créer un groupe ». Vous pouvez aussi aller dans l'onglet « Groupes » et toucher « Créer un groupe » dans le coin supérieur.`,
+        note: `Seuls les utilisateurs ayant le rôle Éducateur peuvent créer des groupes. Vérifiez votre rôle dans « Profil → Réglages ».`,
+      },
+      {
+        t: `Nom et description`,
+        d: `Saisissez le nom officiel de votre groupe et une description. Les deux sont obligatoires. Le nom apparaîtra dans l'annuaire mondial, sur les profils des membres et sur tous les événements que vous organisez.`,
+      },
+      {
+        t: `Style de capoeira (obligatoire)`,
+        d: `Dans le champ « Style de capoeira * », tapez le style que vous pratiquez (par ex. Mixte, Benguela, Angola, Regional). C'est un champ de texte libre et il est obligatoire. Ce texte sert de nom à votre système de graduation et définit l'intitulé de vos cordes.`,
+        tip: `Le champ « Ville » est facultatif — vous pouvez le remplir maintenant ou plus tard depuis « Modifier le groupe ».`,
+      },
+      {
+        t: `Logo du groupe (facultatif)`,
+        d: `Importez le logo de votre groupe depuis votre galerie. Il apparaîtra sur le profil du groupe, dans les noyaux et sur la carte du groupe que vos élèves voient sur l'écran d'accueil.`,
+      },
+      {
+        t: `Créer le groupe`,
+        d: `Touchez « Créer ». Si le nom n'est pas un doublon, le groupe est créé immédiatement. L'app vous demandera si vous voulez configurer le système de graduation maintenant ou plus tard.`,
+      },
+      {
+        t: `Inviter des membres`,
+        d: `Après avoir créé le groupe, partagez son nom avec vos élèves. Ils le recherchent dans l'onglet « Groupes » → annuaire et demandent à le rejoindre. Vous pouvez aussi les ajouter directement depuis le panneau d'administration de votre noyau, ou ils peuvent se relier lors de leur propre onboarding.`,
+        tip: `Il n'y a pas de code d'invitation : le flux standard, c'est que les élèves vous trouvent dans l'annuaire, ou que vous les ajoutiez depuis le panneau du noyau.`,
+      },
+    ],
+  },
+  {
+    id: 'manage-group',
+    title: `Gérer votre groupe`,
+    category: `Éducateurs`,
+    intro: `Comment gérer les membres, les rôles d'administration et les informations du groupe.`,
+    steps: [
+      {
+        t: `Panneau d'administration du groupe`,
+        d: `Allez sur le profil de votre groupe et touchez le bouton d'administration (visible uniquement par les administrateurs et co-administrateurs). Vous accéderez aux options de gestion des membres, des rôles et de la configuration du groupe.`,
+        note: `En tant que créateur du groupe, vous êtes l'administrateur principal. Vous seul pouvez transférer l'administration complète à une autre personne.`,
+      },
+      {
+        t: `Approuver ou rejeter les demandes d'adhésion`,
+        d: `Dans « Demandes » du panneau du groupe, vous verrez les demandes en attente avec le nom du demandeur et son message s'il a utilisé la demande guidée. Touchez « Approuver » ou « Rejeter » pour répondre à chacune.`,
+      },
+      {
+        t: `Attribuer des rôles : admin et co-admin`,
+        d: `Depuis le profil d'un membre dans le panneau du groupe, vous pouvez lui attribuer le rôle « Co-admin » (accès au panneau) ou le promouvoir « Admin ». Vous pouvez aussi utiliser l'option « Quitter le rôle d'admin » pour retirer le rôle.`,
+        warn: `« Transférer l'administration » confie le contrôle total du groupe à un autre utilisateur. Cette action est irréversible : vous perdrez le rôle d'administrateur principal.`,
+      },
+      {
+        t: `Modifier les informations du groupe`,
+        d: `Allez sur le profil du groupe → icône de modification. Vous pouvez changer le nom, la description, le logo, le style de capoeira et la ville. Les changements s'appliquent immédiatement et se reflètent dans l'annuaire public.`,
+      },
+      {
+        t: `Retirer un membre`,
+        d: `Depuis la liste des membres dans le panneau, touchez le nom d'un membre et choisissez « Retirer du groupe ». Le membre perd l'accès au contenu du groupe mais conserve son historique de graduations.`,
+        warn: `Retirer un membre est réversible : il peut redemander à rejoindre le groupe.`,
+      },
+    ],
+  },
+  {
+    id: 'educational-supervision',
+    title: `Supervision pédagogique`,
+    category: `Éducateurs`,
+    intro: `Comment assigner un éducateur superviseur pour les élèves de votre noyau et comment fonctionne la hiérarchie.`,
+    steps: [
+      {
+        t: `Ce qu'est la supervision pédagogique`,
+        d: `La supervision pédagogique est la relation hiérarchique entre éducateurs d'un même groupe. Un éducateur plus expérimenté peut suivre la progression des élèves d'un autre éducateur, ce qui est particulièrement utile lorsqu'ils sont dans des villes ou des pays différents.`,
+        note: `L'écran de supervision s'appelle « SUPERVISION PÉDAGOGIQUE » à l'intérieur du panneau du noyau.`,
+      },
+      {
+        t: `Supervision automatique (même noyau)`,
+        d: `Si le superviseur et les élèves partagent le même noyau, la supervision est automatique. L'app affichera le badge « Même noyau » sur le profil de l'élève dans le panneau du superviseur.`,
+      },
+      {
+        t: `Supervision manuelle (hors du noyau)`,
+        d: `Si le superviseur est dans un noyau différent, vous pouvez l'assigner manuellement. Sur l'écran de supervision, touchez « Sélectionner un éducateur superviseur » et cherchez par nom. Les élèves supervisés afficheront le badge « Hors de votre noyau ».`,
+        tip: `Seuls les éducateurs du même groupe peuvent être assignés comme superviseurs. Il n'est pas possible de superviser des élèves de groupes différents.`,
+      },
+      {
+        t: `Voir l'arbre de supervision`,
+        d: `L'arbre de supervision est visible dans l'onglet « Hiérarchie » du profil du groupe. Il montre les relations entre éducateurs et quels élèves sont sous la supervision de chacun — l'arbre « du mestre à l'apprenti » de votre groupe.`,
+      },
+    ],
+  },
+  {
+    id: 'school-setup',
+    title: `Créer votre noyau`,
+    category: `Éducateurs`,
+    intro: `Comment créer votre noyau, le placer sur la carte et configurer les horaires d'entraînement.`,
+    mockup: 'map',
+    steps: [
+      {
+        t: `Accéder au formulaire de création`,
+        d: `Touchez le bouton flottant « + » sur l'écran d'accueil → « Créer un noyau ». Vous pouvez aussi aller dans l'onglet « Groupes » → profil de votre groupe → onglet « Noyaux » → bouton « Créer un noyau ».`,
+        note: `Vous devez être administrateur ou co-administrateur d'un groupe pour créer un noyau. Si vous venez de créer votre groupe, vous avez déjà ce rôle automatiquement.`,
+      },
+      {
+        t: `Renseigner le nom et l'emplacement`,
+        d: `Complétez les champs obligatoires : « Nom du noyau » (par ex. Noyau Centre-ville), « Emplacement » (adresse complète de votre lieu d'entraînement), « Pays » et « Ville ».`,
+        tip: `Après avoir saisi l'adresse, touchez la carte pour ouvrir le sélecteur d'emplacement et faites glisser le marqueur à l'endroit exact. C'est ce qui apparaît dans l'annuaire mondial.`,
+      },
+      {
+        t: `Ajouter des horaires d'entraînement`,
+        d: `Dans la section « Horaires d'entraînement », touchez « Ajouter un horaire ». Sélectionnez le jour de la semaine, l'heure de début et l'heure de fin. Ajoutez autant d'horaires que nécessaire. Au moins un horaire est requis pour créer le noyau.`,
+        tip: `Chaque horaire peut être relié à une turma (groupe de classe). Si vous entraînez différents niveaux à des horaires différents, ajoutez-les séparément.`,
+      },
+      {
+        t: `Créer le noyau`,
+        d: `Touchez « Créer le noyau ». Si tous les champs sont complets, le noyau est créé et apparaîtra sur la carte mondiale et dans l'annuaire. Vous serez redirigé automatiquement vers le panneau d'administration du noyau.`,
+      },
+      {
+        t: `Modifier ou désactiver`,
+        d: `Pour modifier le nom, l'adresse ou les horaires, allez sur le profil du noyau → icône de modification. Si vous cessez de vous entraîner à cet endroit, vous pouvez désactiver le noyau pour qu'il n'apparaisse plus dans l'annuaire sans perdre l'historique.`,
+      },
+    ],
+  },
+  {
+    id: 'co-educators',
+    title: `Co-éducateurs`,
+    category: `Éducateurs`,
+    intro: `Comment ajouter des co-éducateurs à votre noyau et gérer leurs autorisations.`,
+    steps: [
+      {
+        t: `Ce qu'est un co-éducateur`,
+        d: `Un co-éducateur est un éducateur du même groupe qui aide à gérer votre noyau. Il a accès au panneau d'administration : il peut enregistrer des cours, marquer la présence et enregistrer des paiements, mais ne peut pas modifier la configuration du noyau ni transférer l'administration.`,
+      },
+      {
+        t: `Ajouter un co-éducateur`,
+        d: `Allez sur le profil de votre noyau → section « Co-éducateurs » → touchez « Ajouter un co-éducateur ». Cherchez l'éducateur par nom (il doit être membre du même groupe avec le rôle Éducateur). Touchez son nom et confirmez.`,
+        note: `Seuls les utilisateurs ayant le rôle Éducateur au sein du même groupe peuvent être co-éducateurs.`,
+      },
+      {
+        t: `Retirer un co-éducateur`,
+        d: `Dans la section « Co-éducateurs » du profil du noyau, touchez le nom du co-éducateur et choisissez « Retirer le co-éducateur ». L'action est immédiate et l'éducateur perd l'accès au panneau du noyau.`,
+        warn: `Retirer un co-éducateur ne supprime aucune donnée. Tout l'historique de cours et de paiements qu'il a enregistré reste dans le système.`,
+      },
+      {
+        t: `Quitter le rôle de co-éducateur`,
+        d: `Si vous êtes co-éducateur dans un noyau et ne souhaitez plus l'être, allez sur le profil du noyau → section « Co-éducateurs » → « Quitter le rôle de co-éducateur ». Vous pouvez aussi le faire depuis « Profil → Gestion → [nom du noyau] » → « Quitter le rôle ».`,
+      },
+      {
+        t: `Transférer l'administration du noyau`,
+        d: `Pour confier le contrôle total du noyau à un autre éducateur, allez sur le profil du noyau → « Transférer l'administration ». Le destinataire doit être un co-éducateur actif du noyau.`,
+        warn: `« Transférer l'administration » est irréversible : vous confiez le contrôle total à l'autre personne. Le nouvel administrateur pourra modifier tous les réglages du noyau.`,
+      },
+    ],
+  },
+  {
+    id: 'school-requests',
+    title: `Demandes d'adhésion au noyau`,
+    category: `Éducateurs`,
+    intro: `Comment gérer les demandes d'adhésion à votre noyau depuis le panneau d'administration.`,
+    steps: [
+      {
+        t: `Voir les demandes en attente`,
+        d: `Allez sur le profil de votre noyau → bouton « Gérer » → onglet « Demandes ». Vous verrez toutes les demandes d'adhésion en attente. Chaque carte affiche le nom du demandeur, sa photo, la date et le message envoyé (s'il a utilisé la demande guidée).`,
+      },
+      {
+        t: `Approuver une demande`,
+        d: `Touchez « Approuver » sur la carte du demandeur. L'élève recevra une notification d'acceptation et commencera à apparaître dans votre liste d'élèves. Vous pouvez l'assigner à une turma immédiatement depuis l'onglet « Élèves ».`,
+      },
+      {
+        t: `Rejeter une demande`,
+        d: `Touchez « Rejeter » sur la carte du demandeur. L'élève recevra une notification indiquant que sa demande n'a pas été approuvée.`,
+        tip: `Si vous rejetez quelqu'un par erreur, l'élève peut envoyer une nouvelle demande.`,
+      },
+      {
+        t: `Historique des demandes traitées`,
+        d: `Sous les demandes en attente, vous trouverez l'historique des demandes déjà traitées : approuvées (badge « Acceptée ») et rejetées (badge « Rejetée »). Les demandes traitées restent dans l'historique et ne peuvent pas être supprimées.`,
+      },
+    ],
+  },
+  {
+    id: 'students-and-classes',
+    title: `Élèves et turmas`,
+    category: `Éducateurs`,
+    intro: `Comment voir vos élèves, ajouter des membres sans compte et les organiser par turma.`,
+    mockup: 'attendance',
+    steps: [
+      {
+        t: `Le panneau d'administration du noyau`,
+        d: `Accédez-y depuis « Profil » → onglet « Gestion » → votre noyau, ou depuis le profil du noyau en touchant le bouton d'administration. Vous trouverez quatre onglets : « Élèves », « Présence », « Paiements » et « Rapports ».`,
+      },
+      {
+        t: `Voir la liste des élèves`,
+        d: `Dans l'onglet « Élèves », vous verrez tous les membres reliés à votre noyau avec leur nom, leur corde actuelle et leur pourcentage de présence mensuel. S'il n'y a pas de membres, l'app affiche « Aucun membre ».`,
+      },
+      {
+        t: `Ajouter un élève sans compte (membre fantôme)`,
+        d: `Faites défiler vers le bas dans l'onglet « Élèves » jusqu'à la section « Élèves sans compte ». Touchez « Ajouter un élève » pour enregistrer manuellement un élève qui n'utilise pas l'app. Saisissez son nom et ses informations de base.`,
+        note: `Les membres fantômes peuvent recevoir des graduations et avoir des enregistrements de présence et de paiement, mais ne peuvent pas se connecter à l'app. Lorsqu'ils s'inscrivent, vous pouvez relier leur profil pour préserver tout l'historique.`,
+      },
+      {
+        t: `Créer et gérer des turmas`,
+        d: `Accédez à la gestion du noyau (icône d'engrenage ou bouton « Gérer »). Vous pouvez y créer des turmas — des ensembles d'élèves organisés par horaire. Créez-en une par créneau (par ex. « Lun & Mer 19h ») et assignez des élèves à chacune.`,
+        tip: `Organiser les élèves en turmas rend la prise de présence bien plus rapide : l'écran de présence n'affiche que les élèves du créneau sélectionné.`,
+      },
+      {
+        t: `Voir le profil d'un élève`,
+        d: `Touchez le nom d'un élève pour voir son profil : nom, corde, pourcentage de présence du mois en cours, historique de présence mois par mois et historique de paiements.`,
+      },
+    ],
+  },
+  {
+    id: 'attendance',
+    title: `Suivi de présence`,
+    category: `Éducateurs`,
+    intro: `Comment enregistrer le cours du jour, marquer présents et absents, et consulter l'historique.`,
+    mockup: 'attendance',
+    steps: [
+      {
+        t: `Enregistrer le cours du jour`,
+        d: `Dans le panneau d'administration du noyau → onglet « Présence », vous verrez « Aucun cours ce mois-ci pour l'instant » s'il s'agit du premier. Touchez « Enregistrer le cours du jour » pour ouvrir le formulaire de session.`,
+      },
+      {
+        t: `Sélectionner l'horaire et la turma`,
+        d: `Dans le formulaire de session, sélectionnez l'horaire du jour (l'un de ceux configurés lors de la création du noyau) et la turma correspondante. L'app chargera automatiquement les élèves de cette turma.`,
+        tip: `Si vous n'avez pas de turma configurée, la liste affichera tous les élèves du noyau.`,
+      },
+      {
+        t: `Marquer présents et absents`,
+        d: `Touchez le nom de chaque élève pour basculer entre présent (✓ vert) et absent. La liste affiche d'abord les élèves de la turma sélectionnée, puis le reste du noyau, pour que les turmas ne se mélangent pas.`,
+      },
+      {
+        t: `Enregistrer le cours`,
+        d: `Touchez « Enregistrer le cours ». L'app affiche une boîte de confirmation avec le nombre de présents et d'absents. Touchez « Confirmer » pour enregistrer la session dans le cloud. Le pourcentage de présence de chaque élève se met à jour automatiquement.`,
+      },
+      {
+        t: `Consulter les sessions précédentes`,
+        d: `Dans l'onglet « Présence », les sessions apparaissent dans l'ordre chronologique. Touchez une session passée pour voir le détail complet : qui était présent, qui était absent, et la date et l'heure de l'enregistrement.`,
+      },
+    ],
+  },
+  {
+    id: 'payments',
+    title: `Paiements et trésorerie`,
+    category: `Éducateurs`,
+    intro: `Comment enregistrer les mensualités, suivre qui doit, et exporter des rapports.`,
+    mockup: 'finances',
+    steps: [
+      {
+        t: `L'onglet « Paiements »`,
+        d: `Dans le panneau d'administration du noyau, allez dans l'onglet « Paiements ». Chaque élève apparaît avec son statut de paiement du mois en cours : « En attente », « Payé », « Payé (en retard) », « En retard » ou « Gratuit ». Les statuts sont calculés automatiquement selon la date.`,
+        warn: `Si le mois a commencé et qu'un élève n'a aucun paiement enregistré, son statut passe automatiquement à « En attente » puis à « En retard » après la date d'échéance configurée.`,
+      },
+      {
+        t: `Enregistrer le paiement d'un élève`,
+        d: `Touchez le nom de l'élève dans l'onglet « Paiements » puis touchez « Enregistrer un paiement ». Saisissez le montant et sélectionnez le mois correspondant. Le statut de l'élève passe immédiatement à « Payé ».`,
+        tip: `Vous pouvez enregistrer des paiements anticipés pour les élèves qui paient à l'avance. Sélectionnez simplement le mois futur correspondant.`,
+      },
+      {
+        t: `Voir qui a des paiements en attente ou en retard`,
+        d: `Dans la liste de l'onglet « Paiements », vous pouvez voir les statuts de tous les élèves d'un coup d'œil. Les statuts « En attente » et « En retard » sont mis en évidence. Vous verrez aussi le jour d'échéance de paiement configuré.`,
+      },
+      {
+        t: `Générer et exporter le rapport mensuel`,
+        d: `Allez dans l'onglet « Rapports » du panneau du noyau. Sélectionnez le format (CSV pour Excel ou Google Sheets, ou PDF à imprimer ou partager) et touchez « Générer le rapport ».`,
+        tip: `Le CSV est idéal pour l'analyse en tableur. Le PDF est utile pour le partage avec l'administration du groupe ou pour l'archivage.`,
+      },
+    ],
+  },
+  {
+    id: 'graduations',
+    title: `Système de graduation`,
+    category: `Éducateurs`,
+    intro: `Comment configurer les cordes de votre groupe et enregistrer les changements de niveau.`,
+    mockup: 'graduation',
+    steps: [
+      {
+        t: `Accéder au système de graduation`,
+        d: `Allez sur le profil de votre groupe → onglet « Graduations ». Si aucun niveau n'est encore configuré, vous verrez « Aucun niveau de graduation défini » et un bouton « Configurer le système maintenant ».`,
+      },
+      {
+        t: `Créer un niveau de corde`,
+        d: `Touchez « Ajouter un niveau » ou « Créer un niveau ». Saisissez le nom de la corde (par ex. « Corde vert-jaune »), sélectionnez les couleurs qui la composent et indiquez si elle a des pointes peintes et combien. Enregistrez le niveau.`,
+        tip: `La couleur visuelle de chaque niveau apparaît sur les profils des élèves et dans l'annuaire public. Configurez-la fidèlement pour correspondre à la vraie corde.`,
+      },
+      {
+        t: `Organiser par catégorie`,
+        d: `Les niveaux sont organisés automatiquement en sections : « Système adulte », « Système jeune », « Système enfant », « Instructeurs stagiaires » et « Niveaux spéciaux ». Attribuez la bonne catégorie à la création ou à la modification de chaque niveau.`,
+      },
+      {
+        t: `Définir le niveau d'éducateur`,
+        d: `Vous pouvez indiquer à partir de quelle corde un élève est considéré comme « éducateur » dans le groupe. Cela détermine qui a accès à la création de noyaux et aux outils de gestion.`,
+      },
+      {
+        t: `Attribuer une graduation`,
+        d: `Sur le profil du groupe → « Graduations » → « Attribuer une graduation ». Trouvez l'élève, sélectionnez le nouveau niveau et la date. Le changement est enregistré de façon permanente dans l'historique de l'élève et la nouvelle corde apparaît immédiatement sur son profil.`,
+        tip: `Vous pouvez attribuer des graduations en masse pour un batizado : sélectionnez plusieurs élèves à la fois, choisissez le niveau et la date, et tout le monde est gradué en une seule étape.`,
+      },
+      {
+        t: `Voir l'historique de graduations d'un élève`,
+        d: `Touchez le nom d'un membre du groupe. Son profil affiche la corde actuelle avec sa couleur. Touchez la corde pour voir l'historique complet : chaque changement de niveau avec sa date. L'historique ne peut pas être supprimé.`,
+      },
+    ],
+  },
+  {
+    id: 'manage-events',
+    title: `Créer et gérer des événements`,
+    category: `Éducateurs`,
+    intro: `Comment publier un batizado, une roda ou un atelier pour que la communauté le voie.`,
+    mockup: 'event',
+    steps: [
+      {
+        t: `Créer un événement`,
+        d: `Touchez le bouton flottant « + » sur l'écran d'accueil → « Nouvel événement ». Vous pouvez aussi aller dans l'onglet « Événements » et toucher « Nouvel événement » dans le coin supérieur.`,
+      },
+      {
+        t: `Renseigner les détails de l'événement`,
+        d: `Le formulaire comprend : nom de l'événement, catégorie (batizado, roda, roda ouverte, troca de corda, cours, classe, atelier, séminaire, festival, rencontre, intensif ou séance d'entraînement), date, heure de début et heure de fin.`,
+      },
+      {
+        t: `Ajouter une description et une affiche`,
+        d: `Saisissez la description avec tous les détails pertinents (prix, prérequis, ce qu'il faut apporter, etc.). Importez une image de couverture (affiche) depuis votre galerie pour donner de la visibilité à l'événement.`,
+        tip: `Les événements avec une affiche obtiennent une meilleure visibilité dans les fils des membres. Une image verticale en bonne résolution rend le mieux.`,
+      },
+      {
+        t: `Épingler l'emplacement sur la carte`,
+        d: `Saisissez l'adresse de l'événement. L'app ouvre le sélecteur de carte où vous pouvez faire glisser le marqueur à l'emplacement exact. Les participants verront l'emplacement et pourront ouvrir la navigation directement depuis l'événement.`,
+      },
+      {
+        t: `Gérer les co-organisateurs et les participants`,
+        d: `Après avoir créé l'événement, vous pouvez ajouter des co-organisateurs dans le menu de modification → « Collaborateurs ». Les co-organisateurs peuvent modifier l'événement et voir la liste complète de qui a marqué « J'y vais » ou « Intéressé ».`,
+      },
+    ],
+  },
+  {
+    id: 'reports-kpi',
+    title: `Rapports et KPI`,
+    category: `Éducateurs`,
+    intro: `Comment consulter les métriques de votre noyau et exporter les données pour une analyse externe.`,
+    mockup: 'kpi',
+    steps: [
+      {
+        t: `Bandeau de métriques rapides`,
+        d: `En haut du panneau d'administration du noyau, vous verrez un bandeau de KPI : nombre d'élèves, cours donnés ce mois-ci, pourcentage de présence moyen, nombre d'élèves ayant payé et nombre en retard.`,
+      },
+      {
+        t: `L'onglet « Rapports »`,
+        d: `Allez dans le panneau du noyau → onglet « Rapports ». Le sous-titre indique « Présence, paiements et statistiques du noyau ». C'est ici que vous générez le rapport mensuel avec toutes les informations consolidées.`,
+      },
+      {
+        t: `Choisir le format du rapport`,
+        d: `Sélectionnez le format dont vous avez besoin : « CSV » pour ouvrir dans Excel ou Google Sheets et faire une analyse personnalisée, ou « PDF » pour un document prêt à partager ou à imprimer.`,
+      },
+      {
+        t: `Générer et exporter`,
+        d: `Touchez « Générer le rapport ». L'app crée le fichier avec un résumé mensuel : élèves actifs, sessions données, pourcentage de présence global et statut de paiement par élève. Vous pouvez le partager directement depuis l'écran d'exportation.`,
+        tip: `Générez le rapport à la fin de chaque mois pour conserver un historique de la santé de votre noyau.`,
+      },
+    ],
+  },
+]
+
 // ─── Copy per locale ──────────────────────────────────────────────────────────
 
 const COPY = {
@@ -1870,6 +2472,13 @@ const COPY = {
     heroTitle: 'Agenda Capoeiragem tutorials',
     heroSubtitle: 'Step-by-step guides for students, travelers, and educators. Learn every feature using the exact text you will see in the app.',
     sections: SECTIONS_EN,
+  },
+  fr: {
+    title: 'Tutoriels — Agenda Capoeiragem',
+    eyebrow: 'Documentation',
+    heroTitle: 'Tutoriels Agenda Capoeiragem',
+    heroSubtitle: 'Guides pas à pas pour les élèves, les voyageurs et les éducateurs. Apprenez chaque fonctionnalité avec les textes exacts que vous verrez dans l\'app.',
+    sections: SECTIONS_FR,
   },
 } as const
 

@@ -66,6 +66,21 @@ const COPY = {
     backCountry: (country: string) => `← Capoeira in ${country}`,
     back: '← Global directory',
   },
+  fr: {
+    title: (city: string, country: string) => `Capoeira à ${city}, ${country}`,
+    h1: (city: string) => `Cours de capoeira à ${city}`,
+    description: (city: string, country: string, n: number) =>
+      `Cours de capoeira à ${city}, ${country}. ${n} ${n === 1 ? 'lieu' : 'lieux'} où s'entraîner — horaires, adresse et contact de chaque groupe.`,
+    keywords: (city: string, country: string) => [
+      `capoeira à ${city}`, `cours de capoeira à ${city}`,
+      `capoeira ${city} ${country}`, `groupes capoeira ${city}`,
+      `où pratiquer la capoeira ${city}`, `capoeira près de ${city}`,
+      `école capoeira ${city}`, `académie capoeira ${city}`,
+    ],
+    nucleos: 'Lieux pour s\'entraîner',
+    backCountry: (country: string) => `← Capoeira en ${country}`,
+    back: '← Annuaire mondial',
+  },
 } as const
 
 type Locale = keyof typeof COPY
@@ -73,7 +88,7 @@ const getCopy = (locale: string) => COPY[locale as Locale] ?? COPY.es
 
 export async function generateStaticParams() {
   const nucleos = await getAllNucleos().catch(() => [])
-  const locales = ['es', 'pt', 'en']
+  const locales = ['es', 'pt', 'en', 'fr']
   const pairs = [...new Map(
     nucleos
       .filter((n) => n.country && n.city)

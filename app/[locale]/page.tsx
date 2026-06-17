@@ -12,6 +12,7 @@ const HOME_TITLES: Record<string, string> = {
   es: 'Directorio Global de Capoeira',
   pt: 'Diretório Global de Capoeira',
   en: 'Global Capoeira Directory',
+  fr: 'Annuaire mondial de la capoeira',
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
