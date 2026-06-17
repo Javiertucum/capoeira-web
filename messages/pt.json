@@ -55,9 +55,7 @@
     "emptyBody": "Tente outra cidade, grupo ou país para ampliar a exploração.",
     "clearSearch": "Limpar busca",
     "mapCtaText": "Quer que seu grupo ou academia apareça aqui?",
-    "mapCtaLink": "Baixe o app",
-    "activateMap": "Ver mapa interativo",
-    "activateMapHint": "{count} localizações no mapa"
+    "mapCtaLink": "Baixe o app"
   },
   "educators": {
     "featured": "Educadores em destaque",
