@@ -2,60 +2,25 @@
 
 > Agenda Capoeiragem is the global capoeira directory and community management platform. It connects capoeira practitioners, educators, groups (grupos), and training locations (núcleos) worldwide.
 
-## What is Capoeira?
-
 Capoeira is an Afro-Brazilian martial art that combines elements of dance, acrobatics, and music. Recognized as a UNESCO Intangible Cultural Heritage since 2014, capoeira is practiced worldwide and is characterized by fluid movements, the berimbau (musical bow), and a ritualized sparring game called "jogo da capoeira."
 
-## What is Agenda Capoeiragem?
+Agenda Capoeiragem has two components: a **public directory** (web) to find capoeira groups, núcleos, and educators worldwide, and a **mobile app** with management tools for educators — attendance tracking, graduation system, payments, and event management.
 
-Agenda Capoeiragem is a platform with two components:
-- **Public directory** (web): Find capoeira groups, núcleos (training locations), and educators worldwide at agendacapoeiragem.com
-- **Mobile app**: Management tools for educators — attendance tracking, graduation system, payments, event management, student groups
+It is built for **practitioners (alunos)** looking for where to train, **educators (professores, mestres, contramestres)** managing students and graduations, and **travelers** looking for capoeira classes in any city.
 
-## Who is it for?
+Key terms used throughout the platform: **grupo** (a capoeira organization or school with its own graduation system and methodology, e.g. Angola, Regional, Contemporânea), **núcleo** (a specific training location within a grupo, with address, schedule, and responsible educator), **educador** (a teacher, holding titles such as Aluno, Instrutor, Professor, Contra-Mestre, or Mestre depending on the group's system), **corda** (the belt/graduation level — colored cords instead of karate-style belts), **jogo** (the sparring game played in the roda), **roda** (the circle formed by capoeiristas and musicians), **berimbau** (the single-string bow instrument that leads the roda), and **mestre** (the highest traditional title in capoeira).
 
-- **Practitioners (alunos)**: Find where to train capoeira near you, discover groups and teachers
-- **Educators (professores, mestres, contramestres)**: Manage students, track attendance, organize graduations, handle payments
-- **Travelers**: Find capoeira classes in any city worldwide
+The directory currently lists groups and educators primarily in Latin America, with expansion ongoing. Each entry includes the group's description and graduation system, training locations with address/city/country, class schedules, and educator profiles with bios and social links.
 
-## Key Concepts
+This platform does not currently offer a public API. All directory data is available on the public website; for partnerships or data access, contact the team via the platform.
 
-- **Grupo**: A capoeira organization or school with its own graduation system and methodology (e.g., Angola, Regional, Contemporânea)
-- **Núcleo**: A specific training location within a grupo, with address, schedule, and responsible educator
-- **Educador**: A capoeira teacher — may hold titles such as Aluno, Instrutor, Professor, Contra-Mestre, or Mestre depending on the group's graduation system
-- **Corda**: The belt/graduation level in capoeira (varies by group style — colored ropes or cords are used instead of karate-style belts)
-- **Jogo**: The sparring game played at the center of the roda (circle)
-- **Roda**: The circle formed by capoeiristas and musicians where the jogo takes place
-- **Berimbau**: The single-string bow instrument that leads the capoeira roda
-- **Mestre**: The highest traditional title in capoeira — a master of the art
+## Docs
 
-## Directory Coverage
+- [Directory (Spanish)](https://www.agendacapoeiragem.com/es): Browse capoeira groups, núcleos, and educators worldwide
+- [Directory (Portuguese)](https://www.agendacapoeiragem.com/pt): Same directory in Portuguese
+- [Directory (English)](https://www.agendacapoeiragem.com/en): Same directory in English
+- [Tutorials](https://www.agendacapoeiragem.com/es/tutoriales): Guides for using the platform
 
-The platform currently lists groups and educators primarily in Latin America, with expansion ongoing. Each entry includes:
-- Group name and description
-- Graduation system (belt/corda levels)
-- Training locations with addresses, cities, and countries
-- Class schedules (days and times)
-- Educator profiles with biographies and social links
+## Optional
 
-## Platform Features (App)
-
-- **Attendance control**: QR-code or manual check-in per class
-- **Graduation system**: Configurable belt levels with promotion ceremonies
-- **Payments & treasury**: Track student fees, generate reports
-- **Events**: Create and manage rodas, batizados (graduation events), and workshops
-- **Student management**: Turmas (class groups), student profiles, join requests
-- **KPIs & reports**: Export data for administrative use
-
-## API / Data Access
-
-This platform does not currently offer a public API. All directory data is available on the public website. For partnerships or data access, contact the team via the platform.
-
-## Contact & Links
-
-- Website: https://www.agendacapoeiragem.com
-- Android app: https://play.google.com/store/apps/details?id=com.agendacapoeiragem
-- Directory (ES): https://www.agendacapoeiragem.com/es
-- Directory (PT): https://www.agendacapoeiragem.com/pt
-- Directory (EN): https://www.agendacapoeiragem.com/en
-- Tutorials: https://www.agendacapoeiragem.com/es/tutoriales
+- [Android app](https://play.google.com/store/apps/details?id=com.agendacapoeiragem): Educator management tools — attendance, graduations, payments, events
