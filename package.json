@@ -27,5 +27,11 @@
     "tailwindcss": "^4",
     "ts-jest": "^29.4.9",
     "typescript": "^5"
-  }
+  },
+  "browserslist": [
+    "chrome >= 105",
+    "edge >= 105",
+    "firefox >= 105",
+    "safari >= 15.4"
+  ]
 }
