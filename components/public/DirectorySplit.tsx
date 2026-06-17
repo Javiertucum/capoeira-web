@@ -2,8 +2,10 @@
 
 import { useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
-import MapView, { type MapMarker, type MapViewHandle, type MapPopup } from '@/components/public/map/MapView'
+import type { MapMarker, MapViewHandle, MapPopup } from '@/components/public/map/MapView'
 import Modal from '@/components/public/Modal'
 import { normalizeSocialLink } from '@/lib/social-links'
 import { haversineDistanceKm } from '@/lib/geo'
@@ -11,6 +13,11 @@ import { SocialIcon } from '@/components/ui/SocialIcon'
 import CountryFlag from '@/components/public/CountryFlag'
 import { getDayShort } from '@/lib/day-short'
 import type { Group, MapNucleo, PublicUserProfile } from '@/lib/types'
+
+const MapView = dynamic(() => import('@/components/public/map/MapView'), {
+  ssr: false,
+  loading: () => <div className="h-[45vh] w-full animate-pulse bg-surface-muted lg:flex-1" />,
+})
 
 export type DirectoryEducator = PublicUserProfile & {
   groupName?: string | null
@@ -55,13 +62,13 @@ function Avatar({ name, surname, avatarUrl }: { name: string; surname: string; a
   const initials = `${name?.[0] ?? ''}${surname?.[0] ?? ''}`.toUpperCase()
   if (avatarUrl) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
+      <Image
         src={avatarUrl}
         alt={`${name} ${surname}`}
+        width={44}
+        height={44}
         className="h-11 w-11 shrink-0 rounded-full border border-border object-cover"
         loading="lazy"
-        decoding="async"
       />
     )
   }
@@ -97,6 +104,7 @@ export default function DirectorySplit({
   const [locationStatus, setLocationStatus] = useState<'idle' | 'locating' | 'denied'>('idle')
   const [tabMenuOpen, setTabMenuOpen] = useState(false)
   const [contactNucleo, setContactNucleo] = useState<MapNucleo | null>(null)
+  const [mapEngaged, setMapEngaged] = useState(false)
   const mapRef = useRef<MapViewHandle>(null)
   const dayShort = getDayShort(locale)
 
@@ -190,6 +198,7 @@ export default function DirectorySplit({
   }, [selectedNucleo, locale, t])
 
   function handleNearMe() {
+    setMapEngaged(true)
     if (!('geolocation' in navigator)) {
       setLocationStatus('denied')
       return
@@ -206,6 +215,11 @@ export default function DirectorySplit({
       () => setLocationStatus('denied'),
       { enableHighAccuracy: true, timeout: 10000 }
     )
+  }
+
+  function selectNucleo(id: string) {
+    setMapEngaged(true)
+    setSelectedNucleoId(id)
   }
 
   const resultCount = tab === 'nucleos' ? filteredNucleos.length : tab === 'groups' ? filteredGroups.length : filteredEducators.length
@@ -374,17 +388,40 @@ export default function DirectorySplit({
       <div className="flex flex-1 flex-col lg:flex-row lg:overflow-hidden">
         {/* Map */}
         <div className="order-1 flex shrink-0 flex-col lg:order-2 lg:w-[50%]">
-          <MapView
-            ref={mapRef}
-            className="h-[45vh] w-full lg:flex-1"
-            center={mapCenter}
-            zoom={mapZoom}
-            markers={mapMarkers}
-            selectedId={selectedNucleoId}
-            onMarkerClick={setSelectedNucleoId}
-            popup={mapPopup}
-            onPopupClose={() => setSelectedNucleoId(null)}
-          />
+          {mapEngaged ? (
+            <MapView
+              ref={mapRef}
+              className="h-[45vh] w-full lg:flex-1"
+              center={mapCenter}
+              zoom={mapZoom}
+              markers={mapMarkers}
+              selectedId={selectedNucleoId}
+              onMarkerClick={selectNucleo}
+              popup={mapPopup}
+              onPopupClose={() => setSelectedNucleoId(null)}
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setMapEngaged(true)}
+              className="group relative flex h-[45vh] w-full items-center justify-center overflow-hidden bg-[linear-gradient(135deg,var(--surface-muted),var(--surface))] lg:flex-1"
+              style={{
+                backgroundImage:
+                  'radial-gradient(circle at 20% 30%, color-mix(in oklch, var(--accent) 12%, transparent) 0%, transparent 45%), radial-gradient(circle at 80% 70%, color-mix(in oklch, var(--accent) 10%, transparent) 0%, transparent 45%)',
+              }}
+            >
+              <span className="flex flex-col items-center gap-2 rounded-2xl bg-card px-5 py-4 text-center shadow-soft transition-transform duration-150 ease-[var(--ease-out)] group-hover:scale-[1.03]">
+                <span className="grid h-10 w-10 place-items-center rounded-full bg-accent text-white">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C7.582 2 4 5.582 4 10c0 6 8 12 8 12s8-6 8-12c0-4.418-3.582-8-8-8Z" fill="currentColor" />
+                    <circle cx="12" cy="10" r="3" fill="white" />
+                  </svg>
+                </span>
+                <span className="text-sm font-bold text-ink">{t('activateMap')}</span>
+                <span className="text-xs text-text-secondary">{t('activateMapHint', { count: mapMarkers.length })}</span>
+              </span>
+            </button>
+          )}
           <div className="flex items-center justify-between gap-3 border-t border-border bg-surface px-4 py-2.5 sm:px-5">
             <p className="text-xs text-text-secondary">{t('mapCtaText')}</p>
             <Link
@@ -405,9 +442,9 @@ export default function DirectorySplit({
                   key={nucleo.id}
                   role="button"
                   tabIndex={0}
-                  onClick={() => setSelectedNucleoId(nucleo.id)}
+                  onClick={() => selectNucleo(nucleo.id)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') setSelectedNucleoId(nucleo.id)
+                    if (e.key === 'Enter' || e.key === ' ') selectNucleo(nucleo.id)
                   }}
                   className={`block w-full cursor-pointer rounded-2xl border bg-card p-4 text-left transition-colors duration-150 ease-[var(--ease-out)] hover:border-accent ${
                     selectedNucleoId === nucleo.id ? 'border-accent shadow-[0_0_0_1px_var(--accent)]' : 'border-border'
@@ -416,8 +453,7 @@ export default function DirectorySplit({
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-3">
                       {nucleo.groupLogoUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={nucleo.groupLogoUrl} alt={nucleo.groupName} className="h-9 w-9 shrink-0 rounded-xl border border-border object-cover" loading="lazy" decoding="async" />
+                        <Image src={nucleo.groupLogoUrl} alt={nucleo.groupName} width={36} height={36} className="h-9 w-9 shrink-0 rounded-xl border border-border object-cover" loading="lazy" />
                       ) : (
                         <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-border bg-surface text-xs font-bold text-text-secondary">
                           {nucleo.groupName?.[0]?.toUpperCase() ?? '?'}
@@ -467,8 +503,7 @@ export default function DirectorySplit({
                 >
                   <div className="flex items-start gap-3">
                     {group.logoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={group.logoUrl} alt={group.name} className="h-11 w-11 shrink-0 rounded-2xl border border-border object-cover" loading="lazy" decoding="async" />
+                      <Image src={group.logoUrl} alt={group.name} width={44} height={44} className="h-11 w-11 shrink-0 rounded-2xl border border-border object-cover" loading="lazy" />
                     ) : (
                       <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-border bg-surface text-sm font-bold text-text-secondary">
                         {group.name?.[0]?.toUpperCase() ?? '?'}

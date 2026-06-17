@@ -55,7 +55,9 @@
     "emptyBody": "Try another city, group or country to widen your search.",
     "clearSearch": "Clear search",
     "mapCtaText": "Want your group or academy to appear here?",
-    "mapCtaLink": "Download the app"
+    "mapCtaLink": "Download the app",
+    "activateMap": "View interactive map",
+    "activateMapHint": "{count} locations on the map"
   },
   "educators": {
     "featured": "Featured educators",

@@ -1,8 +1,15 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import MapView, { type MapMarker, type MapPopup } from '@/components/public/map/MapView'
+import dynamic from 'next/dynamic'
+import { useTranslations } from 'next-intl'
+import type { MapMarker, MapPopup } from '@/components/public/map/MapView'
 import type { MapNucleo } from '@/lib/types'
+
+const MapView = dynamic(() => import('@/components/public/map/MapView'), {
+  ssr: false,
+  loading: () => <div className="mt-4 h-[280px] w-full animate-pulse rounded-2xl border border-border bg-surface-muted" />,
+})
 
 export default function NucleosMiniMap({
   nucleos,
@@ -13,7 +20,9 @@ export default function NucleosMiniMap({
   locale: string
   seeContactLabel: string
 }) {
+  const t = useTranslations('map')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [mapEngaged, setMapEngaged] = useState(false)
 
   const mappable = useMemo(
     () => nucleos.filter((n) => typeof n.latitude === 'number' && typeof n.longitude === 'number'),
@@ -51,6 +60,27 @@ export default function NucleosMiniMap({
   }, [selected, locale, seeContactLabel])
 
   if (mappable.length === 0) return null
+
+  if (!mapEngaged) {
+    return (
+      <button
+        type="button"
+        onClick={() => setMapEngaged(true)}
+        className="group relative mt-4 flex h-[280px] w-full items-center justify-center overflow-hidden rounded-2xl border border-border bg-[linear-gradient(135deg,var(--surface-muted),var(--surface))]"
+      >
+        <span className="flex flex-col items-center gap-2 rounded-2xl bg-card px-5 py-4 text-center shadow-soft transition-transform duration-150 ease-[var(--ease-out)] group-hover:scale-[1.03]">
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-accent text-white">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C7.582 2 4 5.582 4 10c0 6 8 12 8 12s8-6 8-12c0-4.418-3.582-8-8-8Z" fill="currentColor" />
+              <circle cx="12" cy="10" r="3" fill="white" />
+            </svg>
+          </span>
+          <span className="text-sm font-bold text-ink">{t('activateMap')}</span>
+          <span className="text-xs text-text-secondary">{t('activateMapHint', { count: mappable.length })}</span>
+        </span>
+      </button>
+    )
+  }
 
   return (
     <MapView

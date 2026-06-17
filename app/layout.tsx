@@ -38,8 +38,8 @@ export const metadata: Metadata = {
   applicationName: SITE_NAME,
   description: defaultDescription,
   icons: {
-    icon: '/images/logo.png',
-    apple: '/images/logo.png',
+    icon: '/images/favicon-32.png',
+    apple: '/images/apple-icon-180.png',
   },
   keywords: ['capoeira', 'capoeira classes', 'capoeira groups', 'capoeira training', 'find capoeira', 'capoeira directory', 'mestre capoeira', 'capoeira mundial', 'grupos de capoeira', 'nucleos capoeira'],
   openGraph: {
