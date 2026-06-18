@@ -8,9 +8,11 @@ import {
   getLanguageAlternateUrls,
   getLocalizedPath,
   getOgImageUrl,
+  getOgLocale,
   buildPersonSchema,
   buildBreadcrumbSchema,
   getLocalizedUrl,
+  SITE_NAME,
 } from '@/lib/site'
 import { getEducatorProfile, getGroup, getGraduationLevel, getNucleosByEducator } from '@/lib/queries'
 import { normalizeSocialLink, getSocialDisplayLabel } from '@/lib/social-links'
@@ -48,6 +50,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: getLocalizedUrl(locale, path),
       type: 'profile',
+      locale: getOgLocale(locale),
+      siteName: SITE_NAME,
       images: [{ url: getOgImageUrl({ title: fullName, sub: educator.nickname ?? undefined, type: 'educator' }), width: 1200, height: 630, alt: fullName }],
     },
   }

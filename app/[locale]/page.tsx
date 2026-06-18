@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getOgImageUrl, getSiteDescription, buildItemListSchema } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getOgImageUrl, getOgLocale, getSiteDescription, SITE_NAME, buildItemListSchema } from '@/lib/site'
 import DirectorySplit, { type DirectoryEducator } from '@/components/public/DirectorySplit'
 import Footer from '@/components/public/Footer'
 import type { Group, MapNucleo } from '@/lib/types'
@@ -35,6 +35,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: getLocalizedUrl(locale, ''),
       type: 'website',
+      locale: getOgLocale(locale),
+      siteName: SITE_NAME,
       images: [{ url: getOgImageUrl({ title, sub: 'Agenda Capoeiragem', type: 'default' }), width: 1200, height: 630, alt: title }],
     },
   }

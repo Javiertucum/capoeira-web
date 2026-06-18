@@ -43,11 +43,23 @@ export function getLanguageAlternateUrls(path = '') {
     pt: getLocalizedUrl('pt', path),
     en: getLocalizedUrl('en', path),
     fr: getLocalizedUrl('fr', path),
+    'x-default': getLocalizedUrl('en', path),
   }
 }
 
 export function formatPageTitle(title: string) {
   return `${title} | ${SITE_NAME}`
+}
+
+const OG_LOCALE_MAP = {
+  es: 'es_ES',
+  pt: 'pt_BR',
+  en: 'en_US',
+  fr: 'fr_FR',
+} as const
+
+export function getOgLocale(locale: string) {
+  return OG_LOCALE_MAP[locale as keyof typeof OG_LOCALE_MAP] ?? 'en_US'
 }
 
 /** Build a full OG image URL for a given title/subtitle/type */
@@ -75,6 +87,7 @@ export function buildOrganizationSchema(locale = 'es') {
     description: getSiteDescription(locale),
     sameAs: [
       'https://play.google.com/store/apps/details?id=com.agendacapoeiragem',
+      'https://www.instagram.com/agendacapoeiragem',
     ],
   }
 }
@@ -84,7 +97,7 @@ export function buildWebSiteSchema(locale = 'es') {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: SITE_NAME,
-    url: getLocalizedUrl(locale),
+    url: SITE_URL,
     potentialAction: {
       '@type': 'SearchAction',
       target: {

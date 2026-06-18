@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { formatPageTitle, getLanguageAlternates, getLocalizedPath } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getOgLocale, SITE_NAME } from '@/lib/site'
 
 type Props = Readonly<{
   params: Promise<{ locale: string }>
@@ -61,6 +61,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: copy.heading,
       url: getLocalizedPath(locale, '/privacy'),
       type: 'website',
+      locale: getOgLocale(locale),
+      siteName: SITE_NAME,
     },
   }
 }

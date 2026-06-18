@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getSiteDescription } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLocalizedPath, getOgLocale, getSiteDescription, SITE_NAME } from '@/lib/site'
 import { getStats } from '@/lib/queries'
 import AppHero from '@/components/public/AppHero'
 import AppFeaturesBento from '@/components/public/AppFeaturesBento'
@@ -403,7 +403,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: copy.title,
     description: getSiteDescription(locale),
     alternates: { canonical: getLocalizedPath(locale, 'app'), languages: getLanguageAlternates('app') },
-    openGraph: { title: formatPageTitle(copy.title), description: getSiteDescription(locale), url: getLocalizedPath(locale, 'app'), type: 'website' },
+    openGraph: { title: formatPageTitle(copy.title), description: getSiteDescription(locale), url: getLocalizedPath(locale, 'app'), type: 'website', locale: getOgLocale(locale), siteName: SITE_NAME },
   }
 }
 

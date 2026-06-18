@@ -6,6 +6,7 @@ import {
   getLanguageAlternateUrls,
   getLocalizedUrl,
   getOgImageUrl,
+  getOgLocale,
   buildBreadcrumbSchema,
   buildItemListSchema,
   SITE_NAME,
@@ -115,6 +116,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: getLocalizedUrl(locale, path),
       type: 'website',
+      locale: getOgLocale(locale),
+      siteName: SITE_NAME,
       images: [{ url: getOgImageUrl({ title, type: 'default' }), width: 1200, height: 630, alt: title }],
     },
   }

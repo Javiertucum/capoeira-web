@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getSiteDescription } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getOgLocale, getSiteDescription, SITE_NAME } from '@/lib/site'
 import TutorialsHero from '@/components/public/TutorialsHero'
 import TutorialsNav, { type NavSection } from '@/components/public/TutorialsNav'
 import TutorialSectionBlock, { type StepItem } from '@/components/public/TutorialSectionBlock'
@@ -2453,28 +2453,28 @@ const SECTIONS_FR: Section[] = [
 
 const COPY = {
   es: {
-    title: 'Tutoriales — Agenda Capoeiragem',
+    title: 'Tutoriales de Capoeira',
     eyebrow: 'Documentación',
     heroTitle: 'Tutoriales de Agenda Capoeiragem',
     heroSubtitle: 'Guías paso a paso para alumnos, viajeros y educadores. Aprende a usar cada función con los textos exactos que verás en la app.',
     sections: SECTIONS_ES,
   },
   pt: {
-    title: 'Tutoriais — Agenda Capoeiragem',
+    title: 'Tutoriais de Capoeira',
     eyebrow: 'Documentação',
     heroTitle: 'Tutoriais do Agenda Capoeiragem',
     heroSubtitle: 'Guias passo a passo para alunos, viajantes e educadores. Aprenda a usar cada função com os textos exatos que você verá no app.',
     sections: SECTIONS_PT,
   },
   en: {
-    title: 'Tutorials — Agenda Capoeiragem',
+    title: 'Capoeira Tutorials',
     eyebrow: 'Documentation',
     heroTitle: 'Agenda Capoeiragem tutorials',
     heroSubtitle: 'Step-by-step guides for students, travelers, and educators. Learn every feature using the exact text you will see in the app.',
     sections: SECTIONS_EN,
   },
   fr: {
-    title: 'Tutoriels — Agenda Capoeiragem',
+    title: 'Tutoriels de Capoeira',
     eyebrow: 'Documentation',
     heroTitle: 'Tutoriels Agenda Capoeiragem',
     heroSubtitle: 'Guides pas à pas pour les élèves, les voyageurs et les éducateurs. Apprenez chaque fonctionnalité avec les textes exacts que vous verrez dans l\'app.',
@@ -2504,6 +2504,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: getLocalizedUrl(locale, '/tutoriales'),
       type: 'website',
+      locale: getOgLocale(locale),
+      siteName: SITE_NAME,
     },
   }
 }

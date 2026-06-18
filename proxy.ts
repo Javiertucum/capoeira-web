@@ -30,7 +30,16 @@ export default async function proxy(request: NextRequest) {
     }
   }
 
-  return intlMiddleware(request)
+  const response = intlMiddleware(request)
+
+  // next-intl's locale-prefix redirect always responds 307; upgrade it to a
+  // permanent 308 so search engines transfer ranking signals correctly.
+  if (response.status === 307) {
+    const headers = new Headers(response.headers)
+    return new NextResponse(null, { status: 308, headers })
+  }
+
+  return response
 }
 
 export const config = {

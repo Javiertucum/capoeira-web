@@ -6,8 +6,10 @@ import {
   getLanguageAlternateUrls,
   getLocalizedUrl,
   getOgImageUrl,
+  getOgLocale,
   buildBreadcrumbSchema,
   buildItemListSchema,
+  buildLocalBusinessSchema,
   SITE_NAME,
 } from '@/lib/site'
 import { getAllNucleos, getNucleosByCity } from '@/lib/queries'
@@ -120,6 +122,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: getLocalizedUrl(locale, path),
       type: 'website',
+      locale: getOgLocale(locale),
+      siteName: SITE_NAME,
       images: [{ url: getOgImageUrl({ title, type: 'default' }), width: 1200, height: 630, alt: title }],
     },
   }
@@ -148,10 +152,27 @@ export default async function CityPage({ params }: Props) {
     }))
   )
 
+  const locationSchemas = data.nucleos.map((n) =>
+    buildLocalBusinessSchema({
+      name: `${n.groupName ?? n.name} — ${data.cityName}`,
+      url: getLocalizedUrl(locale, `/nucleos/${n.groupId}/${n.id}`),
+      description: `Clases de capoeira en ${data.cityName}, ${data.countryName}.`,
+      address: n.address,
+      city: n.city,
+      country: n.country,
+      latitude: n.latitude ?? undefined,
+      longitude: n.longitude ?? undefined,
+      schedules: n.schedules,
+    })
+  )
+
   return (
     <main className="min-h-screen bg-bg py-16 lg:py-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      {locationSchemas.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
 
       <div className="page-shell-narrow">
         <div className="mb-8 flex flex-col gap-1">

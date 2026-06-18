@@ -8,9 +8,11 @@ import {
   getLanguageAlternateUrls,
   getLocalizedPath,
   getOgImageUrl,
+  getOgLocale,
   getLocalizedUrl,
   buildLocalBusinessSchema,
   buildBreadcrumbSchema,
+  SITE_NAME,
 } from '@/lib/site'
 import { getNucleoById, getGroup, getEducatorProfile } from '@/lib/queries'
 import CountryFlag from '@/components/public/CountryFlag'
@@ -48,6 +50,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: getLocalizedUrl(locale, path),
       type: 'website',
+      locale: getOgLocale(locale),
+      siteName: SITE_NAME,
       images: [{ url: getOgImageUrl({ title: nucleo.name, sub: nucleo.groupName, type: 'nucleo' }), width: 1200, height: 630, alt: nucleo.name }],
     },
   }

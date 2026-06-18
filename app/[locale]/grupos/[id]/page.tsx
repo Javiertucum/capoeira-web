@@ -8,9 +8,11 @@ import {
   getLanguageAlternateUrls,
   getLocalizedPath,
   getOgImageUrl,
+  getOgLocale,
   getLocalizedUrl,
   buildSportsOrganizationSchema,
   buildBreadcrumbSchema,
+  SITE_NAME,
 } from '@/lib/site'
 import { getGroupWithNucleos, getGroupEducators, getGraduationLevels, getGraduationLevelNamesByGroup, getNucleosByEducator } from '@/lib/queries'
 import CountryFlag from '@/components/public/CountryFlag'
@@ -49,6 +51,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: getLocalizedUrl(locale, path),
       type: 'website',
+      locale: getOgLocale(locale),
+      siteName: SITE_NAME,
       images: [{ url: getOgImageUrl({ title: group.name, sub: group.graduationSystemName ?? undefined, type: 'group' }), width: 1200, height: 630, alt: group.name }],
     },
   }
