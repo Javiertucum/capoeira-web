@@ -2449,6 +2449,1210 @@ const SECTIONS_FR: Section[] = [
   },
 ]
 
+// ─── German ──────────────────────────────────────────────────────────────────
+
+const SECTIONS_DE: Section[] = [
+  {
+    id: 'getting-started',
+    title: 'Erste Schritte',
+    category: 'Allgemein',
+    intro: 'Wie du dein Konto erstellst, dein Profil vervollständigst und deiner Community beitrittst.',
+    mockup: 'home',
+    steps: [
+      {
+        t: 'Installiere die App oder nutze sie als Web-App',
+        d: 'Lade sie bei Google Play für Android herunter, oder öffne agendacapoeiragem.com in deinem Browser und füge sie als Web-App (PWA) zum Startbildschirm hinzu. Beide Optionen funktionieren gleich.',
+        note: 'Die native iPhone-Version ist in Entwicklung. Nutze in der Zwischenzeit Safari auf iOS → „Zum Home-Bildschirm hinzufügen".',
+      },
+      {
+        t: 'Erstelle dein Konto',
+        d: 'Wenn du die App öffnest, siehst du den Bildschirm „Konto erstellen — Tritt der Capoeira-Community bei". Gib deinen Vornamen, Nachnamen, optional einen Spitznamen und deine E-Mail ein. Du kannst dich auch mit Google registrieren.',
+        tip: 'Bevor du fortfährst, fragt die App nach deiner Rolle: „Praktizierende/r" oder „Lehrer". Wähle „Lehrer", wenn du bereits Capoeira unterrichtest — das schaltet von Anfang an die Verwaltungstools frei.',
+      },
+      {
+        t: 'Schließe das Onboarding ab',
+        d: 'Nach der Registrierung führt dich der Onboarding-Bildschirm durch das Hinzufügen eines Profilfotos und das Finden deiner Gruppe oder Schule. Du kannst diesen Schritt überspringen und später erledigen, aber eine Verknüpfung von Anfang an aktiviert alle Community-Funktionen.',
+      },
+      {
+        t: 'Verknüpfe deine Gruppe',
+        d: 'Auf dem Home-Bildschirm siehst du die Karte „Keine Gruppe zugewiesen" mit einer Schaltfläche „Gruppen finden". Suche deine Gruppe im Verzeichnis und sende eine Beitrittsanfrage. Du kannst auch deinen Lehrer bitten, dich direkt aus dem Verwaltungsbereich seiner Schule hinzuzufügen.',
+        warn: 'Ohne verknüpfte Gruppe kannst du die Events oder die Graduierungshistorie deiner Community nicht sehen. Auch Anwesenheits- und Zahlungsfunktionen sind dann nicht verfügbar.',
+      },
+    ],
+  },
+  {
+    id: 'home-and-discovery',
+    title: 'Start & Entdecken',
+    category: 'Allgemein',
+    intro: 'Wie du den Hauptbildschirm navigierst und schnell findest, was du brauchst.',
+    mockup: 'home',
+    steps: [
+      {
+        t: 'Der Home-Bildschirm',
+        d: 'Der Tab „Home" zeigt eine personalisierte Begrüßung mit deinem Namen, deine Gruppenkarte und den Bereich „Anstehende Events" mit den Events deiner Community in chronologischer Reihenfolge. Ein rotes Abzeichen am Tab „Profil" zeigt ausstehende Benachrichtigungen an.',
+        tip: 'Ziehe nach unten, um den Feed jederzeit zu aktualisieren.',
+      },
+      {
+        t: 'Anstehende Events filtern',
+        d: 'Im Bereich „Anstehende Events" findest du Filter-Chips: „Diese Woche" und „Diesen Monat". Tippe darauf, um die Ansicht einzugrenzen.',
+      },
+      {
+        t: 'Globale Suche',
+        d: 'Tippe auf die Suchleiste auf dem Home-Bildschirm, um die globale Suche zu öffnen. Gib einen beliebigen Begriff ein und du siehst Ergebnisse in vier Bereichen: Events, Gruppen, Schulen und Nutzer.',
+      },
+      {
+        t: 'Der „+"-Button (Lehrer)',
+        d: 'Wenn du Lehrer bist, siehst du auf dem Home-Bildschirm einen schwebenden „+"-Button. Tippe darauf, um ein Menü mit drei Optionen zu öffnen: „Neues Event", „Gruppe erstellen" und „Schule erstellen".',
+        note: 'Der „+"-Button erscheint nur, wenn dein Konto die Rolle Lehrer hat. Prüfe deine Rolle unter Profil → Einstellungen.',
+      },
+      {
+        t: 'Globale Karte der Schulen',
+        d: 'Im Tab „Gruppen" findest du eine interaktive Karte mit allen registrierten Schulen weltweit. Tippe auf einen Marker, um Name, Gruppe und Zeitpläne der Schule zu sehen. Nützlich, um auf Reisen einen Trainingsort zu finden.',
+      },
+    ],
+  },
+  {
+    id: 'groups-and-community',
+    title: 'Gruppen & Community',
+    category: 'Allgemein',
+    intro: 'Wie du Gruppen entdeckst, einer beitrittst und die Hierarchie deiner Community erkundest.',
+    mockup: 'educator',
+    steps: [
+      {
+        t: 'Was ist eine Gruppe und was ist eine Schule (Núcleo)?',
+        d: 'Eine **Gruppe** ist die Capoeira-Organisation als Ganzes (z. B. Abadá Capoeira, Cordão de Ouro). Eine **Schule** (Núcleo) ist ein konkreter physischer Trainingsort innerhalb dieser Gruppe — eine Gruppe kann viele Schulen in verschiedenen Städten oder Ländern haben. Du gehörst zu einer Gruppe und trainierst an einer Schule. Lehrer erstellen Schulen innerhalb ihrer Gruppe.',
+        note: 'Wenn die App „deine Schule" sagt, ist der konkrete Ort gemeint, an dem du trainierst. Wenn sie „deine Gruppe" sagt, ist die gesamte Organisation gemeint.',
+      },
+      {
+        t: 'Gruppen durchsuchen',
+        d: 'Der Tab „Gruppen" zeigt alle öffentlichen Gruppen auf der Plattform. Nutze die Suchleiste („Gruppe suchen...") zum Filtern nach Namen, und die Dropdowns „Land der Präsenz" und „Capoeira-Stil", um die Suche einzugrenzen.',
+      },
+      {
+        t: 'Das Profil einer Gruppe',
+        d: 'Tippe auf eine Gruppe, um ihr vollständiges Profil in Tabs zu sehen: „Übersicht" (Beschreibung und Statistiken), „Events" (anstehende Gruppen-Events), „Hierarchie" (Lehrer-Baum), „Schulen" (Liste aktiver Schulen) und „Graduierungen" (Gürtelsystem).',
+      },
+      {
+        t: 'Beitrittsanfrage für eine Gruppe',
+        d: 'Tippe im Gruppenprofil auf „Beitritt zur Gruppe anfragen". Deine Anfrage zeigt das Abzeichen „Anfrage ausstehend", bis der Admin sie genehmigt. Du erhältst eine Benachrichtigung unter „Profil → Benachrichtigungen", wenn sie akzeptiert wird.',
+        tip: 'Wenn du dem Admin sagen willst, wer du bist, nutze die „Geführte Anfrage". Damit kannst du deiner Anfrage eine Nachricht beifügen.',
+      },
+      {
+        t: 'Die Gruppenhierarchie ansehen',
+        d: 'Im Tab „Hierarchie" des Gruppenprofils findest du den vollständigen Lehrer-Baum. Du kannst innerhalb der Hierarchie nach Namen suchen. Tippe auf einen Lehrer, um sein öffentliches Profil zu sehen.',
+      },
+      {
+        t: 'Das Profil eines Mitglieds ansehen',
+        d: 'Tippe auf den Namen eines Lehrers oder Mitglieds, um sein Profil zu sehen: Name, Spitzname, Gruppe, aktueller Gürtel und Schulen, an denen er unterrichtet oder trainiert. Die Graduierungshistorie ist ebenfalls öffentlich sichtbar.',
+      },
+    ],
+  },
+  {
+    id: 'events',
+    title: 'Events',
+    category: 'Allgemein',
+    intro: 'Wie du Batizados, Rodas und mehr entdeckst, filterst und dein Interesse bestätigst.',
+    mockup: 'event',
+    steps: [
+      {
+        t: 'Den Event-Kalender erkunden',
+        d: 'Der Tab „Events" zeigt oben einen interaktiven Kalender und darunter die Event-Liste. Tippe auf ein Datum, um die Events dieses Tages zu sehen. Du kannst mit dem Button in der Ecke zwischen Kalender- und Listenansicht wechseln.',
+      },
+      {
+        t: 'Nach Kategorie und mehr filtern',
+        d: 'Tippe auf „Filter", um erweiterte Optionen zu öffnen: Kategorie (Batizado, Roda, offene Roda, Troca de Corda, Kurs, Klasse, Workshop, Seminar, Festival, Treffen, Intensivkurs, Training), Preis (kostenlos oder kostenpflichtig), Format (vor Ort oder online), Termine, Gruppe und Standort.',
+        tip: 'Du kannst mehrere Filter gleichzeitig kombinieren. Neben dem Button erscheint ein Hinweis „Aktive Filter", wenn Filter angewendet werden.',
+      },
+      {
+        t: 'Event-Detail',
+        d: 'Tippe auf ein Event, um die vollständige Beschreibung, Datum und Uhrzeit, Standort auf der Karte, Event-Typ, Organisatoren und Plakat (falls vorhanden) zu sehen. Du siehst auch, wie viele Personen teilnehmen („Bin dabei") und wie viele Interesse markiert haben („Interessiert").',
+      },
+      {
+        t: '„Bin dabei" oder „Interessiert" bestätigen',
+        d: 'Tippe im Event-Detail auf „Interessiert", um es in deiner Liste zu speichern, oder auf „Bin dabei", um die Teilnahme zu bestätigen. Organisatoren sehen die Gesamtzahl für beide.',
+        tip: 'Events, die du mit „Bin dabei" markiert hast, werden auf deinem Home-Bildschirm im Bereich „Anstehende Events" hervorgehoben angezeigt.',
+      },
+      {
+        t: 'Ein Event teilen',
+        d: 'Nutze den Teilen-Button im Event-Detail, um es per WhatsApp, Instagram oder andere Apps zu senden. Geteilt werden Event-Name, Datum und ein direkter Link.',
+      },
+    ],
+  },
+  {
+    id: 'your-profile',
+    title: 'Dein Profil',
+    category: 'Allgemein',
+    intro: 'Wie du deine Identität, Benachrichtigungen und Zugriffseinstellungen verwaltest.',
+    steps: [
+      {
+        t: 'Die drei Profil-Tabs',
+        d: 'Der Tab „Profil" hat drei interne Bereiche: „Übersicht" (deine anstehenden Events und Bio), „Benachrichtigungen" (ausstehende Anfragen von Gruppe, Schule oder Lehrer) und „Verwaltung" (als Lehrer Zugriff auf deine Schulen; als Schüler die Schulen, an denen du trainierst).',
+      },
+      {
+        t: 'Bearbeite dein Profil',
+        d: 'Tippe auf das Bearbeitungssymbol (Stift) bei deinem Profilfoto oder Namen, um das Bearbeitungsformular zu öffnen. Du kannst Foto, Vorname, Nachname und Spitzname ändern. Speichere mit „Speichern".',
+        tip: 'Fotos werden aus deiner Kamera oder Galerie hochgeladen. Ein quadratisches Bild sieht im runden Profilfoto am besten aus.',
+      },
+      {
+        t: 'Dein Gürtel und deine Graduierungen',
+        d: 'Dein aktueller Gürtel erscheint mit Farbe und Name unter deinem Namen im Profil. Wenn du mehr als eine erfasste Graduierung hast, tippe auf deinen Gürtel, um die vollständige Historie mit dem Datum jedes Stufenwechsels zu sehen.',
+      },
+      {
+        t: 'Einstellungen: Sprache und Theme',
+        d: 'Tippe unter „Profil" auf „Einstellungen". Dort kannst du im Bereich „Sprache" die Sprache ändern und unter „App-Modus" das visuelle Theme (hell oder dunkel). Änderungen werden sofort übernommen.',
+      },
+      {
+        t: 'Ausstehende Benachrichtigungen',
+        d: 'Im Tab „Benachrichtigungen" deines Profils siehst du fünf Arten von Anfragen: „Gruppenbeitrittsanfrage" (jemand möchte deiner Gruppe beitreten), „Lehreranfrage" (Anfrage für eine Lehrer-Schüler-Beziehung), „Schulbeitrittsanfrage" (jemand möchte deiner Schule beitreten), „Schulübertragungsanfrage" (ausstehende Verwaltungsübertragung) und „Kooperationsanfrage" (Einladung zur Mitorganisation eines Events). Das rote Abzeichen am Tab „Profil" zeigt, wie viele du ungelesen hast.',
+      },
+      {
+        t: 'Ein Problem melden',
+        d: 'Gehe zu „Profil" → „Einstellungen" → „Problem melden". Dein Bericht geht direkt an das Entwicklungsteam, technische Geräteinformationen werden automatisch beigefügt.',
+      },
+    ],
+  },
+  {
+    id: 'premium',
+    title: 'Premium-Plan',
+    category: 'Allgemein',
+    intro: 'Was der kostenlose Plan beinhaltet, was Premium freischaltet, und wie du abonnierst.',
+    steps: [
+      {
+        t: 'Grenzen des kostenlosen Plans',
+        d: 'Mit einem kostenlosen Konto können Lehrer bis zu 10 Events pro Monat erstellen und Schüler die Teilnahme an 1 Roda pro Monat bestätigen. Schulverwaltung, Anwesenheit und Zahlungsfunktionen sind für beide Rollen unbegrenzt verfügbar.',
+        note: 'Schüler im kostenlosen Plan sehen Werbung innerhalb der App.',
+      },
+      {
+        t: 'Was Premium beinhaltet',
+        d: 'Premium schaltet unbegrenzte Events für Lehrer frei, bis zu 5 Rodas pro Monat für Schüler, bevorzugten Support und eine werbefreie Erfahrung.',
+        tip: 'Der Jahresplan ist mit dem Abzeichen „BESTER WERT" markiert und deutlich günstiger als die monatliche Zahlung.',
+      },
+      {
+        t: 'Wie du abonnierst',
+        d: 'Gehe zu „Profil" → „Abonnement" oder tippe auf das Premium-Banner, das erscheint, wenn du eine Grenze erreichst. Wähle den monatlichen oder jährlichen Plan und bestätige die Zahlung mit deinem Google Play- oder App Store-Konto.',
+        note: 'Zahlungen werden sicher über Google Play / App Store abgewickelt. Agenda Capoeiragem speichert keine Kartendaten.',
+      },
+      {
+        t: 'Käufe wiederherstellen',
+        d: 'Wenn du das Gerät wechselst oder die App neu installierst, gehe zu „Profil" → „Abonnement" → „Käufe wiederherstellen", um deinen aktiven Plan ohne erneute Zahlung wiederherzustellen.',
+        tip: 'Nutze dasselbe Google- oder Apple-Konto, mit dem du den Plan gekauft hast.',
+      },
+    ],
+  },
+  {
+    id: 'join-a-school',
+    title: 'Einer Schule beitreten',
+    category: 'Praktizierende',
+    intro: 'Wie du eine Schule in deiner Nähe findest, eine Anfrage sendest, und was danach passiert.',
+    steps: [
+      {
+        t: 'Eine Schule auf der Karte finden',
+        d: 'Gehe zum Tab „Gruppen" und nutze die interaktive Karte, um Schulen in deiner Nähe zu erkunden. Tippe auf einen Marker, um Name, Gruppe, Zeitpläne und die Option zu sehen, das vollständige Profil anzusehen.',
+      },
+      {
+        t: 'Beitrittsanfrage mit „Geführter Beitrittsanfrage"',
+        d: 'Tippe im Schulprofil auf „Geführte Beitrittsanfrage". Du kannst eine Nachricht hinzufügen, um dich dem Lehrer vorzustellen. Deine Anfrage erscheint im Bereich „Anfragen" des Schulbereichs.',
+        tip: 'Wenn du bereits bei einem Lehrer trainierst, der Agenda Capoeiragem nutzt, bitte ihn, dich direkt aus seinem Bereich hinzuzufügen, um den Anfrageprozess zu überspringen.',
+      },
+      {
+        t: 'Auf Genehmigung warten',
+        d: 'Deine Anfrage bleibt „Ausstehend", bis der Lehrer sie genehmigt oder ablehnt. Du erhältst eine Benachrichtigung unter „Profil → Benachrichtigungen", wenn es eine Antwort gibt.',
+        warn: 'Nur der Lehrer kann Anfragen genehmigen. Wenn du innerhalb einiger Tage keine Antwort erhältst, versuche, den Lehrer über einen anderen Kanal zu kontaktieren.',
+      },
+      {
+        t: 'Zugriff auf deine Klassen und Verlauf',
+        d: 'Nach der Genehmigung erscheint die Schule im Tab „Profil" → „Verwaltung". Dort siehst du deine monatliche Anwesenheitshistorie und deinen Zahlungsstatus, falls die Schule Gebühren verwaltet.',
+      },
+    ],
+  },
+  {
+    id: 'your-history',
+    title: 'Deine persönliche Historie',
+    category: 'Praktizierende',
+    intro: 'Wie du deine monatliche Anwesenheit, deine Graduierungen und besuchte Events einsiehst.',
+    steps: [
+      {
+        t: 'Anwesenheit in diesem Monat',
+        d: 'Gehe zu „Profil" → Tab „Verwaltung" → deine Schule. Du siehst deinen Anwesenheitsprozentsatz für den aktuellen Monat und die Liste der Klassen mit einer Anwesend- oder Abwesend-Anzeige für jede.',
+      },
+      {
+        t: 'Graduierungshistorie',
+        d: 'Tippe in deinem Profil auf deinen aktuellen Gürtel, um die vollständige Historie mit dem Datum jedes Stufenwechsels einzusehen. Der Eintrag ist dauerhaft und auf deinem Profil öffentlich sichtbar.',
+      },
+      {
+        t: 'Zahlungsstatus',
+        d: 'Wenn deine Schule Zahlungen verwaltet, siehst du im Tab „Verwaltung" deinen Zahlungsstatus für den Monat: „Ausstehend", „Bezahlt" oder „Überfällig". Nur der Lehrer kann deine Zahlungen erfassen.',
+        note: 'Dein Zahlungsstatus ist nur für dich und deinen Lehrer sichtbar. Er ist keine öffentliche Information.',
+      },
+      {
+        t: 'Bestätigte Events',
+        d: 'Im Tab „Übersicht" deines Profils siehst du anstehende Events, bei denen du „Bin dabei" bestätigt hast. Du kannst das Detail jedes Events ansehen, indem du direkt auf den Event-Namen in deinem Profil tippst.',
+      },
+    ],
+  },
+  {
+    id: 'create-group',
+    title: 'Deine Gruppe erstellen',
+    category: 'Lehrer',
+    intro: 'Wie du deine Capoeira-Gruppe auf der Plattform registrierst und ihre Informationen konfigurierst.',
+    steps: [
+      {
+        t: 'Auf das Erstellungsformular zugreifen',
+        d: 'Tippe auf den schwebenden „+"-Button auf dem Home-Bildschirm → „Gruppe erstellen". Du kannst auch zum Tab „Gruppen" gehen und oben in der Ecke auf „Gruppe erstellen" tippen.',
+        note: 'Nur Nutzer mit der Rolle Lehrer können Gruppen erstellen. Prüfe deine Rolle unter „Profil → Einstellungen".',
+      },
+      {
+        t: 'Name und Beschreibung',
+        d: 'Gib den offiziellen Namen deiner Gruppe und eine Beschreibung ein. Beides ist erforderlich. Der Name erscheint im globalen Verzeichnis, auf Mitgliedsprofilen und bei allen von dir organisierten Events.',
+      },
+      {
+        t: 'Capoeira-Stil (erforderlich)',
+        d: 'Gib im Feld „Capoeira-Stil *" den Stil ein, den du praktizierst (z. B. Gemischt, Benguela, Angola, Regional). Es ist ein Freitextfeld und erforderlich. Dieser Text wird als Name deines Graduierungssystems verwendet und bestimmt, wie deine Gürtel benannt werden.',
+        tip: 'Das Feld „Stadt" ist optional — du kannst es jetzt oder später unter „Gruppe bearbeiten" ausfüllen.',
+      },
+      {
+        t: 'Gruppenlogo (optional)',
+        d: 'Lade das Logo deiner Gruppe aus deiner Galerie hoch. Es erscheint im Gruppenprofil, in Schulen und auf der Gruppenkarte, die deine Schüler auf dem Home-Bildschirm sehen.',
+      },
+      {
+        t: 'Die Gruppe erstellen',
+        d: 'Tippe auf „Erstellen". Wenn der Name nicht doppelt vorhanden ist, wird die Gruppe sofort erstellt. Die App fragt, ob du das Graduierungssystem jetzt oder später einrichten möchtest.',
+      },
+      {
+        t: 'Mitglieder einladen',
+        d: 'Nach dem Erstellen der Gruppe teile ihren Namen mit deinen Schülern. Sie suchen danach im Tab „Gruppen" → Verzeichnis und beantragen den Beitritt. Du kannst sie auch direkt aus deinem Schulverwaltungsbereich hinzufügen, oder sie verknüpfen sich während ihres eigenen Onboardings.',
+        tip: 'Es gibt keinen Einladungscode: Der Standardablauf ist, dass Schüler dich im Verzeichnis finden oder du sie aus dem Schulbereich hinzufügst.',
+      },
+    ],
+  },
+  {
+    id: 'manage-group',
+    title: 'Deine Gruppe verwalten',
+    category: 'Lehrer',
+    intro: 'Wie du Mitglieder, Admin-Rollen und Gruppeninformationen verwaltest.',
+    steps: [
+      {
+        t: 'Gruppen-Verwaltungsbereich',
+        d: 'Gehe zu deinem Gruppenprofil und tippe auf den Verwaltungsbutton (nur für Admins und Co-Admins sichtbar). Du erhältst Zugriff auf Optionen zur Verwaltung von Mitgliedern, Rollen und Gruppenkonfiguration.',
+        note: 'Als Ersteller der Gruppe bist du der Hauptadmin. Nur du kannst die vollständige Verwaltung an eine andere Person übertragen.',
+      },
+      {
+        t: 'Beitrittsanfragen genehmigen oder ablehnen',
+        d: 'Unter „Anfragen" im Gruppenbereich siehst du ausstehende Anfragen mit dem Namen des Antragstellers und seiner Nachricht, falls er die geführte Anfrage genutzt hat. Tippe auf „Genehmigen" oder „Ablehnen", um auf jede zu reagieren.',
+      },
+      {
+        t: 'Rollen zuweisen: Admin und Co-Admin',
+        d: 'Vom Profil eines Mitglieds im Gruppenbereich kannst du ihm die Rolle „Co-Admin" (Zugriff auf den Bereich) zuweisen oder es zum „Admin" befördern. Du kannst auch die Option „Admin-Rolle verlassen" nutzen, um die Rolle zu entfernen.',
+        warn: '„Verwaltung übertragen" gibt die vollständige Kontrolle über die Gruppe an einen anderen Nutzer. Diese Aktion ist unwiderruflich: Du verlierst die Hauptadmin-Rolle.',
+      },
+      {
+        t: 'Gruppeninformationen bearbeiten',
+        d: 'Gehe zum Gruppenprofil → Bearbeitungssymbol. Du kannst Name, Beschreibung, Logo, Capoeira-Stil und Stadt ändern. Änderungen werden sofort übernommen und im öffentlichen Verzeichnis angezeigt.',
+      },
+      {
+        t: 'Ein Mitglied entfernen',
+        d: 'Tippe in der Mitgliederliste im Bereich auf den Namen eines Mitglieds und wähle „Aus Gruppe entfernen". Das Mitglied verliert den Zugriff auf Gruppeninhalte, behält aber seine Graduierungshistorie.',
+        warn: 'Das Entfernen eines Mitglieds ist umkehrbar: Es kann erneut den Beitritt zur Gruppe beantragen.',
+      },
+    ],
+  },
+  {
+    id: 'educational-supervision',
+    title: 'Pädagogische Aufsicht',
+    category: 'Lehrer',
+    intro: 'Wie du einen aufsichtführenden Lehrer für die Schüler deiner Schule zuweist und wie die Hierarchie funktioniert.',
+    steps: [
+      {
+        t: 'Was pädagogische Aufsicht ist',
+        d: 'Pädagogische Aufsicht ist die hierarchische Beziehung zwischen Lehrern derselben Gruppe. Ein erfahrenerer Lehrer kann den Fortschritt der Schüler eines anderen Lehrers überwachen, besonders nützlich, wenn sie sich in verschiedenen Städten oder Ländern befinden.',
+        note: 'Der Aufsichtsbildschirm heißt im Schulbereich „PÄDAGOGISCHE AUFSICHT".',
+      },
+      {
+        t: 'Automatische Aufsicht (gleiche Schule)',
+        d: 'Wenn der Aufsichtführende und die Schüler dieselbe Schule teilen, ist die Aufsicht automatisch. Die App zeigt das Abzeichen „Gleiche Schule" im Profil des Schülers im Bereich des Aufsichtführenden.',
+      },
+      {
+        t: 'Manuelle Aufsicht (außerhalb der Schule)',
+        d: 'Wenn sich der Aufsichtführende in einer anderen Schule befindet, kannst du ihn manuell zuweisen. Tippe auf dem Aufsichtsbildschirm auf „Aufsichtführenden Lehrer auswählen" und suche nach Namen. Beaufsichtigte Schüler zeigen das Abzeichen „Außerhalb deiner Schule".',
+        tip: 'Nur Lehrer derselben Gruppe können als Aufsichtführende zugewiesen werden. Es ist nicht möglich, Schüler aus anderen Gruppen zu beaufsichtigen.',
+      },
+      {
+        t: 'Den Aufsichtsbaum ansehen',
+        d: 'Der Aufsichtsbaum ist im Tab „Hierarchie" des Gruppenprofils sichtbar. Er zeigt die Beziehungen zwischen Lehrern und welche Schüler unter wessen Aufsicht stehen — der „Mestre-zu-Schüler"-Baum deiner Gruppe.',
+      },
+    ],
+  },
+  {
+    id: 'school-setup',
+    title: 'Deine Schule erstellen',
+    category: 'Lehrer',
+    intro: 'Wie du deine Schule erstellst, auf der Karte platzierst und Trainingszeiten einrichtest.',
+    mockup: 'map',
+    steps: [
+      {
+        t: 'Auf das Erstellungsformular zugreifen',
+        d: 'Tippe auf den schwebenden „+"-Button auf dem Home-Bildschirm → „Schule erstellen". Du kannst auch zum Tab „Gruppen" → Profil deiner Gruppe → Tab „Schulen" → Button „Schule erstellen" gehen.',
+        note: 'Du musst Admin oder Co-Admin einer Gruppe sein, um eine Schule zu erstellen. Wenn du gerade deine Gruppe erstellt hast, hast du diese Rolle bereits automatisch.',
+      },
+      {
+        t: 'Name und Standort eingeben',
+        d: 'Fülle die erforderlichen Felder aus: „Schulname" (z. B. Innenstadt-Schule), „Standort" (vollständige Adresse deines Trainingsorts), „Land" und „Stadt".',
+        tip: 'Nach Eingabe der Adresse tippe auf die Karte, um die Standortauswahl zu öffnen, und ziehe den Marker an die genaue Stelle. Das erscheint im globalen Verzeichnis.',
+      },
+      {
+        t: 'Trainingszeiten hinzufügen',
+        d: 'Tippe im Bereich „Trainingszeiten" auf „Zeitplan hinzufügen". Wähle Wochentag, Start- und Endzeit. Füge so viele Zeitpläne hinzu, wie du brauchst. Mindestens ein Zeitplan ist erforderlich, um die Schule zu erstellen.',
+        tip: 'Jeder Zeitplan kann mit einer Klassengruppe verknüpft werden. Wenn du verschiedene Niveaus zu verschiedenen Zeiten trainierst, füge sie separat hinzu.',
+      },
+      {
+        t: 'Die Schule erstellen',
+        d: 'Tippe auf „Schule erstellen". Wenn alle Felder vollständig sind, wird die Schule erstellt und erscheint auf der globalen Karte und im Verzeichnis. Du wirst automatisch zum Verwaltungsbereich der Schule weitergeleitet.',
+      },
+      {
+        t: 'Bearbeiten oder deaktivieren',
+        d: 'Um Name, Adresse oder Zeitpläne zu bearbeiten, gehe zum Schulprofil → Bearbeitungssymbol. Wenn du an diesem Ort nicht mehr trainierst, kannst du die Schule deaktivieren, damit sie nicht im Verzeichnis erscheint, ohne die Historie zu verlieren.',
+      },
+    ],
+  },
+  {
+    id: 'co-educators',
+    title: 'Co-Lehrer',
+    category: 'Lehrer',
+    intro: 'Wie du Co-Lehrer zu deiner Schule hinzufügst und ihre Berechtigungen verwaltest.',
+    steps: [
+      {
+        t: 'Was ein Co-Lehrer ist',
+        d: 'Ein Co-Lehrer ist ein Lehrer derselben Gruppe, der bei der Verwaltung deiner Schule hilft. Er hat Zugriff auf den Verwaltungsbereich: Er kann Klassen erfassen, Anwesenheit markieren und Zahlungen registrieren, aber die Schulkonfiguration nicht ändern oder die Verwaltung übertragen.',
+      },
+      {
+        t: 'Einen Co-Lehrer hinzufügen',
+        d: 'Gehe zum Profil deiner Schule → Bereich „Co-Lehrer" → tippe auf „Co-Lehrer hinzufügen". Suche den Lehrer nach Namen (er muss Mitglied derselben Gruppe mit der Rolle Lehrer sein). Tippe auf seinen Namen und bestätige.',
+        note: 'Nur Nutzer mit der Rolle Lehrer innerhalb derselben Gruppe können Co-Lehrer sein.',
+      },
+      {
+        t: 'Einen Co-Lehrer entfernen',
+        d: 'Tippe im Bereich „Co-Lehrer" des Schulprofils auf den Namen des Co-Lehrers und wähle „Co-Lehrer entfernen". Die Aktion ist sofort wirksam und der Lehrer verliert den Zugriff auf den Schulbereich.',
+        warn: 'Das Entfernen eines Co-Lehrers löscht keine Daten. Die gesamte Klassen- und Zahlungshistorie, die er erfasst hat, bleibt im System.',
+      },
+      {
+        t: 'Die Co-Lehrer-Rolle verlassen',
+        d: 'Wenn du Co-Lehrer an einer Schule bist und es nicht mehr sein möchtest, gehe zum Schulprofil → Bereich „Co-Lehrer" → „Co-Lehrer-Rolle verlassen". Du kannst dies auch unter „Profil → Verwaltung → [Schulname]" → „Rolle verlassen" tun.',
+      },
+      {
+        t: 'Schulverwaltung übertragen',
+        d: 'Um die vollständige Kontrolle über die Schule an einen anderen Lehrer zu übergeben, gehe zum Schulprofil → „Verwaltung übertragen". Der Empfänger muss ein aktiver Co-Lehrer der Schule sein.',
+        warn: '„Verwaltung übertragen" ist unwiderruflich: Du gibst die vollständige Kontrolle an die andere Person. Der neue Admin kann alle Schuleinstellungen ändern.',
+      },
+    ],
+  },
+  {
+    id: 'school-requests',
+    title: 'Schul-Beitrittsanfragen',
+    category: 'Lehrer',
+    intro: 'Wie du Beitrittsanfragen zu deiner Schule aus dem Verwaltungsbereich verwaltest.',
+    steps: [
+      {
+        t: 'Ausstehende Anfragen ansehen',
+        d: 'Gehe zu deinem Schulprofil → Button „Verwalten" → Tab „Anfragen". Du siehst alle ausstehenden Beitrittsanfragen. Jede Karte zeigt Name, Foto, Datum und die Nachricht des Antragstellers (falls er die geführte Anfrage genutzt hat).',
+      },
+      {
+        t: 'Eine Anfrage genehmigen',
+        d: 'Tippe auf „Genehmigen" auf der Karte des Antragstellers. Der Schüler erhält eine Benachrichtigung, dass er akzeptiert wurde, und erscheint ab sofort in deiner Schülerliste. Du kannst ihn sofort einer Klassengruppe im Tab „Schüler" zuweisen.',
+      },
+      {
+        t: 'Eine Anfrage ablehnen',
+        d: 'Tippe auf „Ablehnen" auf der Karte des Antragstellers. Der Schüler erhält eine Benachrichtigung, dass seine Anfrage nicht genehmigt wurde.',
+        tip: 'Wenn du jemanden versehentlich ablehnst, kann der Schüler eine neue Anfrage senden.',
+      },
+      {
+        t: 'Historie bearbeiteter Anfragen',
+        d: 'Unter den ausstehenden Anfragen findest du die Historie bereits bearbeiteter Anfragen: genehmigt (Abzeichen „Akzeptiert") und abgelehnt (Abzeichen „Abgelehnt"). Bearbeitete Anfragen bleiben in der Historie und können nicht gelöscht werden.',
+      },
+    ],
+  },
+  {
+    id: 'students-and-classes',
+    title: 'Schüler & Klassengruppen',
+    category: 'Lehrer',
+    intro: 'Wie du deine Schüler ansiehst, Mitglieder ohne Konto hinzufügst und sie nach Klassengruppe organisierst.',
+    mockup: 'attendance',
+    steps: [
+      {
+        t: 'Der Schul-Verwaltungsbereich',
+        d: 'Zugriff über „Profil" → Tab „Verwaltung" → deine Schule, oder über das Schulprofil durch Tippen auf den Verwaltungsbutton. Du findest vier Tabs: „Schüler", „Anwesenheit", „Zahlungen" und „Berichte".',
+      },
+      {
+        t: 'Die Schülerliste ansehen',
+        d: 'Im Tab „Schüler" siehst du alle mit deiner Schule verknüpften Mitglieder mit Name, aktuellem Gürtel und monatlichem Anwesenheitsprozentsatz. Wenn es keine Mitglieder gibt, zeigt die App „Keine Mitglieder".',
+      },
+      {
+        t: 'Einen Schüler ohne Konto hinzufügen (Geister-Mitglied)',
+        d: 'Scrolle im Tab „Schüler" zum Bereich „Schüler ohne Konto". Tippe auf „Schüler hinzufügen", um einen Schüler manuell zu registrieren, der die App nicht nutzt. Gib Name und grundlegende Details ein.',
+        note: 'Geister-Mitglieder können Graduierungen erhalten und haben Anwesenheits- und Zahlungsdatensätze, können sich aber nicht in der App anmelden. Wenn sie sich registrieren, kannst du ihr Profil verknüpfen, um die vollständige Historie zu erhalten.',
+      },
+      {
+        t: 'Klassengruppen erstellen und verwalten',
+        d: 'Zugriff auf die Schulverwaltung (Zahnrad-Symbol oder Button „Verwalten"). Dort kannst du Klassengruppen erstellen — Sätze von Schülern, organisiert nach Zeitplan. Erstelle eine pro Zeitslot (z. B. „Mo & Mi 19 Uhr") und weise jeder Schüler zu.',
+        tip: 'Die Organisation der Schüler in Klassengruppen macht die Anwesenheit viel schneller: Der Anwesenheitsbildschirm zeigt nur die Schüler des ausgewählten Zeitslots.',
+      },
+      {
+        t: 'Das Profil eines einzelnen Schülers ansehen',
+        d: 'Tippe auf den Namen eines Schülers, um sein Profil zu sehen: Name, Gürtel, Anwesenheitsprozentsatz des aktuellen Monats, monatliche Anwesenheitshistorie und Zahlungsdatensatz.',
+      },
+    ],
+  },
+  {
+    id: 'attendance',
+    title: 'Anwesenheitserfassung',
+    category: 'Lehrer',
+    intro: 'Wie du die heutige Klasse erfasst, anwesend und abwesend markierst und die Historie einsiehst.',
+    mockup: 'attendance',
+    steps: [
+      {
+        t: 'Die heutige Klasse erfassen',
+        d: 'Im Schul-Verwaltungsbereich → Tab „Anwesenheit" siehst du „Noch keine Klassen diesen Monat", falls es die erste ist. Tippe auf „Heutige Klasse erfassen", um das Sitzungsformular zu öffnen.',
+      },
+      {
+        t: 'Zeitplan und Klassengruppe auswählen',
+        d: 'Wähle im Sitzungsformular den heutigen Zeitplan (einen der bei der Schulerstellung konfigurierten) und die entsprechende Klassengruppe. Die App lädt automatisch die Schüler dieser Gruppe.',
+        tip: 'Wenn du keine Klassengruppen konfiguriert hast, zeigt die Liste alle Schüler der Schule.',
+      },
+      {
+        t: 'Anwesend und abwesend markieren',
+        d: 'Tippe auf den Namen jedes Schülers, um zwischen anwesend (✓ grün) und abwesend zu wechseln. Die Liste zeigt zuerst die Schüler der ausgewählten Klassengruppe, dann den Rest der Schule, damit sich Gruppen nicht mischen.',
+      },
+      {
+        t: 'Die Klasse speichern',
+        d: 'Tippe auf „Klasse speichern". Die App zeigt einen Bestätigungsdialog mit der Anzahl Anwesender und Abwesender. Tippe auf „Bestätigen", um die Sitzung in der Cloud zu erfassen. Der Anwesenheitsprozentsatz jedes Schülers wird automatisch aktualisiert.',
+      },
+      {
+        t: 'Vorherige Sitzungen einsehen',
+        d: 'Im Tab „Anwesenheit" erscheinen die Sitzungen in chronologischer Reihenfolge. Tippe auf eine vergangene Sitzung, um das vollständige Detail zu sehen: wer anwesend war, wer abwesend war, und Datum und Uhrzeit der Erfassung.',
+      },
+    ],
+  },
+  {
+    id: 'payments',
+    title: 'Zahlungen & Kasse',
+    category: 'Lehrer',
+    intro: 'Wie du monatliche Gebühren erfasst, verfolgst, wer schuldet, und Berichte exportierst.',
+    mockup: 'finances',
+    steps: [
+      {
+        t: 'Der Tab „Zahlungen"',
+        d: 'Gehe im Schul-Verwaltungsbereich zum Tab „Zahlungen". Jeder Schüler erscheint mit seinem Zahlungsstatus für den aktuellen Monat: „Ausstehend", „Bezahlt", „Bezahlt (verspätet)", „Überfällig" oder „Kostenlos". Status werden automatisch nach Datum berechnet.',
+        warn: 'Wenn der Monat begonnen hat und ein Schüler keine erfasste Zahlung hat, ändert sich sein Status automatisch zu „Ausstehend" und dann nach dem konfigurierten Fälligkeitsdatum zu „Überfällig".',
+      },
+      {
+        t: 'Eine Schülerzahlung erfassen',
+        d: 'Tippe auf den Namen des Schülers im Tab „Zahlungen" und dann auf „Zahlung erfassen". Gib den Betrag ein und wähle den entsprechenden Monat. Der Status des Schülers ändert sich sofort zu „Bezahlt".',
+        tip: 'Du kannst Vorauszahlungen für Schüler erfassen, die im Voraus zahlen. Wähle einfach den entsprechenden zukünftigen Monat.',
+      },
+      {
+        t: 'Sehen, wer ausstehende oder überfällige Zahlungen hat',
+        d: 'In der Liste des Tabs „Zahlungen" siehst du alle Schülerstatus auf einen Blick. Die Status „Ausstehend" und „Überfällig" sind hervorgehoben. Du siehst auch den konfigurierten Fälligkeitstag.',
+      },
+      {
+        t: 'Den Monatsbericht erstellen und exportieren',
+        d: 'Gehe zum Tab „Berichte" des Schulbereichs. Wähle das Format (CSV für Excel oder Google Sheets, oder PDF zum Drucken oder Teilen) und tippe auf „Bericht erstellen".',
+        tip: 'CSV ist ideal für die Tabellenanalyse. PDF ist nützlich, um es mit der Gruppenverwaltung zu teilen oder zu archivieren.',
+      },
+    ],
+  },
+  {
+    id: 'graduations',
+    title: 'Graduierungssystem',
+    category: 'Lehrer',
+    intro: 'Wie du die Gürtel deiner Gruppe einrichtest und Stufenwechsel erfasst.',
+    mockup: 'graduation',
+    steps: [
+      {
+        t: 'Auf das Graduierungssystem zugreifen',
+        d: 'Gehe zum Profil deiner Gruppe → Tab „Graduierungen". Wenn noch keine Stufen konfiguriert sind, siehst du „Keine Graduierungsstufen definiert" und einen Button „System jetzt einrichten".',
+      },
+      {
+        t: 'Eine Gürtelstufe erstellen',
+        d: 'Tippe auf „Stufe hinzufügen" oder „Stufe erstellen". Gib den Gürtelnamen ein (z. B. „Grün-Gelber Gürtel"), wähle die Farben, aus denen er besteht, und gib an, ob er bemalte Spitzen hat und wie viele. Speichere die Stufe.',
+        tip: 'Die visuelle Farbe jeder Stufe erscheint in Schülerprofilen und im öffentlichen Verzeichnis. Konfiguriere sie genau passend zum echten Gürtel.',
+      },
+      {
+        t: 'Nach Kategorie organisieren',
+        d: 'Stufen werden automatisch in Bereiche organisiert: „Erwachsenensystem", „Jugendsystem", „Kindersystem", „Auszubildende Lehrer" und „Sonderstufen". Weise beim Erstellen oder Bearbeiten jeder Stufe die richtige Kategorie zu.',
+      },
+      {
+        t: 'Die Lehrerstufe definieren',
+        d: 'Du kannst festlegen, ab welchem Gürtel ein Schüler in der Gruppe als „Lehrer" gilt. Dies bestimmt, wer Zugriff auf das Erstellen von Schulen und die Verwaltungstools hat.',
+      },
+      {
+        t: 'Eine Graduierung zuweisen',
+        d: 'Im Gruppenprofil → „Graduierungen" → „Graduierung zuweisen". Finde den Schüler, wähle die neue Stufe und das Datum. Die Änderung wird dauerhaft in der Historie des Schülers erfasst, und der neue Gürtel erscheint sofort in seinem Profil.',
+        tip: 'Du kannst Graduierungen für ein Batizado in großen Mengen zuweisen: Wähle mehrere Schüler gleichzeitig, wähle Stufe und Datum, und alle werden in einem Schritt graduiert.',
+      },
+      {
+        t: 'Die Graduierungshistorie eines Schülers ansehen',
+        d: 'Tippe auf den Namen eines beliebigen Gruppenmitglieds. Sein Profil zeigt den aktuellen Gürtel mit seiner Farbe. Tippe auf den Gürtel, um die vollständige Historie zu sehen: jeden Stufenwechsel mit Datum. Die Historie kann nicht gelöscht werden.',
+      },
+    ],
+  },
+  {
+    id: 'manage-events',
+    title: 'Events erstellen & verwalten',
+    category: 'Lehrer',
+    intro: 'Wie du ein Batizado, eine Roda oder einen Workshop für die Community veröffentlichst.',
+    mockup: 'event',
+    steps: [
+      {
+        t: 'Ein Event erstellen',
+        d: 'Tippe auf den schwebenden „+"-Button auf dem Home-Bildschirm → „Neues Event". Du kannst auch zum Tab „Events" gehen und oben in der Ecke auf „Neues Event" tippen.',
+      },
+      {
+        t: 'Die Event-Details ausfüllen',
+        d: 'Das Formular umfasst: Event-Name, Kategorie (Batizado, Roda, offene Roda, Troca de Corda, Kurs, Klasse, Workshop, Seminar, Festival, Treffen, Intensivkurs oder Trainingssitzung), Datum, Start- und Endzeit.',
+      },
+      {
+        t: 'Eine Beschreibung und ein Plakat hinzufügen',
+        d: 'Gib die Beschreibung mit allen relevanten Details ein (Preis, Anforderungen, was mitzubringen ist usw.). Lade ein Titelbild (Plakat) aus deiner Galerie hoch, um dem Event Sichtbarkeit zu verleihen.',
+        tip: 'Events mit Plakat erhalten höhere Sichtbarkeit in den Feeds der Mitglieder. Ein vertikales Bild mit guter Auflösung sieht am besten aus.',
+      },
+      {
+        t: 'Den Standort auf der Karte markieren',
+        d: 'Gib die Event-Adresse ein. Die App öffnet die Kartenauswahl, wo du den Marker an die genaue Stelle ziehen kannst. Teilnehmer sehen den Standort und können die Navigation direkt vom Event aus öffnen.',
+      },
+      {
+        t: 'Mitorganisatoren und Teilnehmer verwalten',
+        d: 'Nach dem Erstellen des Events kannst du im Bearbeitungsmenü → „Mitwirkende" Mitorganisatoren hinzufügen. Mitorganisatoren können das Event bearbeiten und die vollständige Liste sehen, wer „Bin dabei" oder „Interessiert" markiert hat.',
+      },
+    ],
+  },
+  {
+    id: 'reports-kpi',
+    title: 'Berichte & KPIs',
+    category: 'Lehrer',
+    intro: 'Wie du die Kennzahlen deiner Schule überprüfst und Daten für externe Analysen exportierst.',
+    mockup: 'kpi',
+    steps: [
+      {
+        t: 'Schnelle Kennzahlen-Leiste',
+        d: 'Oben im Schul-Verwaltungsbereich siehst du eine KPI-Leiste: Anzahl Schüler, diesen Monat abgehaltene Klassen, durchschnittlicher Anwesenheitsprozentsatz, Anzahl bezahlter Schüler und Anzahl überfälliger.',
+      },
+      {
+        t: 'Der Tab „Berichte"',
+        d: 'Gehe zum Schulbereich → Tab „Berichte". Der Untertitel lautet „Anwesenheit, Zahlungen und Schulstatistiken". Hier erstellst du den Monatsbericht mit allen konsolidierten Informationen.',
+      },
+      {
+        t: 'Das Berichtsformat wählen',
+        d: 'Wähle das benötigte Format: „CSV" zum Öffnen in Excel oder Google Sheets für individuelle Analysen, oder „PDF" für ein fertig zu teilendes oder druckbares Dokument.',
+      },
+      {
+        t: 'Erstellen und exportieren',
+        d: 'Tippe auf „Bericht erstellen". Die App erstellt die Datei mit einer Monatszusammenfassung: aktive Schüler, abgehaltene Sitzungen, Gesamtanwesenheitsprozentsatz und Zahlungsstatus pro Schüler. Du kannst sie direkt vom Export-Bildschirm aus teilen.',
+        tip: 'Erstelle den Bericht am Ende jedes Monats, um eine historische Aufzeichnung der Gesundheit deiner Schule zu führen.',
+      },
+    ],
+  },
+]
+
+// ─── Italian ─────────────────────────────────────────────────────────────────
+
+const SECTIONS_IT: Section[] = [
+  {
+    id: 'getting-started',
+    title: 'Per iniziare',
+    category: 'Generale',
+    intro: 'Come creare il tuo account, completare il profilo e unirti alla tua comunità.',
+    mockup: 'home',
+    steps: [
+      {
+        t: "Installa l'app o usala come web app",
+        d: "Scaricala da Google Play su Android, oppure apri agendacapoeiragem.com nel tuo browser e aggiungila alla schermata home come web app (PWA). Entrambe le opzioni funzionano allo stesso modo.",
+        note: 'La versione nativa per iPhone è in sviluppo. Nel frattempo, usa Safari su iOS → "Aggiungi a Home".',
+      },
+      {
+        t: 'Crea il tuo account',
+        d: 'Quando apri l\'app vedrai la schermata "Crea account — Unisciti alla comunità della capoeira". Inserisci nome, cognome, soprannome (opzionale) ed email. Puoi anche registrarti con Google.',
+        tip: 'Prima di continuare, l\'app ti chiederà il tuo ruolo: "Praticante" o "Educatore". Scegli "Educatore" se insegni già capoeira — questo sblocca subito gli strumenti di gestione.',
+      },
+      {
+        t: 'Completa l\'onboarding',
+        d: 'Dopo la registrazione, la schermata di onboarding ti guida ad aggiungere una foto profilo e trovare il tuo gruppo o scuola. Puoi saltare questo passaggio e farlo dopo, ma collegarti da subito attiva tutte le funzionalità della comunità.',
+      },
+      {
+        t: 'Collega il tuo gruppo',
+        d: 'Nella schermata Home vedrai la card "Nessun gruppo assegnato" con un pulsante "Trova gruppi". Cerca il tuo gruppo nella directory e invia una richiesta di adesione. Puoi anche chiedere al tuo educatore di aggiungerti direttamente dal suo pannello di amministrazione.',
+        warn: 'Senza un gruppo collegato non puoi vedere gli eventi della tua comunità né la cronologia delle graduazioni. Anche le funzioni di presenza e pagamento non saranno disponibili.',
+      },
+    ],
+  },
+  {
+    id: 'home-and-discovery',
+    title: 'Home e scoperta',
+    category: 'Generale',
+    intro: 'Come navigare nella schermata principale e trovare rapidamente ciò di cui hai bisogno.',
+    mockup: 'home',
+    steps: [
+      {
+        t: 'La schermata Home',
+        d: 'La scheda "Home" mostra un saluto personalizzato con il tuo nome, la card del tuo gruppo e la sezione "Prossimi eventi" con gli eventi della tua comunità in ordine cronologico. Un badge rosso sulla scheda "Profilo" indica notifiche in sospeso.',
+        tip: 'Scorri verso il basso per aggiornare il feed in qualsiasi momento.',
+      },
+      {
+        t: 'Filtra i prossimi eventi',
+        d: 'Nella sezione "Prossimi eventi" troverai dei filtri rapidi: "Questa settimana" e "Questo mese". Toccali per restringere la vista.',
+      },
+      {
+        t: 'Ricerca globale',
+        d: 'Tocca la barra di ricerca nella schermata Home per aprire la ricerca globale. Digita un termine qualsiasi e vedrai i risultati organizzati in quattro sezioni: Eventi, Gruppi, Scuole e Utenti.',
+      },
+      {
+        t: 'Il pulsante "+" (Educatori)',
+        d: 'Se sei un educatore, vedrai un pulsante "+" flottante nella schermata Home. Toccalo per aprire un menu con tre opzioni: "Nuovo evento", "Crea gruppo" e "Crea scuola".',
+        note: 'Il pulsante "+" appare solo se il tuo account ha il ruolo di Educatore. Controlla il tuo ruolo in Profilo → Impostazioni.',
+      },
+      {
+        t: 'Mappa globale delle scuole',
+        d: 'Nella scheda "Gruppi" troverai una mappa interattiva con tutte le scuole registrate nel mondo. Tocca qualsiasi marcatore per vedere il nome della scuola, il suo gruppo e i suoi orari. Utile per trovare un posto dove allenarsi quando viaggi.',
+      },
+    ],
+  },
+  {
+    id: 'groups-and-community',
+    title: 'Gruppi e comunità',
+    category: 'Generale',
+    intro: 'Come scoprire i gruppi, unirti a uno ed esplorare la gerarchia della tua comunità.',
+    mockup: 'educator',
+    steps: [
+      {
+        t: 'Cos\'è un gruppo e cos\'è una scuola (núcleo)?',
+        d: 'Un **gruppo** è l\'organizzazione di capoeira nel suo insieme (es. Abadá Capoeira, Cordão de Ouro). Una **scuola** (núcleo) è un luogo di allenamento fisico specifico all\'interno di quel gruppo — un gruppo può avere molte scuole in città o paesi diversi. Appartieni a un gruppo e ti alleni in una scuola. Gli educatori creano scuole all\'interno del loro gruppo.',
+        note: 'Quando l\'app dice "la tua scuola" si riferisce al luogo specifico dove ti alleni. Quando dice "il tuo gruppo" si riferisce all\'intera organizzazione.',
+      },
+      {
+        t: 'Esplora i gruppi',
+        d: 'La scheda "Gruppi" mostra tutti i gruppi pubblici sulla piattaforma. Usa la barra di ricerca ("Cerca gruppo...") per filtrare per nome, e i menu a discesa "Paese di presenza" e "Stile di capoeira" per restringere la ricerca.',
+      },
+      {
+        t: 'Il profilo di un gruppo',
+        d: 'Tocca un gruppo qualsiasi per vedere il suo profilo completo organizzato in schede: "Riepilogo" (descrizione e statistiche), "Eventi" (prossimi eventi del gruppo), "Gerarchia" (albero degli educatori), "Scuole" (elenco scuole attive) e "Graduazioni" (sistema delle corde).',
+      },
+      {
+        t: 'Richiedi di unirti a un gruppo',
+        d: 'Dal profilo del gruppo, tocca "Richiedi di unirti al gruppo". La tua richiesta mostrerà il badge "Richiesta in sospeso" finché l\'amministratore non l\'approva. Riceverai una notifica in "Profilo → Notifiche" quando viene accettata.',
+        tip: 'Se vuoi farti conoscere dall\'amministratore, usa la "Richiesta guidata". Ti permette di inviare un messaggio insieme alla tua richiesta.',
+      },
+      {
+        t: 'Visualizza la gerarchia del gruppo',
+        d: 'Nella scheda "Gerarchia" del profilo del gruppo troverai l\'albero completo degli educatori. Puoi cercare per nome all\'interno della gerarchia. Tocca un educatore qualsiasi per vedere il suo profilo pubblico.',
+      },
+      {
+        t: 'Visualizza il profilo di un membro',
+        d: 'Tocca il nome di un educatore o membro qualsiasi per vedere il suo profilo: nome, soprannome, gruppo, corda attuale e scuole dove insegna o si allena. Anche la cronologia delle graduazioni è visibile pubblicamente.',
+      },
+    ],
+  },
+  {
+    id: 'events',
+    title: 'Eventi',
+    category: 'Generale',
+    intro: 'Come scoprire, filtrare e confermare il tuo interesse per batizados, rodas e altro.',
+    mockup: 'event',
+    steps: [
+      {
+        t: 'Esplora il calendario degli eventi',
+        d: 'La scheda "Eventi" mostra in alto un calendario interattivo e sotto l\'elenco eventi. Tocca una data qualsiasi per vedere gli eventi di quel giorno. Puoi alternare tra vista calendario e vista elenco con il pulsante nell\'angolo.',
+      },
+      {
+        t: 'Filtra per categoria e altro',
+        d: 'Tocca "Filtri" per aprire le opzioni avanzate: Categoria (batizado, roda, roda aperta, troca de corda, corso, lezione, workshop, seminario, festival, incontro, intensivo, allenamento), Prezzo (gratuito o a pagamento), Formato (in presenza o online), Date, Gruppo e Posizione.',
+        tip: 'Puoi combinare più filtri contemporaneamente. Un indicatore "Filtri attivi" appare vicino al pulsante quando i filtri sono applicati.',
+      },
+      {
+        t: 'Dettaglio evento',
+        d: 'Tocca un evento qualsiasi per vedere la descrizione completa, data e ora, posizione sulla mappa, tipo di evento, organizzatori e locandina se presente. Vedrai anche quante persone partecipano ("Partecipo") e quante hanno segnato interesse ("Interessato").',
+      },
+      {
+        t: 'Conferma "Partecipo" o "Interessato"',
+        d: 'Dal dettaglio dell\'evento, tocca "Interessato" per salvarlo nella tua lista, o "Partecipo" per confermare la presenza. Gli organizzatori possono vedere il conteggio totale per entrambi.',
+        tip: 'Gli eventi che hai segnato come "Partecipo" appaiono evidenziati nella tua schermata Home nella sezione "Prossimi eventi".',
+      },
+      {
+        t: 'Condividi un evento',
+        d: 'Usa il pulsante di condivisione nel dettaglio dell\'evento per inviarlo via WhatsApp, Instagram o altre app. Vengono condivisi il nome dell\'evento, la data e un link diretto.',
+      },
+    ],
+  },
+  {
+    id: 'your-profile',
+    title: 'Il tuo profilo',
+    category: 'Generale',
+    intro: 'Come gestire la tua identità, le notifiche e le impostazioni di accesso.',
+    steps: [
+      {
+        t: 'Le tre schede del profilo',
+        d: 'La scheda "Profilo" ha tre sezioni interne: "Riepilogo" (i tuoi prossimi eventi e la tua bio), "Notifiche" (richieste in sospeso da gruppo, scuola o educatore), e "Gestione" (se sei educatore, accesso alle tue scuole; se sei alunno, le scuole dove ti alleni).',
+      },
+      {
+        t: 'Modifica il tuo profilo',
+        d: 'Tocca l\'icona di modifica (matita) sulla tua foto profilo o sul nome per aprire il modulo di modifica. Puoi cambiare foto, nome, cognome e soprannome. Salva toccando "Salva".',
+        tip: 'Le foto vengono caricate dalla fotocamera o dalla galleria. Un\'immagine quadrata appare meglio nella foto profilo circolare.',
+      },
+      {
+        t: 'La tua corda e le tue graduazioni',
+        d: 'La tua corda attuale appare con il suo colore e nome sotto il tuo nome nel profilo. Se hai più di una graduazione registrata, tocca la tua corda per vedere la cronologia completa con la data di ogni cambio di livello.',
+      },
+      {
+        t: 'Impostazioni: lingua e tema',
+        d: 'Da "Profilo", tocca "Impostazioni". Lì puoi cambiare la lingua nella sezione "Lingua" e il tema visivo (chiaro o scuro) in "Modalità app". Le modifiche si applicano immediatamente.',
+      },
+      {
+        t: 'Notifiche in sospeso',
+        d: 'Nella scheda "Notifiche" del tuo profilo vedrai cinque tipi di richieste: "Richiesta di adesione al gruppo" (qualcuno vuole unirsi al tuo gruppo), "Richiesta educatore" (richiesta di relazione educatore-alunno), "Richiesta di adesione alla scuola" (qualcuno vuole unirsi alla tua scuola), "Richiesta di trasferimento scuola" (trasferimento di amministrazione in sospeso) e "Richiesta di collaborazione" (invito a co-organizzare un evento). Il badge rosso sulla scheda "Profilo" mostra quante non hai letto.',
+      },
+      {
+        t: 'Segnala un problema',
+        d: 'Vai su "Profilo" → "Impostazioni" → "Segnala un problema". La tua segnalazione va direttamente al team di sviluppo con le informazioni tecniche del dispositivo allegate automaticamente.',
+      },
+    ],
+  },
+  {
+    id: 'premium',
+    title: 'Piano Premium',
+    category: 'Generale',
+    intro: 'Cosa include il piano gratuito, cosa sblocca Premium e come abbonarsi.',
+    steps: [
+      {
+        t: 'Limiti del piano gratuito',
+        d: 'Con un account gratuito, gli educatori possono creare fino a 10 eventi al mese e gli alunni possono confermare la presenza a 1 roda al mese. Le funzioni di gestione scuola, presenze e pagamenti sono disponibili senza limiti per entrambi i ruoli.',
+        note: 'Gli alunni con piano gratuito vedono pubblicità all\'interno dell\'app.',
+      },
+      {
+        t: 'Cosa include Premium',
+        d: 'Premium sblocca eventi illimitati per gli educatori, fino a 5 rodas al mese per gli alunni, supporto prioritario e un\'esperienza senza pubblicità.',
+        tip: 'Il piano annuale è contrassegnato dal badge "MIGLIOR VALORE" ed è significativamente più economico del pagamento mensile.',
+      },
+      {
+        t: 'Come abbonarsi',
+        d: 'Vai su "Profilo" → "Abbonamento" oppure tocca il banner Premium che appare quando raggiungi un limite. Scegli il piano mensile o annuale e confirma il pagamento con il tuo account Google Play o App Store.',
+        note: 'I pagamenti sono elaborati in modo sicuro tramite Google Play / App Store. Agenda Capoeiragem non memorizza i dati della carta.',
+      },
+      {
+        t: 'Ripristina gli acquisti',
+        d: 'Se cambi dispositivo o reinstalli l\'app, vai su "Profilo" → "Abbonamento" → "Ripristina acquisti" per recuperare il tuo piano attivo senza pagare di nuovo.',
+        tip: 'Usa lo stesso account Google o Apple che hai usato per acquistare il piano.',
+      },
+    ],
+  },
+  {
+    id: 'join-a-school',
+    title: 'Unirsi a una scuola',
+    category: 'Praticanti',
+    intro: 'Come trovare una scuola vicina, inviare una richiesta e cosa succede dopo.',
+    steps: [
+      {
+        t: 'Trova una scuola sulla mappa',
+        d: 'Vai alla scheda "Gruppi" e usa la mappa interattiva per esplorare le scuole vicine a te. Tocca qualsiasi marcatore per vedere nome, gruppo, orari e l\'opzione per visualizzare il profilo completo.',
+      },
+      {
+        t: 'Richiedi di unirti con la "Richiesta guidata"',
+        d: 'Dal profilo della scuola, tocca "Richiesta guidata di adesione". Puoi includere un messaggio per presentarti all\'educatore. La tua richiesta apparirà nella sezione "Richieste" del pannello della scuola.',
+        tip: 'Se ti alleni già con un educatore che usa Agenda Capoeiragem, chiedigli di aggiungerti direttamente dal suo pannello per saltare il processo di richiesta.',
+      },
+      {
+        t: 'Attendi l\'approvazione',
+        d: 'La tua richiesta resta "In sospeso" finché l\'educatore non la approva o la rifiuta. Riceverai una notifica in "Profilo → Notifiche" quando c\'è una risposta.',
+        warn: 'Solo l\'educatore può approvare le richieste. Se non ricevi risposta entro pochi giorni, prova a contattare l\'educatore tramite un altro canale.',
+      },
+      {
+        t: 'Accedi alle tue lezioni e al tuo monitoraggio',
+        d: 'Una volta approvata, la scuola appare nella scheda "Profilo" → "Gestione". Lì vedrai la tua cronologia di presenze mese per mese e il tuo stato di pagamento se la scuola gestisce le quote.',
+      },
+    ],
+  },
+  {
+    id: 'your-history',
+    title: 'La tua storia personale',
+    category: 'Praticanti',
+    intro: 'Come visualizzare le tue presenze mensili, le tue graduazioni e gli eventi a cui hai partecipato.',
+    steps: [
+      {
+        t: 'Presenze di questo mese',
+        d: 'Vai su "Profilo" → scheda "Gestione" → la tua scuola. Vedrai la tua percentuale di presenza per il mese corrente e l\'elenco delle lezioni con un indicatore presente o assente per ciascuna.',
+      },
+      {
+        t: 'Cronologia delle graduazioni',
+        d: 'Dal tuo profilo, tocca la tua corda attuale per espandere la cronologia completa con la data di ogni cambio di livello. Il registro è permanente e visibile pubblicamente sul tuo profilo.',
+      },
+      {
+        t: 'Stato di pagamento',
+        d: 'Se la tua scuola gestisce i pagamenti, nella scheda "Gestione" vedrai il tuo stato di pagamento per il mese: "In sospeso", "Pagato" o "Scaduto". Solo l\'educatore può registrare i tuoi pagamenti.',
+        note: 'Il tuo stato di pagamento è visibile solo a te e al tuo educatore. Non è un\'informazione pubblica.',
+      },
+      {
+        t: 'Eventi confermati',
+        d: 'Nella scheda "Riepilogo" del tuo profilo vedrai i prossimi eventi a cui hai confermato "Partecipo". Puoi visualizzare il dettaglio di ognuno toccando direttamente il nome dell\'evento dal tuo profilo.',
+      },
+    ],
+  },
+  {
+    id: 'create-group',
+    title: 'Creare il tuo gruppo',
+    category: 'Educatori',
+    intro: 'Come registrare il tuo gruppo di capoeira sulla piattaforma e configurare le sue informazioni.',
+    steps: [
+      {
+        t: 'Accedi al modulo di creazione',
+        d: 'Tocca il pulsante "+" flottante nella schermata Home → "Crea gruppo". Puoi anche andare alla scheda "Gruppi" e toccare "Crea gruppo" nell\'angolo superiore.',
+        note: 'Solo gli utenti con il ruolo di Educatore possono creare gruppi. Controlla il tuo ruolo in "Profilo → Impostazioni".',
+      },
+      {
+        t: 'Nome e descrizione',
+        d: 'Inserisci il nome ufficiale del tuo gruppo e una descrizione. Entrambi sono obbligatori. Il nome apparirà nella directory globale, sui profili dei membri e su tutti gli eventi che organizzi.',
+      },
+      {
+        t: 'Stile di capoeira (obbligatorio)',
+        d: 'Nel campo "Stile di capoeira *", digita lo stile che praticate (es. Misto, Benguela, Angola, Regional). È un campo di testo libero ed è obbligatorio. Questo testo viene usato come nome del tuo sistema di graduazione e determina come vengono etichettate le tue corde.',
+        tip: 'Il campo "Città" è opzionale — puoi compilarlo ora o dopo da "Modifica gruppo".',
+      },
+      {
+        t: 'Logo del gruppo (opzionale)',
+        d: 'Carica il logo del tuo gruppo dalla tua galleria. Apparirà nel profilo del gruppo, nelle scuole e nella card del gruppo che i tuoi alunni vedono nella schermata Home.',
+      },
+      {
+        t: 'Crea il gruppo',
+        d: 'Tocca "Crea". Se il nome non è duplicato, il gruppo viene creato immediatamente. L\'app chiederà se vuoi configurare il sistema di graduazione ora o dopo.',
+      },
+      {
+        t: 'Invita membri',
+        d: 'Dopo aver creato il gruppo, condividi il suo nome con i tuoi alunni. Lo cercheranno nella scheda "Gruppi" → directory e richiederanno di unirsi. Puoi anche aggiungerli direttamente dal pannello di amministrazione della tua scuola, oppure possono collegarsi durante il proprio onboarding.',
+        tip: 'Non esiste un codice di invito: il flusso standard è che gli alunni ti trovino nella directory, o che tu li aggiunga dal pannello della scuola.',
+      },
+    ],
+  },
+  {
+    id: 'manage-group',
+    title: 'Gestire il tuo gruppo',
+    category: 'Educatori',
+    intro: 'Come gestire i membri, i ruoli di amministrazione e le informazioni del gruppo.',
+    steps: [
+      {
+        t: 'Pannello di amministrazione del gruppo',
+        d: 'Vai al profilo del tuo gruppo e tocca il pulsante di amministrazione (visibile solo agli admin e co-admin). Accederai alle opzioni per gestire membri, ruoli e configurazione del gruppo.',
+        note: 'Come creatore del gruppo, sei l\'admin principale. Solo tu puoi trasferire l\'amministrazione completa a un\'altra persona.',
+      },
+      {
+        t: 'Approva o rifiuta le richieste di adesione',
+        d: 'In "Richieste" sul pannello del gruppo vedrai le richieste in sospeso con il nome del richiedente e il suo messaggio se ha usato la richiesta guidata. Tocca "Approva" o "Rifiuta" per rispondere a ciascuna.',
+      },
+      {
+        t: 'Assegna ruoli: admin e co-admin',
+        d: 'Dal profilo di un membro nel pannello del gruppo, puoi assegnargli il ruolo "Co-admin" (accesso al pannello) o promuoverlo ad "Admin". Puoi anche usare l\'opzione "Lascia ruolo admin" per rimuovere il ruolo.',
+        warn: '"Trasferisci amministrazione" passa il controllo completo del gruppo a un altro utente. Questa azione è irreversibile: perderai il ruolo di admin principale.',
+      },
+      {
+        t: 'Modifica le informazioni del gruppo',
+        d: 'Vai al profilo del gruppo → icona di modifica. Puoi cambiare nome, descrizione, logo, stile di capoeira e città. Le modifiche si applicano immediatamente e si riflettono nella directory pubblica.',
+      },
+      {
+        t: 'Rimuovi un membro',
+        d: 'Dall\'elenco membri nel pannello, tocca il nome di un membro e scegli "Rimuovi dal gruppo". Il membro perde l\'accesso ai contenuti del gruppo ma conserva la sua cronologia delle graduazioni.',
+        warn: 'Rimuovere un membro è reversibile: può richiedere di unirsi nuovamente al gruppo.',
+      },
+    ],
+  },
+  {
+    id: 'educational-supervision',
+    title: 'Supervisione educativa',
+    category: 'Educatori',
+    intro: 'Come assegnare un educatore supervisore per gli alunni della tua scuola e come funziona la gerarchia.',
+    steps: [
+      {
+        t: 'Cos\'è la supervisione educativa',
+        d: 'La supervisione educativa è la relazione gerarchica tra educatori dello stesso gruppo. Un educatore più esperto può supervisionare il progresso degli alunni di un altro educatore, particolarmente utile quando si trovano in città o paesi diversi.',
+        note: 'La schermata di supervisione si chiama "SUPERVISIONE EDUCATIVA" all\'interno del pannello della scuola.',
+      },
+      {
+        t: 'Supervisione automatica (stessa scuola)',
+        d: 'Se il supervisore e gli alunni condividono la stessa scuola, la supervisione è automatica. L\'app mostrerà il badge "Stessa scuola" nel profilo dell\'alunno all\'interno del pannello del supervisore.',
+      },
+      {
+        t: 'Supervisione manuale (fuori dalla scuola)',
+        d: 'Se il supervisore si trova in una scuola diversa, puoi assegnarlo manualmente. Nella schermata di supervisione, tocca "Seleziona educatore supervisore" e cerca per nome. Gli alunni supervisionati mostreranno il badge "Fuori dalla tua scuola".',
+        tip: 'Solo gli educatori dello stesso gruppo possono essere assegnati come supervisori. Non è possibile supervisionare alunni di gruppi diversi.',
+      },
+      {
+        t: 'Visualizza l\'albero di supervisione',
+        d: 'L\'albero di supervisione è visibile nella scheda "Gerarchia" del profilo del gruppo. Mostra le relazioni tra educatori e quali alunni sono sotto la supervisione di ciascuno — l\'albero "da mestre ad apprendista" del tuo gruppo.',
+      },
+    ],
+  },
+  {
+    id: 'school-setup',
+    title: 'Creare la tua scuola',
+    category: 'Educatori',
+    intro: 'Come creare la tua scuola, posizionarla sulla mappa e configurare gli orari di allenamento.',
+    mockup: 'map',
+    steps: [
+      {
+        t: 'Accedi al modulo di creazione',
+        d: 'Tocca il pulsante "+" flottante nella schermata Home → "Crea scuola". Puoi anche andare alla scheda "Gruppi" → profilo del tuo gruppo → scheda "Scuole" → pulsante "Crea scuola".',
+        note: 'Devi essere admin o co-admin di un gruppo per creare una scuola. Se hai appena creato il tuo gruppo, hai già automaticamente quel ruolo.',
+      },
+      {
+        t: 'Compila nome e posizione',
+        d: 'Completa i campi obbligatori: "Nome scuola" (es. Scuola Centro), "Posizione" (indirizzo completo del tuo luogo di allenamento), "Paese" e "Città".',
+        tip: 'Dopo aver inserito l\'indirizzo, tocca la mappa per aprire il selettore di posizione e trascina il marcatore nel punto esatto. Questo è ciò che appare nella directory globale.',
+      },
+      {
+        t: 'Aggiungi orari di allenamento',
+        d: 'Nella sezione "Orari di allenamento", tocca "Aggiungi orario". Seleziona il giorno della settimana, l\'orario di inizio e quello di fine. Aggiungi tutti gli orari di cui hai bisogno. È richiesto almeno un orario per creare la scuola.',
+        tip: 'Ogni orario può essere collegato a un gruppo di lezione. Se ti alleni con livelli diversi in orari diversi, aggiungili separatamente.',
+      },
+      {
+        t: 'Crea la scuola',
+        d: 'Tocca "Crea scuola". Se tutti i campi sono completi, la scuola viene creata e apparirà sulla mappa globale e nella directory. Verrai portato automaticamente al pannello di amministrazione della scuola.',
+      },
+      {
+        t: 'Modifica o disattiva',
+        d: 'Per modificare nome, indirizzo o orari, vai al profilo della scuola → icona di modifica. Se smetti di allenarti in quel luogo, puoi disattivare la scuola in modo che non appaia nella directory senza perdere la cronologia.',
+      },
+    ],
+  },
+  {
+    id: 'co-educators',
+    title: 'Co-educatori',
+    category: 'Educatori',
+    intro: 'Come aggiungere co-educatori alla tua scuola e gestire i loro permessi.',
+    steps: [
+      {
+        t: 'Cos\'è un co-educatore',
+        d: 'Un co-educatore è un educatore dello stesso gruppo che aiuta a gestire la tua scuola. Ha accesso al pannello di amministrazione: può registrare lezioni, segnare presenze e registrare pagamenti, ma non può modificare la configurazione della scuola né trasferire l\'amministrazione.',
+      },
+      {
+        t: 'Aggiungi un co-educatore',
+        d: 'Vai al profilo della tua scuola → sezione "Co-educatori" → tocca "Aggiungi co-educatore". Cerca l\'educatore per nome (deve essere membro dello stesso gruppo con il ruolo di Educatore). Tocca il suo nome e confirma.',
+        note: 'Solo gli utenti con il ruolo di Educatore all\'interno dello stesso gruppo possono essere co-educatori.',
+      },
+      {
+        t: 'Rimuovi un co-educatore',
+        d: 'Nella sezione "Co-educatori" del profilo della scuola, tocca il nome del co-educatore e scegli "Rimuovi co-educatore". L\'azione è immediata e l\'educatore perde l\'accesso al pannello della scuola.',
+        warn: 'Rimuovere un co-educatore non elimina alcun dato. Tutta la cronologia di lezioni e pagamenti che ha registrato resta nel sistema.',
+      },
+      {
+        t: 'Lascia il ruolo di co-educatore',
+        d: 'Se sei co-educatore in una scuola e non vuoi più esserlo, vai al profilo della scuola → sezione "Co-educatori" → "Lascia ruolo co-educatore". Puoi farlo anche da "Profilo → Gestione → [nome scuola]" → "Lascia ruolo".',
+      },
+      {
+        t: 'Trasferisci l\'amministrazione della scuola',
+        d: 'Per passare il controllo completo della scuola a un altro educatore, vai al profilo della scuola → "Trasferisci amministrazione". Il destinatario deve essere un co-educatore attivo della scuola.',
+        warn: '"Trasferisci amministrazione" è irreversibile: passi il controllo completo all\'altra persona. Il nuovo admin potrà modificare tutte le impostazioni della scuola.',
+      },
+    ],
+  },
+  {
+    id: 'school-requests',
+    title: 'Richieste di adesione alla scuola',
+    category: 'Educatori',
+    intro: 'Come gestire le richieste di adesione alla tua scuola dal pannello di amministrazione.',
+    steps: [
+      {
+        t: 'Visualizza le richieste in sospeso',
+        d: 'Vai al profilo della tua scuola → pulsante "Gestisci" → scheda "Richieste". Vedrai tutte le richieste di adesione in sospeso. Ogni card mostra nome, foto, data e il messaggio del richiedente (se ha usato la richiesta guidata).',
+      },
+      {
+        t: 'Approva una richiesta',
+        d: 'Tocca "Approva" sulla card del richiedente. L\'alunno riceverà una notifica di essere stato accettato e inizierà ad apparire nel tuo elenco alunni. Puoi assegnarlo immediatamente a un gruppo di lezione dalla scheda "Alunni".',
+      },
+      {
+        t: 'Rifiuta una richiesta',
+        d: 'Tocca "Rifiuta" sulla card del richiedente. L\'alunno riceverà una notifica che la sua richiesta non è stata approvata.',
+        tip: 'Se rifiuti qualcuno per errore, l\'alunno può inviare una nuova richiesta.',
+      },
+      {
+        t: 'Cronologia delle richieste elaborate',
+        d: 'Sotto le richieste in sospeso troverai la cronologia delle richieste già elaborate: approvate (badge "Accettata") e rifiutate (badge "Rifiutata"). Le richieste elaborate restano nella cronologia e non possono essere eliminate.',
+      },
+    ],
+  },
+  {
+    id: 'students-and-classes',
+    title: 'Alunni e gruppi di lezione',
+    category: 'Educatori',
+    intro: 'Come visualizzare i tuoi alunni, aggiungere membri senza account e organizzarli per gruppo di lezione.',
+    mockup: 'attendance',
+    steps: [
+      {
+        t: 'Il pannello di amministrazione della scuola',
+        d: 'Accedi da "Profilo" → scheda "Gestione" → la tua scuola, oppure dal profilo della scuola toccando il pulsante admin. Troverai quattro schede: "Alunni", "Presenze", "Pagamenti" e "Report".',
+      },
+      {
+        t: 'Visualizza l\'elenco alunni',
+        d: 'Nella scheda "Alunni" vedrai tutti i membri collegati alla tua scuola con nome, corda attuale e percentuale di presenza mensile. Se non ci sono membri, l\'app mostra "Nessun membro".',
+      },
+      {
+        t: 'Aggiungi un alunno senza account (membro fantasma)',
+        d: 'Scorri nella scheda "Alunni" fino alla sezione "Alunni senza account". Tocca "Aggiungi alunno" per registrare manualmente un alunno che non usa l\'app. Inserisci il suo nome e i dettagli di base.',
+        note: 'I membri fantasma possono ricevere graduazioni e avere registri di presenze e pagamenti, ma non possono accedere all\'app. Quando si registrano, puoi collegare il loro profilo per preservare la cronologia completa.',
+      },
+      {
+        t: 'Crea e gestisci gruppi di lezione',
+        d: 'Accedi alla gestione della scuola (icona ingranaggio o pulsante "Gestisci"). Lì puoi creare gruppi di lezione — insiemi di alunni organizzati per orario. Crea uno per ogni fascia orario (es. "Lun e Mer 19:00") e assegna gli alunni a ciascuno.',
+        tip: 'Organizzare gli alunni in gruppi di lezione rende le presenze molto più veloci: la schermata presenze mostra solo gli alunni della fascia orario selezionata.',
+      },
+      {
+        t: 'Visualizza il profilo di un singolo alunno',
+        d: 'Tocca il nome di un alunno qualsiasi per vedere il suo profilo: nome, corda, percentuale di presenza del mese corrente, cronologia delle presenze mese per mese e registro pagamenti.',
+      },
+    ],
+  },
+  {
+    id: 'attendance',
+    title: 'Controllo presenze',
+    category: 'Educatori',
+    intro: 'Come registrare la lezione di oggi, segnare presenti e assenti, e rivedere la cronologia.',
+    mockup: 'attendance',
+    steps: [
+      {
+        t: 'Registra la lezione di oggi',
+        d: 'Nel pannello di amministrazione della scuola → scheda "Presenze", vedrai "Nessuna lezione questo mese" se è la prima. Tocca "Registra lezione di oggi" per aprire il modulo della sessione.',
+      },
+      {
+        t: 'Seleziona orario e gruppo di lezione',
+        d: 'Nel modulo della sessione, seleziona l\'orario di oggi (uno di quelli configurati alla creazione della scuola) e il gruppo di lezione corrispondente. L\'app caricherà automaticamente gli alunni di quel gruppo.',
+        tip: 'Se non hai gruppi di lezione configurati, l\'elenco mostrerà tutti gli alunni della scuola.',
+      },
+      {
+        t: 'Segna presenti e assenti',
+        d: 'Tocca il nome di ogni alunno per alternare tra presente (✓ verde) e assente. L\'elenco mostra prima gli alunni del gruppo di lezione selezionato, poi il resto della scuola, così i gruppi non si mescolano.',
+      },
+      {
+        t: 'Salva la lezione',
+        d: 'Tocca "Salva lezione". L\'app mostra una finestra di conferma con il conteggio di presenti e assenti. Tocca "Confirma" per registrare la sessione nel cloud. La percentuale di presenza di ogni alunno si aggiorna automaticamente.',
+      },
+      {
+        t: 'Rivedi le sessioni precedenti',
+        d: 'Nella scheda "Presenze", le sessioni appaiono in ordine cronologico. Tocca una sessione passata qualsiasi per vedere il dettaglio completo: chi era presente, chi era assente, e data e ora della registrazione.',
+      },
+    ],
+  },
+  {
+    id: 'payments',
+    title: 'Pagamenti e tesoreria',
+    category: 'Educatori',
+    intro: 'Come registrare le quote mensili, tracciare chi deve pagare ed esportare report.',
+    mockup: 'finances',
+    steps: [
+      {
+        t: 'La scheda "Pagamenti"',
+        d: 'Nel pannello di amministrazione della scuola, vai alla scheda "Pagamenti". Ogni alunno appare con il suo stato di pagamento del mese corrente: "In sospeso", "Pagato", "Pagato (in ritardo)", "Scaduto" o "Gratuito". Gli stati sono calcolati automaticamente in base alla data.',
+        warn: 'Se il mese è iniziato e un alunno non ha un pagamento registrato, il suo stato cambia automaticamente in "In sospeso" e poi in "Scaduto" dopo la data di scadenza configurata.',
+      },
+      {
+        t: 'Registra il pagamento di un alunno',
+        d: 'Tocca il nome dell\'alunno nella scheda "Pagamenti" e poi tocca "Registra pagamento". Inserisci l\'importo e seleziona il mese corrispondente. Lo stato dell\'alunno cambia immediatamente in "Pagato".',
+        tip: 'Puoi registrare pagamenti anticipati per gli alunni che pagano in anticipo. Seleziona semplicemente il mese futuro corrispondente.',
+      },
+      {
+        t: 'Vedi chi ha pagamenti in sospeso o scaduti',
+        d: 'Nell\'elenco della scheda "Pagamenti" puoi vedere a colpo d\'occhio lo stato di tutti gli alunni. Gli stati "In sospeso" e "Scaduto" sono evidenziati. Vedrai anche il giorno di scadenza configurato.',
+      },
+      {
+        t: 'Genera ed esporta il report mensile',
+        d: 'Vai alla scheda "Report" del pannello della scuola. Seleziona il formato (CSV per Excel o Google Sheets, o PDF per stampare o condividere) e tocca "Genera report".',
+        tip: 'CSV è ideale per l\'analisi su foglio di calcolo. PDF è utile per condividere con l\'amministrazione del gruppo o per archiviare.',
+      },
+    ],
+  },
+  {
+    id: 'graduations',
+    title: 'Sistema di graduazione',
+    category: 'Educatori',
+    intro: 'Come configurare le corde del tuo gruppo e registrare i cambi di livello.',
+    mockup: 'graduation',
+    steps: [
+      {
+        t: 'Accedi al sistema di graduazione',
+        d: 'Vai al profilo del tuo gruppo → scheda "Graduazioni". Se non ci sono ancora livelli configurati, vedrai "Nessun livello di graduazione definito" e un pulsante "Configura sistema ora".',
+      },
+      {
+        t: 'Crea un livello di corda',
+        d: 'Tocca "Aggiungi livello" o "Crea livello". Inserisci il nome della corda (es. "Corda Verde-Gialla"), seleziona i colori che la compongono e indica se ha punte colorate e quante. Salva il livello.',
+        tip: 'Il colore visivo di ogni livello appare nei profili degli alunni e nella directory pubblica. Configuralo fedelmente in base alla corda reale.',
+      },
+      {
+        t: 'Organizza per categoria',
+        d: 'I livelli sono organizzati automaticamente in sezioni: "Sistema Adulti", "Sistema Giovani", "Sistema Bambini", "Istruttori in formazione" e "Livelli speciali". Assegna la categoria corretta quando crei o modifichi ogni livello.',
+      },
+      {
+        t: 'Definisci il livello educatore',
+        d: 'Puoi indicare a partire da quale corda un alunno è considerato "educatore" nel gruppo. Questo determina chi ha accesso alla creazione di scuole e agli strumenti di gestione.',
+      },
+      {
+        t: 'Assegna una graduazione',
+        d: 'Nel profilo del gruppo → "Graduazioni" → "Assegna graduazione". Trova l\'alunno, seleziona il nuovo livello e la data. La modifica viene registrata permanentemente nella cronologia dell\'alunno e la nuova corda appare immediatamente nel suo profilo.',
+        tip: 'Puoi assegnare graduazioni in blocco per un batizado: seleziona più alunni contemporaneamente, scegli livello e data, e tutti vengono graduati in un unico passaggio.',
+      },
+      {
+        t: 'Visualizza la cronologia delle graduazioni di un alunno',
+        d: 'Tocca il nome di un membro qualsiasi del gruppo. Il suo profilo mostra la corda attuale con il suo colore. Tocca la corda per vedere la cronologia completa: ogni cambio di livello con data. La cronologia non può essere eliminata.',
+      },
+    ],
+  },
+  {
+    id: 'manage-events',
+    title: 'Creare e gestire eventi',
+    category: 'Educatori',
+    intro: 'Come pubblicare un batizado, una roda o un workshop per la comunità.',
+    mockup: 'event',
+    steps: [
+      {
+        t: 'Crea un evento',
+        d: 'Tocca il pulsante "+" flottante nella schermata Home → "Nuovo evento". Puoi anche andare alla scheda "Eventi" e toccare "Nuovo evento" nell\'angolo superiore.',
+      },
+      {
+        t: 'Compila i dettagli dell\'evento',
+        d: 'Il modulo include: nome evento, categoria (batizado, roda, roda aperta, troca de corda, corso, lezione, workshop, seminario, festival, incontro, intensivo o sessione di allenamento), data, orario di inizio e di fine.',
+      },
+      {
+        t: 'Aggiungi una descrizione e una locandina',
+        d: 'Inserisci la descrizione con tutti i dettagli rilevanti (prezzo, requisiti, cosa portare, ecc.). Carica un\'immagine di copertina (locandina) dalla tua galleria per dare visibilità all\'evento.',
+        tip: 'Gli eventi con locandina ottengono maggiore visibilità nei feed dei membri. Un\'immagine verticale con buona risoluzione appare meglio.',
+      },
+      {
+        t: 'Posiziona la posizione sulla mappa',
+        d: 'Inserisci l\'indirizzo dell\'evento. L\'app apre il selettore di mappa dove puoi trascinare il marcatore nella posizione esatta. I partecipanti vedranno la posizione e potranno aprire la navigazione direttamente dall\'evento.',
+      },
+      {
+        t: 'Gestisci co-organizzatori e partecipanti',
+        d: 'Dopo aver creato l\'evento, puoi aggiungere co-organizzatori nel menu di modifica → "Collaboratori". I co-organizzatori possono modificare l\'evento e vedere l\'elenco completo di chi ha segnato "Partecipo" o "Interessato".',
+      },
+    ],
+  },
+  {
+    id: 'reports-kpi',
+    title: 'Report e KPI',
+    category: 'Educatori',
+    intro: 'Come rivedere le metriche della tua scuola ed esportare dati per analisi esterne.',
+    mockup: 'kpi',
+    steps: [
+      {
+        t: 'Barra delle metriche rapide',
+        d: 'In alto nel pannello di amministrazione della scuola vedrai una barra KPI: numero di alunni, lezioni svolte questo mese, percentuale media di presenza, numero di alunni pagati e numero di scaduti.',
+      },
+      {
+        t: 'La scheda "Report"',
+        d: 'Vai al pannello della scuola → scheda "Report". Il sottotitolo dice "Presenze, pagamenti e statistiche della scuola". Qui generi il report mensile con tutte le informazioni consolidate.',
+      },
+      {
+        t: 'Scegli il formato del report',
+        d: 'Seleziona il formato di cui hai bisogno: "CSV" per aprire in Excel o Google Sheets per un\'analisi personalizzata, o "PDF" per un documento pronto da condividere o stampare.',
+      },
+      {
+        t: 'Genera ed esporta',
+        d: 'Tocca "Genera report". L\'app crea il file con un riepilogo mensile: alunni attivi, sessioni svolte, percentuale di presenza complessiva e stato di pagamento per alunno. Puoi condividerlo direttamente dalla schermata di esportazione.',
+        tip: 'Genera il report alla fine di ogni mese per mantenere una registrazione storica della salute della tua scuola.',
+      },
+    ],
+  },
+]
+
 // ─── Copy per locale ──────────────────────────────────────────────────────────
 
 const COPY = {
@@ -2479,6 +3683,20 @@ const COPY = {
     heroTitle: 'Tutoriels Agenda Capoeiragem',
     heroSubtitle: 'Guides pas à pas pour les élèves, les voyageurs et les éducateurs. Apprenez chaque fonctionnalité avec les textes exacts que vous verrez dans l\'app.',
     sections: SECTIONS_FR,
+  },
+  de: {
+    title: 'Capoeira Tutorials',
+    eyebrow: 'Dokumentation',
+    heroTitle: 'Agenda Capoeiragem Tutorials',
+    heroSubtitle: 'Schritt-für-Schritt-Anleitungen für Schüler, Reisende und Lehrer. Lerne jede Funktion mit dem genauen Text, den du in der App siehst.',
+    sections: SECTIONS_DE,
+  },
+  it: {
+    title: 'Tutorial di Capoeira',
+    eyebrow: 'Documentazione',
+    heroTitle: 'Tutorial di Agenda Capoeiragem',
+    heroSubtitle: 'Guide passo dopo passo per alunni, viaggiatori ed educatori. Impara ogni funzione con il testo esatto che vedrai nell\'app.',
+    sections: SECTIONS_IT,
   },
 } as const
 

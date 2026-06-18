@@ -83,6 +83,36 @@ const COPY = {
     backCountry: (country: string) => `← Capoeira en ${country}`,
     back: '← Annuaire mondial',
   },
+  de: {
+    title: (city: string, country: string) => `Capoeira in ${city}, ${country}`,
+    h1: (city: string) => `Capoeira-Kurse in ${city}`,
+    description: (city: string, country: string, n: number) =>
+      `Capoeira-Kurse in ${city}, ${country}. ${n} Trainings${n === 1 ? 'ort' : 'orte'} — Zeitpläne, Adresse und Kontakt für jede Gruppe.`,
+    keywords: (city: string, country: string) => [
+      `capoeira in ${city}`, `capoeira kurs ${city}`,
+      `capoeira ${city} ${country}`, `capoeira gruppen ${city}`,
+      `wo capoeira trainieren ${city}`, `capoeira in der nähe ${city}`,
+      `capoeira schule ${city}`, `capoeira akademie ${city}`,
+    ],
+    nucleos: 'Trainingsorte',
+    backCountry: (country: string) => `← Capoeira in ${country}`,
+    back: '← Globales Verzeichnis',
+  },
+  it: {
+    title: (city: string, country: string) => `Capoeira a ${city}, ${country}`,
+    h1: (city: string) => `Corsi di capoeira a ${city}`,
+    description: (city: string, country: string, n: number) =>
+      `Corsi di capoeira a ${city}, ${country}. ${n} ${n === 1 ? 'luogo' : 'luoghi'} dove allenarsi — orari, indirizzo e contatto di ogni gruppo.`,
+    keywords: (city: string, country: string) => [
+      `capoeira a ${city}`, `corsi di capoeira a ${city}`,
+      `capoeira ${city} ${country}`, `gruppi capoeira ${city}`,
+      `dove allenarsi capoeira ${city}`, `capoeira vicino a ${city}`,
+      `scuola capoeira ${city}`, `accademia capoeira ${city}`,
+    ],
+    nucleos: 'Luoghi per allenarsi',
+    backCountry: (country: string) => `← Capoeira a ${country}`,
+    back: '← Directory globale',
+  },
 } as const
 
 type Locale = keyof typeof COPY
@@ -90,7 +120,7 @@ const getCopy = (locale: string) => COPY[locale as Locale] ?? COPY.es
 
 export async function generateStaticParams() {
   const nucleos = await getAllNucleos().catch(() => [])
-  const locales = ['es', 'pt', 'en', 'fr']
+  const locales = ['es', 'pt', 'en', 'fr', 'de', 'it']
   const pairs = [...new Map(
     nucleos
       .filter((n) => n.country && n.city)

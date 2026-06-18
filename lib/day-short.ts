@@ -3,6 +3,8 @@ const DAY_SHORT = {
   pt: ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sá'],
   en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
   fr: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+  de: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+  it: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
 } as const
 
 export function getDayShort(locale: string) {

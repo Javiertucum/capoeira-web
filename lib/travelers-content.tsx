@@ -15,6 +15,8 @@ export const TRAVELERS_SLUG_BY_LOCALE = {
   pt: 'capoeira-para-viajantes',
   en: 'capoeira-for-travelers',
   fr: 'capoeira-pour-voyageurs',
+  de: 'capoeira-fuer-reisende',
+  it: 'capoeira-per-viaggiatori',
 } as const
 
 type Locale = keyof typeof TRAVELERS_SLUG_BY_LOCALE
@@ -188,6 +190,80 @@ const COPY: Record<Locale, TravelersCopy> = {
     breadcrumbHome: 'Accueil',
     breadcrumbCurrent: 'Capoeira pour Voyageurs',
   },
+  de: {
+    title: 'Capoeira für Reisende — Trainiere in jedem Land der Welt',
+    description:
+      'Auf Reisen und willst weiter Capoeira trainieren? Finde verifizierte Gruppen in jeder Stadt der Welt. Globales Verzeichnis mit Zeitplänen und direktem Kontakt.',
+    h1: 'Capoeira für Reisende',
+    subtitle: 'Trainiere, wo du auch bist. Capoeira kennt keine Grenzen.',
+    intro: [
+      'Capoeira ist eine der wenigen Kampfkünste mit einer wirklich globalen Community. In fast jeder Stadt der Welt gibt es eine Gruppe, die trainiert, eine Roda, die spielt, einen Mestre, der unterrichtet. Agenda Capoeiragem ist das globale Verzeichnis, das reisende Capoeiristas mit lokalen Gruppen verbindet — unabhängig von Land, Sprache oder Niveau.',
+      'Ob du geschäftlich in Tokio bist, einen Monat in Berlin verbringst oder durch Südamerika reist: Du kannst auf der Karte suchen, Zeitpläne ansehen und die Gruppe kontaktieren, bevor du ankommst. Capoeira ist eine Community: Es gibt immer eine offene Tür.',
+    ],
+    ctaLabel: 'Gruppen auf der Karte finden →',
+    howToTitle: 'Wie findest du eine Capoeira-Gruppe an deinem Reiseziel?',
+    steps: [
+      { title: 'Suche dein Reiseziel auf der Karte', text: 'Nutze das globale Verzeichnis von Agenda Capoeiragem. Gib die Stadt oder das Land ein, in das du reist, und sieh alle registrierten Gruppen mit ihren Standorten.' },
+      { title: 'Prüfe Zeitpläne und Niveaus', text: 'Jede Gruppe zeigt ihre Trainingstage und -zeiten an. Manche Gruppen haben Kurse für alle Niveaus, andere sind fortgeschrittener. Stelle sicher, dass der Zeitplan zu deinem Besuch passt.' },
+      { title: 'Kontaktiere die Gruppe vor deiner Ankunft', text: 'Die meisten Gruppen haben WhatsApp oder Instagram. Stelle dich vor, erzähle, dass du Capoeira trainierst und in der Stadt sein wirst. In der Capoeira sind Besucher immer willkommen.' },
+      { title: 'Komme mit der Einstellung eines Schülers', text: 'Auch wenn du fortgeschritten bist, komm mit Bescheidenheit. Jede Gruppe hat ihre eigene Arbeitsweise, ihre Linie und Traditionen. Beobachten, bevor man Vorschläge macht, wird immer geschätzt.' },
+    ],
+    etiquetteTitle: 'Etikette in besuchten Schulen',
+    etiquette: [
+      'Stelle dich immer dem Mestre oder Gruppenleiter vor, bevor du trainierst',
+      'Erwähne deinen Capoeira-Namen, deine Graduierung und bei wem du trainierst — das schafft sofort Vertrauen',
+      'Respektiere die Rituale der Gruppe: Jede Schule hat ihre eigene Art, die Roda zu öffnen',
+      'Wenn du die Landessprache nicht sprichst, spricht Capoeira für dich — das Jogo ist universell',
+      'Ein kleiner finanzieller Beitrag (falls die Gruppe ihn vorschlägt) wird immer geschätzt',
+    ],
+    faqTitle: 'Häufig gestellte Fragen',
+    faq: [
+      { q: 'Brauche ich Erfahrung, um einer besuchten Gruppe beizutreten?', a: 'Nicht unbedingt. Viele Gruppen heißen sowohl Anfänger als auch erfahrene Capoeiristas willkommen. Am wichtigsten ist, dein Niveau bei der Kontaktaufnahme mitzuteilen, damit man dich zur passenden Klasse führen kann.' },
+      { q: 'Sollte ich die Gruppe vorher benachrichtigen?', a: 'Ja, es wird immer empfohlen, vorher Kontakt aufzunehmen. Eine WhatsApp- oder Instagram-Nachricht reicht aus. Sich vorher vorzustellen zeigt Respekt und ermöglicht der Gruppe, sich auf deinen Besuch vorzubereiten.' },
+      { q: 'Wie viel kostet eine Klasse als Besucher?', a: 'Das ist von Gruppe zu Gruppe unterschiedlich. Manche verlangen nichts von Besuchern als Geste der Capoeira-Solidarität. Andere bitten um einen symbolischen Beitrag. Frage die Gruppe direkt bei der Kontaktaufnahme.' },
+      { q: 'Was, wenn die Gruppe eine andere Sprache spricht?', a: 'Capoeira hat ihre eigene universelle Sprache — Bewegung, Musik und das Jogo werden ohne Worte verstanden. Grundlegende portugiesische Kommandos werden weltweit erkannt. Mit einem Lächeln und einer offenen Einstellung ist Sprache selten ein Hindernis.' },
+      { q: 'Wie erkenne ich, ob eine Gruppe seriös und qualitativ hochwertig ist?', a: 'Bei Agenda Capoeiragem sind Gruppen verifiziert und ihre Lehrer haben öffentliche Profile mit ihrer Linie und ihrem Werdegang. Du kannst echte Zeitpläne und die Geschichte der Gruppe sehen, bevor du Kontakt aufnimmst.' },
+    ],
+    breadcrumbHome: 'Start',
+    breadcrumbCurrent: 'Capoeira für Reisende',
+  },
+  it: {
+    title: 'Capoeira per Viaggiatori — Allenati in Qualsiasi Paese del Mondo',
+    description:
+      'In viaggio e vuoi continuare ad allenarti in capoeira? Trova gruppi verificati in qualsiasi città del mondo. Directory globale con orari e contatto diretto.',
+    h1: 'Capoeira per Viaggiatori',
+    subtitle: 'Allenati ovunque tu sia. La capoeira non ha confini.',
+    intro: [
+      'La capoeira è una delle poche arti marziali con una comunità davvero globale. In quasi ogni città del mondo c\'è un gruppo che si allena, una roda che suona, un mestre che insegna. Agenda Capoeiragem è la directory globale che collega i capoeiristi in viaggio con i gruppi locali — indipendentemente dal paese, dalla lingua o dal livello.',
+      'Che tu sia a Tokyo per lavoro, passi un mese a Berlino o stia girando il Sud America, puoi cercare sulla mappa, controllare gli orari e contattare il gruppo prima di arrivare. La capoeira è una comunità: c\'è sempre una porta aperta.',
+    ],
+    ctaLabel: 'Trova gruppi sulla mappa →',
+    howToTitle: 'Come trovare un gruppo di capoeira nella tua destinazione?',
+    steps: [
+      { title: 'Cerca la tua destinazione sulla mappa', text: 'Usa la directory globale di Agenda Capoeiragem. Digita la città o il paese in cui stai viaggiando e vedi tutti i gruppi registrati con le loro posizioni.' },
+      { title: 'Controlla orari e livelli', text: 'Ogni gruppo mostra i suoi giorni e orari di allenamento. Alcuni gruppi hanno lezioni per tutti i livelli, altri sono più avanzati. Assicurati che l\'orario sia compatibile con la tua visita.' },
+      { title: 'Contatta il gruppo prima di arrivare', text: 'La maggior parte dei gruppi ha WhatsApp o Instagram. Presentati, dì che pratichi capoeira e che sarai in città. Nella capoeira, i visitatori sono sempre benvenuti.' },
+      { title: 'Arriva con un atteggiamento da studente', text: 'Anche se sei avanzato, arriva con umiltà. Ogni gruppo ha il suo modo di lavorare, il suo lignaggio e le sue tradizioni. Osservare prima di proporre è sempre apprezzato.' },
+    ],
+    etiquetteTitle: 'Etichetta nelle accademie visitate',
+    etiquette: [
+      'Presentati sempre al mestre o al responsabile del gruppo prima di allenarti',
+      'Menziona il tuo nome di capoeira, la tua graduazione e con chi ti alleni — questo crea fiducia immediata',
+      'Rispetta il rituale del gruppo: ogni accademia ha il suo modo di aprire la roda',
+      'Se non parli la lingua locale, la capoeira parla per te — il jogo è universale',
+      'Un piccolo contributo economico (se il gruppo lo suggerisce) è sempre apprezzato',
+    ],
+    faqTitle: 'Domande frequenti',
+    faq: [
+      { q: 'Ho bisogno di esperienza per unirmi a un gruppo in visita?', a: 'Non necessariamente. Molti gruppi accolgono sia principianti che capoeiristi esperti. La cosa più importante è comunicare il proprio livello al momento del contatto, così possono indirizzarti verso la classe più adatta.' },
+      { q: 'Devo avvisare prima di presentarmi in un\'accademia?', a: 'Sì, è sempre consigliabile contattare prima. Un messaggio WhatsApp o Instagram è sufficiente. Presentarsi in anticipo mostra rispetto e permette al gruppo di prepararsi ad accoglierti bene.' },
+      { q: 'Quanto costa una lezione come visitatore?', a: 'Varia da gruppo a gruppo. Alcuni non fanno pagare nulla ai visitatori come gesto di solidarietà capoeirista. Altri chiedono un contributo simbolico. Chiedi direttamente al gruppo al momento del contatto.' },
+      { q: 'E se il gruppo parla un\'altra lingua?', a: 'La capoeira ha il suo linguaggio universale — il movimento, la musica e il jogo si capiscono senza parole. I comandi base in portoghese sono riconosciuti in tutto il mondo. Con un sorriso e un atteggiamento aperto, la lingua è raramente un ostacolo.' },
+      { q: 'Come faccio a sapere se un gruppo è serio e di qualità?', a: 'Su Agenda Capoeiragem, i gruppi sono verificati e i loro educatori hanno un profilo pubblico con il loro lignaggio e percorso. Puoi vedere gli orari reali e la storia del gruppo prima di contattarlo.' },
+    ],
+    breadcrumbHome: 'Home',
+    breadcrumbCurrent: 'Capoeira per Viaggiatori',
+  },
 }
 
 export function getTravelersCopy(locale: string): TravelersCopy {
@@ -206,6 +282,8 @@ export function getTravelersLanguageAlternateUrls() {
     pt: getLocalizedUrl('pt', getTravelersPath('pt')),
     en: getLocalizedUrl('en', getTravelersPath('en')),
     fr: getLocalizedUrl('fr', getTravelersPath('fr')),
+    de: getLocalizedUrl('de', getTravelersPath('de')),
+    it: getLocalizedUrl('it', getTravelersPath('it')),
     'x-default': getLocalizedUrl('en', getTravelersPath('en')),
   }
 }

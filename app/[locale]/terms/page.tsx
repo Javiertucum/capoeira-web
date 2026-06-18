@@ -35,6 +35,20 @@ const COPY = {
       'Nous rédigeons une version publique de ces conditions pour l\'annuaire web. En attendant, l\'expérience publiée reste centrée sur l\'exploration des profils, groupes et noyaux partagés par la communauté.',
     back: 'Retour à l\'accueil',
   },
+  de: {
+    title: 'AGB',
+    heading: 'Nutzungsbedingungen der Website in Vorbereitung',
+    body:
+      'Wir erarbeiten eine öffentliche Version dieser Nutzungsbedingungen für das Webverzeichnis. Bis dahin konzentriert sich die veröffentlichte Erfahrung weiterhin darauf, Profile, Gruppen und Núcleos der Community zu erkunden.',
+    back: 'Zurück zur Startseite',
+  },
+  it: {
+    title: 'Termini',
+    heading: 'Termini del sito in preparazione',
+    body:
+      'Stiamo redigendo una versione pubblica di questi termini per la directory web. Nel frattempo, l\'esperienza pubblicata resta focalizzata sull\'esplorazione di profili, gruppi e núcleos condivisi dalla comunità.',
+    back: 'Torna alla home',
+  },
 } as const
 
 function getCopy(locale: string) {

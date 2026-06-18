@@ -82,6 +82,36 @@ const COPY = {
     scheduleUnit: (n: number) => `${n} cours/semaine`,
     seeAll: (city: string) => `Voir la capoeira à ${city}`,
   },
+  de: {
+    title: (c: string) => `Capoeira in ${c}`,
+    description: (c: string, n: number) =>
+      `Capoeira-Verzeichnis für ${c}. Finde ${n} ${n === 1 ? 'Trainingsort' : 'Trainingsorte'} — Gruppen, Núcleos und Lehrer mit Zeitplänen und Adresse.`,
+    keywords: (c: string, cities: string[]) => [
+      `capoeira in ${c}`, `capoeira kurs ${c}`, `capoeira ${c}`,
+      `capoeira gruppen ${c}`, `wo capoeira trainieren ${c}`,
+      ...cities.flatMap((city) => [`capoeira in ${city}`, `capoeira kurs ${city}`]),
+    ],
+    cities: 'Städte',
+    nucleos: 'Trainingsorte',
+    back: '← Globales Verzeichnis',
+    scheduleUnit: (n: number) => `${n} Kurs${n === 1 ? '' : 'e'}/Woche`,
+    seeAll: (city: string) => `Capoeira in ${city} ansehen`,
+  },
+  it: {
+    title: (c: string) => `Capoeira a ${c}`,
+    description: (c: string, n: number) =>
+      `Directory della capoeira a ${c}. Trova ${n} ${n === 1 ? 'luogo' : 'luoghi'} dove allenarsi — gruppi, núcleos ed educatori con orari e indirizzo.`,
+    keywords: (c: string, cities: string[]) => [
+      `capoeira a ${c}`, `corsi di capoeira a ${c}`, `capoeira ${c}`,
+      `gruppi capoeira ${c}`, `dove allenarsi capoeira ${c}`,
+      ...cities.flatMap((city) => [`capoeira a ${city}`, `corsi capoeira ${city}`]),
+    ],
+    cities: 'Città',
+    nucleos: 'Luoghi per allenarsi',
+    back: '← Directory globale',
+    scheduleUnit: (n: number) => `${n} ${n === 1 ? 'lezione' : 'lezioni'}/settimana`,
+    seeAll: (city: string) => `Vedi capoeira a ${city}`,
+  },
 } as const
 
 type Locale = keyof typeof COPY
@@ -89,7 +119,7 @@ const getCopy = (locale: string) => COPY[locale as Locale] ?? COPY.es
 
 export async function generateStaticParams() {
   const nucleos = await getAllNucleos().catch(() => [])
-  const locales = ['es', 'pt', 'en', 'fr']
+  const locales = ['es', 'pt', 'en', 'fr', 'de', 'it']
   const countrySlugs = [...new Set(
     nucleos.map((n) => n.country).filter((c): c is string => Boolean(c)).map(slugify)
   )]

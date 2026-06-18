@@ -91,6 +91,52 @@ const COPY = {
       },
     ],
   },
+  de: {
+    label: 'Die Community nutzt es',
+    items: [
+      {
+        quote: 'Früher habe ich die Anwesenheit auf Papier erfasst. Jetzt dauert es 30 Sekunden auf dem Handy und meine Schüler sehen ihre Historie sofort.',
+        name: 'Grilo Mané',
+        role: 'Lehrer · Santiago, Chile',
+        initials: 'GM',
+      },
+      {
+        quote: 'Ich war sechs Monate unterwegs und habe mit der Karte in jeder Stadt Capoeira gefunden. Für einen Capoeirista auf Reisen gibt es nichts Besseres.',
+        name: 'Mariposa',
+        role: 'Praktizierende · Buenos Aires',
+        initials: 'MA',
+      },
+      {
+        quote: 'Das Graduierungssystem war in 20 Minuten eingerichtet. Kompatibel mit Angola, Regional und gemischten Systemen, ganz ohne Probleme.',
+        name: 'Gavião',
+        role: 'Contramestre · São Paulo',
+        initials: 'GA',
+      },
+    ],
+  },
+  it: {
+    label: 'La comunità lo usa',
+    items: [
+      {
+        quote: 'Prima facevo l\'appello su carta. Ora ci metto 30 secondi dal telefono e i miei alunni vedono subito la loro cronologia.',
+        name: 'Grilo Mané',
+        role: 'Educatore · Santiago, Cile',
+        initials: 'GM',
+      },
+      {
+        quote: 'Ho viaggiato per sei mesi e ho trovato capoeira in ogni città usando la mappa. Per un capoeirista in movimento non c\'è strumento migliore.',
+        name: 'Mariposa',
+        role: 'Praticante · Buenos Aires',
+        initials: 'MA',
+      },
+      {
+        quote: 'Il sistema di graduazione è stato configurato in 20 minuti. Compatibile con Angola, Regional e sistemi misti senza alcun problema.',
+        name: 'Gavião',
+        role: 'Contramestre · São Paulo',
+        initials: 'GA',
+      },
+    ],
+  },
 } as const
 
 function StarIcon() {

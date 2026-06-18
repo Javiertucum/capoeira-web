@@ -11,6 +11,15 @@ import ThemeToggle from './ThemeToggle'
 const LOCALES = routing.locales
 type Locale = (typeof routing.locales)[number]
 
+const LOCALE_NAMES: Record<Locale, string> = {
+  es: 'Español',
+  pt: 'Português',
+  en: 'English',
+  fr: 'Français',
+  de: 'Deutsch',
+  it: 'Italiano',
+}
+
 function getLocalizedPathname(pathname: string, nextLocale: Locale) {
   const segments = pathname.split('/')
   if (segments.length > 1 && LOCALES.includes(segments[1] as Locale)) {
@@ -176,22 +185,25 @@ export default function Nav() {
             </Link>
 
             {/* Locale switcher — desktop */}
-            <div className={`hidden rounded-full border px-1 py-1 sm:flex border-ink/5 bg-ink/5`}>
-              {LOCALES.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => switchLocale(item)}
-                  aria-pressed={item === locale}
-                  className={`mono w-8 h-[30px] rounded-full text-[11px] uppercase tracking-[0.1em] transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                    item === locale
-                      ? 'bg-ink text-bg shadow-sm'
-                      : 'text-ink/30 hover:text-ink'
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
+            <div className="relative hidden sm:flex">
+              <select
+                aria-label="Idioma"
+                value={locale}
+                onChange={(e) => switchLocale(e.target.value as Locale)}
+                className="mono h-[34px] appearance-none rounded-full border border-ink/5 bg-ink/5 pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                {LOCALES.map((item) => (
+                  <option key={item} value={item}>
+                    {item.toUpperCase()} · {LOCALE_NAMES[item]}
+                  </option>
+                ))}
+              </select>
+              <svg
+                className="pointer-events-none absolute right-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-ink/40"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"
+              >
+                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
 
             {/* Theme toggle */}
@@ -257,20 +269,25 @@ export default function Nav() {
             </div>
             {/* Locale switcher mobile */}
             <div className="mt-4 flex items-center gap-2">
-              <div className="flex flex-1 rounded-full border border-line bg-surface-muted p-1">
-                {LOCALES.map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => switchLocale(item)}
-                    aria-pressed={item === locale}
-                    className={`mono flex-1 rounded-full py-2 text-[10px] uppercase tracking-[0.18em] transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-95 ${
-                      item === locale ? 'bg-ink text-bg' : 'text-ink-3 hover:text-ink'
-                    }`}
-                  >
-                    {item}
-                  </button>
-                ))}
+              <div className="relative flex-1">
+                <select
+                  aria-label="Idioma"
+                  value={locale}
+                  onChange={(e) => switchLocale(e.target.value as Locale)}
+                  className="mono h-10 w-full appearance-none rounded-full border border-line bg-surface-muted pl-4 pr-8 text-[11px] uppercase tracking-[0.12em] text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  {LOCALES.map((item) => (
+                    <option key={item} value={item}>
+                      {item.toUpperCase()} · {LOCALE_NAMES[item]}
+                    </option>
+                  ))}
+                </select>
+                <svg
+                  className="pointer-events-none absolute right-3 top-1/2 h-3 w-3 -translate-y-1/2 text-ink-3"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"
+                >
+                  <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
               <ThemeToggle />
             </div>

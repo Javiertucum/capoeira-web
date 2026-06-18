@@ -35,6 +35,20 @@ const COPY = {
       'Nous préparons une version publique et complète de cette page. Pour l\'instant, l\'annuaire web affiche les informations partagées par la communauté, et cette section sera mise à jour avant le lancement définitif.',
     back: 'Retour à l\'accueil',
   },
+  de: {
+    title: 'Datenschutz',
+    heading: 'Datenschutzerklärung in Vorbereitung',
+    body:
+      'Wir bereiten eine vollständige öffentliche Version dieser Seite vor. Vorerst zeigt das Webverzeichnis von der Community geteilte Informationen, und dieser Abschnitt wird vor dem endgültigen Launch aktualisiert.',
+    back: 'Zurück zur Startseite',
+  },
+  it: {
+    title: 'Privacy',
+    heading: 'Informativa sulla privacy in preparazione',
+    body:
+      'Stiamo preparando una versione pubblica e completa di questa pagina. Per ora, la directory web mostra informazioni condivise dalla comunità e questa sezione sarà aggiornata prima del lancio definitivo.',
+    back: 'Torna alla home',
+  },
 } as const
 
 function getCopy(locale: string) {

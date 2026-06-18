@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "map": "Karte",
+    "groups": "Gruppen",
+    "educators": "Lehrer",
+    "events": "Events",
+    "comingSoon": "Demnächst",
+    "appPreview": "App ansehen",
+    "features": "Funktionen",
+    "tutorials": "Tutorials",
+    "downloadApp": "App herunterladen"
+  },
+  "hero": {
+    "eyebrow": "Globales Capoeira-Verzeichnis",
+    "title": "Finde deine",
+    "titleAccent": "Roda",
+    "subtitle": "Núcleos, Gruppen und Lehrer auf der ganzen Welt. Lerne die Community kennen. Beginne mit dem Training.",
+    "searchPlaceholder": "Stadt, Land oder Region...",
+    "searchButton": "Suchen"
+  },
+  "stats": {
+    "nucleos": "Núcleos",
+    "groups": "Gruppen",
+    "educators": "Lehrer",
+    "countries": "Länder"
+  },
+  "categories": {
+    "title": "Nach Kategorie entdecken",
+    "explore": "Entdecken",
+    "nucleos": {
+      "name": "Núcleos",
+      "desc": "Trainingsorte mit Zeitplänen, Lehrern und direktem Kontakt."
+    },
+    "groups": {
+      "name": "Gruppen",
+      "desc": "Organisationen mit Geschichte, Graduierungssystem und gewachsener Community."
+    },
+    "educators": {
+      "name": "Lehrer",
+      "desc": "Profile von Mestres und Lehrern mit sozialen Netzwerken und direktem Kontakt."
+    }
+  },
+  "map": {
+    "title": "Kartenansicht",
+    "results": "{count} Ergebnisse",
+    "nearMe": "In meiner Nähe",
+    "locating": "Standort wird gesucht…",
+    "locationDenied": "Auf deinen Standort konnte nicht zugegriffen werden",
+    "filterNucleos": "Núcleos",
+    "filterGroups": "Gruppen",
+    "filterEducators": "Lehrer",
+    "searchPlaceholder": "Stadt, Land oder Region...",
+    "seeContact": "Kontakt ansehen ->",
+    "emptyTitle": "Keine Ergebnisse für diese Suche",
+    "emptyBody": "Versuche es mit einer anderen Stadt, Gruppe oder einem anderen Land, um die Suche zu erweitern.",
+    "clearSearch": "Suche löschen",
+    "mapCtaText": "Möchtest du, dass deine Gruppe oder Schule hier erscheint?",
+    "mapCtaLink": "App herunterladen"
+  },
+  "educators": {
+    "featured": "Empfohlene Lehrer",
+    "empty": "Empfohlene Profile erscheinen hier, sobald das öffentliche Verzeichnis verbunden ist."
+  },
+  "cta": {
+    "title": "Bist du Lehrer oder hast du eine Gruppe?",
+    "subtitle": "Lade die App herunter und füge dein Núcleo dem globalen Capoeira-Verzeichnis hinzu.",
+    "download": "App herunterladen",
+    "learnMore": "Globale Karte entdecken"
+  },
+  "footer": {
+    "credits": "Daten der Agenda Capoeiragem Community",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen"
+  },
+  "profile": {
+    "role": "Rolle",
+    "location": "Standort",
+    "group": "Gruppe",
+    "graduation": "Graduierung",
+    "bio": "Biografie",
+    "nucleos": "Unterrichtet in",
+    "contact": "Kontakt",
+    "unspecified": "Nicht angegeben",
+    "back": "Zurück zur Karte",
+    "representedCountries": "Vertretene Länder",
+    "representedCities": "Vertretene Städte",
+    "admin": "Hauptlehrer",
+    "viewProfile": "Profil ansehen",
+    "stats": "Gruppenstatistik",
+    "noNucleos": "Keine aktiven Núcleos für diese Gruppe gefunden.",
+    "website": "Webseite",
+    "educators": "Lehrer",
+    "graduationSystem": "Graduierungssystem",
+    "responsibleEducator": "Verantwortlicher Lehrer",
+    "coEducators": "Co-Lehrer",
+    "members": "Mitglieder",
+    "schedules": "Zeitpläne",
+    "noMembers": "Keine Mitglieder registriert.",
+    "viewNucleo": "Núcleo ansehen",
+    "address": "Adresse",
+    "educatorRole": "Lehrer",
+    "graduatedAs": "Graduiert als {level}",
+    "myNucleos": "Meine Núcleos",
+    "nucleosSection": "Núcleos",
+    "graduationCategoryInfantil": "Kinder",
+    "graduationCategoryJuvenil": "Jugend",
+    "graduationCategoryEstagiario": "Praktikanten",
+    "graduationCategoryAdult": "Erwachsene",
+    "graduationCategoryGeneral": "Allgemein",
+    "nucleosMap": "Standort der Núcleos",
+    "close": "Schließen"
+  }
+}

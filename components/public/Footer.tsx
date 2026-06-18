@@ -1,9 +1,20 @@
 import Link from 'next/link'
+import { getTravelersPath } from '@/lib/travelers-content'
+
+const TRAVELERS_LABEL: Record<string, string> = {
+  es: 'Para Viajeros',
+  pt: 'Para Viajantes',
+  en: 'For Travelers',
+  fr: 'Pour Voyageurs',
+  de: 'Für Reisende',
+  it: 'Per Viaggiatori',
+}
 
 export default function Footer({ locale = 'es' }: { locale?: string }) {
   const NAV_PLATFORM = [
     { label: 'Directorio',      href: '#directorio' },
     { label: 'Tutoriales',      href: `/${locale}/tutoriales` },
+    { label: TRAVELERS_LABEL[locale] ?? TRAVELERS_LABEL.es, href: `/${locale}${getTravelersPath(locale)}` },
     { label: 'Descargar App',   href: `/${locale}/app` },
   ]
 

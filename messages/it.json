@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "map": "Mappa",
+    "groups": "Gruppi",
+    "educators": "Educatori",
+    "events": "Eventi",
+    "comingSoon": "Prossimamente",
+    "appPreview": "Vedi App",
+    "features": "Funzionalità",
+    "tutorials": "Tutorial",
+    "downloadApp": "Scarica l'App"
+  },
+  "hero": {
+    "eyebrow": "Directory Globale della Capoeira",
+    "title": "Trova la tua",
+    "titleAccent": "Roda",
+    "subtitle": "Núcleos, gruppi ed educatori in tutto il mondo. Conosci la comunità. Inizia ad allenarti.",
+    "searchPlaceholder": "Città, paese o regione...",
+    "searchButton": "Cerca"
+  },
+  "stats": {
+    "nucleos": "Núcleos",
+    "groups": "Gruppi",
+    "educators": "Educatori",
+    "countries": "Paesi"
+  },
+  "categories": {
+    "title": "Esplora per categoria",
+    "explore": "Esplora",
+    "nucleos": {
+      "name": "Núcleos",
+      "desc": "Luoghi di allenamento con orari, educatori e contatto diretto."
+    },
+    "groups": {
+      "name": "Gruppi",
+      "desc": "Organizzazioni con storia, sistema di graduazione e comunità consolidata."
+    },
+    "educators": {
+      "name": "Educatori",
+      "desc": "Profili di maestri e insegnanti con social network e contatto diretto."
+    }
+  },
+  "map": {
+    "title": "Vista mappa",
+    "results": "{count} risultati",
+    "nearMe": "Vicino a me",
+    "locating": "Ricerca della posizione…",
+    "locationDenied": "Impossibile accedere alla tua posizione",
+    "filterNucleos": "Núcleos",
+    "filterGroups": "Gruppi",
+    "filterEducators": "Educatori",
+    "searchPlaceholder": "Città, paese o regione...",
+    "seeContact": "Vedi contatto ->",
+    "emptyTitle": "Nessun risultato per questa ricerca",
+    "emptyBody": "Prova con un'altra città, gruppo o paese per ampliare la ricerca.",
+    "clearSearch": "Cancella ricerca",
+    "mapCtaText": "Vuoi che il tuo gruppo o accademia appaia qui?",
+    "mapCtaLink": "Scarica l'app"
+  },
+  "educators": {
+    "featured": "Educatori in evidenza",
+    "empty": "I profili in evidenza appariranno qui quando la directory pubblica sarà collegata."
+  },
+  "cta": {
+    "title": "Sei un educatore o hai un gruppo?",
+    "subtitle": "Scarica l'app e aggiungi il tuo núcleo alla directory globale della capoeira.",
+    "download": "Scarica l'App",
+    "learnMore": "Esplora la mappa globale"
+  },
+  "footer": {
+    "credits": "Dati della comunità Agenda Capoeiragem",
+    "privacy": "Privacy",
+    "terms": "Termini"
+  },
+  "profile": {
+    "role": "Ruolo",
+    "location": "Posizione",
+    "group": "Gruppo",
+    "graduation": "Graduazione",
+    "bio": "Biografia",
+    "nucleos": "Insegna in",
+    "contact": "Contatto",
+    "unspecified": "Non specificato",
+    "back": "Torna alla mappa",
+    "representedCountries": "Paesi rappresentati",
+    "representedCities": "Città rappresentate",
+    "admin": "Istruttore Principale",
+    "viewProfile": "Vedi profilo",
+    "stats": "Statistiche del Gruppo",
+    "noNucleos": "Nessun núcleo attivo trovato per questo gruppo.",
+    "website": "Sito web",
+    "educators": "Educatori",
+    "graduationSystem": "Sistema di Graduazione",
+    "responsibleEducator": "Educatore Responsabile",
+    "coEducators": "Co-educatori",
+    "members": "Membri",
+    "schedules": "Orari",
+    "noMembers": "Nessun membro registrato.",
+    "viewNucleo": "Vedi núcleo",
+    "address": "Indirizzo",
+    "educatorRole": "Educatore",
+    "graduatedAs": "Graduato come {level}",
+    "myNucleos": "I miei núcleos",
+    "nucleosSection": "Núcleos",
+    "graduationCategoryInfantil": "Bambini",
+    "graduationCategoryJuvenil": "Giovani",
+    "graduationCategoryEstagiario": "Tirocinanti",
+    "graduationCategoryAdult": "Adulti",
+    "graduationCategoryGeneral": "Generale",
+    "nucleosMap": "Posizione dei núcleos",
+    "close": "Chiudi"
+  }
+}
