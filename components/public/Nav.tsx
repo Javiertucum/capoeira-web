@@ -187,6 +187,7 @@ export default function Nav() {
                 aria-label="Idioma"
                 value={locale}
                 onChange={(e) => switchLocale(e.target.value as Locale)}
+                style={{ colorScheme: 'light' }}
                 className="mono h-[34px] appearance-none rounded-full border border-ink/5 bg-ink/5 pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
                 {LOCALES.map((item) => (
@@ -271,6 +272,7 @@ export default function Nav() {
                   aria-label="Idioma"
                   value={locale}
                   onChange={(e) => switchLocale(e.target.value as Locale)}
+                  style={{ colorScheme: 'light' }}
                   className="mono h-10 w-full appearance-none rounded-full border border-line bg-surface-muted pl-4 pr-8 text-[11px] uppercase tracking-[0.12em] text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
                   {LOCALES.map((item) => (
