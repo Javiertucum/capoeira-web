@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "agendacapoeiragem.com" }],
+      "destination": "https://www.agendacapoeiragem.com/:path*",
+      "permanent": true
+    }
+  ]
+}

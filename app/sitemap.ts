@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getLanguageAlternateUrls, getLocalizedUrl } from '@/lib/site'
 import { getAllGroups, getAllEducators, getAllNucleos, getAllLocationSlugs } from '@/lib/queries'
-import { getTravelersPath } from '@/lib/travelers-content'
+import { getTravelersPath, getTravelersLanguageAlternateUrls } from '@/lib/travelers-content'
 
 const LOCALES = ['es', 'pt', 'en', 'fr']
 
@@ -64,16 +64,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   })
 
-  const travelersRoutes = LOCALES.map((locale) => {
-    const path = getTravelersPath(locale)
-    return {
-      url: getLocalizedUrl(locale, path),
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-      alternates: { languages: getLanguageAlternateUrls(path) },
-    }
-  })
+  const travelersRoutes = LOCALES.map((locale) => ({
+    url: getLocalizedUrl(locale, getTravelersPath(locale)),
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+    alternates: { languages: getTravelersLanguageAlternateUrls() },
+  }))
 
   return [...staticRoutes, ...travelersRoutes, ...locationRoutes, ...groupRoutes, ...educatorRoutes, ...nucleoRoutes]
 }

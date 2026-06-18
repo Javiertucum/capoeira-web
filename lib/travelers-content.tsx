@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   formatPageTitle,
-  getLanguageAlternateUrls,
   getLocalizedUrl,
   getOgImageUrl,
   getOgLocale,
@@ -200,13 +199,24 @@ export function getTravelersPath(locale: string) {
   return `/${slug}`
 }
 
+/** Unlike getLanguageAlternateUrls, each locale here has its own translated slug. */
+export function getTravelersLanguageAlternateUrls() {
+  return {
+    es: getLocalizedUrl('es', getTravelersPath('es')),
+    pt: getLocalizedUrl('pt', getTravelersPath('pt')),
+    en: getLocalizedUrl('en', getTravelersPath('en')),
+    fr: getLocalizedUrl('fr', getTravelersPath('fr')),
+    'x-default': getLocalizedUrl('en', getTravelersPath('en')),
+  }
+}
+
 export function buildTravelersMetadata(locale: Locale): Metadata {
   const c = getTravelersCopy(locale)
   const path = getTravelersPath(locale)
   return {
     title: c.title,
     description: c.description,
-    alternates: { canonical: getLocalizedUrl(locale, path), languages: getLanguageAlternateUrls(path) },
+    alternates: { canonical: getLocalizedUrl(locale, path), languages: getTravelersLanguageAlternateUrls() },
     openGraph: {
       title: formatPageTitle(c.title),
       description: c.description,
