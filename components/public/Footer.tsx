@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { getTravelersPath } from '@/lib/travelers-content'
 
@@ -15,15 +16,15 @@ const FOOTER_COPY: Record<string, {
   copyright: string
 }> = {
   es: {
-    tagline: 'La plataforma de gestión y comunidad para el ecosistema capoeirista global.',
+    tagline: 'La plataforma de gestion y comunidad para el ecosistema capoeirista global.',
     directorio: 'Directorio', tutoriales: 'Tutoriales', viajeros: 'Para Viajeros', descargarApp: 'Descargar App',
     plataforma: 'Plataforma', comunidad: 'Comunidad', admin: 'Admin',
-    privacidad: 'Privacidad', terminos: 'Términos',
+    privacidad: 'Privacidad', terminos: 'Terminos',
     copyright: '© 2026 Agenda Capoeiragem. Todos los derechos reservados.',
   },
   pt: {
-    tagline: 'A plataforma de gestão e comunidade para o ecossistema capoeirista global.',
-    directorio: 'Diretório', tutoriales: 'Tutoriais', viajeros: 'Para Viajantes', descargarApp: 'Baixar App',
+    tagline: 'A plataforma de gestao e comunidade para o ecossistema capoeirista global.',
+    directorio: 'Diretorio', tutoriales: 'Tutoriais', viajeros: 'Para Viajantes', descargarApp: 'Baixar App',
     plataforma: 'Plataforma', comunidad: 'Comunidade', admin: 'Admin',
     privacidad: 'Privacidade', terminos: 'Termos',
     copyright: '© 2026 Agenda Capoeiragem. Todos os direitos reservados.',
@@ -36,23 +37,23 @@ const FOOTER_COPY: Record<string, {
     copyright: '© 2026 Agenda Capoeiragem. All rights reserved.',
   },
   fr: {
-    tagline: 'La plateforme de gestion et de communauté pour l\'écosystème capoeiriste mondial.',
-    directorio: 'Annuaire', tutoriales: 'Tutoriels', viajeros: 'Pour Voyageurs', descargarApp: 'Télécharger l\'App',
-    plataforma: 'Plateforme', comunidad: 'Communauté', admin: 'Admin',
-    privacidad: 'Confidentialité', terminos: 'Conditions',
-    copyright: '© 2026 Agenda Capoeiragem. Tous droits réservés.',
+    tagline: 'La plateforme de gestion et de communaute pour l ecosysteme capoeiriste mondial.',
+    directorio: 'Annuaire', tutoriales: 'Tutoriels', viajeros: 'Pour Voyageurs', descargarApp: 'Telecharger l App',
+    plataforma: 'Plateforme', comunidad: 'Communaute', admin: 'Admin',
+    privacidad: 'Confidentialite', terminos: 'Conditions',
+    copyright: '© 2026 Agenda Capoeiragem. Tous droits reserves.',
   },
   de: {
-    tagline: 'Die Verwaltungs- und Community-Plattform für das globale Capoeira-Ökosystem.',
-    directorio: 'Verzeichnis', tutoriales: 'Tutorials', viajeros: 'Für Reisende', descargarApp: 'App herunterladen',
+    tagline: 'Die Verwaltungs- und Community-Plattform fur das globale Capoeira-Okosystem.',
+    directorio: 'Verzeichnis', tutoriales: 'Tutorials', viajeros: 'Fur Reisende', descargarApp: 'App herunterladen',
     plataforma: 'Plattform', comunidad: 'Community', admin: 'Admin',
     privacidad: 'Datenschutz', terminos: 'AGB',
     copyright: '© 2026 Agenda Capoeiragem. Alle Rechte vorbehalten.',
   },
   it: {
-    tagline: 'La piattaforma di gestione e comunità per l\'ecosistema globale della capoeira.',
-    directorio: 'Directory', tutoriales: 'Tutorial', viajeros: 'Per Viaggiatori', descargarApp: 'Scarica l\'App',
-    plataforma: 'Piattaforma', comunidad: 'Comunità', admin: 'Admin',
+    tagline: "La piattaforma di gestione e comunita per l'ecosistema globale della capoeira.",
+    directorio: 'Directory', tutoriales: 'Tutorial', viajeros: 'Per Viaggiatori', descargarApp: "Scarica l App",
+    plataforma: 'Piattaforma', comunidad: 'Comunita', admin: 'Admin',
     privacidad: 'Privacy', terminos: 'Termini',
     copyright: '© 2026 Agenda Capoeiragem. Tutti i diritti riservati.',
   },
@@ -62,37 +63,34 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
   const c = FOOTER_COPY[locale] ?? FOOTER_COPY.es
 
   const NAV_PLATFORM = [
-    { label: c.directorio,    href: '#directorio' },
-    { label: c.tutoriales,    href: `/${locale}/tutoriales` },
-    { label: c.viajeros,      href: `/${locale}${getTravelersPath(locale)}` },
-    { label: c.descargarApp,  href: `/${locale}/app` },
+    { label: c.directorio, href: '#directorio' },
+    { label: c.tutoriales, href: `/${locale}/tutoriales` },
+    { label: c.viajeros, href: `/${locale}${getTravelersPath(locale)}` },
+    { label: c.descargarApp, href: `/${locale}/app` },
   ]
 
   const NAV_COMMUNITY = [
-    { label: c.admin,         href: `/${locale}/admin` },
+    { label: c.admin, href: `/${locale}/admin` },
   ]
 
   const NAV_LEGAL = [
-    { label: c.privacidad,    href: `/${locale}/privacy` },
-    { label: c.terminos,      href: `/${locale}/terms` },
+    { label: c.privacidad, href: `/${locale}/privacy` },
+    { label: c.terminos, href: `/${locale}/terms` },
   ]
 
   return (
     <footer className="border-t border-border bg-bg">
       <div className="page-shell py-16 lg:py-20">
-
-        {/* ── Main grid ── */}
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
-
-          {/* Brand */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <span
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-ink text-[18px] leading-none text-bg transition-transform duration-200 ease-[var(--ease-out)] hover:scale-[1.05]"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
-              >
-                a<span style={{ color: 'var(--accent)' }}>·</span>c
-              </span>
+              <Image
+                src="/images/logo.png"
+                alt="Agenda Capoeiragem"
+                width={40}
+                height={40}
+                className="shrink-0 rounded-2xl transition-transform duration-200 ease-[var(--ease-out)] hover:scale-[1.05]"
+              />
               <span
                 className="text-[17px] font-black tracking-tight text-ink"
                 style={{ fontFamily: 'var(--font-display)' }}
@@ -108,7 +106,6 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
             </p>
           </div>
 
-          {/* Platform links */}
           <div>
             <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
               {c.plataforma}
@@ -127,7 +124,6 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
             </ul>
           </div>
 
-          {/* Community links */}
           <div>
             <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
               {c.comunidad}
@@ -145,11 +141,9 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
               ))}
             </ul>
           </div>
-
         </div>
 
-        {/* ── Bottom bar ── */}
-        <div className="mt-10 lg:mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 lg:mt-16 sm:flex-row">
           <p className="text-[11px] font-medium text-text-muted">
             {c.copyright}
           </p>
@@ -165,7 +159,6 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
             ))}
           </div>
         </div>
-
       </div>
     </footer>
   )

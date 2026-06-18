@@ -138,9 +138,6 @@ export default function Nav() {
               priority
             />
             <span className="flex flex-col justify-center min-w-0 whitespace-nowrap overflow-hidden">
-              <span className={`eyebrow block truncate`} style={{ fontSize: 9, letterSpacing: '0.2em', color: 'var(--text-secondary)', opacity: 0.8 }}>
-                Capoeira platform
-              </span>
               <span
                 className={`block text-[16px] sm:text-[18px] truncate text-ink`}
                 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}
