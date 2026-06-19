@@ -37,7 +37,7 @@ export default function Nav() {
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkTheme, setIsDarkTheme] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
 
@@ -51,20 +51,17 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', syncScrollState)
   }, [syncScrollState])
 
+  useEffect(() => { setMenuOpen(false) }, [pathname])
+
   useEffect(() => {
-    // Detect dark mode from document class
-    const updateDarkMode = () => {
-      setIsDarkMode(document.documentElement.classList.contains('dark'))
+    const updateTheme = () => {
+      setIsDarkTheme(document.documentElement.classList.contains('dark'))
     }
-    updateDarkMode()
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateDarkMode)
+    updateTheme()
+    const observer = new MutationObserver(updateTheme)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     return () => observer.disconnect()
   }, [])
-
-  useEffect(() => { setMenuOpen(false) }, [pathname])
 
   useEffect(() => {
     if (!menuOpen) {
@@ -201,8 +198,12 @@ export default function Nav() {
                 aria-label="Idioma"
                 value={locale}
                 onChange={(e) => switchLocale(e.target.value as Locale)}
-                style={{ colorScheme: isDarkMode ? 'dark' : 'light' }}
-                className="mono h-[34px] appearance-none rounded-full border border-ink/5 bg-ink/5 pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-white"
+                style={{
+                  backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.96)',
+                  color: isDarkTheme ? '#F8FAFC' : '#0F172A',
+                  borderColor: isDarkTheme ? 'rgba(255,255,255,0.15)' : 'rgba(15,23,42,0.12)',
+                }}
+                className="mono h-[34px] appearance-none rounded-full border bg-white/95 pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
                 {LOCALES.map((item) => (
                   <option key={item} value={item}>
@@ -286,8 +287,12 @@ export default function Nav() {
                   aria-label="Idioma"
                   value={locale}
                   onChange={(e) => switchLocale(e.target.value as Locale)}
-                  style={{ colorScheme: isDarkMode ? 'dark' : 'light' }}
-                  className="mono h-10 w-full appearance-none rounded-full border border-line bg-surface-muted pl-4 pr-8 text-[11px] uppercase tracking-[0.12em] text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-white/5 dark:text-white/70"
+                  style={{
+                    backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.96)',
+                    color: isDarkTheme ? '#F8FAFC' : '#0F172A',
+                    borderColor: isDarkTheme ? 'rgba(255,255,255,0.15)' : 'rgba(15,23,42,0.12)',
+                  }}
+                  className="mono h-10 w-full appearance-none rounded-full border bg-white/95 pl-4 pr-8 text-[11px] uppercase tracking-[0.12em] transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
                   {LOCALES.map((item) => (
                     <option key={item} value={item}>
