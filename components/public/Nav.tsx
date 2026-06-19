@@ -9,7 +9,8 @@ import ThemeToggle from './ThemeToggle'
 
 export default function Nav() {
   const t = useTranslations('nav')
-  const locale = useLocale()  const pathname = usePathname()
+  const locale = useLocale()
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)

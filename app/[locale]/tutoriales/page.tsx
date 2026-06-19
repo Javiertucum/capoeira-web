@@ -171,15 +171,20 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Configuración: idioma y tema',
-        d: 'Desde "Perfil" toca "Configuración". Allí puedes cambiar el idioma (español, portugués, inglés) en la sección "Idioma", y el tema visual (claro u oscuro) en "Modo de la aplicación". Los cambios se aplican de inmediato.',
+        d: 'Desde "Perfil" toca "Configuración". Allí puedes cambiar el idioma (español, portugués, inglés, francés, alemán, italiano) en la sección "Idioma", y el tema visual (claro u oscuro) en "Modo de la aplicación". Los cambios se aplican de inmediato.',
+      },
+      {
+        t: 'Notificaciones push: elige qué quieres recibir',
+        d: 'En "Configuración → Notificaciones" puedes activar o desactivar cada tipo por separado: recordatorios de evento (24h y 2h antes), eventos nuevos de tu grupo, eventos cerca de ti (según tu país o tu ubicación actual por GPS), resumen semanal de eventos y novedades de tu comunidad (hitos del grupo, recordatorios de racha de asistencia).',
+        tip: 'Si activas la ubicación por GPS, la app detecta tu país actual para avisarte de eventos relevantes incluso si estás de viaje — nunca guarda tu ubicación exacta, solo el país.',
       },
       {
         t: 'Notificaciones pendientes',
-        d: 'En la pestaña "Notificaciones" del perfil verás cinco tipos de solicitudes: "Solicitud de ingreso al grupo" (alguien quiere unirse a tu grupo), "Solicitud de educador" (petición de relación educador-alumno), "Solicitud al núcleo" (alguien quiere unirse a tu núcleo), "Solicitud de transferencia de núcleo" (transferencia de administración pendiente) y "Solicitud de colaboración" (invitación para co-organizar un evento). El badge rojo en la pestaña "Perfil" indica cuántas tienes sin revisar.',
+        d: 'En la pestaña "Notificaciones" del perfil verás los tipos de solicitudes: "Solicitud de ingreso al grupo" (alguien quiere unirse a tu grupo), "Solicitud de educador" (petición de relación educador-alumno), "Solicitud al núcleo" (alguien quiere unirse a tu núcleo), "Solicitud de transferencia de núcleo" (transferencia de administración pendiente) y "Solicitud de colaboración" (invitación para co-organizar un evento o ser invitado especial). El badge rojo en la pestaña "Perfil" indica cuántas tienes sin revisar.',
       },
       {
-        t: 'Reportar un problema',
-        d: 'Ve a "Perfil" → "Configuración" → "Reportar un problema". Tu reporte llega directamente al equipo de desarrollo con información técnica de tu dispositivo adjunta automáticamente.',
+        t: 'Tutoriales y reportar un problema',
+        d: 'Ve a "Perfil" → "Configuración" → "Soporte". Ahí encuentras "Tutoriales" (te trae de vuelta a esta página) y "Reportar un problema" — tu reporte llega directamente al equipo de desarrollo con información técnica de tu dispositivo adjunta automáticamente.',
       },
     ],
   },
@@ -610,8 +615,13 @@ const SECTIONS_ES: Section[] = [
         warn: 'Los usuarios que ya confirmaron "Voy" no reciben notificación automática cuando cambias la fecha o la ubicación. Si haces un cambio importante, comunícalo por otro canal.',
       },
       {
-        t: 'Gestiona co-organizadores',
-        d: 'Desde el menú de edición del evento toca "Colaboradores". Busca al co-organizador por nombre (debe tener cuenta en la app) y envía la invitación. El receptor verá la solicitud en "Perfil → Notificaciones". Al aceptar, tendrá acceso para editar el evento y ver la lista de asistentes.',
+        t: 'Sube documentos descargables',
+        d: 'En la sección "Documentos" del formulario, toca "Agregar documento" y selecciona un PDF (máximo 10MB) — ideal para bases de campeonato, reglamentos o cualquier material que los asistentes deban consultar. Aparece en el detalle del evento con su nombre y un botón de descarga.',
+      },
+      {
+        t: 'Gestiona co-organizadores e invitados especiales',
+        d: 'Desde el menú de edición del evento toca "Colaboradores". Antes de buscar a la persona, elige el rol: "Coorganizador" (podrá editar el evento y ver la lista de asistentes) o "Invitado especial" (aparece destacado en el evento, por ejemplo un educador de otro grupo dando una clase invitada, pero sin permiso de edición). Busca por nombre — funciona con cualquier usuario de la app, sin importar su grupo — y envía la invitación. El receptor la ve en "Perfil → Notificaciones".',
+        tip: 'Usa "Invitado especial" cuando quieras dar reconocimiento a alguien (un maestro invitado, un educador de otro grupo) sin darle control sobre el evento.',
       },
     ],
   },
