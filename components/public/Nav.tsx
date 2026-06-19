@@ -199,11 +199,12 @@ export default function Nav() {
                 value={locale}
                 onChange={(e) => switchLocale(e.target.value as Locale)}
                 style={{
+                  colorScheme: isDarkTheme ? 'dark' : 'light',
                   backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.96)',
                   color: isDarkTheme ? '#F8FAFC' : '#0F172A',
                   borderColor: isDarkTheme ? 'rgba(255,255,255,0.15)' : 'rgba(15,23,42,0.12)',
                 }}
-                className="mono h-[34px] appearance-none rounded-full border bg-white/95 pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="mono h-[34px] appearance-none rounded-full border bg-transparent pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
                 {LOCALES.map((item) => (
                   <option key={item} value={item}>
