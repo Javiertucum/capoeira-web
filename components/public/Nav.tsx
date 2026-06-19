@@ -37,6 +37,7 @@ export default function Nav() {
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isDark, setIsDark] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
 
@@ -49,6 +50,19 @@ export default function Nav() {
     window.addEventListener('scroll', syncScrollState, { passive: true })
     return () => window.removeEventListener('scroll', syncScrollState)
   }, [syncScrollState])
+
+  useEffect(() => {
+    // Detect dark mode from document class
+    const updateDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'))
+    }
+    updateDarkMode()
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateDarkMode)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
@@ -187,8 +201,8 @@ export default function Nav() {
                 aria-label="Idioma"
                 value={locale}
                 onChange={(e) => switchLocale(e.target.value as Locale)}
-                style={{ colorScheme: 'light' }}
-                className="mono h-[34px] appearance-none rounded-full border border-ink/5 bg-ink/5 pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                style={{ colorScheme: isDark ? 'dark' : 'light' }}
+                className="mono h-[34px] appearance-none rounded-full border border-ink/5 bg-ink/5 pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-white"
               >
                 {LOCALES.map((item) => (
                   <option key={item} value={item}>
@@ -197,7 +211,7 @@ export default function Nav() {
                 ))}
               </select>
               <svg
-                className="pointer-events-none absolute right-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-ink/40"
+                className="pointer-events-none absolute right-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-ink/40 dark:text-white/40"
                 viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"
               >
                 <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
@@ -272,8 +286,8 @@ export default function Nav() {
                   aria-label="Idioma"
                   value={locale}
                   onChange={(e) => switchLocale(e.target.value as Locale)}
-                  style={{ colorScheme: 'light' }}
-                  className="mono h-10 w-full appearance-none rounded-full border border-line bg-surface-muted pl-4 pr-8 text-[11px] uppercase tracking-[0.12em] text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  style={{ colorScheme: isDark ? 'dark' : 'light' }}
+                  className="mono h-10 w-full appearance-none rounded-full border border-line bg-surface-muted pl-4 pr-8 text-[11px] uppercase tracking-[0.12em] text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-white/5 dark:text-white/70"
                 >
                   {LOCALES.map((item) => (
                     <option key={item} value={item}>
@@ -282,7 +296,7 @@ export default function Nav() {
                   ))}
                 </select>
                 <svg
-                  className="pointer-events-none absolute right-3 top-1/2 h-3 w-3 -translate-y-1/2 text-ink-3"
+                  className="pointer-events-none absolute right-3 top-1/2 h-3 w-3 -translate-y-1/2 text-ink-3 dark:text-white/40"
                   viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"
                 >
                   <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
