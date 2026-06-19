@@ -2,42 +2,16 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useEffectEvent, useRef, useState } from 'react'
-import { routing } from '@/i18n/routing'
 import ThemeToggle from './ThemeToggle'
-
-const LOCALES = routing.locales
-type Locale = (typeof routing.locales)[number]
-
-const LOCALE_NAMES: Record<Locale, string> = {
-  es: 'Español',
-  pt: 'Português',
-  en: 'English',
-  fr: 'Français',
-  de: 'Deutsch',
-  it: 'Italiano',
-}
-
-function getLocalizedPathname(pathname: string, nextLocale: Locale) {
-  const segments = pathname.split('/')
-  if (segments.length > 1 && LOCALES.includes(segments[1] as Locale)) {
-    segments[1] = nextLocale
-    return segments.join('/')
-  }
-  return `/${nextLocale}${pathname.startsWith('/') ? pathname : `/${pathname}`}`
-}
 
 export default function Nav() {
   const t = useTranslations('nav')
-  const locale = useLocale() as Locale
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const router = useRouter()
+  const locale = useLocale()  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isDarkTheme, setIsDarkTheme] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
 
@@ -52,16 +26,6 @@ export default function Nav() {
   }, [syncScrollState])
 
   useEffect(() => { setMenuOpen(false) }, [pathname])
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setIsDarkTheme(document.documentElement.classList.contains('dark'))
-    }
-    updateTheme()
-    const observer = new MutationObserver(updateTheme)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    return () => observer.disconnect()
-  }, [])
 
   useEffect(() => {
     if (!menuOpen) {
@@ -92,12 +56,6 @@ export default function Nav() {
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [menuOpen])
-
-  function switchLocale(nextLocale: Locale) {
-    const nextPathname = getLocalizedPathname(pathname, nextLocale)
-    const search = searchParams.toString()
-    router.replace(search ? `${nextPathname}?${search}` : nextPathname)
-  }
 
   // Homepage is now light (beige) by default in the vanguard design
   const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`
@@ -192,33 +150,6 @@ export default function Nav() {
               {t('downloadApp')}
             </Link>
 
-            {/* Locale switcher — desktop */}
-            <div className="relative hidden sm:flex">
-              <select
-                aria-label="Idioma"
-                value={locale}
-                onChange={(e) => switchLocale(e.target.value as Locale)}
-                style={{
-                  colorScheme: isDarkTheme ? 'dark' : 'light',
-                  backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.96)',
-                  color: isDarkTheme ? '#F8FAFC' : '#0F172A',
-                  borderColor: isDarkTheme ? 'rgba(255,255,255,0.15)' : 'rgba(15,23,42,0.12)',
-                }}
-                className="mono h-[34px] appearance-none rounded-full border bg-transparent pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                {LOCALES.map((item) => (
-                  <option key={item} value={item}>
-                    {item.toUpperCase()} · {LOCALE_NAMES[item]}
-                  </option>
-                ))}
-              </select>
-              <svg
-                className="pointer-events-none absolute right-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-ink/40 dark:text-white/40"
-                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"
-              >
-                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
 
             {/* Theme toggle */}
             <ThemeToggle className="hidden sm:flex" />
@@ -281,33 +212,7 @@ export default function Nav() {
                 {t('downloadApp')}
               </Link>
             </div>
-            {/* Locale switcher mobile */}
             <div className="mt-4 flex items-center gap-2">
-              <div className="relative flex-1">
-                <select
-                  aria-label="Idioma"
-                  value={locale}
-                  onChange={(e) => switchLocale(e.target.value as Locale)}
-                  style={{
-                    backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.96)',
-                    color: isDarkTheme ? '#F8FAFC' : '#0F172A',
-                    borderColor: isDarkTheme ? 'rgba(255,255,255,0.15)' : 'rgba(15,23,42,0.12)',
-                  }}
-                  className="mono h-10 w-full appearance-none rounded-full border bg-white/95 pl-4 pr-8 text-[11px] uppercase tracking-[0.12em] transition-colors duration-150 ease-[var(--ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                >
-                  {LOCALES.map((item) => (
-                    <option key={item} value={item}>
-                      {item.toUpperCase()} · {LOCALE_NAMES[item]}
-                    </option>
-                  ))}
-                </select>
-                <svg
-                  className="pointer-events-none absolute right-3 top-1/2 h-3 w-3 -translate-y-1/2 text-ink-3 dark:text-white/40"
-                  viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"
-                >
-                  <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
               <ThemeToggle />
             </div>
           </div>
