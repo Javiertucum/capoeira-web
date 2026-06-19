@@ -37,7 +37,7 @@ export default function Nav() {
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isDark, setIsDark] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
 
@@ -54,7 +54,7 @@ export default function Nav() {
   useEffect(() => {
     // Detect dark mode from document class
     const updateDarkMode = () => {
-      setIsDark(document.documentElement.classList.contains('dark'))
+      setIsDarkMode(document.documentElement.classList.contains('dark'))
     }
     updateDarkMode()
     
@@ -201,7 +201,7 @@ export default function Nav() {
                 aria-label="Idioma"
                 value={locale}
                 onChange={(e) => switchLocale(e.target.value as Locale)}
-                style={{ colorScheme: isDark ? 'dark' : 'light' }}
+                style={{ colorScheme: isDarkMode ? 'dark' : 'light' }}
                 className="mono h-[34px] appearance-none rounded-full border border-ink/5 bg-ink/5 pl-3 pr-7 text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-white"
               >
                 {LOCALES.map((item) => (
@@ -286,7 +286,7 @@ export default function Nav() {
                   aria-label="Idioma"
                   value={locale}
                   onChange={(e) => switchLocale(e.target.value as Locale)}
-                  style={{ colorScheme: isDark ? 'dark' : 'light' }}
+                  style={{ colorScheme: isDarkMode ? 'dark' : 'light' }}
                   className="mono h-10 w-full appearance-none rounded-full border border-line bg-surface-muted pl-4 pr-8 text-[11px] uppercase tracking-[0.12em] text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-white/5 dark:text-white/70"
                 >
                   {LOCALES.map((item) => (
