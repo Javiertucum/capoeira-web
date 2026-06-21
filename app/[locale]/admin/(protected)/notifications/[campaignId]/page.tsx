@@ -5,6 +5,7 @@ import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import AdminSectionCard from '@/components/admin/AdminSectionCard'
 import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
+import CampaignStatusActions from '@/components/admin/CampaignStatusActions'
 import Badge from '@/components/ui/Badge'
 import { adminDb } from '@/lib/firebase-admin'
 
@@ -157,6 +158,8 @@ export default async function CampaignDetailPage({ params }: Props) {
                       <span className="text-sm text-text-secondary">Sin deep link</span>
                     )}
                   </div>
+
+                  <CampaignStatusActions campaignId={campaign.id} status={campaign.status} />
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
