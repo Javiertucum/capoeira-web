@@ -258,7 +258,7 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Estado de pagos',
-        d: 'Si tu núcleo gestiona pagos, en la pestaña "Gestión" verás el estado de tu pago del mes: "Pendiente", "Pagado" o "Vencido". Solo el educador puede registrar tus pagos.',
+        d: 'Si tu núcleo gestiona pagos, en la pestaña "Gestión" verás el estado de tu pago del mes: "Pendiente", "Pagado" o "Vencido". Si ya pagaste, toca para reportar tu pago: quedará como "Reportado" hasta que tu educador lo confirme.',
         note: 'El estado de pago solo es visible para ti y tu educador. No es información pública.',
       },
       {
@@ -476,6 +476,7 @@ const SECTIONS_ES: Section[] = [
         t: 'Crear y gestionar turmas',
         d: 'Accede a la gestión del núcleo (ícono de engranaje o botón "Gestionar"). Desde ahí puedes crear turmas — grupos de alumnos organizados por horario. Crea una turma por cada horario de clase (ej: "Lunes y miércoles 19:00") y asigna los alumnos a cada una.',
         tip: 'Organizar a tus alumnos en turmas hace que pasar lista sea mucho más rápido: en la pantalla de asistencia solo ves los alumnos que corresponden al horario seleccionado.',
+        note: 'Cada turma puede tener su propio precio o plan de pago, distinto al del núcleo — útil, por ejemplo, si las clases de niños cuestan menos que las de adultos, o si un pack de N clases al mes tiene un precio diferente al de la mensualidad estándar.',
       },
       {
         t: 'Ver el perfil individual de un alumno',
@@ -529,6 +530,11 @@ const SECTIONS_ES: Section[] = [
         t: 'Registrar el pago de un alumno',
         d: 'Toca el nombre de un alumno en la pestaña "Pagos" y luego toca "Registrar pago". Ingresa el monto y selecciona el mes que corresponde. El estado del alumno cambia a "Pagado" de inmediato.',
         tip: 'Puedes registrar pagos adelantados para alumnos que pagan por anticipado. Solo selecciona el mes futuro correspondiente.',
+      },
+      {
+        t: 'Confirmar un pago reportado por el alumno',
+        d: 'Cuando un alumno reporta su pago desde su propio perfil, aparece en tu pestaña "Pagos" con la etiqueta "Reportado". Toca el alumno para revisarlo y confirma o rechaza el pago — al confirmarlo, el estado pasa a "Pagado".',
+        tip: 'Al registrar o editar un pago puedes aplicar un descuento, ya sea como monto fijo o como porcentaje: se resta automáticamente del precio.',
       },
       {
         t: 'Ver quién tiene pagos pendientes o vencidos',
@@ -637,8 +643,12 @@ const SECTIONS_ES: Section[] = [
         d: 'En la parte superior del panel administrativo del núcleo (pestañas Alumnos / Asistencia / Pagos / Reportes) verás una franja de KPIs: número de alumnos, cantidad de clases del mes, porcentaje de asistencia promedio, cantidad de alumnos pagados y cantidad de vencidos.',
       },
       {
+        t: 'Saltar a otro mes desde el KPI',
+        d: 'Toca la etiqueta del mes en esa franja de KPIs para abrir un selector de mes: te permite saltar directamente a cualquier mes anterior en lugar de navegar flecha por flecha.',
+      },
+      {
         t: 'La pestaña "Reportes"',
-        d: 'Ve al panel del núcleo → pestaña "Reportes". El subtítulo dice "Asistencia, pagos y estadísticas del núcleo". Desde aquí generas el reporte mensual con toda la información consolidada.',
+        d: 'Ve al panel del núcleo → pestaña "Reportes". El subtítulo dice "Asistencia, pagos y estadísticas del núcleo". Desde aquí generas el reporte mensual con toda la información consolidada. Si tienes turmas configuradas, verás un desglose por turma (alumnos, % de asistencia y pagos por grupo) y podrás filtrar todo el reporte por una turma específica usando los chips en la parte superior.',
       },
       {
         t: 'Elegir el formato del reporte',
@@ -884,7 +894,7 @@ const SECTIONS_PT: Section[] = [
       },
       {
         t: 'Status de pagamentos',
-        d: 'Se o seu núcleo gerencia pagamentos, na aba "Gestão" você verá o status do seu pagamento do mês: "Pendente", "Pago" ou "Vencido". Só o educador pode registrar seus pagamentos.',
+        d: 'Se o seu núcleo gerencia pagamentos, na aba "Gestão" você verá o status do seu pagamento do mês: "Pendente", "Pago" ou "Vencido". Se já pagou, toque para reportar seu pagamento: ele fica como "Reportado" até seu educador confirmar.',
         note: 'O status de pagamento é visível apenas para você e seu educador. Não é informação pública.',
       },
       {
@@ -1097,6 +1107,7 @@ const SECTIONS_PT: Section[] = [
         t: 'Criar e gerenciar turmas',
         d: 'Acesse a gestão do núcleo (ícone de engrenagem ou botão "Gerenciar"). Lá você pode criar turmas — grupos de alunos organizados por horário. Crie uma turma por horário de aula (ex: "Segunda e Quarta 19h") e atribua os alunos.',
         tip: 'Organizar alunos em turmas torna a chamada muito mais rápida: na tela de presença você vê apenas os alunos do horário selecionado.',
+        note: 'Cada turma pode ter seu próprio preço ou plano de pagamento, diferente do padrão do núcleo — útil, por exemplo, quando as aulas infantis custam menos que as de adultos, ou quando um pacote de N aulas por mês tem um preço diferente da mensalidade padrão.',
       },
       {
         t: 'Ver o perfil individual de um aluno',
@@ -1150,6 +1161,11 @@ const SECTIONS_PT: Section[] = [
         t: 'Registrar o pagamento de um aluno',
         d: 'Toque no nome do aluno na aba "Pagamentos" e depois em "Registrar pagamento". Insira o valor e selecione o mês correspondente. O status do aluno muda para "Pago" imediatamente.',
         tip: 'Você pode registrar pagamentos antecipados para alunos que pagam adiantado. Basta selecionar o mês futuro correspondente.',
+      },
+      {
+        t: 'Confirmar um pagamento reportado pelo aluno',
+        d: 'Quando um aluno reporta seu pagamento pelo próprio perfil, ele aparece na sua aba "Pagamentos" com a etiqueta "Reportado". Toque no aluno para revisar e confirme ou rejeite o pagamento — ao confirmar, o status muda para "Pago".',
+        tip: 'Ao registrar ou editar um pagamento você pode aplicar um desconto, como valor fixo ou como porcentagem: ele é subtraído automaticamente do preço.',
       },
       {
         t: 'Ver quem tem pagamentos pendentes ou vencidos',
@@ -1239,8 +1255,12 @@ const SECTIONS_PT: Section[] = [
         d: 'Na parte superior do painel administrativo do núcleo você verá uma faixa de KPIs: número de alunos, quantidade de aulas do mês, porcentual médio de presença, quantidade de alunos pagos e quantidade de vencidos.',
       },
       {
+        t: 'Saltar para outro mês pelo KPI',
+        d: 'Toque na etiqueta do mês nessa faixa de KPIs para abrir um seletor de mês: ele permite saltar direto para qualquer mês anterior em vez de navegar seta por seta.',
+      },
+      {
         t: 'A aba "Relatórios"',
-        d: 'Vá ao painel do núcleo → aba "Relatórios". O subtítulo é "Presença, pagamentos e estatísticas do núcleo". Daqui você gera o relatório mensal com todas as informações consolidadas.',
+        d: 'Vá ao painel do núcleo → aba "Relatórios". O subtítulo é "Presença, pagamentos e estatísticas do núcleo". Daqui você gera o relatório mensal com todas as informações consolidadas. Se você tiver turmas configuradas, verá um detalhamento por turma (alunos, % de presença e pagamentos por turma) e poderá filtrar todo o relatório por uma turma específica usando os chips no topo.',
       },
       {
         t: 'Escolha o formato do relatório',
@@ -1486,7 +1506,7 @@ const SECTIONS_EN: Section[] = [
       },
       {
         t: 'Payment status',
-        d: 'If your school manages payments, in the "Management" tab you will see your payment status for the month: "Pending", "Paid", or "Overdue". Only the educator can record your payments.',
+        d: 'If your school manages payments, in the "Management" tab you will see your payment status for the month: "Pending", "Paid", or "Overdue". If you already paid, tap to report your payment — it will show as "Reported" until your educator confirms it.',
         note: 'Your payment status is visible only to you and your educator. It is not public information.',
       },
       {
@@ -1699,6 +1719,7 @@ const SECTIONS_EN: Section[] = [
         t: 'Create and manage class groups',
         d: 'Access the school management (gear icon or "Manage" button). There you can create class groups — sets of students organized by schedule. Create one per time slot (e.g. "Mon & Wed 7pm") and assign students to each.',
         tip: 'Organizing students into class groups makes attendance much faster: the attendance screen shows only the students for the selected time slot.',
+        note: 'Each class group can have its own price or payment plan, separate from the school\'s default — handy when, for example, kids\' classes cost less than adult classes, or a pack of N classes per month is priced differently from the standard monthly fee.',
       },
       {
         t: 'View an individual student\'s profile',
@@ -1752,6 +1773,11 @@ const SECTIONS_EN: Section[] = [
         t: 'Record a student payment',
         d: 'Tap the student\'s name in the "Payments" tab and then tap "Record payment". Enter the amount and select the corresponding month. The student\'s status immediately changes to "Paid".',
         tip: 'You can record advance payments for students who pay ahead of time. Just select the corresponding future month.',
+      },
+      {
+        t: 'Confirm a payment reported by a student',
+        d: 'When a student reports their payment from their own profile, it shows up in your "Payments" tab tagged "Reported". Tap the student to review it and confirm or reject the payment — confirming sets the status to "Paid".',
+        tip: 'When recording or editing a payment, you can apply a discount — either a fixed amount or a percentage — which is subtracted from the price automatically.',
       },
       {
         t: 'See who has pending or overdue payments',
@@ -1841,8 +1867,12 @@ const SECTIONS_EN: Section[] = [
         d: 'At the top of the school admin panel you will see a KPI strip: number of students, classes held this month, average attendance percentage, number of students paid, and number overdue.',
       },
       {
+        t: 'Jump to another month from the KPI strip',
+        d: 'Tap the month label in the KPI strip to open a month picker — it lets you jump directly to any past month instead of navigating arrow by arrow.',
+      },
+      {
         t: 'The "Reports" tab',
-        d: 'Go to the school panel → "Reports" tab. The subtitle reads "Attendance, payments and school statistics". This is where you generate the monthly report with all consolidated information.',
+        d: 'Go to the school panel → "Reports" tab. The subtitle reads "Attendance, payments and school statistics". This is where you generate the monthly report with all consolidated information. If you have class groups configured, you\'ll see a per-group breakdown (students, attendance %, and paid count per group), and you can filter the whole report by a specific group using the chips at the top.',
       },
       {
         t: 'Choose the report format',
@@ -2088,7 +2118,7 @@ const SECTIONS_FR: Section[] = [
       },
       {
         t: `Statut de paiement`,
-        d: `Si votre noyau gère les paiements, dans l'onglet « Gestion » vous verrez votre statut de paiement du mois : « En attente », « Payé » ou « En retard ». Seul l'éducateur peut enregistrer vos paiements.`,
+        d: `Si votre noyau gère les paiements, dans l'onglet « Gestion » vous verrez votre statut de paiement du mois : « En attente », « Payé » ou « En retard ». Si vous avez déjà payé, touchez pour signaler votre paiement : il apparaîtra comme « Signalé » jusqu'à ce que votre éducateur le confirme.`,
         note: `Votre statut de paiement n'est visible que par vous et votre éducateur. Ce n'est pas une information publique.`,
       },
       {
@@ -2301,6 +2331,7 @@ const SECTIONS_FR: Section[] = [
         t: `Créer et gérer des turmas`,
         d: `Accédez à la gestion du noyau (icône d'engrenage ou bouton « Gérer »). Vous pouvez y créer des turmas — des ensembles d'élèves organisés par horaire. Créez-en une par créneau (par ex. « Lun & Mer 19h ») et assignez des élèves à chacune.`,
         tip: `Organiser les élèves en turmas rend la prise de présence bien plus rapide : l'écran de présence n'affiche que les élèves du créneau sélectionné.`,
+        note: `Chaque turma peut avoir son propre tarif ou plan de paiement, différent de celui par défaut du noyau — pratique, par exemple, quand les cours enfants coûtent moins cher que les cours adultes, ou quand un forfait de N cours par mois a un tarif différent de la mensualité standard.`,
       },
       {
         t: `Voir le profil d'un élève`,
@@ -2354,6 +2385,11 @@ const SECTIONS_FR: Section[] = [
         t: `Enregistrer le paiement d'un élève`,
         d: `Touchez le nom de l'élève dans l'onglet « Paiements » puis touchez « Enregistrer un paiement ». Saisissez le montant et sélectionnez le mois correspondant. Le statut de l'élève passe immédiatement à « Payé ».`,
         tip: `Vous pouvez enregistrer des paiements anticipés pour les élèves qui paient à l'avance. Sélectionnez simplement le mois futur correspondant.`,
+      },
+      {
+        t: `Confirmer un paiement signalé par un élève`,
+        d: `Quand un élève signale son paiement depuis son propre profil, il apparaît dans votre onglet « Paiements » avec l'étiquette « Signalé ». Touchez l'élève pour le vérifier et confirmez ou rejetez le paiement — en confirmant, le statut passe à « Payé ».`,
+        tip: `Lors de l'enregistrement ou de la modification d'un paiement, vous pouvez appliquer une remise, en montant fixe ou en pourcentage : elle est déduite automatiquement du prix.`,
       },
       {
         t: `Voir qui a des paiements en attente ou en retard`,
@@ -2443,8 +2479,12 @@ const SECTIONS_FR: Section[] = [
         d: `En haut du panneau d'administration du noyau, vous verrez un bandeau de KPI : nombre d'élèves, cours donnés ce mois-ci, pourcentage de présence moyen, nombre d'élèves ayant payé et nombre en retard.`,
       },
       {
+        t: `Sauter à un autre mois depuis le KPI`,
+        d: `Touchez l'étiquette du mois dans ce bandeau de KPI pour ouvrir un sélecteur de mois : il vous permet de sauter directement à n'importe quel mois passé au lieu de naviguer flèche par flèche.`,
+      },
+      {
         t: `L'onglet « Rapports »`,
-        d: `Allez dans le panneau du noyau → onglet « Rapports ». Le sous-titre indique « Présence, paiements et statistiques du noyau ». C'est ici que vous générez le rapport mensuel avec toutes les informations consolidées.`,
+        d: `Allez dans le panneau du noyau → onglet « Rapports ». Le sous-titre indique « Présence, paiements et statistiques du noyau ». C'est ici que vous générez le rapport mensuel avec toutes les informations consolidées. Si vous avez des turmas configurées, vous verrez une répartition par turma (élèves, % de présence et paiements par turma) et vous pourrez filtrer tout le rapport par une turma spécifique grâce aux puces en haut de l'écran.`,
       },
       {
         t: `Choisir le format du rapport`,
