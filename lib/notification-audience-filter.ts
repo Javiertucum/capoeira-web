@@ -5,6 +5,7 @@ export type SegmentFilter = {
   subscriptionPlans?: string[]
   userIds?: string[]
   noGroup?: boolean
+  languages?: string[]
 }
 
 export type TokenEntry = {
@@ -22,6 +23,7 @@ export type RawUserDoc = {
   role: unknown
   country: unknown
   groupId: unknown
+  language?: unknown
   [key: string]: unknown
 }
 
@@ -55,6 +57,11 @@ export function filterUserDocs(users: RawUserDoc[], segment: SegmentFilter): Tok
     if (segment.countries && segment.countries.length > 0) {
       const country = typeof data.country === 'string' ? data.country : null
       if (!country || !segment.countries.includes(country)) continue
+    }
+
+    if (segment.languages && segment.languages.length > 0) {
+      const language = typeof data.language === 'string' ? data.language : null
+      if (!language || !segment.languages.includes(language)) continue
     }
 
     const hasGroupFilter = (segment.groupIds && segment.groupIds.length > 0) || segment.noGroup

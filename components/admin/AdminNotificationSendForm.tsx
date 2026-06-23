@@ -19,6 +19,15 @@ type UserResult = { uid: string; displayName: string; email: string; photoURL: s
 
 type ContentItem = { id: string; title: string; subtitle: string | null }
 
+const LANGUAGE_OPTIONS = [
+  { value: 'es', label: 'Español' },
+  { value: 'pt', label: 'Português' },
+  { value: 'en', label: 'English' },
+  { value: 'fr', label: 'Français' },
+  { value: 'de', label: 'Deutsch' },
+  { value: 'it', label: 'Italiano' },
+] as const
+
 const SCREEN_OPTIONS = [
   { value: '', label: 'Sin destino específico' },
   { value: 'home', label: 'Inicio' },
@@ -45,6 +54,7 @@ export default function AdminNotificationSendForm({ groups }: Props) {
   const [roles, setRoles] = useState<string[]>([])
   const [countries, setCountries] = useState('')
   const [plans, setPlans] = useState<string[]>([])
+  const [languages, setLanguages] = useState<string[]>([])
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([])
   const [noGroup, setNoGroup] = useState(false)
   const [selectedUsers, setSelectedUsers] = useState<UserResult[]>([])
@@ -82,7 +92,8 @@ export default function AdminNotificationSendForm({ groups }: Props) {
     groupIds: selectedGroupIds,
     noGroup,
     userIds: selectedUsers.map((u) => u.uid),
-  }), [roles, countries, selectedGroupIds, noGroup, selectedUsers])
+    languages,
+  }), [roles, countries, selectedGroupIds, noGroup, selectedUsers, languages])
 
   useEffect(() => {
     if (estimateDebounce.current) clearTimeout(estimateDebounce.current)
@@ -182,6 +193,7 @@ export default function AdminNotificationSendForm({ groups }: Props) {
         setSelectedUsers([])
         setSelectedGroupIds([])
         setNoGroup(false)
+        setLanguages([])
         router.refresh()
       }
     } catch {
@@ -287,6 +299,34 @@ export default function AdminNotificationSendForm({ groups }: Props) {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Languages */}
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+            Idioma del dispositivo (vacío = todos)
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {LANGUAGE_OPTIONS.map((lang) => (
+              <button
+                key={lang.value}
+                type="button"
+                onClick={() => setLanguages(toggleItem(languages, lang.value))}
+                className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-colors ${
+                  languages.includes(lang.value)
+                    ? 'border-accent/30 bg-accent/12 text-accent'
+                    : 'border-border bg-surface text-text-secondary'
+                }`}
+              >
+                {lang.label}
+              </button>
+            ))}
+          </div>
+          {languages.length > 0 && (
+            <p className="mt-1.5 text-xs text-text-muted">
+              Solo se enviará a usuarios cuyo idioma de dispositivo esté sincronizado y coincida.
+            </p>
+          )}
         </div>
 
         {/* Groups */}

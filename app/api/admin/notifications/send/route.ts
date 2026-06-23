@@ -123,6 +123,7 @@ export async function POST(request: NextRequest) {
     subscriptionPlans: Array.isArray(body.subscriptionPlans) ? (body.subscriptionPlans as string[]) : [],
     userIds: Array.isArray(body.userIds) ? (body.userIds as string[]) : [],
     noGroup: body.noGroup === true,
+    languages: Array.isArray(body.languages) ? (body.languages as string[]) : [],
   }
 
   const deepLink: DeepLink | undefined =
