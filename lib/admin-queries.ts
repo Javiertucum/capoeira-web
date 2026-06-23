@@ -183,6 +183,7 @@ export interface AdminUser {
   supervisorIds?: string[]
   createdAt?: string | null
   lastSignInTime?: string | null
+  lastOpenAt?: string | null
 }
 
 export interface AdminEvent {
@@ -744,6 +745,10 @@ export async function getAdminUsers(limit = 50): Promise<AdminUser[]> {
 
       const email = authUser.status === 'fulfilled' ? authUser.value.email : undefined
       const disabled = authUser.status === 'fulfilled' ? authUser.value.disabled : false
+      const lastSignInTime =
+        authUser.status === 'fulfilled' && authUser.value.metadata.lastSignInTime
+          ? new Date(authUser.value.metadata.lastSignInTime).toISOString()
+          : null
       const roleValue = asString(publicData.role) ?? asString(privateData.role) ?? 'student'
       const role = roleValue === 'educator' || roleValue === 'admin' ? roleValue : 'student'
       const adminPanelAccess =
@@ -772,6 +777,8 @@ export async function getAdminUsers(limit = 50): Promise<AdminUser[]> {
         setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
         adminPanelAccess,
         createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
+        lastSignInTime,
+        lastOpenAt: toIsoString(privateData.lastOpenAt ?? publicData.lastOpenAt),
       }
     })
   )
@@ -834,6 +841,7 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
     supervisorIds: asStringArray(publicData.supervisorIds ?? privateData.supervisorIds),
     createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
     lastSignInTime,
+    lastOpenAt: toIsoString(privateData.lastOpenAt ?? publicData.lastOpenAt),
   }
 }
 

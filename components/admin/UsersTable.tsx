@@ -14,6 +14,19 @@ function normalizeText(value: string): string {
     .replace(/[̀-ͯ]/g, '')
 }
 
+function formatLastSignIn(value?: string | null): string {
+  if (!value) return '—'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return '—'
+  return date.toLocaleString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
 interface Props {
   users: AdminUser[]
   locale: string
@@ -79,7 +92,7 @@ export default function UsersTable({ users, locale }: Props) {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-surface/30">
-                {['Nombre', 'Email', 'Rol', 'País', 'Perfil', 'Estado', 'Acciones'].map((h) => (
+                {['Nombre', 'Email', 'Rol', 'País', 'Perfil', 'Última conexión', 'Estado', 'Acciones'].map((h) => (
                   <th
                     key={h}
                     className="border-b border-border px-6 py-4 text-left text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted"
@@ -125,6 +138,9 @@ export default function UsersTable({ users, locale }: Props) {
                       )
                     })()}
                   </td>
+                  <td className="px-6 py-4 text-xs tabular-nums text-text-secondary">
+                    {formatLastSignIn(user.lastOpenAt ?? user.lastSignInTime)}
+                  </td>
                   <td className="px-6 py-4">
                     <Badge variant={user.disabled ? 'danger' : 'accent'}>
                       {user.disabled ? 'Bloqueado' : 'Activo'}
@@ -150,7 +166,7 @@ export default function UsersTable({ users, locale }: Props) {
               {filtered.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={8}
                     className="px-6 py-10 text-center text-sm italic text-text-muted"
                   >
                     No hay usuarios que coincidan con los filtros.
