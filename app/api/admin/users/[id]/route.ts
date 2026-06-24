@@ -19,7 +19,6 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     'name', 'surname', 'nickname', 'nameLower', 'surnameLower', 'nicknameLower',
     'role', 'groupId', 'nucleoIds', 'graduationLevelId', 'setupComplete',
     'bio', 'country', 'socialLinks', 'educatorEligible', 'supervisorIds',
-    'adminPanelAccess',
   ]
   // Permitted fields for usersPublic/{uid} (public)
   const publicFields = [
@@ -29,12 +28,17 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   ]
   // Firebase Auth fields
   const authFields = ['email', 'disabled']
+  // El acceso al panel admin se gestiona exclusivamente via custom claims
+  // (ver POST /api/admin/users/[id]/super-admin) — nunca con un campo de
+  // Firestore escribible.
+  const ROLE_VALUES = ['student', 'educator']
 
   const userUpdate: Record<string, unknown> = { updatedAt: FieldValue.serverTimestamp() }
   const publicUpdate: Record<string, unknown> = { updatedAt: FieldValue.serverTimestamp() }
   const authUpdate: Record<string, unknown> = {}
 
   for (const [key, value] of Object.entries(body)) {
+    if (key === 'role' && !ROLE_VALUES.includes(value as string)) continue
     if (userFields.includes(key))   userUpdate[key]   = value
     if (publicFields.includes(key)) publicUpdate[key] = value
     if (authFields.includes(key))   authUpdate[key]   = value

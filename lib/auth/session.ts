@@ -16,7 +16,7 @@ export async function createSessionCookie(idToken: string): Promise<string> {
 export async function verifyAdminIdToken(idToken: string): Promise<string> {
   const adminAuth = getAuth(adminApp)
   const decoded = await adminAuth.verifyIdToken(idToken, true)
-  const allowed = await hasAdminAccess(decoded.uid)
+  const allowed = await hasAdminAccess(decoded)
 
   if (!allowed) {
     throw new Error('Not admin')
@@ -28,7 +28,7 @@ export async function verifyAdminIdToken(idToken: string): Promise<string> {
 export async function verifySessionCookie(cookie: string): Promise<string> {
   const adminAuth = getAuth(adminApp)
   const decoded = await adminAuth.verifySessionCookie(cookie, true)
-  const allowed = await hasAdminAccess(decoded.uid)
+  const allowed = await hasAdminAccess(decoded)
 
   if (!allowed) {
     throw new Error('Not admin')

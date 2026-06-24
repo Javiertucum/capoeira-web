@@ -178,7 +178,6 @@ export interface AdminUser {
     website?: string | null
   }
   setupComplete?: boolean
-  adminPanelAccess?: boolean
   educatorEligible?: boolean
   supervisorIds?: string[]
   createdAt?: string | null
@@ -751,12 +750,6 @@ export async function getAdminUsers(limit = 50): Promise<AdminUser[]> {
           : null
       const roleValue = asString(publicData.role) ?? asString(privateData.role) ?? 'student'
       const role = roleValue === 'educator' || roleValue === 'admin' ? roleValue : 'student'
-      const adminPanelAccess =
-        privateData.adminPanelAccess === true ||
-        publicData.adminPanelAccess === true ||
-        privateData.isAdmin === true ||
-        publicData.isAdmin === true ||
-        role === 'admin'
 
       return {
         uid: doc.id,
@@ -775,7 +768,6 @@ export async function getAdminUsers(limit = 50): Promise<AdminUser[]> {
         avatarUrl: asString(publicData.avatarUrl) ?? asString(privateData.avatarUrl),
         socialLinks: (publicData.socialLinks ?? privateData.socialLinks ?? {}) as AdminUser['socialLinks'],
         setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
-        adminPanelAccess,
         createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
         lastSignInTime,
         lastOpenAt: toIsoString(privateData.lastOpenAt ?? publicData.lastOpenAt),
@@ -812,12 +804,6 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
 
   const roleValue = asString(publicData.role) ?? asString(privateData.role) ?? 'student'
   const role = roleValue === 'educator' || roleValue === 'admin' ? roleValue : 'student'
-  const adminPanelAccess =
-    privateData.adminPanelAccess === true ||
-    publicData.adminPanelAccess === true ||
-    privateData.isAdmin === true ||
-    publicData.isAdmin === true ||
-    role === 'admin'
 
   return {
     uid,
@@ -836,7 +822,6 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
     avatarUrl: asString(publicData.avatarUrl) ?? asString(privateData.avatarUrl),
     socialLinks: (publicData.socialLinks ?? privateData.socialLinks ?? {}) as AdminUser['socialLinks'],
     setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
-    adminPanelAccess,
     educatorEligible: publicData.educatorEligible === true || privateData.educatorEligible === true,
     supervisorIds: asStringArray(publicData.supervisorIds ?? privateData.supervisorIds),
     createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),

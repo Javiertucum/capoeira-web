@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getOgImageUrl, getOgLocale, getSiteDescription, SITE_NAME, buildItemListSchema } from '@/lib/site'
+import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getOgImageUrl, getOgLocale, getSiteDescription, SITE_NAME, buildItemListSchema, escapeJsonLd } from '@/lib/site'
 import DirectorySplit, { type DirectoryEducator } from '@/components/public/DirectorySplit'
 import Footer from '@/components/public/Footer'
 import type { Group, MapNucleo } from '@/lib/types'
@@ -102,7 +102,7 @@ export default async function LandingPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-bg selection:bg-accent/20 overflow-x-hidden">
       {itemListSchema && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(itemListSchema) }} />
       )}
       <DirectorySplit locale={locale} stats={stats} nucleos={nucleos} groups={groups} educators={educators} />
       <Footer locale={locale} />

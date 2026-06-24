@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { adminDb } from '@/lib/firebase-admin'
+import type { DecodedIdToken } from 'firebase-admin/auth'
 
 function getConfiguredAdminUids() {
   const values = [process.env.ADMIN_UID, process.env.ADMIN_UIDS]
@@ -12,46 +12,19 @@ function getConfiguredAdminUids() {
   return new Set(values)
 }
 
-function hasAdminFlag(data: Record<string, unknown> | undefined) {
-  if (!data) return false
+/**
+ * Solo la cuenta maestra tiene acceso al panel: via el custom claim
+ * `superAdmin` (otorgado por setSuperAdminClaim / el script de bootstrap) o,
+ * mientras el claim no se haya emitido aun, via el fallback de ADMIN_UID/
+ * ADMIN_UIDS. Nunca se consulta Firestore aqui — esos campos son escribibles
+ * por el propio usuario y no deben poder otorgar acceso al panel.
+ */
+export async function hasAdminAccess(decoded: DecodedIdToken): Promise<boolean> {
+  if (!decoded?.uid) return false
 
-  return (
-    data.adminPanelAccess === true ||
-    data.isAdmin === true ||
-    data.role === 'admin'
-  )
-}
-
-export async function hasAdminAccess(uid: string): Promise<boolean> {
-  if (!uid) return false
-
-  const configuredAdmins = getConfiguredAdminUids()
-  if (configuredAdmins.has(uid)) {
+  if (decoded.superAdmin === true) {
     return true
   }
 
-  const [userDoc, publicDoc, adminGroupSnap, coAdminGroupSnap] = await Promise.allSettled([
-    adminDb.collection('users').doc(uid).get(),
-    adminDb.collection('usersPublic').doc(uid).get(),
-    adminDb.collection('groups').where('adminUserIds', 'array-contains', uid).limit(1).get(),
-    adminDb.collection('groups').where('coAdminIds', 'array-contains', uid).limit(1).get(),
-  ])
-
-  if (userDoc.status === 'fulfilled' && hasAdminFlag(userDoc.value.data() as Record<string, unknown> | undefined)) {
-    return true
-  }
-
-  if (publicDoc.status === 'fulfilled' && hasAdminFlag(publicDoc.value.data() as Record<string, unknown> | undefined)) {
-    return true
-  }
-
-  if (adminGroupSnap.status === 'fulfilled' && !adminGroupSnap.value.empty) {
-    return true
-  }
-
-  if (coAdminGroupSnap.status === 'fulfilled' && !coAdminGroupSnap.value.empty) {
-    return true
-  }
-
-  return false
+  return getConfiguredAdminUids().has(decoded.uid)
 }

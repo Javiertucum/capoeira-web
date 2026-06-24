@@ -43,3 +43,7 @@ next-env.d.ts
 .vercel
 .claude/
 .superpowers/
+
+# Design handoff exports (no son codigo de la app)
+/web app capoeiragem.zip
+/web app capoeiragem/

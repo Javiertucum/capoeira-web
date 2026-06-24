@@ -85,6 +85,16 @@ export function getOgImageUrl(params: {
 
 // ─── JSON-LD structured data builders ────────────────────────────────────────
 
+/**
+ * Serializa un objeto para inyectarlo con dangerouslySetInnerHTML dentro de un
+ * <script type="application/ld+json">. JSON.stringify no escapa "</", asi que
+ * un campo de usuario (bio, nombre de grupo/nucleo, etc.) con literalmente
+ * "</script>" podria cerrar el tag e inyectar HTML/JS arbitrario.
+ */
+export function escapeJsonLd(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, '\\u003c')
+}
+
 export function buildOrganizationSchema(locale = 'es') {
   return {
     '@context': 'https://schema.org',

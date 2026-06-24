@@ -11,6 +11,7 @@ import {
   buildItemListSchema,
   buildLocalBusinessSchema,
   SITE_NAME,
+  escapeJsonLd,
 } from '@/lib/site'
 import { getAllNucleos, getNucleosByCity } from '@/lib/queries'
 import { slugify } from '@/lib/slugify'
@@ -198,10 +199,10 @@ export default async function CityPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-bg py-16 lg:py-24">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(itemList) }} />
       {locationSchemas.map((schema, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(schema) }} />
       ))}
 
       <div className="page-shell-narrow">

@@ -13,6 +13,7 @@ import {
   buildBreadcrumbSchema,
   getLocalizedUrl,
   SITE_NAME,
+  escapeJsonLd,
 } from '@/lib/site'
 import { getEducatorProfile, getGroup, getGraduationLevel, getNucleosByEducator } from '@/lib/queries'
 import { normalizeSocialLink, getSocialDisplayLabel } from '@/lib/social-links'
@@ -104,8 +105,8 @@ export default async function EducatorProfilePage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-bg py-16 lg:py-24">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(personSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(breadcrumbSchema) }} />
 
       <div className="page-shell-narrow">
         <Link href={`/${locale}/#directorio`} className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-accent-ink hover:underline">
