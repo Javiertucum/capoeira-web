@@ -11,9 +11,7 @@ export async function GET(request: NextRequest, { params }: Props) {
   const isAndroid = /Android/i.test(userAgent)
 
   if (isAndroid) {
-    const referrer = `${request.nextUrl.searchParams.toString()}&event_id=${id}`
-    const playStoreUrl = `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE_NAME}&referrer=${encodeURIComponent(referrer)}`
-    return NextResponse.redirect(playStoreUrl, 302)
+    return NextResponse.redirect(`https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE_NAME}`, 302)
   }
 
   const pwaUrl = new URL(`/event/${id}`, PWA_BASE_URL)
