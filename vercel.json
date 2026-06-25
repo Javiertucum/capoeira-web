@@ -1,9 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/:rest((?!\\.well-known/).*)",
+      "source": "/:path*",
       "has": [{ "type": "host", "value": "agendacapoeiragem.com" }],
-      "destination": "https://www.agendacapoeiragem.com/:rest",
+      "destination": "https://www.agendacapoeiragem.com/:path*",
       "permanent": true
     }
   ]
