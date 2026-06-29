@@ -2,11 +2,12 @@ import { MetadataRoute } from 'next'
 import { getLanguageAlternateUrls, getLocalizedUrl } from '@/lib/site'
 import { getAllGroups, getAllEducators, getAllNucleos, getAllLocationSlugs } from '@/lib/queries'
 import { getTravelersPath, getTravelersLanguageAlternateUrls } from '@/lib/travelers-content'
+import { slugify } from '@/lib/slugify'
 
 const LOCALES = ['es', 'pt', 'en', 'fr', 'de', 'it']
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticRoutes = ['', '/privacy', '/terms', '/tutoriales'].flatMap((path) =>
+  const staticRoutes = ['', '/about', '/privacy', '/terms', '/tutoriales'].flatMap((path) =>
     LOCALES.map((locale) => ({
       url: getLocalizedUrl(locale, path),
       lastModified: new Date(),
@@ -16,12 +17,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   )
 
-  const [groups, educators, nucleos, locationSlugs] = await Promise.all([
+  const [groups, allEducators, nucleos, locationSlugs] = await Promise.all([
     getAllGroups().catch(() => []),
     getAllEducators().catch(() => []),
     getAllNucleos().catch(() => []),
     getAllLocationSlugs().catch(() => []),
   ])
+
+  // Mantener fuera del sitemap las paginas que marcamos noindex (ver
+  // [ciudadSlug]/page.tsx y educadores/[uid]/page.tsx) — un sitemap con
+  // URLs noindex es una senal de calidad inconsistente para los crawlers.
+  const educators = allEducators.filter((e) => (e.bio?.trim().length ?? 0) >= 20)
+
+  const cityNucleoCounts = new Map<string, number>()
+  for (const n of nucleos) {
+    if (!n.country || !n.city) continue
+    const key = `${slugify(n.country)}/${slugify(n.city)}`
+    cityNucleoCounts.set(key, (cityNucleoCounts.get(key) ?? 0) + 1)
+  }
 
   const groupRoutes = groups.flatMap((group) =>
     LOCALES.map((locale) => ({
@@ -53,16 +66,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   )
 
-  const locationRoutes = locationSlugs.flatMap(({ countrySlug, citySlug }) => {
-    const path = citySlug ? `/capoeira/${countrySlug}/${citySlug}` : `/capoeira/${countrySlug}`
-    return LOCALES.map((locale) => ({
-      url: getLocalizedUrl(locale, path),
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: citySlug ? 1.0 : 0.9,
-      alternates: { languages: getLanguageAlternateUrls(path) },
-    }))
-  })
+  const locationRoutes = locationSlugs
+    .filter(({ citySlug, countrySlug }) =>
+      !citySlug || (cityNucleoCounts.get(`${countrySlug}/${citySlug}`) ?? 0) >= 2
+    )
+    .flatMap(({ countrySlug, citySlug }) => {
+      const path = citySlug ? `/capoeira/${countrySlug}/${citySlug}` : `/capoeira/${countrySlug}`
+      return LOCALES.map((locale) => ({
+        url: getLocalizedUrl(locale, path),
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: citySlug ? 1.0 : 0.9,
+        alternates: { languages: getLanguageAlternateUrls(path) },
+      }))
+    })
 
   const travelersRoutes = LOCALES.map((locale) => ({
     url: getLocalizedUrl(locale, getTravelersPath(locale)),

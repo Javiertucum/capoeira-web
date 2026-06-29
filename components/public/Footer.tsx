@@ -11,6 +11,7 @@ const FOOTER_COPY: Record<string, {
   plataforma: string
   comunidad: string
   admin: string
+  sobre: string
   privacidad: string
   terminos: string
   copyright: string
@@ -24,6 +25,7 @@ const FOOTER_COPY: Record<string, {
     plataforma: 'Plataforma',
     comunidad: 'Comunidad',
     admin: 'Admin',
+    sobre: 'Sobre nosotros',
     privacidad: 'Privacidad',
     terminos: 'Términos',
     copyright: '© 2026 Agenda Capoeiragem. Todos los derechos reservados.',
@@ -37,6 +39,7 @@ const FOOTER_COPY: Record<string, {
     plataforma: 'Plataforma',
     comunidad: 'Comunidade',
     admin: 'Admin',
+    sobre: 'Sobre nós',
     privacidad: 'Privacidade',
     terminos: 'Termos',
     copyright: '© 2026 Agenda Capoeiragem. Todos os direitos reservados.',
@@ -50,6 +53,7 @@ const FOOTER_COPY: Record<string, {
     plataforma: 'Platform',
     comunidad: 'Community',
     admin: 'Admin',
+    sobre: 'About us',
     privacidad: 'Privacy',
     terminos: 'Terms',
     copyright: '© 2026 Agenda Capoeiragem. All rights reserved.',
@@ -63,6 +67,7 @@ const FOOTER_COPY: Record<string, {
     plataforma: 'Plateforme',
     comunidad: 'Communauté',
     admin: 'Admin',
+    sobre: 'À propos',
     privacidad: 'Confidentialité',
     terminos: 'Conditions',
     copyright: '© 2026 Agenda Capoeiragem. Tous droits réservés.',
@@ -76,6 +81,7 @@ const FOOTER_COPY: Record<string, {
     plataforma: 'Plattform',
     comunidad: 'Community',
     admin: 'Admin',
+    sobre: 'Über uns',
     privacidad: 'Datenschutz',
     terminos: 'AGB',
     copyright: '© 2026 Agenda Capoeiragem. Alle Rechte vorbehalten.',
@@ -89,6 +95,7 @@ const FOOTER_COPY: Record<string, {
     plataforma: 'Piattaforma',
     comunidad: 'Comunità',
     admin: 'Admin',
+    sobre: 'Chi siamo',
     privacidad: 'Privacy',
     terminos: 'Termini',
     copyright: '© 2026 Agenda Capoeiragem. Tutti i diritti riservati.',
@@ -106,6 +113,7 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
   ]
 
   const NAV_COMMUNITY = [
+    { label: c.sobre, href: `/${locale}/about` },
     { label: c.admin, href: `/${locale}/admin` },
   ]
 

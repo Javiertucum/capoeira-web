@@ -37,6 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const fullName = `${educator.name} ${educator.surname}`.trim()
   const path = `/educadores/${uid}`
   const description = educator.bio ?? `Educador de capoeira${educator.country ? ' en ' + educator.country : ''}${educator.nickname ? ' — ' + educator.nickname : ''}.`
+  // Perfiles sin bio sustancial no aportan contenido unico — noindex hasta
+  // que el educador complete su perfil, para no diluir la calidad del sitio
+  // a ojos de revisores de contenido (AdSense, Search Console).
+  const hasSubstantialBio = (educator.bio?.trim().length ?? 0) >= 20
   return {
     title: fullName,
     description,
@@ -45,6 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...(educator.country ? [`capoeira ${educator.country}`] : []),
       ...(educator.nickname ? [educator.nickname] : []),
     ],
+    ...(!hasSubstantialBio && { robots: { index: false, follow: true } }),
     alternates: { canonical: getLocalizedUrl(locale, path), languages: getLanguageAlternateUrls(path) },
     openGraph: {
       title: formatPageTitle(fullName),

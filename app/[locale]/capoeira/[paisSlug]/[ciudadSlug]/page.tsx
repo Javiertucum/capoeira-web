@@ -142,11 +142,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = c.title(data.cityName, data.countryName)
   const description = c.description(data.cityName, data.countryName, data.nucleos.length)
   const path = `/capoeira/${paisSlug}/${ciudadSlug}`
+  // Ciudades con un solo nucleo no tienen contenido unico suficiente —
+  // noindex hasta que haya mas datos, para no diluir la calidad del sitio
+  // a ojos de revisores de contenido (AdSense, Search Console).
+  const hasEnoughContent = data.nucleos.length >= 2
 
   return {
     title,
     description,
     keywords: c.keywords(data.cityName, data.countryName),
+    ...(!hasEnoughContent && { robots: { index: false, follow: true } }),
     alternates: { canonical: getLocalizedUrl(locale, path), languages: getLanguageAlternateUrls(path) },
     openGraph: {
       title: formatPageTitle(title),
