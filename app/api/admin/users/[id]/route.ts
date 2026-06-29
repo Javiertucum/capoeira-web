@@ -18,12 +18,13 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const userFields = [
     'name', 'surname', 'nickname', 'nameLower', 'surnameLower', 'nicknameLower',
     'role', 'groupId', 'nucleoIds', 'graduationLevelId', 'setupComplete',
-    'bio', 'country', 'socialLinks', 'educatorEligible', 'supervisorIds',
+    'bio', 'country', 'gender', 'birthdate', 'socialLinks', 'educatorEligible', 'supervisorIds',
   ]
-  // Permitted fields for usersPublic/{uid} (public)
+  // Permitted fields for usersPublic/{uid} (public). `birthdate` es solo privado
+  // (la app no lo refleja en usersPublic), por eso no va aquí.
   const publicFields = [
     'name', 'surname', 'nickname', 'role', 'groupId', 'nucleoIds',
-    'graduationLevelId', 'avatarUrl', 'bio', 'country', 'socialLinks',
+    'graduationLevelId', 'avatarUrl', 'bio', 'country', 'gender', 'socialLinks',
     'educatorEligible', 'supervisorIds',
   ]
   // Firebase Auth fields

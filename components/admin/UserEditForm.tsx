@@ -24,6 +24,8 @@ export default function UserEditForm({ user, locale, nucleoOptions = [], graduat
     groupId:    user.groupId ?? '',
     bio:        user.bio ?? '',
     country:    user.country ?? '',
+    gender:     user.gender ?? '',
+    birthdate:  user.birthdate ?? '',
     disabled:   user.disabled,
     instagram:  user.socialLinks?.instagram ?? '',
     facebook:   user.socialLinks?.facebook ?? '',
@@ -66,6 +68,8 @@ export default function UserEditForm({ user, locale, nucleoOptions = [], graduat
         groupId:    form.groupId || null,
         bio:        form.bio || null,
         country:    form.country || null,
+        gender:     form.gender || null,
+        birthdate:  form.birthdate || null,
         disabled:   form.disabled,
         graduationLevelId: form.graduationLevelId || null,
         setupComplete: form.setupComplete,
@@ -148,6 +152,21 @@ export default function UserEditForm({ user, locale, nucleoOptions = [], graduat
             <div>
               <label className={labelClass}>Correo electrónico</label>
               <input className={inputClass} value={form.email} onChange={e => set('email', e.target.value)} />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Sexo</label>
+                <select className={inputClass} value={form.gender} onChange={e => set('gender', e.target.value)}>
+                  <option value="">Sin especificar</option>
+                  <option value="male">Masculino</option>
+                  <option value="female">Femenino</option>
+                  <option value="preferNotToSay">Prefiere no decir</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelClass}>Fecha de nacimiento</label>
+                <input type="date" className={inputClass} value={form.birthdate} onChange={e => set('birthdate', e.target.value)} />
+              </div>
             </div>
           </div>
         </section>

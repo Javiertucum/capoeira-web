@@ -168,6 +168,8 @@ export interface AdminUser {
   graduationLevelId?: string | null
   bio?: string | null
   country?: string | null
+  gender?: 'male' | 'female' | 'preferNotToSay' | null
+  birthdate?: string | null
   avatarUrl?: string | null
   socialLinks?: {
     instagram?: string | null
@@ -819,6 +821,8 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
       asString(publicData.graduationLevelId) ?? asString(privateData.graduationLevelId),
     bio: asString(publicData.bio) ?? asString(privateData.bio),
     country: asString(publicData.country) ?? asString(privateData.country),
+    gender: (asString(publicData.gender) ?? asString(privateData.gender) ?? null) as AdminUser['gender'],
+    birthdate: asString(privateData.birthdate) ?? null,
     avatarUrl: asString(publicData.avatarUrl) ?? asString(privateData.avatarUrl),
     socialLinks: (publicData.socialLinks ?? privateData.socialLinks ?? {}) as AdminUser['socialLinks'],
     setupComplete: publicData.setupComplete === true || privateData.setupComplete === true,
