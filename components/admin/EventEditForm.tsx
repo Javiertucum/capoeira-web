@@ -117,6 +117,98 @@ function newLocation(startDate: string): LocationForm {
   }
 }
 
+type AdminAgendaItem = NonNullable<AdminEvent['agenda']>[number]
+
+type AgendaForm = {
+  id: string
+  title: string
+  startTime: string
+  endTime: string
+  description: string
+  locMode: 'none' | 'inPerson' | 'online'
+  address: string
+  onlineLink: string
+  locationTBC: boolean
+  // Se preservan tal cual (el panel no geocodifica): solo se editan los campos de texto.
+  latitude: number
+  longitude: number
+  name: string
+  country: string
+  city: string
+}
+
+function agendaToForm(item: AdminAgendaItem): AgendaForm {
+  const loc = item.location ?? null
+  const locMode: AgendaForm['locMode'] = !loc ? 'none' : loc.isOnline ? 'online' : 'inPerson'
+  return {
+    id: item.id,
+    title: item.title || '',
+    startTime: item.startTime || '',
+    endTime: item.endTime || '',
+    description: item.description || '',
+    locMode,
+    address: loc?.address || '',
+    onlineLink: loc?.onlineLink || '',
+    locationTBC: loc?.locationTBC ?? false,
+    latitude: loc?.latitude ?? 0,
+    longitude: loc?.longitude ?? 0,
+    name: loc?.name || '',
+    country: loc?.country || '',
+    city: loc?.city || '',
+  }
+}
+
+function newAgendaItem(): AgendaForm {
+  return {
+    id: `block-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    title: '',
+    startTime: '',
+    endTime: '',
+    description: '',
+    locMode: 'none',
+    address: '',
+    onlineLink: '',
+    locationTBC: false,
+    latitude: 0,
+    longitude: 0,
+    name: '',
+    country: '',
+    city: '',
+  }
+}
+
+function formToAgenda(f: AgendaForm) {
+  const block: Record<string, unknown> = {
+    id: f.id,
+    title: f.title.trim(),
+    startTime: f.startTime.trim(),
+    endTime: f.endTime.trim() || undefined,
+    description: f.description.trim() || undefined,
+  }
+  if (f.locMode === 'online') {
+    block.location = {
+      address: '',
+      latitude: 0,
+      longitude: 0,
+      isOnline: true,
+      onlineLink: f.onlineLink.trim(),
+      locationTBC: false,
+    }
+  } else if (f.locMode === 'inPerson') {
+    block.location = {
+      address: f.address.trim(),
+      latitude: f.latitude,
+      longitude: f.longitude,
+      name: f.name,
+      country: f.country,
+      city: f.city,
+      isOnline: false,
+      locationTBC: f.locationTBC,
+    }
+  }
+  return block
+}
+
 function splitLines(value: string): string[] {
   return value
     .split('\n')
@@ -201,6 +293,9 @@ export default function EventEditForm({ event, locale, entityOptions, attendees:
   const [locations, setLocations] = useState<LocationForm[]>(
     (event.locations || []).map(locationToForm)
   )
+  const [agenda, setAgenda] = useState<AgendaForm[]>(
+    (event.agenda || []).map(agendaToForm)
+  )
   const [paymentMethods, setPaymentMethods] = useState<AdminPaymentMethod[]>(
     event.paymentMethods || []
   )
@@ -236,6 +331,20 @@ export default function EventEditForm({ event, locale, entityOptions, attendees:
 
   function removeLocation(index: number) {
     setLocations((current) => current.filter((_, itemIndex) => itemIndex !== index))
+  }
+
+  function setAgendaItem<K extends keyof AgendaForm>(index: number, key: K, value: AgendaForm[K]) {
+    setAgenda((current) =>
+      current.map((item, itemIndex) => (itemIndex === index ? { ...item, [key]: value } : item))
+    )
+  }
+
+  function addAgendaItem() {
+    setAgenda((current) => [...current, newAgendaItem()])
+  }
+
+  function removeAgendaItem(index: number) {
+    setAgenda((current) => current.filter((_, itemIndex) => itemIndex !== index))
   }
 
   function addPaymentMethod() {
@@ -285,6 +394,7 @@ export default function EventEditForm({ event, locale, entityOptions, attendees:
             onlineLink: location.onlineLink,
             locationTBC: location.locationTBC,
           })),
+          agenda: agenda.map(formToAgenda),
           paymentMethods,
         }),
       })
@@ -494,8 +604,134 @@ export default function EventEditForm({ event, locale, entityOptions, attendees:
       <section className={sectionClass}>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h3 className="text-sm font-semibold text-text">Cronograma y ubicaciones</h3>
-            <p className="mt-1 text-xs text-text-muted">Edita cada bloque creado por el usuario.</p>
+            <h3 className="text-sm font-semibold text-text">Programa del evento (cronograma)</h3>
+            <p className="mt-1 text-xs text-text-muted">
+              Bloques del cronograma que ve el usuario. Las horas son HH:MM.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={addAgendaItem}
+            className="rounded-xl border border-accent/30 px-4 py-2 text-xs font-semibold text-accent"
+          >
+            Agregar bloque
+          </button>
+        </div>
+
+        <div className="mt-5 space-y-4">
+          {agenda.map((block, index) => (
+            <div key={block.id} className="rounded-2xl border border-border bg-surface p-4">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">
+                  Bloque {index + 1}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => removeAgendaItem(index)}
+                  className="text-xs font-semibold text-danger"
+                >
+                  Quitar
+                </button>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="md:col-span-2">
+                  <label className={labelClass}>Titulo / actividad</label>
+                  <input
+                    className={inputClass}
+                    value={block.title}
+                    onChange={(event) => setAgendaItem(index, 'title', event.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Hora inicio</label>
+                  <input
+                    type="time"
+                    className={inputClass}
+                    value={block.startTime}
+                    onChange={(event) => setAgendaItem(index, 'startTime', event.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Hora fin (opcional)</label>
+                  <input
+                    type="time"
+                    className={inputClass}
+                    value={block.endTime}
+                    onChange={(event) => setAgendaItem(index, 'endTime', event.target.value)}
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className={labelClass}>Descripcion (opcional)</label>
+                  <textarea
+                    className={`${inputClass} min-h-[80px] resize-y`}
+                    value={block.description}
+                    onChange={(event) => setAgendaItem(index, 'description', event.target.value)}
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className={labelClass}>Lugar del bloque</label>
+                  <select
+                    className={inputClass}
+                    value={block.locMode}
+                    onChange={(event) =>
+                      setAgendaItem(index, 'locMode', event.target.value as AgendaForm['locMode'])
+                    }
+                  >
+                    <option value="none">Sin lugar</option>
+                    <option value="inPerson">Presencial</option>
+                    <option value="online">Online</option>
+                  </select>
+                </div>
+                {block.locMode === 'inPerson' ? (
+                  <>
+                    <div className="md:col-span-2">
+                      <label className={labelClass}>Direccion</label>
+                      <input
+                        className={inputClass}
+                        value={block.address}
+                        onChange={(event) => setAgendaItem(index, 'address', event.target.value)}
+                      />
+                    </div>
+                    <label className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm text-text md:col-span-2">
+                      <input
+                        type="checkbox"
+                        checked={block.locationTBC}
+                        onChange={(event) => setAgendaItem(index, 'locationTBC', event.target.checked)}
+                      />
+                      Ubicacion por confirmar
+                    </label>
+                  </>
+                ) : null}
+                {block.locMode === 'online' ? (
+                  <div className="md:col-span-2">
+                    <label className={labelClass}>Enlace online</label>
+                    <input
+                      className={inputClass}
+                      value={block.onlineLink}
+                      onChange={(event) => setAgendaItem(index, 'onlineLink', event.target.value)}
+                    />
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ))}
+
+          {agenda.length === 0 ? (
+            <p className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text-muted">
+              Este evento no tiene cronograma. Puedes agregar bloques desde aqui.
+            </p>
+          ) : null}
+        </div>
+      </section>
+
+      <section className={sectionClass}>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h3 className="text-sm font-semibold text-text">Ubicaciones (mapa / calendario)</h3>
+            <p className="mt-1 text-xs text-text-muted">
+              Derivadas del cronograma. Edita aqui solo eventos sin cronograma o para corregir el mapa.
+            </p>
           </div>
           <button
             type="button"

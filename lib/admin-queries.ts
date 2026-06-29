@@ -104,6 +104,42 @@ function mapEventLocations(value: unknown): AdminEvent['locations'] {
     .filter((item): item is NonNullable<typeof item> => item !== null)
 }
 
+function mapEventAgenda(value: unknown): AdminEvent['agenda'] {
+  if (!Array.isArray(value)) return []
+
+  return value
+    .map((item, index) => {
+      if (!item || typeof item !== 'object') return null
+      const block = item as FirestoreRecord
+      const loc =
+        block.location && typeof block.location === 'object'
+          ? (block.location as FirestoreRecord)
+          : null
+
+      return {
+        id: asString(block.id) ?? `block-${index}`,
+        title: asString(block.title) ?? '',
+        startTime: asString(block.startTime) ?? '',
+        endTime: asString(block.endTime),
+        description: asString(block.description),
+        location: loc
+          ? {
+              address: asString(loc.address) ?? '',
+              latitude: asNumber(loc.latitude) ?? 0,
+              longitude: asNumber(loc.longitude) ?? 0,
+              name: asString(loc.name),
+              country: asString(loc.country),
+              city: asString(loc.city),
+              isOnline: asBoolean(loc.isOnline) ?? false,
+              onlineLink: asString(loc.onlineLink),
+              locationTBC: asBoolean(loc.locationTBC) ?? false,
+            }
+          : null,
+      }
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null)
+}
+
 function mapEventPaymentMethods(value: unknown): AdminEvent['paymentMethods'] {
   if (!Array.isArray(value)) return []
 
@@ -211,6 +247,26 @@ export interface AdminEvent {
     isOnline?: boolean
     onlineLink?: string | null
     locationTBC?: boolean
+  }>
+  // Cronograma: bloques del programa que el usuario carga en la app. Es la fuente del
+  // cronograma mostrado; `locations` se deriva de aquí cuando existe.
+  agenda?: Array<{
+    id: string
+    title: string
+    startTime: string
+    endTime?: string | null
+    description?: string | null
+    location?: {
+      address: string
+      latitude: number
+      longitude: number
+      name?: string | null
+      country?: string | null
+      city?: string | null
+      isOnline?: boolean
+      onlineLink?: string | null
+      locationTBC?: boolean
+    } | null
   }>
   coOrganizerIds?: string[]
   showOrganizerGroups?: boolean
@@ -1037,6 +1093,7 @@ export async function getAdminEvents(limit = 50): Promise<AdminEvent[]> {
         goingCount: asNumber(data.goingCount) ?? 0,
         interestedCount: asNumber(data.interestedCount) ?? 0,
         locations: mapEventLocations(data.locations),
+        agenda: mapEventAgenda(data.agenda),
         coOrganizerIds: asStringArray(data.coOrganizerIds),
         showOrganizerGroups: asBoolean(data.showOrganizerGroups) ?? true,
         posterUrls: asStringArray(data.posterUrls),

@@ -69,6 +69,55 @@ function parseLocations(value: unknown) {
   })
 }
 
+// El cronograma (agenda) son los bloques del programa que el usuario carga. Es la fuente
+// del cronograma que se muestra en la app; nunca debe contener `undefined` (Firestore lo
+// rechaza), por eso los campos de texto caen a string vacío.
+function parseAgenda(value: unknown) {
+  if (!Array.isArray(value)) return []
+
+  return value
+    .map((item, index) => {
+      const block = item && typeof item === 'object' ? (item as JsonRecord) : {}
+      const title = parseString(block.title)
+      const startTime = parseString(block.startTime)
+      if (!title || !startTime) return null
+
+      const result: JsonRecord = {
+        id: parseString(block.id) || `block-${Date.now()}-${index}`,
+        title,
+        startTime,
+      }
+      const endTime = parseString(block.endTime)
+      if (endTime) result.endTime = endTime
+      const description = parseString(block.description)
+      if (description) result.description = description
+
+      const loc = block.location && typeof block.location === 'object' ? (block.location as JsonRecord) : null
+      if (loc) {
+        const isOnline = parseBoolean(loc.isOnline)
+        const locationTBC = parseBoolean(loc.locationTBC)
+        const address = parseString(loc.address)
+        const onlineLink = parseString(loc.onlineLink)
+        // Solo adjuntar location si el bloque realmente tiene lugar.
+        if (isOnline || locationTBC || address || onlineLink) {
+          result.location = {
+            address,
+            latitude: parseNumber(loc.latitude),
+            longitude: parseNumber(loc.longitude),
+            name: parseString(loc.name),
+            country: parseString(loc.country),
+            city: parseString(loc.city),
+            isOnline,
+            onlineLink,
+            locationTBC,
+          }
+        }
+      }
+      return result
+    })
+    .filter((item): item is JsonRecord => item !== null)
+}
+
 function parsePaymentMethods(value: unknown) {
   if (!Array.isArray(value)) return []
 
@@ -97,7 +146,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const { id } = await params
   const body = await request.json()
 
-  const update = {
+  const update: Record<string, unknown> = {
     title: parseString(body.title),
     description: parseString(body.description),
     category: parseString(body.category).toLowerCase(),
@@ -114,6 +163,12 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     currency: parseString(body.currency, 'CLP').toUpperCase() || 'CLP',
     paymentMethods: parsePaymentMethods(body.paymentMethods),
     updatedAt: FieldValue.serverTimestamp(),
+  }
+
+  // Solo se toca `agenda` si el cliente la envía -- así otro cliente que no la mande
+  // nunca borra el cronograma existente por accidente.
+  if ('agenda' in body) {
+    update.agenda = parseAgenda(body.agenda)
   }
 
   try {
