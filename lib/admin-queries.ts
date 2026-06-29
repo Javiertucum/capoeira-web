@@ -188,6 +188,112 @@ function mapAdminNucleo(
     currency: asString(data.currency),
     paymentDueDay: asNumber(data.paymentDueDay),
     showFeeAmount: asBoolean(data.showFeeAmount) ?? true,
+    billingOptions: mapBillingOptions(data.billingOptions),
+  }
+}
+
+function mapBillingOptions(value: unknown): AdminNucleoBillingOption[] {
+  if (!Array.isArray(value)) return []
+
+  return value
+    .map((item) => {
+      if (!item || typeof item !== 'object') return null
+      const option = item as FirestoreRecord
+      const id = asString(option.id)
+      const name = asString(option.name)
+      const mode = asString(option.mode)
+      if (!id || !name || !mode) return null
+      if (!['free', 'monthly', 'perClass', 'classPack'].includes(mode)) return null
+
+      return {
+        id,
+        name,
+        mode: mode as AdminNucleoBillingOption['mode'],
+        scheduleKeys: asStringArray(option.scheduleKeys),
+        scheduleGroupName: asString(option.scheduleGroupName),
+        monthlyFee: asNumber(option.monthlyFee),
+        classFee: asNumber(option.classFee),
+        classesPerPackage: asNumber(option.classesPerPackage),
+        isDefault: asBoolean(option.isDefault) ?? false,
+      }
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null)
+}
+
+function mapAdminTurma(
+  groupId: string,
+  nucleoId: string,
+  turmaId: string,
+  data: FirestoreRecord
+): AdminTurma {
+  return {
+    id: turmaId,
+    groupId,
+    nucleoId,
+    name: asString(data.name) ?? '',
+    scheduleKeys: asStringArray(data.scheduleKeys),
+    memberIds: asStringArray(data.memberIds),
+    guestMemberIds: asStringArray(data.guestMemberIds),
+    billingOptionId: asString(data.billingOptionId),
+    responsibleEducatorId: asString(data.responsibleEducatorId),
+    assistantEducatorIds: asStringArray(data.assistantEducatorIds),
+    createdAt: toIsoString(data.createdAt),
+    updatedAt: toIsoString(data.updatedAt),
+  }
+}
+
+function mapAdminScholarship(
+  groupId: string,
+  nucleoId: string,
+  participantId: string,
+  data: FirestoreRecord
+): AdminScholarship {
+  return {
+    participantId,
+    groupId,
+    nucleoId,
+    isGuest: asBoolean(data.isGuest) ?? false,
+    discountPercent: asNumber(data.discountPercent) ?? 0,
+    permanent: asBoolean(data.permanent) ?? false,
+    startMonth: asString(data.startMonth),
+    endMonth: asString(data.endMonth),
+    note: asString(data.note),
+    createdBy: asString(data.createdBy) ?? '',
+    createdAt: toIsoString(data.createdAt),
+    updatedAt: toIsoString(data.updatedAt),
+  }
+}
+
+function mapAdminPayment(
+  groupId: string,
+  nucleoId: string,
+  paymentId: string,
+  data: FirestoreRecord
+): AdminPayment {
+  const status = asString(data.status)
+  return {
+    id: paymentId,
+    groupId,
+    nucleoId,
+    userId: asString(data.userId) ?? '',
+    month: asString(data.month) ?? '',
+    status: status === 'paid' || status === 'pending' || status === 'free' ? status : 'pending',
+    amount: asNumber(data.amount),
+    discountAmount: asNumber(data.discountAmount),
+    discountPercent: asNumber(data.discountPercent),
+    billingOptionId: asString(data.billingOptionId),
+    billingOptionName: asString(data.billingOptionName),
+    billingMode: asString(data.billingMode) as AdminPayment['billingMode'],
+    turmaId: asString(data.turmaId),
+    paidAt: toIsoString(data.paidAt),
+    notes: asString(data.notes),
+    reportedByStudent: asBoolean(data.reportedByStudent) ?? false,
+    studentReportedAmount: asNumber(data.studentReportedAmount),
+    studentReportedAt: toIsoString(data.studentReportedAt),
+    confirmedByEducator: asBoolean(data.confirmedByEducator) ?? false,
+    createdAt: toIsoString(data.createdAt),
+    updatedAt: toIsoString(data.updatedAt),
+    deleted: asBoolean(data.deleted) ?? false,
   }
 }
 
@@ -320,6 +426,83 @@ export interface AdminNucleo {
   currency?: string | null
   paymentDueDay?: number | null
   showFeeAmount?: boolean
+  billingOptions?: AdminNucleoBillingOption[]
+}
+
+export interface AdminNucleoBillingOption {
+  id: string
+  name: string
+  mode: 'free' | 'monthly' | 'perClass' | 'classPack'
+  scheduleKeys?: string[]
+  scheduleGroupName?: string | null
+  monthlyFee?: number | null
+  classFee?: number | null
+  classesPerPackage?: number | null
+  isDefault?: boolean
+}
+
+export interface AdminTurma {
+  id: string
+  groupId: string
+  nucleoId: string
+  name: string
+  scheduleKeys: string[]
+  memberIds: string[]
+  guestMemberIds: string[]
+  billingOptionId?: string | null
+  responsibleEducatorId?: string | null
+  assistantEducatorIds?: string[]
+  createdAt: string | null
+  updatedAt: string | null
+}
+
+export interface AdminScholarship {
+  participantId: string
+  groupId: string
+  nucleoId: string
+  isGuest: boolean
+  discountPercent: number
+  permanent: boolean
+  startMonth?: string | null
+  endMonth?: string | null
+  note?: string | null
+  createdBy: string
+  createdAt: string | null
+  updatedAt: string | null
+}
+
+export interface AdminPayment {
+  id: string
+  groupId: string
+  nucleoId: string
+  userId: string
+  month: string
+  status: 'paid' | 'pending' | 'free'
+  amount?: number | null
+  discountAmount?: number | null
+  discountPercent?: number | null
+  billingOptionId?: string | null
+  billingOptionName?: string | null
+  billingMode?: 'monthly' | 'perClass' | 'classPack' | 'free' | null
+  turmaId?: string | null
+  paidAt?: string | null
+  notes?: string | null
+  reportedByStudent: boolean
+  studentReportedAmount?: number | null
+  studentReportedAt?: string | null
+  confirmedByEducator: boolean
+  createdAt: string | null
+  updatedAt: string | null
+  deleted?: boolean
+}
+
+export interface AdminNucleoMember {
+  uid: string
+  name: string
+  surname: string
+  nickname?: string | null
+  role: 'student' | 'educator' | 'admin'
+  avatarUrl?: string | null
 }
 
 export interface BugReport {
@@ -1284,6 +1467,99 @@ export async function getAdminNucleoById(
 
   const groupName = asString(groupDoc.data()?.name) ?? groupId
   return mapAdminNucleo(groupId, groupName, nucleoDoc.id, nucleoDoc.data() as FirestoreRecord)
+}
+
+export async function getAdminNucleoMembers(
+  groupId: string,
+  nucleoId: string
+): Promise<AdminNucleoMember[]> {
+  const snap = await adminDb
+    .collection('usersPublic')
+    .where('groupId', '==', groupId)
+    .where('nucleoIds', 'array-contains', nucleoId)
+    .get()
+    .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] }))
+
+  return snap.docs
+    .map((doc) => {
+      const data = doc.data() as FirestoreRecord
+      const role = asString(data.role)
+      return {
+        uid: doc.id,
+        name: asString(data.name) ?? '',
+        surname: asString(data.surname) ?? '',
+        nickname: asString(data.nickname),
+        role: (role === 'educator' || role === 'admin' ? role : 'student') as AdminNucleoMember['role'],
+        avatarUrl: asString(data.avatarUrl),
+      }
+    })
+    .sort((a, b) => `${a.name} ${a.surname}`.localeCompare(`${b.name} ${b.surname}`))
+}
+
+export async function getAdminNucleoTurmas(groupId: string, nucleoId: string): Promise<AdminTurma[]> {
+  const snap = await adminDb
+    .collection('groups')
+    .doc(groupId)
+    .collection('nucleos')
+    .doc(nucleoId)
+    .collection('turmas')
+    .get()
+    .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] }))
+
+  return snap.docs
+    .map((doc) => mapAdminTurma(groupId, nucleoId, doc.id, doc.data() as FirestoreRecord))
+    .sort((a, b) => a.name.localeCompare(b.name))
+}
+
+export async function getAdminNucleoScholarships(
+  groupId: string,
+  nucleoId: string
+): Promise<AdminScholarship[]> {
+  const snap = await adminDb
+    .collection('groups')
+    .doc(groupId)
+    .collection('nucleos')
+    .doc(nucleoId)
+    .collection('scholarships')
+    .get()
+    .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] }))
+
+  return snap.docs.map((doc) =>
+    mapAdminScholarship(groupId, nucleoId, doc.id, doc.data() as FirestoreRecord)
+  )
+}
+
+export function getRecentMonthKeys(count = 3): string[] {
+  const months: string[] = []
+  const now = new Date()
+  for (let i = 0; i < count; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    months.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`)
+  }
+  return months
+}
+
+export async function getAdminNucleoPayments(
+  groupId: string,
+  nucleoId: string,
+  months: string[]
+): Promise<AdminPayment[]> {
+  if (months.length === 0) return []
+
+  const snap = await adminDb
+    .collection('groups')
+    .doc(groupId)
+    .collection('nucleos')
+    .doc(nucleoId)
+    .collection('payments')
+    .where('month', 'in', months.slice(0, 10))
+    .get()
+    .catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] }))
+
+  return snap.docs
+    .map((doc) => mapAdminPayment(groupId, nucleoId, doc.id, doc.data() as FirestoreRecord))
+    .filter((payment) => !payment.deleted)
+    .sort((a, b) => a.month.localeCompare(b.month) || a.userId.localeCompare(b.userId))
 }
 
 export async function getAdminGraduationRows(): Promise<AdminGraduationLevelRow[]> {

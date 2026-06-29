@@ -4,6 +4,8 @@ import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { AdminEntityOption, AdminNucleo } from '@/lib/admin-queries'
 import EntitySearchInput from '@/components/admin/EntitySearchInput'
+import { inputClass, labelClass, sectionClass } from '@/components/admin/adminFormStyles'
+import { DAY_OPTIONS } from '@/components/admin/nucleo/dayOptions'
 
 interface Props {
   nucleo: AdminNucleo
@@ -16,16 +18,6 @@ type Schedule = {
   startTime: string
   endTime: string
 }
-
-const DAY_OPTIONS = [
-  { value: 0, label: 'Domingo' },
-  { value: 1, label: 'Lunes' },
-  { value: 2, label: 'Martes' },
-  { value: 3, label: 'Miercoles' },
-  { value: 4, label: 'Jueves' },
-  { value: 5, label: 'Viernes' },
-  { value: 6, label: 'Sabado' },
-]
 
 export default function NucleoEditForm({ nucleo, locale, entityOptions }: Props) {
   const router = useRouter()
@@ -156,11 +148,6 @@ export default function NucleoEditForm({ nucleo, locale, entityOptions }: Props)
       setDeleting(false)
     }
   }
-
-  const inputClass =
-    'w-full rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none transition-colors focus:border-accent/35'
-  const labelClass = 'mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-text-muted'
-  const sectionClass = 'rounded-[24px] border border-border bg-card p-5 shadow-sm sm:p-6'
 
   return (
     <div className="space-y-6">

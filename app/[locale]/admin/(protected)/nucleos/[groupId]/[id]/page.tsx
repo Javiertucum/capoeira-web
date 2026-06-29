@@ -2,7 +2,19 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import NucleoEditForm from '@/components/admin/NucleoEditForm'
-import { getAdminNucleoById, getAdminEntityOptions } from '@/lib/admin-queries'
+import TurmasSection from '@/components/admin/nucleo/TurmasSection'
+import ScholarshipsSection from '@/components/admin/nucleo/ScholarshipsSection'
+import PaymentsSection from '@/components/admin/nucleo/PaymentsSection'
+import BillingOptionsSection from '@/components/admin/nucleo/BillingOptionsSection'
+import {
+  getAdminNucleoById,
+  getAdminEntityOptions,
+  getAdminNucleoMembers,
+  getAdminNucleoTurmas,
+  getAdminNucleoScholarships,
+  getAdminNucleoPayments,
+  getRecentMonthKeys,
+} from '@/lib/admin-queries'
 
 type Props = {
   params: Promise<{ locale: string; groupId: string; id: string }>
@@ -18,6 +30,14 @@ export default async function AdminNucleoDetailPage({ params }: Props) {
   if (!nucleo) {
     notFound()
   }
+
+  const recentMonths = getRecentMonthKeys(3)
+  const [members, turmas, scholarships, payments] = await Promise.all([
+    getAdminNucleoMembers(groupId, id).catch(() => []),
+    getAdminNucleoTurmas(groupId, id).catch(() => []),
+    getAdminNucleoScholarships(groupId, id).catch(() => []),
+    getAdminNucleoPayments(groupId, id, recentMonths).catch(() => []),
+  ])
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -67,7 +87,40 @@ export default async function AdminNucleoDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <NucleoEditForm nucleo={nucleo} locale={locale} entityOptions={entityOptions} />
+        <div className="space-y-6">
+          <NucleoEditForm nucleo={nucleo} locale={locale} entityOptions={entityOptions} />
+
+          <TurmasSection
+            groupId={groupId}
+            nucleoId={id}
+            turmas={turmas}
+            schedules={nucleo.schedules}
+            members={members}
+            billingOptions={nucleo.billingOptions ?? []}
+          />
+
+          <ScholarshipsSection
+            groupId={groupId}
+            nucleoId={id}
+            scholarships={scholarships}
+            members={members}
+          />
+
+          <PaymentsSection
+            groupId={groupId}
+            nucleoId={id}
+            payments={payments}
+            members={members}
+            initialMonths={recentMonths}
+          />
+
+          <BillingOptionsSection
+            groupId={groupId}
+            nucleoId={id}
+            billingOptions={nucleo.billingOptions ?? []}
+            schedules={nucleo.schedules}
+          />
+        </div>
       </div>
     </div>
   )
