@@ -15,6 +15,7 @@ type SendResult = {
 }
 
 type Group = { id: string; name: string }
+type Nucleo = { id: string; name: string; groupId: string; groupName: string }
 type UserResult = { uid: string; displayName: string; email: string; photoURL: string | null }
 
 type ContentItem = { id: string; title: string; subtitle: string | null }
@@ -43,9 +44,10 @@ type ScreenValue = typeof SCREEN_OPTIONS[number]['value']
 
 type Props = {
   groups: Group[]
+  nucleos: Nucleo[]
 }
 
-export default function AdminNotificationSendForm({ groups }: Props) {
+export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
   const router = useRouter()
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
@@ -56,6 +58,7 @@ export default function AdminNotificationSendForm({ groups }: Props) {
   const [plans, setPlans] = useState<string[]>([])
   const [languages, setLanguages] = useState<string[]>([])
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([])
+  const [selectedNucleoIds, setSelectedNucleoIds] = useState<string[]>([])
   const [noGroup, setNoGroup] = useState(false)
   const [selectedUsers, setSelectedUsers] = useState<UserResult[]>([])
 
@@ -85,15 +88,21 @@ export default function AdminNotificationSendForm({ groups }: Props) {
     setSelectedGroupIds((prev) => toggleItem(prev, id))
   }
 
+  function toggleNucleo(id: string) {
+    setSelectedNucleoIds((prev) => toggleItem(prev, id))
+  }
+
   // Audience estimate
   const buildSegment = useCallback(() => ({
     roles,
     countries: countries.split(',').map((c) => c.trim()).filter(Boolean),
+    subscriptionPlans: plans,
     groupIds: selectedGroupIds,
+    nucleoIds: selectedNucleoIds,
     noGroup,
     userIds: selectedUsers.map((u) => u.uid),
     languages,
-  }), [roles, countries, selectedGroupIds, noGroup, selectedUsers, languages])
+  }), [roles, countries, plans, selectedGroupIds, selectedNucleoIds, noGroup, selectedUsers, languages])
 
   useEffect(() => {
     if (estimateDebounce.current) clearTimeout(estimateDebounce.current)
@@ -192,6 +201,7 @@ export default function AdminNotificationSendForm({ groups }: Props) {
         setContentItem(null)
         setSelectedUsers([])
         setSelectedGroupIds([])
+        setSelectedNucleoIds([])
         setNoGroup(false)
         setLanguages([])
         router.refresh()
@@ -362,6 +372,36 @@ export default function AdminNotificationSendForm({ groups }: Props) {
                 Sin grupo
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Nucleos */}
+        {nucleos.length > 0 && (
+          <div>
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+              Núcleos
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {nucleos.map((nucleo) => (
+                <button
+                  key={nucleo.id}
+                  type="button"
+                  onClick={() => toggleNucleo(nucleo.id)}
+                  className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-colors ${
+                    selectedNucleoIds.includes(nucleo.id)
+                      ? 'border-accent/30 bg-accent/12 text-accent'
+                      : 'border-border bg-surface text-text-secondary'
+                  }`}
+                >
+                  {nucleo.groupName} · {nucleo.name}
+                </button>
+              ))}
+            </div>
+            {selectedNucleoIds.length > 0 && (
+              <p className="mt-1.5 text-xs text-text-muted">
+                Solo se enviará a los miembros de los núcleos seleccionados (independiente de los grupos marcados arriba).
+              </p>
+            )}
           </div>
         )}
 

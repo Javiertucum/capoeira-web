@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
     roles: Array.isArray(body.roles) ? (body.roles as string[]) : [],
     countries: Array.isArray(body.countries) ? (body.countries as string[]) : [],
     groupIds: Array.isArray(body.groupIds) ? (body.groupIds as string[]) : [],
+    nucleoIds: Array.isArray(body.nucleoIds) ? (body.nucleoIds as string[]) : [],
     subscriptionPlans: Array.isArray(body.subscriptionPlans) ? (body.subscriptionPlans as string[]) : [],
     userIds: Array.isArray(body.userIds) ? (body.userIds as string[]) : [],
     noGroup: body.noGroup === true,

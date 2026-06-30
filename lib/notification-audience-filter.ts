@@ -2,6 +2,7 @@ export type SegmentFilter = {
   roles?: string[]
   countries?: string[]
   groupIds?: string[]
+  nucleoIds?: string[]
   subscriptionPlans?: string[]
   userIds?: string[]
   noGroup?: boolean
@@ -23,6 +24,7 @@ export type RawUserDoc = {
   role: unknown
   country: unknown
   groupId: unknown
+  nucleoIds?: unknown
   language?: unknown
   [key: string]: unknown
 }
@@ -64,13 +66,19 @@ export function filterUserDocs(users: RawUserDoc[], segment: SegmentFilter): Tok
       if (!language || !segment.languages.includes(language)) continue
     }
 
-    const hasGroupFilter = (segment.groupIds && segment.groupIds.length > 0) || segment.noGroup
+    const hasGroupFilter =
+      (segment.groupIds && segment.groupIds.length > 0) ||
+      (segment.nucleoIds && segment.nucleoIds.length > 0) ||
+      segment.noGroup
     if (hasGroupFilter) {
       const groupId = typeof data.groupId === 'string' ? data.groupId : null
-      const inSelected =
+      const userNucleoIds = Array.isArray(data.nucleoIds) ? (data.nucleoIds as string[]) : []
+      const inSelectedGroup =
         segment.groupIds && segment.groupIds.length > 0 && groupId !== null && segment.groupIds.includes(groupId)
+      const inSelectedNucleo =
+        segment.nucleoIds && segment.nucleoIds.length > 0 && userNucleoIds.some((id) => segment.nucleoIds!.includes(id))
       const isUngrouped = segment.noGroup === true && !groupId
-      if (!inSelected && !isUngrouped) continue
+      if (!inSelectedGroup && !inSelectedNucleo && !isUngrouped) continue
     }
 
     baseEntries.push(entry)

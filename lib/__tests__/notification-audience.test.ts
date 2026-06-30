@@ -63,6 +63,27 @@ describe('filterUserDocs', () => {
     expect(result.map(r => r.uid)).toContain('uid3')
   })
 
+  it('filters by nucleoId', () => {
+    const users = [
+      makeUser({ nucleoIds: ['n1'] }),
+      makeUser({ id: 'uid2', fcmToken: 'token2', groupId: 'g2', nucleoIds: ['n2'] }),
+      makeUser({ id: 'uid3', fcmToken: 'token3', groupId: null, nucleoIds: [] }),
+    ]
+    const result = filterUserDocs(users, { nucleoIds: ['n1'] })
+    expect(result).toHaveLength(1)
+    expect(result[0].uid).toBe('uid1')
+  })
+
+  it('unions groupIds and nucleoIds independently of which group the nucleo belongs to', () => {
+    const users = [
+      makeUser({ groupId: 'g1', nucleoIds: [] }),
+      makeUser({ id: 'uid2', fcmToken: 'token2', groupId: 'g2', nucleoIds: ['n2'] }),
+      makeUser({ id: 'uid3', fcmToken: 'token3', groupId: 'g3', nucleoIds: [] }),
+    ]
+    const result = filterUserDocs(users, { groupIds: ['g1'], nucleoIds: ['n2'] })
+    expect(result.map((r) => r.uid).sort()).toEqual(['uid1', 'uid2'])
+  })
+
   it('unions individual userIds with base audience', () => {
     const users = [
       makeUser({ role: 'student' }),
