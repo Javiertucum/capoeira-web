@@ -6,11 +6,5 @@
       "destination": "https://www.agendacapoeiragem.com/:rest",
       "permanent": true
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/process-scheduled-notifications",
-      "schedule": "* * * * *"
-    }
   ]
 }
