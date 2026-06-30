@@ -206,8 +206,8 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
         setLanguages([])
         router.refresh()
       }
-    } catch {
-      setResult({ ok: false, error: 'Error de red al enviar' })
+    } catch (err) {
+      setResult({ ok: false, error: err instanceof Error ? err.message : 'Error de red al enviar' })
     } finally {
       setSending(false)
     }
