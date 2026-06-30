@@ -28,3 +28,12 @@ function getAdminApp() {
 
 export const adminApp = getAdminApp()
 export const adminDb = getFirestore(adminApp)
+
+// Admin SDK rejects `undefined` field values by default (e.g. optional deepLink.entityId
+// left unset), throwing at write time instead of just omitting the key. Settings can only
+// be applied once per Firestore instance, so guard against re-application on hot reload.
+try {
+  adminDb.settings({ ignoreUndefinedProperties: true })
+} catch {
+  // already configured (e.g. module re-evaluated during dev hot reload)
+}
