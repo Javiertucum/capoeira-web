@@ -1703,7 +1703,8 @@ export async function getAdminOperationJobs(collectionName: 'adminNotificationCa
         createdBy: asString(data.createdBy),
         createdAt: toIsoString(data.createdAt),
         updatedAt: toIsoString(data.updatedAt),
-        metadata: asRecord(data.metadata) ?? {},
+        // Notification campaigns store their counters under `metrics`; export jobs under `metadata`.
+        metadata: asRecord(data.metrics ?? data.metadata) ?? {},
       }
     })
     .sort((left, right) => toSortTimestamp(right.createdAt) - toSortTimestamp(left.createdAt))

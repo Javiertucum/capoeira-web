@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import AdminDeleteButton from '@/components/admin/AdminDeleteButton'
 import AdminEmptyState from '@/components/admin/AdminEmptyState'
 import AdminNotificationSendForm from '@/components/admin/AdminNotificationSendForm'
 import AdminPageHeader from '@/components/admin/AdminPageHeader'
@@ -71,7 +72,7 @@ export default async function NotificationsPage({ params }: Props) {
               <table className="w-full min-w-[900px] border-collapse">
                 <thead>
                   <tr className="bg-surface/10">
-                    {['Título', 'Estado', 'Objetivo', 'Enviadas', 'Abiertas', 'Fallidas', 'Fecha'].map((heading) => (
+                    {['Título', 'Estado', 'Objetivo', 'Enviadas', 'Abiertas', 'Fallidas', 'Fecha', ''].map((heading) => (
                       <th
                         key={heading}
                         className="border-b border-border px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.2em] text-text-muted"
@@ -97,7 +98,17 @@ export default async function NotificationsPage({ params }: Props) {
                           </Link>
                         </td>
                         <td className="px-6 py-4">
-                          <Badge variant={campaign.status === 'failed' ? 'danger' : campaign.status === 'sent' ? 'accent' : 'warning'}>
+                          <Badge
+                            variant={
+                              campaign.status === 'failed'
+                                ? 'danger'
+                                : campaign.status === 'sent'
+                                  ? 'accent'
+                                  : campaign.status === 'canceled'
+                                    ? 'muted'
+                                    : 'warning'
+                            }
+                          >
                             {campaign.status}
                           </Badge>
                         </td>
@@ -107,6 +118,17 @@ export default async function NotificationsPage({ params }: Props) {
                         <td className="px-6 py-4 text-sm text-text-secondary">{metrics?.failed ?? '--'}</td>
                         <td className="px-6 py-4 text-xs text-text-muted">
                           {campaign.createdAt ? new Date(campaign.createdAt).toLocaleString(locale) : '--'}
+                        </td>
+                        <td className="px-6 py-4">
+                          {campaign.status === 'scheduled' && (
+                            <AdminDeleteButton
+                              endpoint={`/api/admin/notifications/${campaign.id}`}
+                              label="Cancelar"
+                              labelDeleting="Cancelando..."
+                              confirmMessage="¿Cancelar esta notificación programada? No se enviará."
+                              className="rounded-lg border border-danger/30 bg-danger/10 px-3 py-1.5 text-xs font-semibold text-danger transition-colors hover:bg-danger/20"
+                            />
+                          )}
                         </td>
                       </tr>
                     )
