@@ -4,7 +4,7 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.capoeiraapp.mobile",
-      "sha256_cert_fingerprints": ["81:5E:F7:D9:A3:5C:7D:FF:86:D9:5D:2C:1C:1D:29:54:70:AA:CD:AB:49:FA:81:AF:33:C5:91:FA:22:DA:29:ED"]
+      "sha256_cert_fingerprints": ["33:6A:FF:A8:51:9C:E6:65:73:86:B3:B5:E0:5B:B5:50:77:C8:9F:33:8E:CB:E5:8A:1B:5F:1C:92:9D:80:02:1D"]
     }
   }
 ]
