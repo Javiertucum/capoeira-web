@@ -12,6 +12,8 @@ export type MapMarker = {
   lng: number
   lat: number
   variant?: 'nucleo' | 'user'
+  logoUrl?: string | null
+  label?: string | null
 }
 
 export type MapPopup = {
@@ -34,15 +36,43 @@ const PIN_SVG = `
   </svg>
 `
 
-function createMarkerElement(variant: MapMarker['variant']) {
+function createMarkerElement(variant: MapMarker['variant'], logoUrl?: string | null, label?: string | null) {
   const wrapper = document.createElement('div')
-  const inner = document.createElement('div')
+
   if (variant === 'user') {
+    const inner = document.createElement('div')
     inner.className = 'h-4 w-4 rounded-full border-2 border-white bg-accent shadow-[0_0_0_4px_color-mix(in_oklch,var(--accent)_25%,transparent)]'
-  } else {
-    inner.className = 'flex h-10 w-[30px] cursor-pointer items-start justify-center drop-shadow-md transition-transform duration-150 origin-bottom'
-    inner.innerHTML = PIN_SVG
+    wrapper.appendChild(inner)
+    return wrapper
   }
+
+  if (logoUrl) {
+    const inner = document.createElement('div')
+    inner.className = 'flex cursor-pointer flex-col items-center drop-shadow-md transition-transform duration-150 origin-bottom'
+
+    const badge = document.createElement('div')
+    badge.className = 'h-9 w-9 overflow-hidden rounded-full border-2 border-white bg-white shadow-sm'
+    const img = document.createElement('img')
+    img.src = logoUrl
+    img.alt = label ?? ''
+    img.loading = 'lazy'
+    img.className = 'h-full w-full object-cover'
+    badge.appendChild(img)
+
+    const tail = document.createElement('div')
+    tail.className = 'mt-[-3px] h-2.5 w-2.5 rotate-45 border-b-2 border-r-2 border-white bg-white'
+    tail.style.marginTop = '-6px'
+    tail.style.clipPath = 'polygon(0 0, 100% 0, 100% 100%)'
+
+    inner.appendChild(badge)
+    inner.appendChild(tail)
+    wrapper.appendChild(inner)
+    return wrapper
+  }
+
+  const inner = document.createElement('div')
+  inner.className = 'flex h-10 w-[30px] cursor-pointer items-start justify-center drop-shadow-md transition-transform duration-150 origin-bottom'
+  inner.innerHTML = PIN_SVG
   wrapper.appendChild(inner)
   return wrapper
 }
@@ -128,7 +158,7 @@ const MapView = forwardRef<MapViewHandle, {
     for (const m of markers) {
       let marker = markersRef.current.get(m.id)
       if (!marker) {
-        const el = createMarkerElement(m.variant)
+        const el = createMarkerElement(m.variant, m.logoUrl, m.label)
         marker = new maplibregl.Marker({ element: el, anchor: m.variant === 'user' ? 'center' : 'bottom' })
           .setLngLat([m.lng, m.lat])
           .addTo(map)

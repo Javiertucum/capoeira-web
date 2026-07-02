@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
-import type { MapMarker, MapViewHandle, MapPopup } from '@/components/public/map/MapView'
+import type { MapMarker, MapViewHandle } from '@/components/public/map/MapView'
 import Modal from '@/components/public/Modal'
 import { normalizeSocialLink } from '@/lib/social-links'
 import { haversineDistanceKm } from '@/lib/geo'
@@ -174,6 +174,8 @@ export default function DirectorySplit({
       lng: n.longitude as number,
       lat: n.latitude as number,
       variant: 'nucleo',
+      logoUrl: n.groupLogoUrl,
+      label: n.groupName,
     }))
     if (userLocation) {
       items.push({ id: '__user__', lng: userLocation[0], lat: userLocation[1], variant: 'user' })
@@ -181,20 +183,11 @@ export default function DirectorySplit({
     return items
   }, [mappableNucleos, userLocation])
 
-  const mapPopup: MapPopup | null = useMemo(() => {
-    if (!selectedNucleo) return null
-    return {
-      id: selectedNucleo.id,
-      html: `
-        <div style="min-width:180px;font-size:0.875rem">
-          <p style="font-weight:700;color:var(--color-ink)">${selectedNucleo.name}</p>
-          <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--color-accent-ink)">${selectedNucleo.groupName}</p>
-          <p style="margin-top:4px;font-size:0.75rem;color:var(--color-text-secondary)">${[selectedNucleo.city, selectedNucleo.country].filter(Boolean).join(', ')}</p>
-          <a href="/${locale}/nucleos/${selectedNucleo.groupId}/${selectedNucleo.id}" style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;color:var(--color-accent-ink)">${t('seeContact')}</a>
-        </div>
-      `,
-    }
-  }, [selectedNucleo, locale, t])
+  function handleMarkerClick(id: string) {
+    setSelectedNucleoId(id)
+    const nucleo = mappableNucleos.find((n) => n.id === id)
+    if (nucleo) setContactNucleo(nucleo)
+  }
 
   function handleNearMe() {
     if (!('geolocation' in navigator)) {
@@ -388,9 +381,7 @@ export default function DirectorySplit({
             zoom={mapZoom}
             markers={mapMarkers}
             selectedId={selectedNucleoId}
-            onMarkerClick={setSelectedNucleoId}
-            popup={mapPopup}
-            onPopupClose={() => setSelectedNucleoId(null)}
+            onMarkerClick={handleMarkerClick}
           />
           <div className="flex items-center justify-between gap-3 border-t border-border bg-surface px-4 py-2.5 sm:px-5">
             <p className="text-xs text-text-secondary">{t('mapCtaText')}</p>

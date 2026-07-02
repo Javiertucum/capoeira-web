@@ -36,7 +36,15 @@ export default function NucleosMiniMap({
   }, [mappable])
 
   const markers: MapMarker[] = useMemo(
-    () => mappable.map((n) => ({ id: n.id, lng: n.longitude as number, lat: n.latitude as number, variant: 'nucleo' as const })),
+    () =>
+      mappable.map((n) => ({
+        id: n.id,
+        lng: n.longitude as number,
+        lat: n.latitude as number,
+        variant: 'nucleo' as const,
+        logoUrl: n.groupLogoUrl,
+        label: n.groupName,
+      })),
     [mappable]
   )
 
