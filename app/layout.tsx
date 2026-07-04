@@ -1,10 +1,13 @@
 import { Plus_Jakarta_Sans, Outfit, JetBrains_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
 import type { Metadata } from 'next'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import './globals.css'
 import { routing } from '@/i18n/routing'
 import { SITE_NAME, SITE_URL, escapeJsonLd, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
 import { THEME_INIT_SCRIPT } from '@/components/public/ThemeToggle'
+
+const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
 const bodyFont = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -117,6 +120,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: escapeJsonLd(siteSchema) }}
         />
       </body>
+      {gaMeasurementId && <GoogleAnalytics gaId={gaMeasurementId} />}
     </html>
   )
 }
