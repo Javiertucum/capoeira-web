@@ -1,4 +1,12 @@
 {
+  "common": {
+    "close": "Cerrar"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "El grupo, núcleo o educador que buscas no existe o ya no está disponible.",
+    "cta": "Volver al directorio"
+  },
   "nav": {
     "map": "Mapa",
     "groups": "Grupos",
@@ -8,7 +16,11 @@
     "appPreview": "Ver App",
     "features": "Funciones",
     "tutorials": "Tutoriales",
-    "downloadApp": "Descargar App"
+    "downloadApp": "Descargar App",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "closeNav": "Cerrar navegación",
+    "menuHeading": "Navegación"
   },
   "hero": {
     "eyebrow": "Directorio Global de Capoeira",
@@ -104,7 +116,7 @@
     "nucleosSection": "Núcleos",
     "graduationCategoryInfantil": "Infantil",
     "graduationCategoryJuvenil": "Juvenil",
-    "graduationCategoryEstagiario": "Estagiários",
+    "graduationCategoryEstagiario": "Estagiario",
     "graduationCategoryAdult": "Adulto",
     "graduationCategoryGeneral": "General",
     "nucleosMap": "Ubicación de los núcleos",

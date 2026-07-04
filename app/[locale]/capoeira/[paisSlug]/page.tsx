@@ -9,6 +9,7 @@ import {
   getOgLocale,
   buildBreadcrumbSchema,
   buildItemListSchema,
+  escapeJsonLd,
   SITE_NAME,
 } from '@/lib/site'
 import { getAllNucleos, getNucleosByCountry } from '@/lib/queries'
@@ -173,13 +174,14 @@ export default async function CountryPage({ params }: Props) {
       name: n.name,
       url: getLocalizedUrl(locale, `/nucleos/${n.groupId}/${n.id}`),
       description: [n.city, n.country].filter(Boolean).join(', '),
-    }))
+    })),
+    locale
   )
 
   return (
     <main className="min-h-screen bg-bg py-16 lg:py-24">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(itemList) }} />
 
       <div className="page-shell-narrow">
         <Link href={`/${locale}/#directorio`} className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-accent-ink hover:underline">

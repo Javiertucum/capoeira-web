@@ -1,6 +1,6 @@
 const DAY_SHORT = {
   es: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-  pt: ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sá'],
+  pt: ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Sx', 'Sá'],
   en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
   fr: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
   de: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],

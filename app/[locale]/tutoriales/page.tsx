@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getOgLocale, getSiteDescription, SITE_NAME } from '@/lib/site'
+import { escapeJsonLd, formatPageTitle, getLanguageAlternates, getLanguageAlternateUrls, getLocalizedPath, getLocalizedUrl, getOgLocale, getSiteDescription, SITE_NAME } from '@/lib/site'
 import TutorialsHero from '@/components/public/TutorialsHero'
 import TutorialsNav, { type NavSection } from '@/components/public/TutorialsNav'
 import TutorialSectionBlock, { type StepItem } from '@/components/public/TutorialSectionBlock'
@@ -211,7 +211,7 @@ const SECTIONS_ES: Section[] = [
       },
       {
         t: 'Restaurar compras',
-        d: 'Si cambias de dispositivo o reinstalás la app, ve a "Perfil" → "Suscripción" → "Restaurar compras" para recuperar tu plan activo sin pagar nuevamente.',
+        d: 'Si cambias de dispositivo o reinstalas la app, ve a "Perfil" → "Suscripción" → "Restaurar compras" para recuperar tu plan activo sin pagar nuevamente.',
         tip: 'Usa la misma cuenta de Google o Apple que usaste para comprar el plan.',
       },
     ],
@@ -3712,6 +3712,7 @@ const COPY = {
     heroTitle: 'Tutoriales de Agenda Capoeiragem',
     heroSubtitle: 'Guías paso a paso para alumnos, viajeros y educadores. Aprende a usar cada función con los textos exactos que verás en la app.',
     sections: SECTIONS_ES,
+    calloutLabels: { tip: 'Tip', note: 'Nota', warning: 'Atención' },
   },
   pt: {
     title: 'Tutoriais de Capoeira',
@@ -3719,6 +3720,7 @@ const COPY = {
     heroTitle: 'Tutoriais do Agenda Capoeiragem',
     heroSubtitle: 'Guias passo a passo para alunos, viajantes e educadores. Aprenda a usar cada função com os textos exatos que você verá no app.',
     sections: SECTIONS_PT,
+    calloutLabels: { tip: 'Dica', note: 'Nota', warning: 'Atenção' },
   },
   en: {
     title: 'Capoeira Tutorials',
@@ -3726,6 +3728,7 @@ const COPY = {
     heroTitle: 'Agenda Capoeiragem tutorials',
     heroSubtitle: 'Step-by-step guides for students, travelers, and educators. Learn every feature using the exact text you will see in the app.',
     sections: SECTIONS_EN,
+    calloutLabels: { tip: 'Tip', note: 'Note', warning: 'Warning' },
   },
   fr: {
     title: 'Tutoriels de Capoeira',
@@ -3733,6 +3736,7 @@ const COPY = {
     heroTitle: 'Tutoriels Agenda Capoeiragem',
     heroSubtitle: 'Guides pas à pas pour les élèves, les voyageurs et les éducateurs. Apprenez chaque fonctionnalité avec les textes exacts que vous verrez dans l\'app.',
     sections: SECTIONS_FR,
+    calloutLabels: { tip: 'Astuce', note: 'Remarque', warning: 'Attention' },
   },
   de: {
     title: 'Capoeira Tutorials',
@@ -3740,6 +3744,7 @@ const COPY = {
     heroTitle: 'Agenda Capoeiragem Tutorials',
     heroSubtitle: 'Schritt-für-Schritt-Anleitungen für Schüler, Reisende und Lehrer. Lerne jede Funktion mit dem genauen Text, den du in der App siehst.',
     sections: SECTIONS_DE,
+    calloutLabels: { tip: 'Tipp', note: 'Hinweis', warning: 'Achtung' },
   },
   it: {
     title: 'Tutorial di Capoeira',
@@ -3747,6 +3752,7 @@ const COPY = {
     heroTitle: 'Tutorial di Agenda Capoeiragem',
     heroSubtitle: 'Guide passo dopo passo per alunni, viaggiatori ed educatori. Impara ogni funzione con il testo esatto che vedrai nell\'app.',
     sections: SECTIONS_IT,
+    calloutLabels: { tip: 'Consiglio', note: 'Nota', warning: 'Attenzione' },
   },
 } as const
 
@@ -3816,9 +3822,9 @@ export default async function TutorialsPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-bg">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(faqSchema) }} />
       {howToSchemas.map((schema, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(schema) }} />
       ))}
       <TutorialsHero copy={c} />
 
@@ -3836,6 +3842,7 @@ export default async function TutorialsPage({ params }: Props) {
                 intro={section.intro}
                 steps={section.steps}
                 mockup={section.mockup}
+                calloutLabels={c.calloutLabels}
               />
             ))}
           </div>

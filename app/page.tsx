@@ -19,7 +19,7 @@ function parseAcceptLanguage(header: string): string[] {
 }
 
 function getPreferredLocale(acceptLanguage: string | null): string {
-  if (!acceptLanguage) return 'pt'
+  if (!acceptLanguage) return routing.defaultLocale
 
   const requestedLocales = parseAcceptLanguage(acceptLanguage)
   for (const requested of requestedLocales) {
@@ -29,7 +29,7 @@ function getPreferredLocale(acceptLanguage: string | null): string {
     }
   }
 
-  return 'pt'
+  return routing.defaultLocale
 }
 
 export default async function Home() {

@@ -1,4 +1,12 @@
 {
+  "common": {
+    "close": "Schließen"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Gruppe, der Núcleo oder Lehrer existiert nicht mehr oder ist nicht verfügbar.",
+    "cta": "Zurück zum Verzeichnis"
+  },
   "nav": {
     "map": "Karte",
     "groups": "Gruppen",
@@ -8,7 +16,11 @@
     "appPreview": "App ansehen",
     "features": "Funktionen",
     "tutorials": "Tutorials",
-    "downloadApp": "App herunterladen"
+    "downloadApp": "App herunterladen",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "closeNav": "Navigation schließen",
+    "menuHeading": "Navigation"
   },
   "hero": {
     "eyebrow": "Globales Capoeira-Verzeichnis",

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import type { MapMarker, MapPopup } from '@/components/public/map/MapView'
 import type { MapNucleo } from '@/lib/types'
+import { escapeHtml } from '@/lib/site'
 
 const MapView = dynamic(() => import('@/components/public/map/MapView'), {
   ssr: false,
@@ -52,13 +53,15 @@ export default function NucleosMiniMap({
 
   const popup: MapPopup | null = useMemo(() => {
     if (!selected) return null
+    const safeName = escapeHtml(selected.name)
+    const safeLocation = escapeHtml([selected.city, selected.country].filter(Boolean).join(', '))
     return {
       id: selected.id,
       html: `
         <div style="min-width:160px;font-size:0.875rem">
-          <p style="font-weight:700;color:var(--color-ink)">${selected.name}</p>
-          <p style="margin-top:4px;font-size:0.75rem;color:var(--color-text-secondary)">${[selected.city, selected.country].filter(Boolean).join(', ')}</p>
-          <a href="/${locale}/nucleos/${selected.groupId}/${selected.id}" style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;color:var(--color-accent-ink)">${seeContactLabel}</a>
+          <p style="font-weight:700;color:var(--color-ink)">${safeName}</p>
+          <p style="margin-top:4px;font-size:0.75rem;color:var(--color-text-secondary)">${safeLocation}</p>
+          <a href="/${locale}/nucleos/${selected.groupId}/${selected.id}" style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;color:var(--color-accent-ink)">${escapeHtml(seeContactLabel)}</a>
         </div>
       `,
     }

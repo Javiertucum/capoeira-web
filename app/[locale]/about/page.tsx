@@ -45,7 +45,7 @@ const COPY = {
       },
       {
         heading: 'Contacto',
-        body: '¿Preguntas, sugerencias o querés que tu núcleo aparezca en el directorio? Escribinos a agendacapoeiragem@gmail.com.',
+        body: '¿Preguntas, sugerencias o quieres que tu núcleo aparezca en el directorio? Escríbenos a agendacapoeiragem@gmail.com.',
       },
     ],
     back: 'Volver al inicio',

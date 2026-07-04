@@ -95,6 +95,20 @@ export function escapeJsonLd(value: unknown): string {
   return JSON.stringify(value).replace(/</g, '\\u003c')
 }
 
+/**
+ * Escapa HTML para interpolar texto de usuario (nombre de grupo/nucleo, etc.)
+ * dentro de un string que se pasa a innerHTML/setHTML. Sin esto, un nombre
+ * con "<script>" se ejecutaria en el navegador de cualquier visitante.
+ */
+export function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 export function buildOrganizationSchema(locale = 'es') {
   return {
     '@context': 'https://schema.org',
@@ -163,12 +177,22 @@ export function buildPersonSchema(params: {
   }
 }
 
-export function buildItemListSchema(items: Array<{ name: string; url: string; description?: string }>) {
+const ITEM_LIST_COPY = {
+  es: { name: 'Directorio Global de Capoeira', description: 'Lista de grupos de capoeira registrados en Agenda Capoeiragem' },
+  pt: { name: 'Diretório Global de Capoeira', description: 'Lista de grupos de capoeira registrados no Agenda Capoeiragem' },
+  en: { name: 'Global Capoeira Directory', description: 'List of capoeira groups registered on Agenda Capoeiragem' },
+  fr: { name: 'Annuaire Mondial de la Capoeira', description: 'Liste des groupes de capoeira enregistrés sur Agenda Capoeiragem' },
+  de: { name: 'Globales Capoeira-Verzeichnis', description: 'Liste der bei Agenda Capoeiragem registrierten Capoeira-Gruppen' },
+  it: { name: 'Directory Globale della Capoeira', description: 'Elenco dei gruppi di capoeira registrati su Agenda Capoeiragem' },
+} as const
+
+export function buildItemListSchema(items: Array<{ name: string; url: string; description?: string }>, locale = 'es') {
+  const copy = ITEM_LIST_COPY[locale as keyof typeof ITEM_LIST_COPY] ?? ITEM_LIST_COPY[DEFAULT_LOCALE]
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Directorio Global de Capoeira',
-    description: 'Lista de grupos de capoeira registrados en Agenda Capoeiragem',
+    name: copy.name,
+    description: copy.description,
     numberOfItems: items.length,
     itemListElement: items.map((item, index) => ({
       '@type': 'ListItem',

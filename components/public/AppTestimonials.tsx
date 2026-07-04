@@ -1,6 +1,7 @@
 const COPY = {
   es: {
     label: 'La comunidad lo usa',
+    starsLabel: '5 estrellas',
     items: [
       {
         quote: 'Antes llevaba la asistencia en papel. Ahora lo hago en 30 segundos desde el teléfono y mis alumnos ven su historial al instante.',
@@ -24,6 +25,7 @@ const COPY = {
   },
   pt: {
     label: 'A comunidade usa',
+    starsLabel: '5 estrelas',
     items: [
       {
         quote: 'Antes fazíamos a chamada em papel. Agora leva 30 segundos e meus alunos veem o histórico na hora.',
@@ -47,6 +49,7 @@ const COPY = {
   },
   en: {
     label: 'The community uses it',
+    starsLabel: '5 stars',
     items: [
       {
         quote: 'We used to take attendance on paper. Now it takes 30 seconds from my phone and my students can see their history instantly.',
@@ -70,6 +73,7 @@ const COPY = {
   },
   fr: {
     label: 'La communauté l\'utilise',
+    starsLabel: '5 étoiles',
     items: [
       {
         quote: 'Avant, je faisais l\'appel sur papier. Maintenant ça me prend 30 secondes depuis mon téléphone et mes élèves voient leur historique à l\'instant.',
@@ -93,6 +97,7 @@ const COPY = {
   },
   de: {
     label: 'Die Community nutzt es',
+    starsLabel: '5 Sterne',
     items: [
       {
         quote: 'Früher habe ich die Anwesenheit auf Papier erfasst. Jetzt dauert es 30 Sekunden auf dem Handy und meine Schüler sehen ihre Historie sofort.',
@@ -116,6 +121,7 @@ const COPY = {
   },
   it: {
     label: 'La comunità lo usa',
+    starsLabel: '5 stelle',
     items: [
       {
         quote: 'Prima facevo l\'appello su carta. Ora ci metto 30 secondi dal telefono e i miei alunni vedono subito la loro cronologia.',
@@ -149,10 +155,10 @@ function StarIcon() {
 
 type TestimonialItem = { quote: string; name: string; role: string; initials: string }
 
-function TestimonialCard({ item }: { item: TestimonialItem }) {
+function TestimonialCard({ item, starsLabel }: { item: TestimonialItem; starsLabel: string }) {
   return (
     <div className="flex flex-col rounded-[20px] border border-border bg-card p-7">
-      <div className="mb-5 flex gap-1 text-accent" aria-label="5 estrellas">
+      <div className="mb-5 flex gap-1 text-accent" aria-label={starsLabel}>
         {Array.from({ length: 5 }).map((_, i) => <StarIcon key={i} />)}
       </div>
 
@@ -187,7 +193,7 @@ export default function AppTestimonials({ locale }: { locale: string }) {
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {c.items.map((t) => (
-            <TestimonialCard key={t.name} item={t} />
+            <TestimonialCard key={t.name} item={t} starsLabel={c.starsLabel} />
           ))}
         </div>
       </div>

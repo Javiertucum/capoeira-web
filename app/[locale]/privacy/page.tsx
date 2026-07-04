@@ -325,7 +325,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: copy.title,
     description: copy.intro,
-    robots: copy.sections ? undefined : { index: false, follow: true },
     alternates: {
       canonical: getLocalizedPath(locale, '/privacy'),
       languages: getLanguageAlternates('/privacy'),

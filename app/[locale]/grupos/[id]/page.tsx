@@ -4,9 +4,7 @@ import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import {
   formatPageTitle,
-  getLanguageAlternates,
   getLanguageAlternateUrls,
-  getLocalizedPath,
   getOgImageUrl,
   getOgLocale,
   getLocalizedUrl,
@@ -16,6 +14,7 @@ import {
   escapeJsonLd,
 } from '@/lib/site'
 import { getGroupWithNucleos, getGroupEducators, getGraduationLevels, getGraduationLevelNamesByGroup, getNucleosByEducator } from '@/lib/queries'
+import Footer from '@/components/public/Footer'
 import CountryFlag from '@/components/public/CountryFlag'
 import ProfileCard, { LocationPinIcon } from '@/components/public/ProfileCard'
 import GraduationLevels from '@/components/public/GraduationLevels'
@@ -112,6 +111,7 @@ export default async function GroupProfilePage({ params }: Props) {
   ])
 
   return (
+    <>
     <main className="min-h-screen bg-bg py-16 lg:py-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(orgSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(breadcrumbSchema) }} />
@@ -213,7 +213,7 @@ export default async function GroupProfilePage({ params }: Props) {
                                 <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs font-bold text-text-secondary">
                                   {dayShort[s.dayOfWeek] ?? s.dayOfWeek}
                                 </span>
-                                <span className="text-text-secondary">{s.startTime} - {s.endTime}</span>
+                                <span className="text-text-secondary">{s.startTime} – {s.endTime}</span>
                               </div>
                             ))}
                           </div>
@@ -251,5 +251,7 @@ export default async function GroupProfilePage({ params }: Props) {
         </div>
       </div>
     </main>
+    <Footer locale={locale} />
+    </>
   )
 }

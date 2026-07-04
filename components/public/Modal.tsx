@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 
 export default function Modal({
   open,
@@ -13,13 +14,36 @@ export default function Modal({
   title?: string
   children: React.ReactNode
 }) {
+  const t = useTranslations('common')
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<Element | null>(null)
+
   useEffect(() => {
     if (!open) return
+    triggerRef.current = document.activeElement
+    const dialog = dialogRef.current
+    const focusable = dialog?.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )
+    focusable?.[0]?.focus()
+
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') { onClose(); return }
+      if (e.key !== 'Tab' || !focusable || focusable.length === 0) return
+      const items = Array.from(focusable)
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus() }
+      }
     }
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      if (triggerRef.current instanceof HTMLElement) triggerRef.current.focus()
+    }
   }, [open, onClose])
 
   if (!open) return null
@@ -28,11 +52,12 @@ export default function Modal({
     <>
       <button
         type="button"
-        aria-label="Cerrar"
+        aria-label={t('close')}
         onClick={onClose}
         className="fixed inset-0 z-[60] bg-ink/40"
       />
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-label={title}
@@ -41,7 +66,7 @@ export default function Modal({
       >
         <button
           type="button"
-          aria-label="Cerrar"
+          aria-label={t('close')}
           onClick={onClose}
           className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full border border-border bg-surface text-ink-2 transition-colors duration-150 hover:text-ink"
         >

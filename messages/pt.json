@@ -1,4 +1,12 @@
 {
+  "common": {
+    "close": "Fechar"
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "O grupo, núcleo ou educador que você procura não existe ou não está mais disponível.",
+    "cta": "Voltar ao diretório"
+  },
   "nav": {
     "map": "Mapa",
     "groups": "Grupos",
@@ -8,7 +16,11 @@
     "appPreview": "Ver App",
     "features": "Funções",
     "tutorials": "Tutoriais",
-    "downloadApp": "Baixar App"
+    "downloadApp": "Baixar App",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "closeNav": "Fechar navegação",
+    "menuHeading": "Navegação"
   },
   "hero": {
     "eyebrow": "Diretório Global de Capoeira",

@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import type { Metadata } from 'next'
 import './globals.css'
 import { routing } from '@/i18n/routing'
-import { SITE_NAME, SITE_URL, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
+import { SITE_NAME, SITE_URL, escapeJsonLd, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
 import { THEME_INIT_SCRIPT } from '@/components/public/ThemeToggle'
 
 const bodyFont = Plus_Jakarta_Sans({
@@ -110,11 +110,11 @@ export default async function RootLayout({
         {children}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+          dangerouslySetInnerHTML={{ __html: escapeJsonLd(orgSchema) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
+          dangerouslySetInnerHTML={{ __html: escapeJsonLd(siteSchema) }}
         />
       </body>
     </html>

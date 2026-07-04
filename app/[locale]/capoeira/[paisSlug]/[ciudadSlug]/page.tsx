@@ -185,7 +185,8 @@ export default async function CityPage({ params }: Props) {
       name: n.name,
       url: getLocalizedUrl(locale, `/nucleos/${n.groupId}/${n.id}`),
       description: n.address ?? [n.city, n.country].filter(Boolean).join(', '),
-    }))
+    })),
+    locale
   )
 
   const locationSchemas = data.nucleos.map((n) =>

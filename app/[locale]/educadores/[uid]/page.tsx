@@ -4,9 +4,7 @@ import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import {
   formatPageTitle,
-  getLanguageAlternates,
   getLanguageAlternateUrls,
-  getLocalizedPath,
   getOgImageUrl,
   getOgLocale,
   buildPersonSchema,
@@ -18,6 +16,7 @@ import {
 import { getEducatorProfile, getGroup, getGraduationLevel, getNucleosByEducator } from '@/lib/queries'
 import { normalizeSocialLink, getSocialDisplayLabel } from '@/lib/social-links'
 import { isoForCountry } from '@/lib/country-flags'
+import Footer from '@/components/public/Footer'
 import CountryFlag from '@/components/public/CountryFlag'
 import CordaVisual from '@/components/public/CordaVisual'
 import { getDayShort } from '@/lib/day-short'
@@ -109,6 +108,7 @@ export default async function EducatorProfilePage({ params }: Props) {
   ])
 
   return (
+    <>
     <main className="min-h-screen bg-bg py-16 lg:py-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(personSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(breadcrumbSchema) }} />
@@ -135,7 +135,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                 {countryFlag && <CountryFlag country={educator.country} className="ml-2 align-middle" />}
               </h1>
               {educator.nickname && <p className="mt-1 text-lg text-text-secondary">&ldquo;{educator.nickname}&rdquo;</p>}
-              {!countryFlag && educator.country && (
+              {educator.country && (
                 <p className="mt-1 text-sm font-bold text-text-secondary">{educator.country}</p>
               )}
             </div>
@@ -227,7 +227,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                             <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs font-bold text-text-secondary">
                               {dayShort[s.dayOfWeek] ?? s.dayOfWeek}
                             </span>
-                            <span className="text-text-secondary">{s.startTime} - {s.endTime}</span>
+                            <span className="text-text-secondary">{s.startTime} – {s.endTime}</span>
                           </div>
                         ))}
                       </div>
@@ -267,6 +267,8 @@ export default async function EducatorProfilePage({ params }: Props) {
         )}
       </div>
     </main>
+    <Footer locale={locale} />
+    </>
   )
 }
 

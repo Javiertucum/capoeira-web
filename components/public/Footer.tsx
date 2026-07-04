@@ -106,7 +106,7 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
   const c = FOOTER_COPY[locale] ?? FOOTER_COPY.es
 
   const NAV_PLATFORM = [
-    { label: c.directorio, href: '#directorio' },
+    { label: c.directorio, href: `/${locale}/#directorio` },
     { label: c.tutoriales, href: `/${locale}/tutoriales` },
     { label: c.viajeros, href: `/${locale}${getTravelersPath(locale)}` },
     { label: c.descargarApp, href: `/${locale}/app` },
@@ -146,7 +146,7 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
               {c.tagline}
             </p>
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-text-muted">
-              iOS · Android
+              Android
             </p>
           </div>
 
@@ -157,12 +157,12 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
             <ul className="space-y-3">
               {NAV_PLATFORM.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-sm text-text-secondary transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -175,12 +175,12 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
             <ul className="space-y-3">
               {NAV_COMMUNITY.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-sm text-text-secondary transition-colors duration-150 ease-[var(--ease-out)] hover:text-ink"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

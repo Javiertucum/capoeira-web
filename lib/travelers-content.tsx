@@ -6,6 +6,7 @@ import {
   getOgImageUrl,
   getOgLocale,
   buildBreadcrumbSchema,
+  escapeJsonLd,
   SITE_NAME,
 } from '@/lib/site'
 import Footer from '@/components/public/Footer'
@@ -340,13 +341,13 @@ export function TravelersPage({ locale }: { locale: Locale }) {
 
   return (
     <main className="min-h-screen bg-bg py-16 lg:py-24">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(faqSchema) }} />
 
       <div className="page-shell-narrow">
         <Link href={`/${locale}`} className="inline-flex items-center gap-2 text-sm font-bold text-accent-ink hover:underline">
-          ← {c.breadcrumbHome}
+          <span aria-hidden="true">←</span> {c.breadcrumbHome}
         </Link>
 
         <h1 className="mt-4 font-black text-ink leading-tight tracking-tight" style={{ fontSize: 'clamp(28px, 5vw, 52px)' }}>
@@ -385,7 +386,7 @@ export function TravelersPage({ locale }: { locale: Locale }) {
           <ul className="mt-6 space-y-3">
             {c.etiquette.map((item, i) => (
               <li key={i} className="flex gap-3 text-sm leading-relaxed text-text-secondary">
-                <span className="text-accent-ink">—</span>
+                <span className="text-accent-ink" aria-hidden="true">—</span>
                 {item}
               </li>
             ))}

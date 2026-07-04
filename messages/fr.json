@@ -1,4 +1,12 @@
 {
+  "common": {
+    "close": "Fermer"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "Le groupe, núcleo ou éducateur que vous recherchez n'existe pas ou n'est plus disponible.",
+    "cta": "Retour à l'annuaire"
+  },
   "nav": {
     "map": "Carte",
     "groups": "Groupes",
@@ -8,7 +16,11 @@
     "appPreview": "Aperçu de l'app",
     "features": "Fonctionnalités",
     "tutorials": "Tutoriels",
-    "downloadApp": "Télécharger l'app"
+    "downloadApp": "Télécharger l'app",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "closeNav": "Fermer la navigation",
+    "menuHeading": "Navigation"
   },
   "hero": {
     "eyebrow": "Annuaire mondial de la capoeira",

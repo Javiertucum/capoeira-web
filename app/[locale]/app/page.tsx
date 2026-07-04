@@ -33,6 +33,7 @@ const COPY = {
     // Educators
     educatorsTitle: 'Para educadores y organizadores',
     educatorsIntro: 'Todo lo necesario para gestionar tu núcleo, desde el celular.',
+    educatorsCtaLabel: 'Descargar gratis',
     educatorsSpotlights: [
       {
         tag: 'Asistencia',
@@ -128,6 +129,7 @@ const COPY = {
     featuresBentoLabel: 'O que inclui o app',
     educatorsTitle: 'Para educadores e organizadores',
     educatorsIntro: 'Tudo o que você precisa para gerenciar seu núcleo, direto do celular.',
+    educatorsCtaLabel: 'Baixar grátis',
     educatorsSpotlights: [
       {
         tag: 'Presença',
@@ -220,6 +222,7 @@ const COPY = {
     featuresBentoLabel: 'What the app includes',
     educatorsTitle: 'For educators and organizers',
     educatorsIntro: 'Everything you need to run your school, right from your phone.',
+    educatorsCtaLabel: 'Download free',
     educatorsSpotlights: [
       {
         tag: 'Attendance',
@@ -312,6 +315,7 @@ const COPY = {
     featuresBentoLabel: 'Ce que contient l\'app',
     educatorsTitle: 'Pour les éducateurs et organisateurs',
     educatorsIntro: 'Tout ce qu\'il faut pour gérer votre noyau, directement depuis votre téléphone.',
+    educatorsCtaLabel: 'Télécharger gratuitement',
     educatorsSpotlights: [
       {
         tag: 'Présence',
@@ -404,6 +408,7 @@ const COPY = {
     featuresBentoLabel: 'Was die App bietet',
     educatorsTitle: 'Für Lehrer und Organisatoren',
     educatorsIntro: 'Alles, was du brauchst, um dein Núcleo zu verwalten, direkt vom Handy aus.',
+    educatorsCtaLabel: 'Kostenlos herunterladen',
     educatorsSpotlights: [
       {
         tag: 'Anwesenheit',
@@ -496,6 +501,7 @@ const COPY = {
     featuresBentoLabel: 'Cosa include l\'app',
     educatorsTitle: 'Per educatori e organizzatori',
     educatorsIntro: 'Tutto il necessario per gestire il tuo núcleo, dal cellulare.',
+    educatorsCtaLabel: 'Scarica gratis',
     educatorsSpotlights: [
       {
         tag: 'Presenze',

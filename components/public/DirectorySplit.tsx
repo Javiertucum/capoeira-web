@@ -96,6 +96,7 @@ export default function DirectorySplit({
   const tHero = useTranslations('hero')
   const tStats = useTranslations('stats')
   const tProfile = useTranslations('profile')
+  const tNav = useTranslations('nav')
 
   const [tab, setTab] = useState<Tab>('groups')
   const [query, setQuery] = useState('')
@@ -271,7 +272,7 @@ export default function DirectorySplit({
                   <>
                     <button
                       type="button"
-                      aria-label="Cerrar menú"
+                      aria-label={tNav('closeMenu')}
                       onClick={() => setTabMenuOpen(false)}
                       className="fixed inset-0 z-10"
                       tabIndex={-1}

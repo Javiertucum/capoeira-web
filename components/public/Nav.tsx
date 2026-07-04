@@ -157,7 +157,7 @@ export default function Nav() {
             <button
               ref={hamburgerRef}
               type="button"
-              aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-label={menuOpen ? t('closeMenu') : t('openMenu')}
               aria-expanded={menuOpen}
               aria-controls="mobile-nav-drawer"
               onClick={() => setMenuOpen((p) => !p)}
@@ -178,7 +178,7 @@ export default function Nav() {
         <>
           <button
             type="button"
-            aria-label="Cerrar navegación"
+            aria-label={t('closeNav')}
             onClick={() => setMenuOpen(false)}
             className="fixed inset-0 z-40 bg-ink/20 lg:hidden"
           />
@@ -187,11 +187,11 @@ export default function Nav() {
             id="mobile-nav-drawer"
             role="dialog"
             aria-modal="true"
-            aria-label="Navegación principal"
+            aria-label={t('menuHeading')}
             className="fixed inset-x-4 top-[84px] z-50 rounded-[22px] border border-line bg-bg p-5 lg:hidden"
             style={{ boxShadow: 'var(--shadow-lg)' }}
           >
-            <p className="eyebrow acc mb-4">Navegación</p>
+            <p className="eyebrow acc mb-4">{t('menuHeading')}</p>
             <div className="flex flex-col gap-2">
               {links.map((link) => (
                 <Link

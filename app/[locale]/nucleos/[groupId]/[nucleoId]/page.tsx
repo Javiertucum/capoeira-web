@@ -4,9 +4,7 @@ import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import {
   formatPageTitle,
-  getLanguageAlternates,
   getLanguageAlternateUrls,
-  getLocalizedPath,
   getOgImageUrl,
   getOgLocale,
   getLocalizedUrl,
@@ -16,6 +14,7 @@ import {
   escapeJsonLd,
 } from '@/lib/site'
 import { getNucleoById, getGroup, getEducatorProfile } from '@/lib/queries'
+import Footer from '@/components/public/Footer'
 import CountryFlag from '@/components/public/CountryFlag'
 import ProfileCard, { LocationPinIcon } from '@/components/public/ProfileCard'
 import Avatar from '@/components/public/Avatar'
@@ -96,6 +95,7 @@ export default async function NucleoProfilePage({ params }: Props) {
   const validCoEducators = coEducators.filter((e): e is NonNullable<typeof e> => Boolean(e))
 
   return (
+    <>
     <main className="min-h-screen bg-bg py-16 lg:py-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(localBusinessSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escapeJsonLd(breadcrumbSchema) }} />
@@ -199,5 +199,7 @@ export default async function NucleoProfilePage({ params }: Props) {
         )}
       </div>
     </main>
+    <Footer locale={locale} />
+    </>
   )
 }
