@@ -7,27 +7,27 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/'],
+        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/', '/fr/admin/', '/de/admin/', '/it/admin/'],
       },
       {
         userAgent: 'GPTBot',
         allow: '/',
-        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/'],
+        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/', '/fr/admin/', '/de/admin/', '/it/admin/'],
       },
       {
         userAgent: 'ClaudeBot',
         allow: '/',
-        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/'],
+        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/', '/fr/admin/', '/de/admin/', '/it/admin/'],
       },
       {
         userAgent: 'PerplexityBot',
         allow: '/',
-        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/'],
+        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/', '/fr/admin/', '/de/admin/', '/it/admin/'],
       },
       {
         userAgent: 'Googlebot',
         allow: '/',
-        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/'],
+        disallow: ['/admin/', '/es/admin/', '/pt/admin/', '/en/admin/', '/fr/admin/', '/de/admin/', '/it/admin/'],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
