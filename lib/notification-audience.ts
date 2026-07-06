@@ -6,7 +6,7 @@ import { type RawUserDoc, type SegmentFilter, type TokenEntry, filterUserDocs } 
 // Limit the transferred payload to only the fields the filter/notification logic needs —
 // the users collection carries far more (profile data, history, etc.) that would otherwise
 // be shipped over the wire on every send and push the request close to client/proxy timeouts.
-const AUDIENCE_FIELDS = ['fcmToken', 'displayName', 'email', 'role', 'country', 'groupId', 'nucleoIds', 'language'] as const
+const AUDIENCE_FIELDS = ['fcmToken', 'displayName', 'email', 'role', 'country', 'groupId', 'nucleoIds', 'language', 'appVersion'] as const
 
 export async function resolveAudience(segment: SegmentFilter): Promise<TokenEntry[]> {
   const snap = await adminDb.collection('users').select(...AUDIENCE_FIELDS).get()

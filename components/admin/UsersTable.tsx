@@ -92,7 +92,7 @@ export default function UsersTable({ users, locale }: Props) {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-surface/30">
-                {['Nombre', 'Email', 'Rol', 'País', 'Perfil', 'Última conexión', 'Estado', 'Acciones'].map((h) => (
+                {['Nombre', 'Email', 'Rol', 'País', 'Perfil', 'App', 'Última conexión', 'Estado', 'Acciones'].map((h) => (
                   <th
                     key={h}
                     className="border-b border-border px-6 py-4 text-left text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted"
@@ -137,6 +137,14 @@ export default function UsersTable({ users, locale }: Props) {
                         </div>
                       )
                     })()}
+                  </td>
+                  <td className="px-6 py-4 text-xs text-text-secondary">
+                    {user.appVersion ? (
+                      <span className="tabular-nums">
+                        {user.appVersion}
+                        {user.appPlatform ? ` · ${user.appPlatform}` : ''}
+                      </span>
+                    ) : '—'}
                   </td>
                   <td className="px-6 py-4 text-xs tabular-nums text-text-secondary">
                     {formatLastSignIn(user.lastOpenAt ?? user.lastSignInTime)}

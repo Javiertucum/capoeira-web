@@ -327,6 +327,8 @@ export interface AdminUser {
   createdAt?: string | null
   lastSignInTime?: string | null
   lastOpenAt?: string | null
+  appVersion?: string | null
+  appPlatform?: string | null
 }
 
 export interface AdminEvent {
@@ -1012,6 +1014,8 @@ export async function getAdminUsers(limit = 50): Promise<AdminUser[]> {
         createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
         lastSignInTime,
         lastOpenAt: toIsoString(privateData.lastOpenAt ?? publicData.lastOpenAt),
+        appVersion: asString(privateData.appVersion) ?? null,
+        appPlatform: asString(privateData.appPlatform) ?? null,
       }
     })
   )
@@ -1070,6 +1074,8 @@ export async function getAdminUserById(uid: string): Promise<AdminUser | null> {
     createdAt: toIsoString(publicData.createdAt ?? privateData.createdAt),
     lastSignInTime,
     lastOpenAt: toIsoString(privateData.lastOpenAt ?? publicData.lastOpenAt),
+    appVersion: asString(privateData.appVersion) ?? null,
+    appPlatform: asString(privateData.appPlatform) ?? null,
   }
 }
 

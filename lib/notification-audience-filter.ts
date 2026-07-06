@@ -7,6 +7,12 @@ export type SegmentFilter = {
   userIds?: string[]
   noGroup?: boolean
   languages?: string[]
+  /** Ej. "3.0.30" — incluye usuarios con appVersion >= minAppVersion. */
+  minAppVersion?: string
+  /** Ej. "3.0.29" — incluye usuarios con appVersion <= maxAppVersion (útil para "todos los que aún no actualizaron"). */
+  maxAppVersion?: string
+  /** Si se define, excluye usuarios sin appVersion registrada (ej. cuentas viejas nunca abiertas tras el cambio). */
+  requireAppVersion?: boolean
 }
 
 export type TokenEntry = {
@@ -26,7 +32,25 @@ export type RawUserDoc = {
   groupId: unknown
   nucleoIds?: unknown
   language?: unknown
+  appVersion?: unknown
   [key: string]: unknown
+}
+
+/**
+ * Compara dos versiones semver-like ("3.0.30" vs "3.0.9") segmento a segmento
+ * — a diferencia de comparar strings, "3.0.9" > "3.0.30" si se comparara
+ * lexicográficamente. Segmentos faltantes cuentan como 0.
+ * Retorna negativo si a < b, positivo si a > b, 0 si son iguales.
+ */
+export function compareVersions(a: string, b: string): number {
+  const partsA = a.split('.').map((n) => parseInt(n, 10) || 0)
+  const partsB = b.split('.').map((n) => parseInt(n, 10) || 0)
+  const len = Math.max(partsA.length, partsB.length)
+  for (let i = 0; i < len; i += 1) {
+    const diff = (partsA[i] ?? 0) - (partsB[i] ?? 0)
+    if (diff !== 0) return diff
+  }
+  return 0
 }
 
 /** Pure filtering logic — no I/O. Exported for testing. */
@@ -64,6 +88,14 @@ export function filterUserDocs(users: RawUserDoc[], segment: SegmentFilter): Tok
     if (segment.languages && segment.languages.length > 0) {
       const language = typeof data.language === 'string' ? data.language : null
       if (!language || !segment.languages.includes(language)) continue
+    }
+
+    if (segment.minAppVersion || segment.maxAppVersion || segment.requireAppVersion) {
+      const appVersion = typeof data.appVersion === 'string' ? data.appVersion : null
+      // Sin versión registrada no se puede saber si cae en el rango pedido — se excluye.
+      if (!appVersion) continue
+      if (segment.minAppVersion && compareVersions(appVersion, segment.minAppVersion) < 0) continue
+      if (segment.maxAppVersion && compareVersions(appVersion, segment.maxAppVersion) > 0) continue
     }
 
     const hasGroupFilter =

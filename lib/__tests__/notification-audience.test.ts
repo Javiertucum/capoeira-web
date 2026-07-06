@@ -1,4 +1,4 @@
-import { filterUserDocs } from '../notification-audience-filter'
+import { compareVersions, filterUserDocs } from '../notification-audience-filter'
 
 const makeUser = (overrides: Record<string, unknown>) => ({
   id: 'uid1',
@@ -98,5 +98,46 @@ describe('filterUserDocs', () => {
     const users = [makeUser({})]
     const result = filterUserDocs(users, { userIds: ['uid1'] })
     expect(result).toHaveLength(1)
+  })
+
+  describe('compareVersions', () => {
+    it('compares numerically, not lexicographically', () => {
+      expect(compareVersions('3.0.9', '3.0.30')).toBeLessThan(0)
+      expect(compareVersions('3.0.30', '3.0.9')).toBeGreaterThan(0)
+      expect(compareVersions('3.0.30', '3.0.30')).toBe(0)
+    })
+
+    it('treats missing segments as 0', () => {
+      expect(compareVersions('3.1', '3.1.0')).toBe(0)
+      expect(compareVersions('3.1.1', '3.1')).toBeGreaterThan(0)
+    })
+  })
+
+  it('filters by minAppVersion (includes >=)', () => {
+    const users = [
+      makeUser({ appVersion: '3.0.29' }),
+      makeUser({ id: 'uid2', fcmToken: 'token2', appVersion: '3.0.30' }),
+      makeUser({ id: 'uid3', fcmToken: 'token3', appVersion: '3.1.0' }),
+    ]
+    const result = filterUserDocs(users, { minAppVersion: '3.0.30' })
+    expect(result.map((r) => r.uid).sort()).toEqual(['uid2', 'uid3'])
+  })
+
+  it('filters by maxAppVersion (includes <=, useful for "not yet updated")', () => {
+    const users = [
+      makeUser({ appVersion: '3.0.29' }),
+      makeUser({ id: 'uid2', fcmToken: 'token2', appVersion: '3.0.30' }),
+    ]
+    const result = filterUserDocs(users, { maxAppVersion: '3.0.29' })
+    expect(result.map((r) => r.uid)).toEqual(['uid1'])
+  })
+
+  it('excludes users without a registered appVersion when a version filter is set', () => {
+    const users = [
+      makeUser({ appVersion: '3.0.30' }),
+      makeUser({ id: 'uid2', fcmToken: 'token2', appVersion: undefined }),
+    ]
+    const result = filterUserDocs(users, { minAppVersion: '3.0.0' })
+    expect(result.map((r) => r.uid)).toEqual(['uid1'])
   })
 })
