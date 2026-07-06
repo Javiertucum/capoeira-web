@@ -5,8 +5,11 @@ import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import AdminSectionCard from '@/components/admin/AdminSectionCard'
 import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
+import CampaignRecipientsTable from '@/components/admin/CampaignRecipientsTable'
 import Badge from '@/components/ui/Badge'
 import { adminDb } from '@/lib/firebase-admin'
+
+const RECIPIENTS_PAGE_SIZE = 20
 
 type Props = { params: Promise<{ locale: string; campaignId: string }> }
 
@@ -59,26 +62,32 @@ async function getCampaign(campaignId: string): Promise<CampaignDetail | null> {
   }
 }
 
-async function getRecipients(campaignId: string): Promise<RecipientRow[]> {
+async function getRecipients(campaignId: string): Promise<{ recipients: RecipientRow[]; nextCursor: string | null }> {
   const snap = await adminDb
     .collection('adminNotificationCampaigns')
     .doc(campaignId)
     .collection('recipients')
     .orderBy('displayName')
-    .limit(20)
+    .limit(RECIPIENTS_PAGE_SIZE + 1)
     .get()
 
-  return snap.docs.map((doc) => {
-    const data = doc.data()
-    return {
-      uid: doc.id,
-      displayName: typeof data.displayName === 'string' ? data.displayName : '',
-      email: typeof data.email === 'string' ? data.email : '',
-      sent: data.sent === true,
-      opened: data.opened === true,
-      openedAt: data.openedAt?.toDate?.()?.toISOString?.() ?? null,
-    }
-  })
+  const hasMore = snap.docs.length > RECIPIENTS_PAGE_SIZE
+  const pageDocs = hasMore ? snap.docs.slice(0, RECIPIENTS_PAGE_SIZE) : snap.docs
+
+  return {
+    recipients: pageDocs.map((doc) => {
+      const data = doc.data()
+      return {
+        uid: doc.id,
+        displayName: typeof data.displayName === 'string' ? data.displayName : '',
+        email: typeof data.email === 'string' ? data.email : '',
+        sent: data.sent === true,
+        opened: data.opened === true,
+        openedAt: data.openedAt?.toDate?.()?.toISOString?.() ?? null,
+      }
+    }),
+    nextCursor: hasMore ? pageDocs[pageDocs.length - 1].id : null,
+  }
 }
 
 function renderSegmentSummary(segment: Record<string, unknown>) {
@@ -86,6 +95,9 @@ function renderSegmentSummary(segment: Record<string, unknown>) {
   const countries = Array.isArray(segment.countries) ? segment.countries.filter((value): value is string => typeof value === 'string') : []
   const plans = Array.isArray(segment.subscriptionPlans) ? segment.subscriptionPlans.filter((value): value is string => typeof value === 'string') : []
   const groupIds = Array.isArray(segment.groupIds) ? segment.groupIds.filter((value): value is string => typeof value === 'string') : []
+  const nucleoIds = Array.isArray(segment.nucleoIds) ? segment.nucleoIds.filter((value): value is string => typeof value === 'string') : []
+  const languages = Array.isArray(segment.languages) ? segment.languages.filter((value): value is string => typeof value === 'string') : []
+  const appVersions = Array.isArray(segment.appVersions) ? segment.appVersions.filter((value): value is string => typeof value === 'string') : []
   const userIds = Array.isArray(segment.userIds) ? segment.userIds.filter((value): value is string => typeof value === 'string') : []
   const noGroup = segment.noGroup === true
 
@@ -94,7 +106,10 @@ function renderSegmentSummary(segment: Record<string, unknown>) {
     countries.length > 0 ? `Países: ${countries.join(', ')}` : '',
     plans.length > 0 ? `Planes: ${plans.join(', ')}` : '',
     groupIds.length > 0 ? `Grupos: ${groupIds.join(', ')}` : '',
+    nucleoIds.length > 0 ? `Núcleos: ${nucleoIds.join(', ')}` : '',
     noGroup ? 'Usuarios sin grupo' : '',
+    languages.length > 0 ? `Idiomas: ${languages.join(', ')}` : '',
+    appVersions.length > 0 ? `Versiones de app: ${appVersions.join(', ')}` : '',
     userIds.length > 0 ? `Usuarios individuales: ${userIds.length}` : '',
   ].filter(Boolean)
 
@@ -119,8 +134,7 @@ export default async function CampaignDetailPage({ params }: Props) {
     notFound()
   }
 
-  const recipients = await getRecipients(campaignId)
-  const recipientsCount = recipients.length
+  const { recipients, nextCursor } = await getRecipients(campaignId)
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -189,11 +203,11 @@ export default async function CampaignDetailPage({ params }: Props) {
           </div>
 
           <AdminSectionCard
-            title="Destinatarios recientes"
-            description="Los primeros 20 destinatarios de la campaña. Usa la API de paginación para más resultados."
+            title="Destinatarios"
+            description="Filtra por estado y carga más resultados sin salir de la página."
             contentClassName="overflow-x-auto p-0"
           >
-            {recipientsCount === 0 ? (
+            {recipients.length === 0 ? (
               <div className="p-6">
                 <AdminEmptyState
                   eyebrow="Destinatarios"
@@ -202,31 +216,12 @@ export default async function CampaignDetailPage({ params }: Props) {
                 />
               </div>
             ) : (
-              <table className="w-full min-w-[640px] border-collapse">
-                <thead>
-                  <tr className="bg-surface/10">
-                    {['Nombre', 'Email', 'Enviado', 'Abierto', 'Última apertura'].map((heading) => (
-                      <th
-                        key={heading}
-                        className="border-b border-border px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.2em] text-text-muted"
-                      >
-                        {heading}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {recipients.map((recipient) => (
-                    <tr key={recipient.uid} className="transition-colors hover:bg-surface/30">
-                      <td className="px-6 py-4 text-sm text-text-primary">{recipient.displayName || 'Sin nombre'}</td>
-                      <td className="px-6 py-4 text-sm text-text-secondary">{recipient.email || 'Sin email'}</td>
-                      <td className="px-6 py-4 text-sm text-text-secondary">{recipient.sent ? 'Sí' : 'No'}</td>
-                      <td className="px-6 py-4 text-sm text-text-secondary">{recipient.opened ? 'Sí' : 'No'}</td>
-                      <td className="px-6 py-4 text-sm text-text-secondary">{recipient.openedAt ? new Date(recipient.openedAt).toLocaleString(locale) : '–'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <CampaignRecipientsTable
+                campaignId={campaignId}
+                locale={locale}
+                initialRecipients={recipients}
+                initialNextCursor={nextCursor}
+              />
             )}
           </AdminSectionCard>
         </div>
