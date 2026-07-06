@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import Badge from '@/components/ui/Badge'
 import AdminDeleteButton from './AdminDeleteButton'
 
@@ -27,11 +26,11 @@ export default function AdminCampaignRow({
   createdAtLabel,
   deleteEndpoint,
 }: Props) {
-  const router = useRouter()
-
   return (
     <tr
-      onClick={() => router.push(href)}
+      onClick={() => {
+        window.location.assign(href)
+      }}
       className="cursor-pointer transition-colors hover:bg-surface/30"
     >
       <td className="px-6 py-4">
