@@ -51,17 +51,22 @@ const COPY = {
           'Los datos se almacenan en Firebase (Google Cloud Platform) con reglas de acceso por usuario. Implementamos medidas de seguridad estándar de la industria, pero ningún sistema es 100% infalible.',
       },
       {
-        heading: '6. Tus derechos',
+        heading: '6. Conservación y transferencias internacionales',
         body:
-          'Puedes acceder y actualizar tu información desde Configuración en la app, desactivar la detección de ubicación o cualquier tipo de notificación, y eliminar tu cuenta junto con los datos asociados en cualquier momento desde la app. También puedes escribirnos a agendacapoeiragem@gmail.com para ejercer estos derechos o cualquier consulta.',
+          'Conservamos tus datos mientras tu cuenta esté activa; al eliminarla se borran en cascada tu perfil, pagos, becas, solicitudes y participaciones. Las cuentas nunca activadas y los datos de eventos pasados se depuran periódicamente. Nuestros proveedores (Google, RevenueCat, Sentry) pueden procesar datos en servidores fuera de tu país, principalmente en Estados Unidos, bajo cláusulas contractuales tipo y marcos de transferencia equivalentes.',
       },
       {
-        heading: '7. Menores de edad',
+        heading: '7. Tus derechos',
         body:
-          'La app está dirigida a la comunidad de capoeira en general, incluyendo academias con alumnos menores de edad gestionados por su educador/núcleo. No recopilamos intencionalmente cuentas propias de menores sin la supervisión de un adulto responsable del grupo.',
+          'De acuerdo con la normativa aplicable (incluida la Ley 21.719 de Chile, el RGPD europeo y la LGPD brasileña), tienes derecho a acceder, rectificar, suprimir y portar tus datos, a oponerte a ciertos tratamientos y a revocar tu consentimiento en cualquier momento. Puedes gestionar tu información desde Configuración en la app, eliminar tu cuenta con todos los datos asociados, o escribirnos a agendacapoeiragem@gmail.com. También puedes reclamar ante la autoridad de protección de datos de tu país.',
       },
       {
-        heading: '8. Contacto',
+        heading: '8. Menores de edad',
+        body:
+          'Para crear una cuenta propia se requiere tener al menos 14 años. Los alumnos menores pueden ser gestionados por su educador como alumnos sin cuenta, con la autorización de su padre, madre o representante legal; el acceso a esos datos queda limitado a los educadores y administradores del grupo, y el educador es responsable de mantenerlos exactos y eliminarlos cuando corresponda.',
+      },
+      {
+        heading: '9. Contacto',
         body: 'Si tienes preguntas sobre esta política, contáctanos en agendacapoeiragem@gmail.com.',
       },
     ],
@@ -100,17 +105,22 @@ const COPY = {
           'Os dados são armazenados no Firebase (Google Cloud Platform) com regras de acesso por usuário. Implementamos medidas de segurança padrão da indústria, mas nenhum sistema é 100% infalível.',
       },
       {
-        heading: '6. Seus direitos',
+        heading: '6. Retenção e transferências internacionais',
         body:
-          'Você pode acessar e atualizar suas informações em Configurações no app, desativar a detecção de localização ou qualquer tipo de notificação, e excluir sua conta junto com os dados associados a qualquer momento pelo app. Também pode escrever para agendacapoeiragem@gmail.com para exercer esses direitos ou qualquer dúvida.',
+          'Mantemos seus dados enquanto sua conta estiver ativa; ao excluí-la, seu perfil, pagamentos, bolsas, solicitações e participações são apagados em cascata. Contas nunca ativadas e dados de eventos passados são depurados periodicamente. Nossos fornecedores (Google, RevenueCat, Sentry) podem processar dados em servidores fora do seu país, principalmente nos Estados Unidos, sob cláusulas contratuais padrão e mecanismos de transferência equivalentes.',
       },
       {
-        heading: '7. Menores de idade',
+        heading: '7. Seus direitos',
         body:
-          'O app é destinado à comunidade de capoeira em geral, incluindo academias com alunos menores de idade geridos por seu educador/núcleo. Não coletamos intencionalmente contas próprias de menores sem a supervisão de um adulto responsável pelo grupo.',
+          'De acordo com a legislação aplicável (incluindo a LGPD brasileira, a Lei 21.719 do Chile e o RGPD europeu), você tem direito a acessar, corrigir, excluir e portar seus dados, a se opor a certos tratamentos e a revogar seu consentimento a qualquer momento. Você pode gerenciar suas informações em Configurações no app, excluir sua conta com todos os dados associados, ou escrever para agendacapoeiragem@gmail.com. Também pode reclamar junto à autoridade de proteção de dados do seu país.',
       },
       {
-        heading: '8. Contato',
+        heading: '8. Menores de idade',
+        body:
+          'Para criar uma conta própria é preciso ter pelo menos 14 anos. Alunos menores podem ser geridos pelo educador como alunos sem conta, com a autorização do pai, mãe ou responsável legal; o acesso a esses dados fica limitado aos educadores e administradores do grupo, e o educador é responsável por mantê-los corretos e excluí-los quando necessário.',
+      },
+      {
+        heading: '9. Contato',
         body: 'Se tiver dúvidas sobre esta política, contate-nos em agendacapoeiragem@gmail.com.',
       },
     ],
@@ -149,17 +159,22 @@ const COPY = {
           'Data is stored in Firebase (Google Cloud Platform) with per-user access rules. We implement industry-standard security measures, but no system is 100% foolproof.',
       },
       {
-        heading: '6. Your rights',
+        heading: '6. Retention and international transfers',
         body:
-          'You can access and update your information from Settings in the app, turn off location detection or any notification type, and delete your account along with associated data at any time from the app. You can also email us at agendacapoeiragem@gmail.com to exercise these rights or for any question.',
+          'We keep your data while your account is active; when you delete it, your profile, payments, scholarships, requests, and participations are removed in cascade. Never-activated accounts and past event data are purged periodically. Our providers (Google, RevenueCat, Sentry) may process data on servers outside your country, mainly in the United States, under standard contractual clauses and equivalent transfer frameworks.',
       },
       {
-        heading: '7. Minors',
+        heading: '7. Your rights',
         body:
-          'The app is aimed at the capoeira community at large, including schools with underage students managed by their educator/núcleo. We do not knowingly collect standalone accounts from minors without supervision from an adult responsible for the group.',
+          'Under applicable data protection law (including the EU GDPR, Chile\'s Law 21.719, and Brazil\'s LGPD), you have the right to access, rectify, delete, and port your data, to object to certain processing, and to withdraw your consent at any time. You can manage your information from Settings in the app, delete your account with all associated data, or email us at agendacapoeiragem@gmail.com. You may also lodge a complaint with your country\'s data protection authority.',
       },
       {
-        heading: '8. Contact',
+        heading: '8. Minors',
+        body:
+          'You must be at least 14 years old to create your own account. Younger students can be managed by their educator as accountless students, with authorization from a parent or legal guardian; access to that data is limited to the group\'s educators and administrators, and the educator is responsible for keeping it accurate and deleting it when appropriate.',
+      },
+      {
+        heading: '9. Contact',
         body: 'If you have questions about this policy, contact us at agendacapoeiragem@gmail.com.',
       },
     ],
@@ -198,17 +213,22 @@ const COPY = {
           'Les données sont stockées dans Firebase (Google Cloud Platform) avec des règles d\'accès par utilisateur. Nous appliquons des mesures de sécurité standard du secteur, mais aucun système n\'est infaillible à 100 %.',
       },
       {
-        heading: '6. Vos droits',
+        heading: '6. Conservation et transferts internationaux',
         body:
-          'Vous pouvez accéder à vos informations et les mettre à jour depuis les Réglages dans l\'application, désactiver la détection de localisation ou tout type de notification, et supprimer votre compte ainsi que les données associées à tout moment depuis l\'application. Vous pouvez aussi nous écrire à agendacapoeiragem@gmail.com pour exercer ces droits ou pour toute question.',
+          'Nous conservons vos données tant que votre compte est actif ; lorsque vous le supprimez, votre profil, vos paiements, bourses, demandes et participations sont effacés en cascade. Les comptes jamais activés et les données d\'événements passés sont purgés périodiquement. Nos prestataires (Google, RevenueCat, Sentry) peuvent traiter des données sur des serveurs situés hors de votre pays, principalement aux États-Unis, dans le cadre de clauses contractuelles types et de mécanismes de transfert équivalents.',
       },
       {
-        heading: '7. Mineurs',
+        heading: '7. Vos droits',
         body:
-          'L\'application s\'adresse à la communauté de capoeira en général, y compris aux écoles avec des élèves mineurs encadrés par leur éducateur/núcleo. Nous ne collectons pas intentionnellement de comptes autonomes appartenant à des mineurs sans la supervision d\'un adulte responsable du groupe.',
+          'Conformément à la législation applicable (dont le RGPD européen, la loi chilienne 21.719 et la LGPD brésilienne), vous avez le droit d\'accéder à vos données, de les rectifier, de les supprimer et de les porter, de vous opposer à certains traitements et de retirer votre consentement à tout moment. Vous pouvez gérer vos informations depuis les Réglages dans l\'application, supprimer votre compte avec toutes les données associées, ou nous écrire à agendacapoeiragem@gmail.com. Vous pouvez également saisir l\'autorité de protection des données de votre pays.',
       },
       {
-        heading: '8. Contact',
+        heading: '8. Mineurs',
+        body:
+          'Il faut avoir au moins 14 ans pour créer son propre compte. Les élèves plus jeunes peuvent être gérés par leur éducateur comme élèves sans compte, avec l\'autorisation d\'un parent ou représentant légal ; l\'accès à ces données est limité aux éducateurs et administrateurs du groupe, et l\'éducateur est responsable de leur exactitude et de leur suppression le moment venu.',
+      },
+      {
+        heading: '9. Contact',
         body: 'Pour toute question sur cette politique, contactez-nous à agendacapoeiragem@gmail.com.',
       },
     ],
@@ -247,17 +267,22 @@ const COPY = {
           'Daten werden in Firebase (Google Cloud Platform) mit Zugriffsregeln pro Nutzer gespeichert. Wir setzen branchenübliche Sicherheitsmaßnahmen ein, aber kein System ist zu 100 % unfehlbar.',
       },
       {
-        heading: '6. Deine Rechte',
+        heading: '6. Aufbewahrung und internationale Übermittlungen',
         body:
-          'Du kannst deine Informationen in den Einstellungen der App einsehen und aktualisieren, die Standorterkennung oder jede Art von Benachrichtigung deaktivieren und dein Konto samt zugehöriger Daten jederzeit über die App löschen. Du kannst uns auch unter agendacapoeiragem@gmail.com kontaktieren, um diese Rechte auszuüben oder bei Fragen.',
+          'Wir speichern deine Daten, solange dein Konto aktiv ist; beim Löschen werden Profil, Zahlungen, Stipendien, Anfragen und Teilnahmen kaskadierend entfernt. Nie aktivierte Konten und Daten vergangener Events werden regelmäßig bereinigt. Unsere Anbieter (Google, RevenueCat, Sentry) können Daten auf Servern außerhalb deines Landes verarbeiten, hauptsächlich in den USA, auf Grundlage von Standardvertragsklauseln und gleichwertigen Übermittlungsmechanismen.',
       },
       {
-        heading: '7. Minderjährige',
+        heading: '7. Deine Rechte',
         body:
-          'Die App richtet sich an die Capoeira-Community im Allgemeinen, einschließlich Schulen mit minderjährigen Schülern, die von ihrem Lehrer/Núcleo betreut werden. Wir erheben nicht wissentlich eigenständige Konten von Minderjährigen ohne Aufsicht durch einen für die Gruppe verantwortlichen Erwachsenen.',
+          'Nach geltendem Datenschutzrecht (einschließlich der EU-DSGVO, des chilenischen Gesetzes 21.719 und der brasilianischen LGPD) hast du das Recht auf Auskunft, Berichtigung, Löschung und Übertragbarkeit deiner Daten, auf Widerspruch gegen bestimmte Verarbeitungen und auf jederzeitigen Widerruf deiner Einwilligung. Du kannst deine Informationen in den Einstellungen der App verwalten, dein Konto mit allen zugehörigen Daten löschen oder uns unter agendacapoeiragem@gmail.com schreiben. Du kannst dich außerdem bei der Datenschutzbehörde deines Landes beschweren.',
       },
       {
-        heading: '8. Kontakt',
+        heading: '8. Minderjährige',
+        body:
+          'Für ein eigenes Konto musst du mindestens 14 Jahre alt sein. Jüngere Schüler können von ihrem Lehrer als Schüler ohne Konto verwaltet werden, mit Einwilligung eines Elternteils oder Erziehungsberechtigten; der Zugriff auf diese Daten ist auf die Lehrer und Administratoren der Gruppe beschränkt, und der Lehrer ist dafür verantwortlich, sie korrekt zu halten und bei Bedarf zu löschen.',
+      },
+      {
+        heading: '9. Kontakt',
         body: 'Bei Fragen zu dieser Erklärung kontaktiere uns unter agendacapoeiragem@gmail.com.',
       },
     ],
@@ -296,17 +321,22 @@ const COPY = {
           'I dati sono archiviati su Firebase (Google Cloud Platform) con regole di accesso per utente. Implementiamo misure di sicurezza standard del settore, ma nessun sistema è infallibile al 100%.',
       },
       {
-        heading: '6. I tuoi diritti',
+        heading: '6. Conservazione e trasferimenti internazionali',
         body:
-          'Puoi accedere e aggiornare le tue informazioni dalle Impostazioni nell\'app, disattivare il rilevamento della posizione o qualsiasi tipo di notifica ed eliminare il tuo account insieme ai dati associati in qualsiasi momento dall\'app. Puoi anche scriverci a agendacapoeiragem@gmail.com per esercitare questi diritti o per qualsiasi domanda.',
+          'Conserviamo i tuoi dati finché il tuo account è attivo; quando lo elimini, profilo, pagamenti, borse di studio, richieste e partecipazioni vengono cancellati a cascata. Gli account mai attivati e i dati di eventi passati vengono depurati periodicamente. I nostri fornitori (Google, RevenueCat, Sentry) possono trattare dati su server al di fuori del tuo paese, principalmente negli Stati Uniti, sulla base di clausole contrattuali standard e meccanismi di trasferimento equivalenti.',
       },
       {
-        heading: '7. Minori',
+        heading: '7. I tuoi diritti',
         body:
-          'L\'app è destinata alla comunità di capoeira in generale, incluse le scuole con allievi minorenni gestiti dal proprio educatore/núcleo. Non raccogliamo intenzionalmente account autonomi di minori senza la supervisione di un adulto responsabile del gruppo.',
+          'In base alla normativa applicabile (incluso il GDPR europeo, la legge cilena 21.719 e la LGPD brasiliana), hai diritto ad accedere, rettificare, cancellare e portare i tuoi dati, a opporti a determinati trattamenti e a revocare il consenso in qualsiasi momento. Puoi gestire le tue informazioni dalle Impostazioni nell\'app, eliminare il tuo account con tutti i dati associati o scriverci a agendacapoeiragem@gmail.com. Puoi inoltre presentare reclamo all\'autorità di protezione dei dati del tuo paese.',
       },
       {
-        heading: '8. Contatto',
+        heading: '8. Minori',
+        body:
+          'Per creare un account proprio bisogna avere almeno 14 anni. Gli allievi più giovani possono essere gestiti dal proprio educatore come allievi senza account, con l\'autorizzazione di un genitore o rappresentante legale; l\'accesso a quei dati è limitato agli educatori e amministratori del gruppo, e l\'educatore è responsabile di mantenerli corretti ed eliminarli quando necessario.',
+      },
+      {
+        heading: '9. Contatto',
         body: 'Per domande su questa informativa, contattaci a agendacapoeiragem@gmail.com.',
       },
     ],

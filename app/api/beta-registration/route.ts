@@ -1,9 +1,12 @@
+import { createHash } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { adminDb } from '@/lib/firebase-admin'
 
-// Rate-limit en memoria por IP (best-effort, igual que el patron usado en
-// capoeira-app/functions/src/index.ts — no persiste entre instancias/regiones,
-// pero frena abuso trivial de este endpoint publico sin autenticacion).
+// Rate-limit en dos capas para este endpoint público sin autenticación:
+// 1) Map en memoria: barato, corta ráfagas dentro de una misma instancia.
+// 2) Contador transaccional en Firestore (`rateLimits/{hash(ip)}`): persiste
+//    entre instancias/regiones serverless, donde el Map se reinicia y por sí
+//    solo es casi decorativo en Vercel.
 const RATE_LIMIT_WINDOW_MS = 60 * 1000
 const MAX_REQUESTS_PER_WINDOW = 5
 const requestBuckets = new Map<string, { count: number; windowStart: number }>()
@@ -22,6 +25,33 @@ function isRateLimited(key: string) {
   return bucket.count > MAX_REQUESTS_PER_WINDOW
 }
 
+async function isRateLimitedPersistent(key: string): Promise<boolean> {
+  // Hash de la IP: no guardamos la IP en claro en Firestore (minimización).
+  const docId = createHash('sha256').update(key).digest('hex').slice(0, 32)
+  const ref = adminDb.collection('rateLimits').doc(docId)
+  const now = Date.now()
+
+  try {
+    return await adminDb.runTransaction(async (tx) => {
+      const snap = await tx.get(ref)
+      const data = snap.exists ? (snap.data() as { count?: number; windowStart?: number }) : null
+
+      if (!data || typeof data.windowStart !== 'number' || now - data.windowStart >= RATE_LIMIT_WINDOW_MS) {
+        tx.set(ref, { count: 1, windowStart: now })
+        return false
+      }
+
+      const count = (typeof data.count === 'number' ? data.count : 0) + 1
+      tx.set(ref, { count, windowStart: data.windowStart }, { merge: true })
+      return count > MAX_REQUESTS_PER_WINDOW
+    })
+  } catch (error) {
+    // Best-effort: si Firestore falla, no bloqueamos el registro legítimo.
+    console.error('[beta-registration] persistent rate limit check failed', error)
+    return false
+  }
+}
+
 function boundedString(value: unknown, maxLength: number): string {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : ''
 }
@@ -29,7 +59,8 @@ function boundedString(value: unknown, maxLength: number): string {
 export async function POST(request: Request) {
   try {
     const ip = request.headers.get('x-forwarded-for') ?? 'unknown'
-    if (isRateLimited(`beta-registration:${ip}`)) {
+    const rateKey = `beta-registration:${ip}`
+    if (isRateLimited(rateKey) || (await isRateLimitedPersistent(rateKey))) {
       return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
     }
 

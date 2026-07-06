@@ -14,6 +14,7 @@ const FOOTER_COPY: Record<string, {
   sobre: string
   privacidad: string
   terminos: string
+  cookies: string
   copyright: string
 }> = {
   es: {
@@ -28,6 +29,7 @@ const FOOTER_COPY: Record<string, {
     sobre: 'Sobre nosotros',
     privacidad: 'Privacidad',
     terminos: 'Términos',
+    cookies: 'Cookies',
     copyright: '© 2026 Agenda Capoeiragem. Todos los derechos reservados.',
   },
   pt: {
@@ -42,6 +44,7 @@ const FOOTER_COPY: Record<string, {
     sobre: 'Sobre nós',
     privacidad: 'Privacidade',
     terminos: 'Termos',
+    cookies: 'Cookies',
     copyright: '© 2026 Agenda Capoeiragem. Todos os direitos reservados.',
   },
   en: {
@@ -56,6 +59,7 @@ const FOOTER_COPY: Record<string, {
     sobre: 'About us',
     privacidad: 'Privacy',
     terminos: 'Terms',
+    cookies: 'Cookies',
     copyright: '© 2026 Agenda Capoeiragem. All rights reserved.',
   },
   fr: {
@@ -70,6 +74,7 @@ const FOOTER_COPY: Record<string, {
     sobre: 'À propos',
     privacidad: 'Confidentialité',
     terminos: 'Conditions',
+    cookies: 'Cookies',
     copyright: '© 2026 Agenda Capoeiragem. Tous droits réservés.',
   },
   de: {
@@ -84,6 +89,7 @@ const FOOTER_COPY: Record<string, {
     sobre: 'Über uns',
     privacidad: 'Datenschutz',
     terminos: 'AGB',
+    cookies: 'Cookies',
     copyright: '© 2026 Agenda Capoeiragem. Alle Rechte vorbehalten.',
   },
   it: {
@@ -98,6 +104,7 @@ const FOOTER_COPY: Record<string, {
     sobre: 'Chi siamo',
     privacidad: 'Privacy',
     terminos: 'Termini',
+    cookies: 'Cookie',
     copyright: '© 2026 Agenda Capoeiragem. Tutti i diritti riservati.',
   },
 }
@@ -120,6 +127,7 @@ export default function Footer({ locale = 'es' }: { locale?: string }) {
   const NAV_LEGAL = [
     { label: c.privacidad, href: `/${locale}/privacy` },
     { label: c.terminos, href: `/${locale}/terms` },
+    { label: c.cookies, href: `/${locale}/cookies` },
   ]
 
   return (

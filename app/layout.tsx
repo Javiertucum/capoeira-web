@@ -6,6 +6,7 @@ import './globals.css'
 import { routing } from '@/i18n/routing'
 import { SITE_NAME, SITE_URL, escapeJsonLd, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
 import { THEME_INIT_SCRIPT } from '@/components/public/ThemeToggle'
+import { CONSENT_INIT_SCRIPT } from '@/components/public/ConsentInit'
 
 const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
@@ -100,6 +101,8 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* Consent Mode v2: default denied ANTES de que cargue GA (ver ConsentInit.tsx) */}
+        <script dangerouslySetInnerHTML={{ __html: CONSENT_INIT_SCRIPT }} />
         <meta name="theme-color" content="#F7F3EB" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#10131A" media="(prefers-color-scheme: dark)" />
         <link rel="dns-prefetch" href="https://basemaps.cartocdn.com" />

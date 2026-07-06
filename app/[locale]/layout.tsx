@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import LocaleChrome from '@/components/public/LocaleChrome'
+import CookieConsentBanner from '@/components/public/CookieConsentBanner'
 import { routing } from '@/i18n/routing'
 
 type Props = Readonly<{
@@ -27,6 +28,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <LocaleChrome>{children}</LocaleChrome>
+      <CookieConsentBanner locale={locale} />
     </NextIntlClientProvider>
   )
 }
