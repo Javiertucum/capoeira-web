@@ -7,7 +7,7 @@ import AdminSectionCard from '@/components/admin/AdminSectionCard'
 import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import Badge from '@/components/ui/Badge'
-import { getAdminNucleos, getAdminOperationJobs } from '@/lib/admin-queries'
+import { getAdminAppVersionStats, getAdminNucleos, getAdminOperationJobs } from '@/lib/admin-queries'
 import { adminDb } from '@/lib/firebase-admin'
 
 type Props = { params: Promise<{ locale: string }> }
@@ -22,10 +22,11 @@ async function getGroups(): Promise<{ id: string; name: string }[]> {
 
 export default async function NotificationsPage({ params }: Props) {
   const { locale } = await params
-  const [campaigns, groups, nucleos] = await Promise.all([
+  const [campaigns, groups, nucleos, appVersions] = await Promise.all([
     getAdminOperationJobs('adminNotificationCampaigns').catch(() => []),
     getGroups(),
     getAdminNucleos().catch(() => []),
+    getAdminAppVersionStats().catch(() => []),
   ])
 
   const active = campaigns.filter((c) => ['queued', 'scheduled', 'processing'].includes(c.status)).length
@@ -53,6 +54,7 @@ export default async function NotificationsPage({ params }: Props) {
           <AdminNotificationSendForm
             groups={groups}
             nucleos={nucleos.map((n) => ({ id: n.id, name: n.name, groupId: n.groupId, groupName: n.groupName }))}
+            appVersions={appVersions}
           />
 
           <AdminSectionCard

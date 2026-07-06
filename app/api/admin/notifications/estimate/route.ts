@@ -17,8 +17,7 @@ export async function POST(request: NextRequest) {
     userIds: Array.isArray(body.userIds) ? (body.userIds as string[]) : [],
     noGroup: body.noGroup === true,
     languages: Array.isArray(body.languages) ? (body.languages as string[]) : [],
-    ...(typeof body.minAppVersion === 'string' && body.minAppVersion.trim() && { minAppVersion: body.minAppVersion.trim() }),
-    ...(typeof body.maxAppVersion === 'string' && body.maxAppVersion.trim() && { maxAppVersion: body.maxAppVersion.trim() }),
+    ...(Array.isArray(body.appVersions) && body.appVersions.length > 0 && { appVersions: body.appVersions as string[] }),
   }
 
   const entries = await resolveAudience(segment)

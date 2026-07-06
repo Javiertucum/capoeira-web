@@ -7,10 +7,8 @@ export type SegmentFilter = {
   userIds?: string[]
   noGroup?: boolean
   languages?: string[]
-  /** Ej. "3.0.30" — incluye usuarios con appVersion >= minAppVersion. */
-  minAppVersion?: string
-  /** Ej. "3.0.29" — incluye usuarios con appVersion <= maxAppVersion (útil para "todos los que aún no actualizaron"). */
-  maxAppVersion?: string
+  /** Ej. ["3.0.30", "3.0.29"] — incluye solo usuarios cuya appVersion coincide exactamente con alguna de estas. */
+  appVersions?: string[]
   /** Si se define, excluye usuarios sin appVersion registrada (ej. cuentas viejas nunca abiertas tras el cambio). */
   requireAppVersion?: boolean
 }
@@ -90,12 +88,11 @@ export function filterUserDocs(users: RawUserDoc[], segment: SegmentFilter): Tok
       if (!language || !segment.languages.includes(language)) continue
     }
 
-    if (segment.minAppVersion || segment.maxAppVersion || segment.requireAppVersion) {
+    if ((segment.appVersions && segment.appVersions.length > 0) || segment.requireAppVersion) {
       const appVersion = typeof data.appVersion === 'string' ? data.appVersion : null
-      // Sin versión registrada no se puede saber si cae en el rango pedido — se excluye.
+      // Sin versión registrada no se puede saber si coincide con lo pedido — se excluye.
       if (!appVersion) continue
-      if (segment.minAppVersion && compareVersions(appVersion, segment.minAppVersion) < 0) continue
-      if (segment.maxAppVersion && compareVersions(appVersion, segment.maxAppVersion) > 0) continue
+      if (segment.appVersions && segment.appVersions.length > 0 && !segment.appVersions.includes(appVersion)) continue
     }
 
     const hasGroupFilter =

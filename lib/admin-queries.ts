@@ -1,6 +1,7 @@
 import { getAuth } from 'firebase-admin/auth'
 import { getApps } from 'firebase-admin/app'
 import { adminDb } from './firebase-admin'
+import { compareVersions } from './notification-audience-filter'
 
 type FirestoreRecord = Record<string, unknown>
 
@@ -1019,6 +1020,24 @@ export async function getAdminUsers(limit = 50): Promise<AdminUser[]> {
       }
     })
   )
+}
+
+export type AdminAppVersionStat = { version: string; count: number }
+
+/** Distinct app versions currently reported by users, with counts, sorted newest-first. */
+export async function getAdminAppVersionStats(): Promise<AdminAppVersionStat[]> {
+  const snap = await adminDb.collection('users').select('appVersion').get()
+  const counts = new Map<string, number>()
+
+  for (const doc of snap.docs) {
+    const version = asString(doc.data().appVersion)
+    if (!version) continue
+    counts.set(version, (counts.get(version) ?? 0) + 1)
+  }
+
+  return Array.from(counts.entries())
+    .map(([version, count]) => ({ version, count }))
+    .sort((a, b) => compareVersions(b.version, a.version))
 }
 
 export async function getAdminUserById(uid: string): Promise<AdminUser | null> {

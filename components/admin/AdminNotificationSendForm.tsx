@@ -71,12 +71,15 @@ const SCREEN_OPTIONS = [
 
 type ScreenValue = typeof SCREEN_OPTIONS[number]['value']
 
+type AppVersionStat = { version: string; count: number }
+
 type Props = {
   groups: Group[]
   nucleos: Nucleo[]
+  appVersions: AppVersionStat[]
 }
 
-export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
+export default function AdminNotificationSendForm({ groups, nucleos, appVersions }: Props) {
   const router = useRouter()
   const params = useParams<{ locale: string }>()
   const [title, setTitle] = useState('')
@@ -91,8 +94,7 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
   const [selectedNucleoIds, setSelectedNucleoIds] = useState<string[]>([])
   const [noGroup, setNoGroup] = useState(false)
   const [selectedUsers, setSelectedUsers] = useState<UserResult[]>([])
-  const [minAppVersion, setMinAppVersion] = useState('')
-  const [maxAppVersion, setMaxAppVersion] = useState('')
+  const [selectedAppVersions, setSelectedAppVersions] = useState<string[]>([])
 
   // Deep link
   const [screen, setScreen] = useState<ScreenValue>('')
@@ -141,9 +143,8 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
     noGroup,
     userIds: selectedUsers.map((u) => u.uid),
     languages,
-    ...(minAppVersion.trim() && { minAppVersion: minAppVersion.trim() }),
-    ...(maxAppVersion.trim() && { maxAppVersion: maxAppVersion.trim() }),
-  }), [roles, countries, plans, selectedGroupIds, selectedNucleoIds, noGroup, selectedUsers, languages, minAppVersion, maxAppVersion])
+    ...(selectedAppVersions.length > 0 && { appVersions: selectedAppVersions }),
+  }), [roles, countries, plans, selectedGroupIds, selectedNucleoIds, noGroup, selectedUsers, languages, selectedAppVersions])
 
   useEffect(() => {
     if (estimateDebounce.current) clearTimeout(estimateDebounce.current)
@@ -271,8 +272,7 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
         setSelectedNucleoIds([])
         setNoGroup(false)
         setLanguages([])
-        setMinAppVersion('')
-        setMaxAppVersion('')
+        setSelectedAppVersions([])
         setScheduledAt('')
         if (!data.scheduled && data.id) {
           void loadRecipients(data.id)
@@ -360,34 +360,23 @@ export default function AdminNotificationSendForm({ groups, nucleos }: Props) {
         </div>
 
         {/* App version */}
-        <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-            Versión de app (opcional)
-          </label>
-          <div className="flex items-center gap-3">
-            <input
-              type="text"
-              value={minAppVersion}
-              onChange={(e) => setMinAppVersion(e.target.value)}
-              placeholder="Mínima, ej. 3.0.30"
-              className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder-text-muted outline-none focus:border-accent/40"
+        {appVersions.length > 0 && (
+          <div>
+            <MultiSelectDropdown
+              label="Versión de app (opcional)"
+              options={appVersions.map((v) => ({ value: v.version, label: `${v.version} · ${v.count} usuarios` }))}
+              selected={selectedAppVersions}
+              onChange={setSelectedAppVersions}
+              placeholder="Todas las versiones"
             />
-            <span className="shrink-0 text-xs text-text-muted">a</span>
-            <input
-              type="text"
-              value={maxAppVersion}
-              onChange={(e) => setMaxAppVersion(e.target.value)}
-              placeholder="Máxima, ej. 3.0.29"
-              className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder-text-muted outline-none focus:border-accent/40"
-            />
+            {selectedAppVersions.length > 0 && (
+              <p className="mt-1.5 text-xs text-text-muted">
+                Solo llega a dispositivos que ya reportaron una de las versiones seleccionadas (se registra al abrir
+                la app).
+              </p>
+            )}
           </div>
-          {(minAppVersion.trim() || maxAppVersion.trim()) && (
-            <p className="mt-1.5 text-xs text-text-muted">
-              Solo llega a dispositivos que ya reportaron su versión (se registra al abrir la app tras esta
-              actualización). Deja el mínimo vacío para &quot;hasta la versión X&quot; o el máximo vacío para &quot;desde la versión X&quot;.
-            </p>
-          )}
-        </div>
+        )}
 
         {/* Groups */}
         {groups.length > 0 && (
