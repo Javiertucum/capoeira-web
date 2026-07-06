@@ -1,12 +1,10 @@
-import Link from 'next/link'
-import AdminDeleteButton from '@/components/admin/AdminDeleteButton'
+import AdminCampaignRow from '@/components/admin/AdminCampaignRow'
 import AdminEmptyState from '@/components/admin/AdminEmptyState'
 import AdminNotificationSendForm from '@/components/admin/AdminNotificationSendForm'
 import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import AdminSectionCard from '@/components/admin/AdminSectionCard'
 import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
-import Badge from '@/components/ui/Badge'
 import { getAdminAppVersionStats, getAdminNucleos, getAdminOperationJobs } from '@/lib/admin-queries'
 import { adminDb } from '@/lib/firebase-admin'
 
@@ -93,46 +91,18 @@ export default async function NotificationsPage({ params }: Props) {
                       opened?: number
                     } | undefined
                     return (
-                      <tr key={campaign.id} className="transition-colors hover:bg-surface/30">
-                        <td className="px-6 py-4">
-                          <Link href={`/${locale}/admin/notifications/${campaign.id}`} className="font-semibold text-accent hover:underline">
-                            {campaign.title}
-                          </Link>
-                        </td>
-                        <td className="px-6 py-4">
-                          <Badge
-                            variant={
-                              campaign.status === 'failed'
-                                ? 'danger'
-                                : campaign.status === 'sent'
-                                  ? 'accent'
-                                  : campaign.status === 'canceled'
-                                    ? 'muted'
-                                    : 'warning'
-                            }
-                          >
-                            {campaign.status}
-                          </Badge>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-text-secondary">{metrics?.targeted ?? '--'}</td>
-                        <td className="px-6 py-4 text-sm text-text-secondary">{metrics?.sent ?? '--'}</td>
-                        <td className="px-6 py-4 text-sm text-text-secondary">{metrics?.opened ?? '--'}</td>
-                        <td className="px-6 py-4 text-sm text-text-secondary">{metrics?.failed ?? '--'}</td>
-                        <td className="px-6 py-4 text-xs text-text-muted">
-                          {campaign.createdAt ? new Date(campaign.createdAt).toLocaleString(locale) : '--'}
-                        </td>
-                        <td className="px-6 py-4">
-                          {campaign.status === 'scheduled' && (
-                            <AdminDeleteButton
-                              endpoint={`/api/admin/notifications/${campaign.id}`}
-                              label="Cancelar"
-                              labelDeleting="Cancelando..."
-                              confirmMessage="¿Cancelar esta notificación programada? No se enviará."
-                              className="rounded-lg border border-danger/30 bg-danger/10 px-3 py-1.5 text-xs font-semibold text-danger transition-colors hover:bg-danger/20"
-                            />
-                          )}
-                        </td>
-                      </tr>
+                      <AdminCampaignRow
+                        key={campaign.id}
+                        href={`/${locale}/admin/notifications/${campaign.id}`}
+                        title={campaign.title}
+                        status={campaign.status}
+                        targeted={metrics?.targeted ?? '--'}
+                        sent={metrics?.sent ?? '--'}
+                        opened={metrics?.opened ?? '--'}
+                        failed={metrics?.failed ?? '--'}
+                        createdAtLabel={campaign.createdAt ? new Date(campaign.createdAt).toLocaleString(locale) : '--'}
+                        deleteEndpoint={campaign.status === 'scheduled' ? `/api/admin/notifications/${campaign.id}` : null}
+                      />
                     )
                   })}
                 </tbody>
