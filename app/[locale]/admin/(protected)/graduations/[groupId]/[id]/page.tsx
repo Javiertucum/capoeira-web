@@ -25,7 +25,7 @@ export default async function GraduationEditPage({ params }: Props) {
             title={level.name}
             description={`Nivel de graduación #${level.order} · ${level.colors.length} color${level.colors.length !== 1 ? 'es' : ''}`}
           />
-          <GraduationEditForm level={level} locale={locale} />
+          <GraduationEditForm level={level} groupId={groupId} locale={locale} />
         </div>
       </div>
     </div>

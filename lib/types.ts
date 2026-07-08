@@ -65,7 +65,9 @@ export interface GraduationLevel {
   order: number
   colors: string[]
   tipColorLeft?: string | null
+  midColorLeft?: string | null
   tipColorRight?: string | null
+  midColorRight?: string | null
   isSpecial?: boolean
   isEstagiario?: boolean
   isEducator?: boolean

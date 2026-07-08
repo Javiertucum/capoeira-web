@@ -171,7 +171,7 @@ export default async function EducatorProfilePage({ params }: Props) {
                 <CordaVisual
                   colors={graduationLevel.colors}
                   tipColorLeft={graduationLevel.tipColorLeft}
-                  tipColorRight={graduationLevel.tipColorRight}
+                  tipColorRight={graduationLevel.tipColorRight} midColorLeft={graduationLevel.midColorLeft} midColorRight={graduationLevel.midColorRight}
                 />
                 {t('graduatedAs', { level: graduationLevel.name })}
               </span>

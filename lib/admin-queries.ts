@@ -625,7 +625,9 @@ export interface AdminGraduationLevelRow {
   order: number
   colors: string[]
   tipColorLeft?: string | null
+  midColorLeft?: string | null
   tipColorRight?: string | null
+  midColorRight?: string | null
   category?: string | null
   isEducator?: boolean
   isSpecial?: boolean
@@ -1622,7 +1624,9 @@ export async function getAdminGraduationRows(): Promise<AdminGraduationLevelRow[
         order: asNumber(data.order) ?? 0,
         colors,
         tipColorLeft: asString(data.tipColorLeft),
+        midColorLeft: asString(data.midColorLeft),
         tipColorRight: asString(data.tipColorRight),
+        midColorRight: asString(data.midColorRight),
         category: asString(data.category),
         isEducator: asBoolean(data.isEducator) ?? false,
         isSpecial: asBoolean(data.isSpecial) ?? false,
@@ -1800,12 +1804,21 @@ export async function getAdminGraduationLevelById(
     order: asNumber(data.order) ?? 0,
     colors,
     tipColorLeft: asString(data.tipColorLeft),
+    midColorLeft: asString(data.midColorLeft),
     tipColorRight: asString(data.tipColorRight),
+    midColorRight: asString(data.midColorRight),
     category: asString(data.category),
     isEducator: asBoolean(data.isEducator) ?? false,
     isSpecial: asBoolean(data.isSpecial) ?? false,
     memberCount: 0,
   }
+}
+
+/** Nombre de un grupo para encabezados de páginas admin (null si no existe). */
+export async function getAdminGroupName(groupId: string): Promise<string | null> {
+  const groupDoc = await adminDb.collection('groups').doc(groupId).get()
+  if (!groupDoc.exists) return null
+  return asString(groupDoc.data()?.name) ?? groupId
 }
 
 export async function getAdminGroupsForExport(): Promise<Array<{

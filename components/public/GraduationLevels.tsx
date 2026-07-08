@@ -36,7 +36,7 @@ export default function GraduationLevels({
                 key={level.id}
                 className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-bold text-ink"
               >
-                <CordaVisual colors={level.colors} tipColorLeft={level.tipColorLeft} tipColorRight={level.tipColorRight} />
+                <CordaVisual colors={level.colors} tipColorLeft={level.tipColorLeft} tipColorRight={level.tipColorRight} midColorLeft={level.midColorLeft} midColorRight={level.midColorRight} />
                 {level.name}
               </span>
             ))}

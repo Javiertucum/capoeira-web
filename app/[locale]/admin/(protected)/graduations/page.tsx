@@ -63,7 +63,15 @@ export default async function GraduationsPage({ params }: Props) {
                         </svg>
                         <span className="text-sm font-semibold text-text">{section.groupName}</span>
                       </div>
-                      <span className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">{section.rows.length} niveles</span>
+                      <div className="flex items-center gap-3">
+                        <Link
+                          href={`/${locale}/admin/graduations/${section.groupId}/new`}
+                          className="inline-flex h-7 items-center justify-center rounded-lg border border-accent/30 bg-accent/10 px-3 text-xs font-bold text-accent transition-all hover:bg-accent/20"
+                        >
+                          + Crear nivel
+                        </Link>
+                        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">{section.rows.length} niveles</span>
+                      </div>
                     </summary>
                     <div className="overflow-x-auto">
                       <table className="w-full min-w-[940px] border-collapse">
@@ -84,7 +92,7 @@ export default async function GraduationsPage({ params }: Props) {
                               <td className="px-6 py-4 text-sm text-text-secondary">{row.order}</td>
                               <td className="px-6 py-4 text-sm text-text-secondary">{row.category ?? '--'}</td>
                               <td className="px-6 py-4">
-                                <CordaVisual colors={row.colors} tipColorLeft={row.tipColorLeft} tipColorRight={row.tipColorRight} width={96} height={14} />
+                                <CordaVisual colors={row.colors} tipColorLeft={row.tipColorLeft} tipColorRight={row.tipColorRight} midColorLeft={row.midColorLeft} midColorRight={row.midColorRight} width={96} height={14} />
                               </td>
                               <td className="px-6 py-4 text-sm font-semibold text-text">{row.memberCount}</td>
                               <td className="px-6 py-4 text-right">
