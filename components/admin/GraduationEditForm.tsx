@@ -1,9 +1,10 @@
-'use client'
-
+﻿'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import CordaColorPicker from '@/components/admin/CordaColorPicker'
 import CordaVisual from '@/components/public/CordaVisual'
+
+type GraduationCategory = 'adult' | 'infantil' | 'juvenil'
 
 type GraduationLevel = {
   id: string
@@ -14,19 +15,25 @@ type GraduationLevel = {
   colors: string[]
   category?: string | null
   isEducator?: boolean
+  isEstagiario?: boolean
   isSpecial?: boolean
   tipColorLeft?: string | null
   tipColorRight?: string | null
   midColorLeft?: string | null
   midColorRight?: string | null
 }
-
 type Props = {
   /** Nivel existente (editar) o null para crear uno nuevo. */
   level: GraduationLevel | null
   groupId: string
   locale: string
 }
+
+const CATEGORIES: { value: GraduationCategory; label: string }[] = [
+  { value: 'adult', label: 'Adulto' },
+  { value: 'infantil', label: 'Infantil' },
+  { value: 'juvenil', label: 'Juvenil' },
+]
 
 /** Selector opcional de un color: checkbox para activar + paleta de la app en singleMode. */
 function OptionalColorField({
@@ -36,31 +43,49 @@ function OptionalColorField({
 }: {
   label: string
   value: string | null
-  onChange: (value: string | null) => void
+  onChange: (v: string | null) => void
 }) {
+  const HEX_COLORS = [
+    '#FFFFFF', '#D4C9A8', '#E8D5B7', '#C5A882', '#8B6B3D', '#5C3D1E',
+    '#000000', '#1A1A2E', '#16213E', '#0F3460',
+    '#FFD700', '#FFA500', '#FF6B35', '#E74C3C', '#C0392B',
+    '#2ECC71', '#27AE60', '#1ABC9C', '#16A085',
+    '#3498DB', '#2980B9', '#9B59B6', '#8E44AD',
+    '#F39C12', '#D35400', '#E67E22',
+    '#BDC3C7', '#95A5A6', '#7F8C8D',
+  ]
+
   return (
-    <div className="rounded-xl border border-border bg-surface px-4 py-3">
-      <label className="flex cursor-pointer items-center justify-between gap-3">
-        <span className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            checked={value !== null}
-            onChange={(e) => onChange(e.target.checked ? '#FFD700' : null)}
-            className="h-4 w-4 accent-accent"
-          />
-          <span className="text-sm text-text">{label}</span>
-        </span>
-        {value !== null && (
-          <span className="h-6 w-10 rounded border border-border" style={{ backgroundColor: value }} />
-        )}
+    <div>
+      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+        {label}
       </label>
-      {value !== null && (
-        <div className="mt-3">
-          <CordaColorPicker
-            selectedColors={[value]}
-            onColorsChange={(cols) => onChange(cols[0] ?? null)}
-            singleMode
+      {value ? (
+        <div className="flex items-center gap-2">
+          <span
+            className="h-6 w-6 rounded-full border border-border"
+            style={{ backgroundColor: value }}
           />
+          <span className="text-xs text-text">{value}</span>
+          <button
+            type="button"
+            onClick={() => onChange(null)}
+            className="text-xs text-danger hover:underline"
+          >
+            Quitar
+          </button>
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-1.5">
+          {HEX_COLORS.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => onChange(c)}
+              style={{ backgroundColor: c }}
+              className="h-6 w-6 rounded-full border border-border transition-transform hover:scale-110"
+            />
+          ))}
         </div>
       )}
     </div>
@@ -70,33 +95,48 @@ function OptionalColorField({
 export default function GraduationEditForm({ level, groupId, locale }: Props) {
   const router = useRouter()
   const isCreate = level === null
+
   const [name, setName] = useState(level?.name ?? '')
-  const [order, setOrder] = useState(String(level?.order ?? 1))
+  const [order, setOrder] = useState(String(level?.order ?? 0))
   const [colors, setColors] = useState<string[]>(level?.colors ?? [])
-  const [category, setCategory] = useState(level?.category ?? '')
+  // category es enum estricto; si el nivel existente tiene un valor fuera del rango, default 'adult'
+  const initialCategory: GraduationCategory =
+    (level?.category as GraduationCategory | undefined) &&
+    ['adult', 'infantil', 'juvenil'].includes(level?.category ?? '')
+      ? (level!.category as GraduationCategory)
+      : 'adult'
+  const [category, setCategory] = useState<GraduationCategory>(initialCategory)
   const [isEducator, setIsEducator] = useState(level?.isEducator ?? false)
+  const [isEstagiario, setIsEstagiario] = useState(level?.isEstagiario ?? false)
   const [isSpecial, setIsSpecial] = useState(level?.isSpecial ?? false)
   const [tipColorLeft, setTipColorLeft] = useState<string | null>(level?.tipColorLeft ?? null)
   const [tipColorRight, setTipColorRight] = useState<string | null>(level?.tipColorRight ?? null)
   const [midColorLeft, setMidColorLeft] = useState<string | null>(level?.midColorLeft ?? null)
   const [midColorRight, setMidColorRight] = useState<string | null>(level?.midColorRight ?? null)
+  // Solo en creacion: controla si se envia push al admin del grupo
+  const [notifyAdmin, setNotifyAdmin] = useState(true)
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   function buildPayload() {
-    return {
+    const base = {
       name: name.trim(),
       order: Number(order) || 0,
       colors,
-      category: category.trim() || null,
+      category,
       isEducator,
+      isEstagiario,
       isSpecial,
       tipColorLeft,
       tipColorRight,
       midColorLeft,
       midColorRight,
     }
+    if (isCreate) {
+      return { ...base, notify: notifyAdmin }
+    }
+    return base
   }
 
   async function handleSave() {
@@ -190,16 +230,26 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-              Categoría (opcional)
-            </label>
-            <input
-              type="text"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="infantil, adulto..."
-              className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder-text-muted outline-none transition-colors focus:border-accent/40"
-            />
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
+              Categoría
+            </p>
+            <div className="flex gap-2">
+              {CATEGORIES.map(({ value, label }) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setCategory(value)}
+                  className={[
+                    'flex-1 rounded-xl border px-3 py-2.5 text-xs font-semibold transition-colors',
+                    category === value
+                      ? 'border-accent bg-accent/15 text-accent'
+                      : 'border-border bg-surface text-text-secondary hover:border-accent/30 hover:bg-accent/5',
+                  ].join(' ')}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="sm:col-span-2">
@@ -229,7 +279,7 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
             </div>
           </div>
 
-          <div className="flex items-center gap-6 sm:col-span-2">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 sm:col-span-2">
             <label className="flex cursor-pointer items-center gap-3">
               <input
                 type="checkbox"
@@ -242,6 +292,15 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
             <label className="flex cursor-pointer items-center gap-3">
               <input
                 type="checkbox"
+                checked={isEstagiario}
+                onChange={(e) => setIsEstagiario(e.target.checked)}
+                className="h-4 w-4 accent-accent"
+              />
+              <span className="text-sm text-text">Estagiario</span>
+            </label>
+            <label className="flex cursor-pointer items-center gap-3">
+              <input
+                type="checkbox"
                 checked={isSpecial}
                 onChange={(e) => setIsSpecial(e.target.checked)}
                 className="h-4 w-4 accent-accent"
@@ -249,6 +308,30 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
               <span className="text-sm text-text">Nivel especial</span>
             </label>
           </div>
+
+          {/* Solo en creación: opción para controlar si se notifica al admin del grupo */}
+          {isCreate && (
+            <div className="sm:col-span-2">
+              <div className="rounded-xl border border-border bg-surface/50 px-4 py-3">
+                <label className="flex cursor-pointer items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={notifyAdmin}
+                    onChange={(e) => setNotifyAdmin(e.target.checked)}
+                    className="h-4 w-4 accent-accent"
+                  />
+                  <div>
+                    <span className="text-sm font-semibold text-text">Notificar al admin del grupo</span>
+                    <p className="mt-0.5 text-xs text-text-muted">
+                      {notifyAdmin
+                        ? 'El admin del grupo recibirá una push notification al guardar.'
+                        : 'No se enviará notificación — útil si vas a crear varios niveles seguidos.'}
+                    </p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

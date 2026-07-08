@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 import { FieldValue } from 'firebase-admin/firestore'
 import { adminDb } from '@/lib/firebase-admin'
 import { requireAdmin } from '@/lib/auth/verify-api-session'
@@ -31,6 +31,17 @@ export async function POST(request: NextRequest, { params }: Params) {
 
   const order = Number.isFinite(Number(body.order)) ? Number(body.order) : 0
 
+  // Categoría válida — solo se persiste si es uno de los tres valores permitidos por la app.
+  const VALID_CATEGORIES = ['adult', 'infantil', 'juvenil']
+  const category =
+    typeof body.category === 'string' && VALID_CATEGORIES.includes(body.category)
+      ? body.category
+      : 'adult'
+
+  // Si notify === false (enviado explícitamente), omitir push al admin del grupo.
+  // Útil cuando el admin web crea múltiples niveles en serie y quiere notificar solo al final.
+  const shouldNotify = body.notify !== false
+
   try {
     await adminDb
       .collection('groups')
@@ -40,8 +51,9 @@ export async function POST(request: NextRequest, { params }: Params) {
         name,
         order,
         colors,
-        category: typeof body.category === 'string' && body.category.trim() ? body.category.trim() : null,
+        category,
         isEducator: body.isEducator === true,
+        isEstagiario: body.isEstagiario === true,
         isSpecial: body.isSpecial === true,
         tipColorLeft: asHexOrNull(body.tipColorLeft),
         tipColorRight: asHexOrNull(body.tipColorRight),
@@ -50,7 +62,9 @@ export async function POST(request: NextRequest, { params }: Params) {
         createdAt: FieldValue.serverTimestamp(),
       })
 
-    await notifyGroupAdminGraduationChange(groupId, 'created', name)
+    if (shouldNotify) {
+      await notifyGroupAdminGraduationChange(groupId, 'created', name)
+    }
 
     return NextResponse.json({ ok: true })
   } catch (error) {

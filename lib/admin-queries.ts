@@ -630,6 +630,7 @@ export interface AdminGraduationLevelRow {
   midColorRight?: string | null
   category?: string | null
   isEducator?: boolean
+  isEstagiario?: boolean
   isSpecial?: boolean
   memberCount: number
 }
@@ -1629,6 +1630,7 @@ export async function getAdminGraduationRows(): Promise<AdminGraduationLevelRow[
         midColorRight: asString(data.midColorRight),
         category: asString(data.category),
         isEducator: asBoolean(data.isEducator) ?? false,
+        isEstagiario: asBoolean(data.isEstagiario) ?? false,
         isSpecial: asBoolean(data.isSpecial) ?? false,
         memberCount: membersByGroupLevel.get(`${groupId}:${doc.id}`) ?? 0,
       }
@@ -1809,6 +1811,7 @@ export async function getAdminGraduationLevelById(
     midColorRight: asString(data.midColorRight),
     category: asString(data.category),
     isEducator: asBoolean(data.isEducator) ?? false,
+    isEstagiario: asBoolean(data.isEstagiario) ?? false,
     isSpecial: asBoolean(data.isSpecial) ?? false,
     memberCount: 0,
   }
