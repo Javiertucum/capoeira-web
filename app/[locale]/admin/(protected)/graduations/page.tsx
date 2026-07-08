@@ -5,17 +5,20 @@ import AdminStatCard from '@/components/admin/AdminStatCard'
 import AdminTopbar from '@/components/admin/AdminTopbar'
 import CordaVisual from '@/components/public/CordaVisual'
 import Badge from '@/components/ui/Badge'
-import { getAdminGraduationRows, type AdminGraduationLevelRow } from '@/lib/admin-queries'
+import { getAdminGraduationRows, getAdminGroupOptions, type AdminGraduationLevelRow } from '@/lib/admin-queries'
 import Link from 'next/link'
 
 type Props = { params: Promise<{ locale: string }> }
 
 export default async function GraduationsPage({ params }: Props) {
   const { locale } = await params
-  const rows = await getAdminGraduationRows().catch((error) => {
-    console.error('[GraduationsPage] failed to fetch graduations', error)
-    return []
-  })
+  const [rows, allGroups] = await Promise.all([
+    getAdminGraduationRows().catch((error) => {
+      console.error('[GraduationsPage] failed to fetch graduations', error)
+      return []
+    }),
+    getAdminGroupOptions().catch(() => []),
+  ])
   const groups = new Set(rows.map((row) => row.groupId)).size
   const assignedMembers = rows.reduce((sum, row) => sum + row.memberCount, 0)
   const educatorLevels = rows.filter((row) => row.isEducator).length
@@ -29,7 +32,14 @@ export default async function GraduationsPage({ params }: Props) {
       groupedRows.set(row.groupId, { groupId: row.groupId, groupName: row.groupName, rows: [row] })
     }
   })
-  const groupSections = Array.from(groupedRows.values())
+  // Grupos sin sistema de graduación: también deben aparecer, con CTA para
+  // crear el primer nivel.
+  allGroups.forEach((group) => {
+    if (!groupedRows.has(group.id)) {
+      groupedRows.set(group.id, { groupId: group.id, groupName: group.name, rows: [] })
+    }
+  })
+  const groupSections = Array.from(groupedRows.values()).sort((a, b) => a.groupName.localeCompare(b.groupName))
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -73,6 +83,11 @@ export default async function GraduationsPage({ params }: Props) {
                         <span className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">{section.rows.length} niveles</span>
                       </div>
                     </summary>
+                    {section.rows.length === 0 ? (
+                      <div className="px-6 py-5 text-sm text-text-muted">
+                        Este grupo aún no tiene sistema de graduación — usa &quot;+ Crear nivel&quot; para cargar el primero.
+                      </div>
+                    ) : (
                     <div className="overflow-x-auto">
                       <table className="w-full min-w-[940px] border-collapse">
                         <thead>
@@ -106,6 +121,7 @@ export default async function GraduationsPage({ params }: Props) {
                         </tbody>
                       </table>
                     </div>
+                    )}
                   </details>
                 ))}
               </div>

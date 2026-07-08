@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import CordaColorPicker from '@/components/admin/CordaColorPicker'
 import CordaVisual from '@/components/public/CordaVisual'
 
 type GraduationLevel = {
@@ -27,9 +28,7 @@ type Props = {
   locale: string
 }
 
-const HEX_REGEX = /^#[0-9a-fA-F]{3,6}$/
-
-/** Selector opcional de un color: checkbox para activar + input color nativo. */
+/** Selector opcional de un color: checkbox para activar + paleta de la app en singleMode. */
 function OptionalColorField({
   label,
   value,
@@ -40,23 +39,29 @@ function OptionalColorField({
   onChange: (value: string | null) => void
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface px-4 py-3">
-      <label className="flex cursor-pointer items-center gap-3">
-        <input
-          type="checkbox"
-          checked={value !== null}
-          onChange={(e) => onChange(e.target.checked ? '#FFD700' : null)}
-          className="h-4 w-4 accent-accent"
-        />
-        <span className="text-sm text-text">{label}</span>
+    <div className="rounded-xl border border-border bg-surface px-4 py-3">
+      <label className="flex cursor-pointer items-center justify-between gap-3">
+        <span className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            checked={value !== null}
+            onChange={(e) => onChange(e.target.checked ? '#FFD700' : null)}
+            className="h-4 w-4 accent-accent"
+          />
+          <span className="text-sm text-text">{label}</span>
+        </span>
+        {value !== null && (
+          <span className="h-6 w-10 rounded border border-border" style={{ backgroundColor: value }} />
+        )}
       </label>
       {value !== null && (
-        <input
-          type="color"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="h-8 w-12 cursor-pointer rounded border border-border bg-transparent"
-        />
+        <div className="mt-3">
+          <CordaColorPicker
+            selectedColors={[value]}
+            onColorsChange={(cols) => onChange(cols[0] ?? null)}
+            singleMode
+          />
+        </div>
       )}
     </div>
   )
@@ -67,7 +72,7 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
   const isCreate = level === null
   const [name, setName] = useState(level?.name ?? '')
   const [order, setOrder] = useState(String(level?.order ?? 1))
-  const [colorsRaw, setColorsRaw] = useState((level?.colors ?? []).join(', '))
+  const [colors, setColors] = useState<string[]>(level?.colors ?? [])
   const [category, setCategory] = useState(level?.category ?? '')
   const [isEducator, setIsEducator] = useState(level?.isEducator ?? false)
   const [isSpecial, setIsSpecial] = useState(level?.isSpecial ?? false)
@@ -79,16 +84,7 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const previewColors = colorsRaw
-    .split(',')
-    .map((c) => c.trim())
-    .filter((c) => HEX_REGEX.test(c))
-
   function buildPayload() {
-    const colors = colorsRaw
-      .split(',')
-      .map((c) => c.trim())
-      .filter((c) => c.length > 0)
     return {
       name: name.trim(),
       order: Number(order) || 0,
@@ -157,7 +153,7 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
       <div className="rounded-[22px] border border-border bg-card p-6 shadow-sm">
         <div className="mb-6 flex items-center gap-4">
           <CordaVisual
-            colors={previewColors.length > 0 ? previewColors : (level?.colors ?? [])}
+            colors={colors}
             tipColorLeft={tipColorLeft}
             tipColorRight={tipColorRight}
             midColorLeft={midColorLeft}
@@ -165,12 +161,7 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
             width={160}
             height={20}
           />
-          <div>
-            <p className="text-xs text-text-muted">Vista previa de la corda</p>
-            {previewColors.length === 0 && colorsRaw.trim() !== '' && (
-              <p className="mt-0.5 text-xs text-warning">Formato inválido — usa códigos hex (#RRGGBB)</p>
-            )}
-          </div>
+          <p className="text-xs text-text-muted">Vista previa de la corda</p>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -213,15 +204,9 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
 
           <div className="sm:col-span-2">
             <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.16em] text-text-muted">
-              Colores (hex separados por coma)
+              Colores de la corda
             </label>
-            <input
-              type="text"
-              value={colorsRaw}
-              onChange={(e) => setColorsRaw(e.target.value)}
-              placeholder="#FFFFFF, #000000, #84c97a"
-              className="w-full rounded-xl border border-border bg-surface px-4 py-3 font-mono text-sm text-text placeholder-text-muted outline-none transition-colors focus:border-accent/40"
-            />
+            <CordaColorPicker selectedColors={colors} onColorsChange={setColors} />
           </div>
 
           <div className="sm:col-span-2">
@@ -287,7 +272,7 @@ export default function GraduationEditForm({ level, groupId, locale }: Props) {
         <button
           type="button"
           onClick={handleSave}
-          disabled={saving || deleting || !name.trim()}
+          disabled={saving || deleting || !name.trim() || colors.length === 0}
           className="rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-[#081019] transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {saving ? 'Guardando...' : isCreate ? 'Crear nivel' : 'Guardar cambios'}

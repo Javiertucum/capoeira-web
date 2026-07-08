@@ -12,7 +12,7 @@ type Props = Readonly<{
   colors: string[]
   tipColorLeft?: string | null
   tipColorRight?: string | null
-  /** Franja intermedia: entre la punta y el centro (27%-40% del ancho). */
+  /** Franja intermedia: contigua a la punta (20%-33% del ancho). */
   midColorLeft?: string | null
   midColorRight?: string | null
   width?: number
@@ -88,11 +88,12 @@ export default function CordaVisual({
           }}
         />
       )}
+      {/* Franjas intermedias: contiguas a la punta (20%-33%), sin separación */}
       {midColorLeft && (
         <div
           style={{
             position: 'absolute',
-            left: '27%',
+            left: '20%',
             top: 0,
             bottom: 0,
             width: '13%',
@@ -104,7 +105,7 @@ export default function CordaVisual({
         <div
           style={{
             position: 'absolute',
-            right: '27%',
+            right: '20%',
             top: 0,
             bottom: 0,
             width: '13%',

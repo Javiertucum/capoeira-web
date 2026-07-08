@@ -1814,6 +1814,14 @@ export async function getAdminGraduationLevelById(
   }
 }
 
+/** Lista liviana de todos los grupos (id + nombre) para selectores/CTAs admin. */
+export async function getAdminGroupOptions(): Promise<Array<{ id: string; name: string }>> {
+  const groupsSnap = await adminDb.collection('groups').get().catch(() => ({ docs: [] as FirebaseFirestore.QueryDocumentSnapshot[] }))
+  return groupsSnap.docs
+    .map((doc) => ({ id: doc.id, name: asString(doc.data().name) ?? doc.id }))
+    .sort((left, right) => left.name.localeCompare(right.name))
+}
+
 /** Nombre de un grupo para encabezados de páginas admin (null si no existe). */
 export async function getAdminGroupName(groupId: string): Promise<string | null> {
   const groupDoc = await adminDb.collection('groups').doc(groupId).get()
