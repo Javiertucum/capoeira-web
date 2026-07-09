@@ -51,7 +51,7 @@ export default function AppBenefitsStudents({ copy }: { copy: any }) {
   const demoted = spotlights.slice(0, -1)
 
   return (
-    <section className="bg-bg">
+    <section id="students" className="scroll-mt-16 bg-bg">
       <div className="page-shell">
         <div className="flex items-center gap-4 border-b border-border py-10 lg:py-16">
           <span

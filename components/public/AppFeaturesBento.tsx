@@ -66,7 +66,7 @@ const SPANS = [
   'col-span-2 sm:col-span-1 lg:col-span-3', // event
 ]
 
-function BentoTile({ item, index }: { item: SpotlightItem; index: number }) {
+function BentoTile({ item, index, short }: { item: SpotlightItem; index: number; short?: string }) {
   const featured = index === 0 || index === 3
   return (
     <div
@@ -97,7 +97,7 @@ function BentoTile({ item, index }: { item: SpotlightItem; index: number }) {
       </h3>
 
       <p className="mt-2 text-sm leading-relaxed text-text-secondary lg:max-w-[50%]">
-        {item.desc}
+        {short ?? item.desc}
       </p>
 
       {/* ATOKS-style: thumbnail screenshot clipped to the right on wide featured tiles */}
@@ -134,7 +134,7 @@ export default function AppFeaturesBento({ copy }: { copy: any }) {
         </p>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-6 lg:gap-4">
           {tiles.map((item, i) => (
-            <BentoTile key={item.mockup} item={item} index={i} />
+            <BentoTile key={item.mockup} item={item} index={i} short={copy.bentoShorts?.[item.mockup]} />
           ))}
         </div>
       </div>

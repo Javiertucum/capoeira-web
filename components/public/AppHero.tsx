@@ -74,6 +74,30 @@ export default function AppHero({ copy, stats }: { copy: any; stats?: Stats }) {
               </span>
             </div>
 
+            {/* Audience quick links */}
+            {(copy.appHeroForEducators || copy.appHeroForStudents) && (
+              <div className="flex flex-wrap gap-3 emil-enter-stagger emil-stagger-3">
+                {copy.appHeroForEducators && (
+                  <a
+                    href="#educators"
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-bold text-text-secondary transition-colors hover:border-accent/40 hover:text-ink"
+                  >
+                    {copy.appHeroForEducators}
+                    <span aria-hidden className="text-accent">↓</span>
+                  </a>
+                )}
+                {copy.appHeroForStudents && (
+                  <a
+                    href="#students"
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-bold text-text-secondary transition-colors hover:border-accent/40 hover:text-ink"
+                  >
+                    {copy.appHeroForStudents}
+                    <span aria-hidden className="text-accent">↓</span>
+                  </a>
+                )}
+              </div>
+            )}
+
             {/* Stats strip */}
             {statItems.length > 0 && (
               <div className="flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-border pt-6 emil-enter-stagger emil-stagger-4">
