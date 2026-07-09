@@ -7,7 +7,7 @@ import AppFeaturesBento from '@/components/public/AppFeaturesBento'
 import AppBenefitsEducators from '@/components/public/AppBenefitsEducators'
 import AppBenefitsStudents from '@/components/public/AppBenefitsStudents'
 import AppPremium from '@/components/public/AppPremium'
-import AppTestimonials from '@/components/public/AppTestimonials'
+import AppFAQ from '@/components/public/AppFAQ'
 import AppDownloadCTA from '@/components/public/AppDownloadCTA'
 import Footer from '@/components/public/Footer'
 
@@ -127,6 +127,34 @@ const COPY = {
       'Soporte prioritario',
       'Apoyas el desarrollo de la plataforma',
     ],
+    // FAQ
+    faqTitle: 'Preguntas frecuentes',
+    faqItems: [
+      {
+        q: '¿La app es gratis?',
+        a: 'Sí. Descargarla y usar las funciones principales (asistencia, graduaciones, finanzas, mapa y eventos) es completamente gratis. Existe un plan Pro opcional de $2 USD al mes que desbloquea eventos ilimitados y elimina los anuncios.',
+      },
+      {
+        q: '¿Está disponible para iPhone?',
+        a: 'Por ahora la app está disponible para Android en Google Play. La versión para iOS está en desarrollo y llegará próximamente.',
+      },
+      {
+        q: '¿Sirve para cualquier estilo de capoeira?',
+        a: 'Sí. El sistema de graduaciones es totalmente configurable: define tus propias cordas con categorías infantil, juvenil y adulto. Funciona con Angola, Regional, Contemporánea y sistemas mixtos.',
+      },
+      {
+        q: '¿Cómo me uno a mi grupo?',
+        a: 'Crea tu perfil, busca tu grupo o núcleo en el directorio y solicita unirte, o pide a tu educador que te invite. Si tu grupo aún no está en la app, un educador puede crearlo en minutos.',
+      },
+      {
+        q: '¿Necesito ser educador para usarla?',
+        a: 'No. Como alumno puedes ver tu corda e historial de graduaciones, confirmar asistencia a eventos y usar el mapa global para encontrar dónde entrenar cuando viajas.',
+      },
+      {
+        q: '¿Qué incluye el plan Pro?',
+        a: 'Eventos ilimitados para educadores, registro de hasta 5 rodas por mes para alumnos, exportación de reportes en PDF y CSV, cero anuncios y soporte prioritario. Cuesta $2 USD al mes, con plan anual disponible.',
+      },
+    ],
     // Final CTA
     appCtaTitle: 'Empieza hoy',
     appCtaBody: 'Disponible gratis en Google Play. Configura tu perfil en minutos y conéctate con tu comunidad.',
@@ -237,6 +265,33 @@ const COPY = {
       'Suporte prioritário',
       'Você apoia o desenvolvimento da plataforma',
     ],
+    faqTitle: 'Perguntas frequentes',
+    faqItems: [
+      {
+        q: 'O app é gratuito?',
+        a: 'Sim. Baixar e usar as funções principais (presença, graduações, finanças, mapa e eventos) é completamente grátis. Existe um plano Pro opcional de US$ 2 por mês que desbloqueia eventos ilimitados e remove os anúncios.',
+      },
+      {
+        q: 'Está disponível para iPhone?',
+        a: 'Por enquanto o app está disponível para Android na Google Play. A versão para iOS está em desenvolvimento e chegará em breve.',
+      },
+      {
+        q: 'Serve para qualquer estilo de capoeira?',
+        a: 'Sim. O sistema de graduações é totalmente configurável: defina suas próprias cordas com categorias infantil, juvenil e adulto. Funciona com Angola, Regional, Contemporânea e sistemas mistos.',
+      },
+      {
+        q: 'Como entro no meu grupo?',
+        a: 'Crie seu perfil, busque seu grupo ou núcleo no diretório e solicite entrar, ou peça ao seu educador para convidá-lo. Se seu grupo ainda não está no app, um educador pode criá-lo em minutos.',
+      },
+      {
+        q: 'Preciso ser educador para usar?',
+        a: 'Não. Como aluno você pode ver sua corda e histórico de graduações, confirmar presença em eventos e usar o mapa global para encontrar onde treinar quando viaja.',
+      },
+      {
+        q: 'O que inclui o plano Pro?',
+        a: 'Eventos ilimitados para educadores, registro de até 5 rodas por mês para alunos, exportação de relatórios em PDF e CSV, zero anúncios e suporte prioritário. Custa US$ 2 por mês, com plano anual disponível.',
+      },
+    ],
     appCtaTitle: 'Comece hoje',
     appCtaBody: 'Disponível gratuitamente na Google Play. Configure seu perfil em minutos e conecte-se com sua comunidade.',
     appCtaButton: 'Baixar na Google Play',
@@ -345,6 +400,33 @@ const COPY = {
       'PDF and CSV report exports',
       'Priority support',
       'You support the development of the platform',
+    ],
+    faqTitle: 'Frequently asked questions',
+    faqItems: [
+      {
+        q: 'Is the app free?',
+        a: 'Yes. Downloading it and using the core features (attendance, graduations, finances, map and events) is completely free. There is an optional Pro plan at $2 USD per month that unlocks unlimited events and removes ads.',
+      },
+      {
+        q: 'Is it available for iPhone?',
+        a: 'For now the app is available for Android on Google Play. The iOS version is in development and coming soon.',
+      },
+      {
+        q: 'Does it work for any capoeira style?',
+        a: 'Yes. The graduation system is fully configurable: define your own belts with children, youth and adult categories. It works with Angola, Regional, Contemporary and mixed systems.',
+      },
+      {
+        q: 'How do I join my group?',
+        a: 'Create your profile, find your group or school in the directory and request to join, or ask your educator to invite you. If your group is not in the app yet, an educator can create it in minutes.',
+      },
+      {
+        q: 'Do I need to be an educator to use it?',
+        a: 'No. As a student you can see your belt and graduation history, confirm attendance to events, and use the global map to find a place to train when you travel.',
+      },
+      {
+        q: 'What does the Pro plan include?',
+        a: 'Unlimited events for educators, logging up to 5 rodas per month for students, PDF and CSV report exports, zero ads and priority support. It costs $2 USD per month, with an annual plan available.',
+      },
     ],
     appCtaTitle: 'Get started today',
     appCtaBody: 'Free on Google Play. Set up your profile in minutes and connect with your community.',
@@ -455,6 +537,33 @@ const COPY = {
       'Support prioritaire',
       'Vous soutenez le développement de la plateforme',
     ],
+    faqTitle: 'Questions fréquentes',
+    faqItems: [
+      {
+        q: 'L\'app est-elle gratuite ?',
+        a: 'Oui. La télécharger et utiliser les fonctions principales (présence, graduations, finances, carte et événements) est entièrement gratuit. Il existe un forfait Pro optionnel à 2 USD par mois qui débloque les événements illimités et supprime les publicités.',
+      },
+      {
+        q: 'Est-elle disponible pour iPhone ?',
+        a: 'Pour le moment, l\'app est disponible pour Android sur Google Play. La version iOS est en développement et arrivera bientôt.',
+      },
+      {
+        q: 'Fonctionne-t-elle avec tous les styles de capoeira ?',
+        a: 'Oui. Le système de graduation est entièrement configurable : définissez vos propres cordes avec des catégories enfant, jeune et adulte. Compatible avec l\'Angola, le Regional, le Contemporain et les systèmes mixtes.',
+      },
+      {
+        q: 'Comment rejoindre mon groupe ?',
+        a: 'Créez votre profil, trouvez votre groupe ou noyau dans l\'annuaire et demandez à le rejoindre, ou demandez à votre éducateur de vous inviter. Si votre groupe n\'est pas encore dans l\'app, un éducateur peut le créer en quelques minutes.',
+      },
+      {
+        q: 'Faut-il être éducateur pour l\'utiliser ?',
+        a: 'Non. En tant qu\'élève, vous pouvez voir votre corde et votre historique de graduations, confirmer votre présence aux événements et utiliser la carte mondiale pour trouver où vous entraîner en voyage.',
+      },
+      {
+        q: 'Que comprend le forfait Pro ?',
+        a: 'Événements illimités pour les éducateurs, enregistrement de jusqu\'à 5 rodas par mois pour les élèves, exportation de rapports en PDF et CSV, zéro publicité et support prioritaire. Il coûte 2 USD par mois, avec un forfait annuel disponible.',
+      },
+    ],
     appCtaTitle: 'Commencez aujourd\'hui',
     appCtaBody: 'Gratuit sur Google Play. Configurez votre profil en quelques minutes et connectez-vous à votre communauté.',
     appCtaButton: 'Télécharger sur Google Play',
@@ -563,6 +672,33 @@ const COPY = {
       'PDF- und CSV-Export von Berichten',
       'Bevorzugter Support',
       'Du unterstützt die Entwicklung der Plattform',
+    ],
+    faqTitle: 'Häufige Fragen',
+    faqItems: [
+      {
+        q: 'Ist die App kostenlos?',
+        a: 'Ja. Der Download und die Kernfunktionen (Anwesenheit, Graduierungen, Finanzen, Karte und Events) sind komplett kostenlos. Optional gibt es einen Pro-Plan für 2 USD pro Monat, der unbegrenzte Events freischaltet und Werbung entfernt.',
+      },
+      {
+        q: 'Gibt es die App für das iPhone?',
+        a: 'Derzeit ist die App für Android bei Google Play verfügbar. Die iOS-Version ist in Entwicklung und kommt bald.',
+      },
+      {
+        q: 'Funktioniert sie mit jedem Capoeira-Stil?',
+        a: 'Ja. Das Graduierungssystem ist voll konfigurierbar: Definiere deine eigenen Cordas mit Kategorien für Kinder, Jugendliche und Erwachsene. Kompatibel mit Angola, Regional, Contemporânea und gemischten Systemen.',
+      },
+      {
+        q: 'Wie trete ich meiner Gruppe bei?',
+        a: 'Erstelle dein Profil, finde deine Gruppe oder dein Núcleo im Verzeichnis und stelle eine Beitrittsanfrage — oder lass dich von deinem Lehrer einladen. Ist deine Gruppe noch nicht in der App, kann ein Lehrer sie in Minuten anlegen.',
+      },
+      {
+        q: 'Muss ich Lehrer sein, um sie zu nutzen?',
+        a: 'Nein. Als Schüler siehst du deine Corda und Graduierungshistorie, bestätigst deine Teilnahme an Events und findest über die Weltkarte einen Trainingsort, wenn du reist.',
+      },
+      {
+        q: 'Was beinhaltet der Pro-Plan?',
+        a: 'Unbegrenzte Events für Lehrer, Registrierung von bis zu 5 Rodas pro Monat für Schüler, PDF- und CSV-Berichtsexport, keine Werbung und bevorzugter Support. Er kostet 2 USD pro Monat, ein Jahresplan ist verfügbar.',
+      },
     ],
     appCtaTitle: 'Starte noch heute',
     appCtaBody: 'Kostenlos bei Google Play verfügbar. Richte dein Profil in wenigen Minuten ein und verbinde dich mit deiner Community.',
@@ -673,6 +809,33 @@ const COPY = {
       'Supporto prioritario',
       'Sostieni lo sviluppo della piattaforma',
     ],
+    faqTitle: 'Domande frequenti',
+    faqItems: [
+      {
+        q: 'L\'app è gratuita?',
+        a: 'Sì. Scaricarla e usare le funzioni principali (presenze, graduazioni, finanze, mappa ed eventi) è completamente gratis. Esiste un piano Pro opzionale da 2 USD al mese che sblocca eventi illimitati ed elimina la pubblicità.',
+      },
+      {
+        q: 'È disponibile per iPhone?',
+        a: 'Per ora l\'app è disponibile per Android su Google Play. La versione iOS è in sviluppo e arriverà presto.',
+      },
+      {
+        q: 'Funziona con qualsiasi stile di capoeira?',
+        a: 'Sì. Il sistema di graduazione è totalmente configurabile: definisci le tue corde con categorie bambini, giovani e adulti. Compatibile con Angola, Regional, Contemporânea e sistemi misti.',
+      },
+      {
+        q: 'Come entro nel mio gruppo?',
+        a: 'Crea il tuo profilo, trova il tuo gruppo o núcleo nella directory e richiedi di entrare, oppure chiedi al tuo educatore di invitarti. Se il tuo gruppo non è ancora nell\'app, un educatore può crearlo in pochi minuti.',
+      },
+      {
+        q: 'Devo essere un educatore per usarla?',
+        a: 'No. Come alunno puoi vedere la tua corda e la cronologia delle graduazioni, confermare la presenza agli eventi e usare la mappa globale per trovare dove allenarti quando viaggi.',
+      },
+      {
+        q: 'Cosa include il piano Pro?',
+        a: 'Eventi illimitati per gli educatori, registrazione fino a 5 rodas al mese per gli alunni, esportazione di report in PDF e CSV, zero pubblicità e supporto prioritario. Costa 2 USD al mese, con piano annuale disponibile.',
+      },
+    ],
     appCtaTitle: 'Inizia oggi',
     appCtaBody: 'Disponibile gratis su Google Play. Configura il tuo profilo in pochi minuti e connettiti con la tua comunità.',
     appCtaButton: 'Scarica su Google Play',
@@ -707,7 +870,7 @@ export default async function AppLandingPage({ params }: Props) {
       <AppBenefitsEducators copy={c} />
       <AppBenefitsStudents copy={c} />
       <AppPremium copy={c} />
-      <AppTestimonials locale={locale} />
+      <AppFAQ copy={c} />
       <AppDownloadCTA copy={c} />
       <Footer locale={locale} />
     </main>
