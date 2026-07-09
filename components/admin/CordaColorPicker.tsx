@@ -10,11 +10,11 @@
 const COLOR_FAMILIES = [
   {
     label: 'Blancos',
-    colors: ['#FFFFFF', '#F5F5F0', '#F0EAD6', '#D3CBBF'],
+    colors: ['#FFFFFF', '#FAF0E6', '#F5F5F0', '#F0EAD6', '#D3CBBF'],
   },
   {
     label: 'Amarillos',
-    colors: ['#FFD700', '#FFEB3B', '#FFF59D', '#FFC107', '#FF8F00', '#E1AD01'],
+    colors: ['#FFFF00', '#FFD700', '#FFEB3B', '#FFF59D', '#FFC107', '#FF8F00', '#E1AD01'],
   },
   {
     label: 'Naranjas',
@@ -22,15 +22,15 @@ const COLOR_FAMILIES = [
   },
   {
     label: 'Rojos',
-    colors: ['#F44336', '#C62828', '#B71C1C', '#880E4F', '#E91E63', '#F06292', '#FF80AB'],
+    colors: ['#FF0000', '#F44336', '#C62828', '#B71C1C', '#880E4F', '#E91E63', '#F06292', '#FF80AB'],
   },
   {
     label: 'Morados',
-    colors: ['#9C27B0', '#6A1B9A', '#7B1FA2', '#673AB7', '#CE93D8'],
+    colors: ['#800080', '#9C27B0', '#6A1B9A', '#7B1FA2', '#673AB7', '#CE93D8'],
   },
   {
     label: 'Azules',
-    colors: ['#0D47A1', '#001F5B', '#1565C0', '#1976D2', '#2196F3', '#42A5F5', '#81D4FA', '#90CAF9', '#3F51B5'],
+    colors: ['#0000FF', '#0D47A1', '#001F5B', '#1565C0', '#1976D2', '#2196F3', '#42A5F5', '#81D4FA', '#90CAF9', '#3F51B5'],
   },
   {
     label: 'Teales',
@@ -38,7 +38,7 @@ const COLOR_FAMILIES = [
   },
   {
     label: 'Verdes',
-    colors: ['#1B5E20', '#004D40', '#2E7D32', '#388E3C', '#4CAF50', '#66BB6A', '#A5D6A7', '#8BC34A', '#CDDC39', '#808000'],
+    colors: ['#008000', '#1B5E20', '#004D40', '#2E7D32', '#388E3C', '#4CAF50', '#66BB6A', '#A5D6A7', '#8BC34A', '#CDDC39', '#808000'],
   },
   {
     label: 'Marrones',
@@ -46,9 +46,12 @@ const COLOR_FAMILIES = [
   },
   {
     label: 'Grises y negros',
-    colors: ['#B0BEC5', '#90A4AE', '#607D8B', '#546E7A', '#37474F', '#263238', '#212121'],
+    colors: ['#B0BEC5', '#90A4AE', '#607D8B', '#546E7A', '#37474F', '#263238', '#212121', '#000000'],
   },
 ]
+
+// Swatches tan claros que necesitan borde para distinguirse del fondo
+const LIGHT_SWATCHES = ['#FFFFFF', '#FAF0E6', '#F5F5F0']
 
 function needsDarkMark(hex: string): boolean {
   const r = parseInt(hex.slice(1, 3), 16)
@@ -131,7 +134,7 @@ export default function CordaColorPicker({
                     className={`flex h-8 w-8 items-center justify-center rounded-lg border transition-all ${
                       selected ? 'scale-110 shadow-md' : 'hover:scale-105'
                     } ${isFull ? 'cursor-not-allowed opacity-35' : ''} ${
-                      hex === '#FFFFFF' || hex === '#F5F5F0' ? 'border-border' : 'border-transparent'
+                      LIGHT_SWATCHES.includes(hex) ? 'border-border' : 'border-transparent'
                     }`}
                     style={{ backgroundColor: hex }}
                   >
