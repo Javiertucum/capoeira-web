@@ -19,23 +19,24 @@ type Props = Readonly<{
   height?: number
 }>
 
-function buildBackground(colors: string[]): string {
+function buildBackground(colors: string[], height: number): string {
   if (colors.length === 0) return '#A69F93'
   if (colors.length === 1) return colors[0]
   if (colors.length === 2) {
     return `linear-gradient(to right, ${colors[0]} 50%, ${colors[1]} 50%)`
   }
 
-  // 3-6 colors: diagonal stripes at -35deg, 5px each stripe
-  const stripeWidth = 5
+  // 3-6 colores: franjas diagonales a -35°. El ancho escala con la altura para
+  // que cada color se distinga; sin background-size — un repeating-linear-gradient
+  // ya es continuo, y recortarlo en tiles rompía el empalme diagonal.
+  const stripeWidth = Math.max(5, Math.round(height * 0.45))
   const stops: string[] = []
   colors.forEach((color, i) => {
     const start = i * stripeWidth
     const end = start + stripeWidth
     stops.push(`${color} ${start}px`, `${color} ${end}px`)
   })
-  const totalWidth = colors.length * stripeWidth
-  return `repeating-linear-gradient(-35deg, ${stops.join(', ')}) 0 0 / ${totalWidth}px ${totalWidth}px`
+  return `repeating-linear-gradient(-35deg, ${stops.join(', ')})`
 }
 
 export default function CordaVisual({
@@ -48,7 +49,7 @@ export default function CordaVisual({
   height = 12,
 }: Props) {
   const radius = height / 2
-  const background = buildBackground(colors)
+  const background = buildBackground(colors, height)
 
   return (
     <div
