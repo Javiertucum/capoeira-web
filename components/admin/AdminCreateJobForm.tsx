@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import posthog from 'posthog-js'
 
 type JobKind = 'notification' | 'export' | 'finance-cost'
 
@@ -58,10 +59,12 @@ export default function AdminCreateJobForm({ kind }: Props) {
       })
       const payload = (await response.json().catch(() => null)) as { error?: string } | null
       if (!response.ok) throw new Error(payload?.error || 'No se pudo crear el registro')
+      posthog.capture('admin_job_created', { job_kind: kind })
       setTitle('')
       setAmount('')
       router.refresh()
     } catch (error) {
+      posthog.captureException(error, { flow: 'admin_job_creation', job_kind: kind })
       setMessage(error instanceof Error ? error.message : 'Error desconocido')
     } finally {
       setBusy(false)

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import posthog from 'posthog-js'
 import type { AdminEntityType } from '@/lib/admin-queries'
 
 type Props = Readonly<{
@@ -43,8 +44,13 @@ export default function AdminFeaturedToggle({
       if (!response.ok) {
         throw new Error(payload?.error || 'No se pudo actualizar destacado')
       }
+      posthog.capture('admin_featured_content_updated', {
+        entity_type: entityType,
+        featured: !active,
+      })
       router.refresh()
     } catch (error) {
+      posthog.captureException(error, { flow: 'admin_featured_content_update', entity_type: entityType })
       setMessage(error instanceof Error ? error.message : 'Error desconocido')
     } finally {
       setBusy(false)

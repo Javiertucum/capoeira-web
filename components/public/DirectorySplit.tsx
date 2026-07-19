@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
+import posthog from 'posthog-js'
 import type { MapMarker, MapViewHandle } from '@/components/public/map/MapView'
 import Modal from '@/components/public/Modal'
 import { normalizeSocialLink } from '@/lib/social-links'
@@ -190,7 +191,19 @@ export default function DirectorySplit({
     if (nucleo) setContactNucleo(nucleo)
   }
 
+  function handleTabChange(nextTab: Tab) {
+    setTab(nextTab)
+    posthog.capture('directory_tab_selected', { directory_tab: nextTab })
+  }
+
+  function handleSearchBlur() {
+    if (query.trim()) {
+      posthog.capture('directory_search_submitted', { directory_tab: tab })
+    }
+  }
+
   function handleNearMe() {
+    posthog.capture('nearby_directory_requested')
     if (!('geolocation' in navigator)) {
       setLocationStatus('denied')
       return
@@ -285,7 +298,7 @@ export default function DirectorySplit({
                         <li key={item.key} role="option" aria-selected={tab === item.key}>
                           <button
                             type="button"
-                            onClick={() => { setTab(item.key); setTabMenuOpen(false) }}
+                            onClick={() => { handleTabChange(item.key); setTabMenuOpen(false) }}
                             className={`flex w-full items-center gap-3 px-4 py-3 text-sm font-bold transition-colors duration-100 ease-[var(--ease-out)] ${
                               tab === item.key
                                 ? 'bg-ink text-bg'
@@ -312,7 +325,7 @@ export default function DirectorySplit({
                   <button
                     key={item.key}
                     type="button"
-                    onClick={() => setTab(item.key)}
+                    onClick={() => handleTabChange(item.key)}
                     className={`rounded-full px-4 py-1.5 text-sm font-bold transition-colors duration-150 ease-[var(--ease-out)] ${
                       tab === item.key ? 'bg-ink text-bg' : 'text-text-secondary hover:text-ink'
                     }`}
@@ -344,6 +357,7 @@ export default function DirectorySplit({
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
+                  onBlur={handleSearchBlur}
                   placeholder={t('searchPlaceholder')}
                   className="h-10 w-full rounded-full border border-border bg-card px-4 pr-9 text-sm text-ink placeholder:text-text-muted focus:border-accent focus:outline-none"
                 />

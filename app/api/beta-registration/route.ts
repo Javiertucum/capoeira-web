@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { adminDb } from '@/lib/firebase-admin'
+import { posthogServer } from '@/lib/posthog-server'
 
 // Rate-limit en dos capas para este endpoint público sin autenticación:
 // 1) Map en memoria: barato, corta ráfagas dentro de una misma instancia.
@@ -87,6 +88,12 @@ export async function POST(request: Request) {
       message,
       createdAt: new Date().toISOString(),
       status: 'pending'
+    })
+
+    posthogServer.capture({
+      distinctId: `beta_request:${docRef.id}`,
+      event: 'beta_registration_submitted',
+      properties: { role: role || 'unspecified', has_group: Boolean(group) },
     })
 
     return NextResponse.json({ success: true, id: docRef.id })

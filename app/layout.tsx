@@ -7,6 +7,7 @@ import { routing } from '@/i18n/routing'
 import { SITE_NAME, SITE_URL, escapeJsonLd, getSiteDescription, getOgImageUrl, buildOrganizationSchema, buildWebSiteSchema } from '@/lib/site'
 import { THEME_INIT_SCRIPT } from '@/components/public/ThemeToggle'
 import { CONSENT_INIT_SCRIPT } from '@/components/public/ConsentInit'
+import PostHogClient from '@/components/PostHogClient'
 
 const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
@@ -113,6 +114,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full antialiased">
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <PostHogClient />
         {children}
         <script
           type="application/ld+json"

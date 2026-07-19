@@ -1,0 +1,52 @@
+[
+  {
+    "event_name": "directory_tab_selected",
+    "event_description": "Tracks when a visitor switches the directory content type.",
+    "file": "components/public/DirectorySplit.tsx"
+  },
+  {
+    "event_name": "directory_search_submitted",
+    "event_description": "Tracks when a visitor searches the public capoeira directory.",
+    "file": "components/public/DirectorySplit.tsx"
+  },
+  {
+    "event_name": "nearby_directory_requested",
+    "event_description": "Tracks when a visitor requests nearby directory results.",
+    "file": "components/public/DirectorySplit.tsx"
+  },
+  {
+    "event_name": "admin_login_succeeded",
+    "event_description": "Tracks successful administrator authentication in the web portal.",
+    "file": "app/[locale]/admin/login/page.tsx"
+  },
+  {
+    "event_name": "admin_logout_completed",
+    "event_description": "Tracks administrator sign-out from the web portal.",
+    "file": "components/admin/AdminTopbar.tsx"
+  },
+  {
+    "event_name": "admin_job_created",
+    "event_description": "Tracks successful creation of an administrative notification, export, or finance record.",
+    "file": "components/admin/AdminCreateJobForm.tsx"
+  },
+  {
+    "event_name": "admin_featured_content_updated",
+    "event_description": "Tracks successful changes to featured public content.",
+    "file": "components/admin/AdminFeaturedToggle.tsx"
+  },
+  {
+    "event_name": "admin_moderation_updated",
+    "event_description": "Tracks successful moderation decisions made by administrators.",
+    "file": "components/admin/AdminModerationActionButtons.tsx"
+  },
+  {
+    "event_name": "beta_registration_submitted",
+    "event_description": "Tracks successful beta registration persistence on the server.",
+    "file": "app/api/beta-registration/route.ts"
+  },
+  {
+    "event_name": "admin_session_created",
+    "event_description": "Tracks successful administrator session creation on the server.",
+    "file": "app/api/admin/auth/login/route.ts"
+  }
+]

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSessionCookie, SESSION_COOKIE, verifyAdminIdToken } from '@/lib/auth/session'
+import { posthogServer } from '@/lib/posthog-server'
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,8 +9,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'idToken requerido' }, { status: 400 })
     }
 
-    await verifyAdminIdToken(idToken)
+    const adminUid = await verifyAdminIdToken(idToken)
     const sessionCookie = await createSessionCookie(idToken)
+
+    posthogServer.capture({
+      distinctId: adminUid,
+      event: 'admin_session_created',
+    })
 
     const response = NextResponse.json({ ok: true })
     response.cookies.set(SESSION_COOKIE, sessionCookie, {

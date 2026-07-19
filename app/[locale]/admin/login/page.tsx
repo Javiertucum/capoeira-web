@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '@/lib/auth/client'
 import { useRouter, usePathname } from 'next/navigation'
+import posthog from 'posthog-js'
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -35,9 +36,12 @@ export default function AdminLoginPage() {
         throw new Error(data.error ?? 'Error al iniciar sesión')
       }
 
+      posthog.identify(credential.user.uid)
+      posthog.capture('admin_login_succeeded')
       router.push(`/${locale}/admin/dashboard`)
     } catch (err: unknown) {
       console.error('[AdminLogin] error:', err)
+      posthog.captureException(err, { flow: 'admin_login' })
       const msg = err instanceof Error ? err.message : 'Error desconocido'
       if (msg.includes('auth/invalid-credential') || msg.includes('auth/wrong-password') || msg.includes('auth/user-not-found')) {
         setError('Correo o contraseña incorrectos')

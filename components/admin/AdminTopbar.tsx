@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
+import posthog from 'posthog-js'
 
 interface Props {
   section: string
@@ -14,6 +15,8 @@ export default function AdminTopbar({ section, description }: Props) {
 
   async function handleLogout() {
     await fetch('/api/admin/auth/logout', { method: 'POST' })
+    posthog.capture('admin_logout_completed')
+    posthog.reset()
     router.refresh()
     router.push(`/${locale}/admin/login`)
   }

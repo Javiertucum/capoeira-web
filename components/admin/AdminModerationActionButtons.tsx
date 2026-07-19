@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import posthog from 'posthog-js'
 import type {
   AdminModerationEntityType,
   AdminModerationState,
@@ -44,8 +45,13 @@ export default function AdminModerationActionButtons({
       if (!response.ok) {
         throw new Error(payload?.error || 'No se pudo actualizar moderacion')
       }
+      posthog.capture('admin_moderation_updated', {
+        entity_type: entityType,
+        decision,
+      })
       router.refresh()
     } catch (error) {
+      posthog.captureException(error, { flow: 'admin_moderation', entity_type: entityType, decision })
       setMessage(error instanceof Error ? error.message : 'Error desconocido')
     } finally {
       setPendingDecision(null)
