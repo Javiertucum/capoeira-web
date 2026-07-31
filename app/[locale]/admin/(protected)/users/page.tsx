@@ -9,7 +9,7 @@ export default async function UsersPage({ params }: Props) {
   const { locale } = await params
   let users: AdminUser[] = []
   try {
-    users = await getAdminUsers(100)
+    users = await getAdminUsers(500)
   } catch (error) {
     console.error('[UsersPage] failed to fetch users', error)
   }

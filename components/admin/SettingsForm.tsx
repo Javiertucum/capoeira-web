@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+import ThemeToggle from '@/components/public/ThemeToggle'
+
 interface SettingsValues {
   appVersion: string
   statusLabel: string
@@ -60,6 +62,22 @@ export default function SettingsForm({ initial }: Props) {
           {message.text}
         </div>
       ) : null}
+
+      <section className={sectionClass}>
+        <h3 className="text-sm font-semibold text-text">Apariencia y Tema</h3>
+        <p className="mt-1 text-xs text-text-muted">
+          Alterna entre el Modo Oscuro y el Modo Claro para la interfaz del panel de administración.
+        </p>
+        <div className="mt-5 flex items-center justify-between rounded-2xl border border-border bg-surface px-4 py-4">
+          <div>
+            <p className="text-sm font-semibold text-text">Modo Oscuro</p>
+            <p className="text-xs text-text-muted">
+              Cambia la combinación de colores del panel de control.
+            </p>
+          </div>
+          <ThemeToggle />
+        </div>
+      </section>
 
       <section className={sectionClass}>
         <h3 className="text-sm font-semibold text-text">Versión y Estado</h3>
